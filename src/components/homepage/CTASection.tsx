@@ -32,7 +32,7 @@ const CTASection = () => {
                     <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
                         <Link
                             to="/ai-health-assessment"
-                            className="group inline-flex items-center px-10 py-5 bg-white text-primary font-bold rounded-xl hover:bg-white/90 transition-all duration-300 hover:scale-[1.02] shadow-2xl shadow-black/20"
+                            className="group inline-flex items-center px-10 py-5 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-xl hover:opacity-90 transition-all duration-300 hover:scale-[1.02] shadow-2xl shadow-black/20"
                         >
                             Start Free Assessment
                             <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
@@ -40,7 +40,7 @@ const CTASection = () => {
 
                         <Link
                             to="/medical-professional-portal"
-                            className="inline-flex items-center px-10 py-5 bg-transparent border border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 transition-all duration-300 backdrop-blur-sm"
+                            className="inline-flex items-center px-10 py-5 bg-transparent border border-white/20 text-white font-semibold rounded-xl hover:border-cyan-400 transition-all duration-300 backdrop-blur-sm"
                         >
                             For Healthcare Providers
                             <Users size={20} className="ml-2" />

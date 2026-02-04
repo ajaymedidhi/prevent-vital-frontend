@@ -53,7 +53,7 @@ const Header = ({ className = '' }: HeaderProps) => {
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2.5 px-4 text-center text-xs sm:text-sm font-medium relative z-50">
         <div className="container mx-auto">
           <span>Transform your health with AI-powered prevention. </span>
-          <Link to="/ai-health-assessment" className="underline hover:text-blue-100 ml-1 inline-flex items-center">
+          <Link to="/ai-health-assessment" className="hover:underline hover:text-blue-100 ml-1 inline-flex items-center">
             Start Free Assessment <span className="ml-1">→</span>
           </Link>
         </div>
@@ -107,6 +107,9 @@ const Header = ({ className = '' }: HeaderProps) => {
                   <Link to="/team" className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isActive('/team')}`}>
                     Team
                   </Link>
+                  <Link to="/contact" className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isActive('/contact')}`}>
+                    Contact Us
+                  </Link>
                 </>
               )}
             </nav>
@@ -118,14 +121,14 @@ const Header = ({ className = '' }: HeaderProps) => {
               <div className="flex items-center bg-gray-100 p-1 rounded-full border border-gray-200">
                 <button
                   onClick={() => { setView('consumer'); navigate('/homepage'); }}
-                  className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${view === 'consumer' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-900'
+                  className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${view === 'consumer' ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md' : 'text-gray-500 hover:text-gray-900'
                     }`}
                 >
                   Consumer
                 </button>
                 <button
                   onClick={() => { setView('business'); navigate('/partnership-portal'); }}
-                  className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${view === 'business' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-900'
+                  className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${view === 'business' ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md' : 'text-gray-500 hover:text-gray-900'
                     }`}
                 >
                   Business
@@ -197,14 +200,14 @@ const Header = ({ className = '' }: HeaderProps) => {
                 <div className="flex items-center bg-gray-100 p-1 rounded-xl mb-6">
                   <button
                     onClick={() => { setView('consumer'); navigate('/homepage'); }}
-                    className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${view === 'consumer' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500'
+                    className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${view === 'consumer' ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md' : 'text-gray-500'
                       }`}
                   >
                     Consumer
                   </button>
                   <button
                     onClick={() => { setView('business'); navigate('/partnership-portal'); }}
-                    className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${view === 'business' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500'
+                    className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${view === 'business' ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md' : 'text-gray-500'
                       }`}
                   >
                     Business
@@ -237,6 +240,9 @@ const Header = ({ className = '' }: HeaderProps) => {
                       </Link>
                       <Link to="/team" onClick={() => setIsMobileMenuOpen(false)} className={`block px-4 py-3 rounded-lg text-base font-medium ${isActive('/team') === 'bg-cyan-50 text-cyan-700' ? 'bg-cyan-50 text-cyan-700' : 'text-gray-700 hover:bg-gray-50'}`}>
                         Team
+                      </Link>
+                      <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className={`block px-4 py-3 rounded-lg text-base font-medium ${isActive('/contact') === 'bg-cyan-50 text-cyan-700' ? 'bg-cyan-50 text-cyan-700' : 'text-gray-700 hover:bg-gray-50'}`}>
+                        Contact Us
                       </Link>
                     </>
                   )}
