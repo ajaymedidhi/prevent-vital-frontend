@@ -61,22 +61,19 @@ const Header = ({ className = '' }: HeaderProps) => {
 
       <header className="bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div className="w-full">
-          <div className="flex items-center justify-between h-16 md:h-20 px-4 lg:px-8">
+          <div className="flex items-center justify-between h-20 md:h-24 px-4 lg:px-8">
 
             {/* Logo */}
-            <Link to="/homepage" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-              <div className="flex items-center justify-center w-10 h-10 md:w-14 md:h-14">
+            <Link to="/homepage" className="flex items-center hover:opacity-80 transition-opacity">
+              <div className="flex items-center justify-start h-14 md:h-20 w-auto">
                 <AppImage
                   src="/images/logo-new.png"
                   alt="PreventVital.ai logo"
-                  width={56}
-                  height={56}
-                  className="object-contain"
+                  width={300}
+                  height={80}
+                  className="h-full w-auto object-contain object-left"
                 />
               </div>
-              <span className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight">
-                PreventVital
-              </span>
             </Link>
 
             {/* Desktop Navigation - Centered */}

@@ -52,13 +52,9 @@ const Team = () => {
                                 className="absolute inset-0 w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:bg-gradient-to-r md:from-transparent md:to-black/10"></div>
-                            <div className="absolute bottom-4 left-4 text-white md:hidden">
-                                <h3 className="text-2xl font-bold">Dr. Rakesh Kumar</h3>
-                                <p className="opacity-90">Founder & Chairman</p>
-                            </div>
                         </div>
                         <div className="md:w-3/5 p-8 md:p-12">
-                            <div className="hidden md:block mb-6">
+                            <div className="mb-6">
                                 <span className="inline-block px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold uppercase tracking-wider mb-2">
                                     Founder & Chairman
                                 </span>
@@ -86,13 +82,9 @@ const Team = () => {
                                 className="absolute inset-0 w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:bg-gradient-to-l md:from-transparent md:to-black/10"></div>
-                            <div className="absolute bottom-4 left-4 text-white md:hidden">
-                                <h3 className="text-2xl font-bold">Dr. Sindhura Nalluru</h3>
-                                <p className="opacity-90">Founder & Managing Director</p>
-                            </div>
                         </div>
                         <div className="md:w-3/5 p-8 md:p-12">
-                            <div className="hidden md:block mb-6">
+                            <div className="mb-6">
                                 <span className="inline-block px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold uppercase tracking-wider mb-2">
                                     Founder & Managing Director
                                 </span>
