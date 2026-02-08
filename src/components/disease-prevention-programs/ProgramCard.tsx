@@ -1,5 +1,7 @@
 
 import { Clock, ArrowRight } from 'lucide-react';
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from '@/components/ui/button';
 
 interface ProgramCardProps {
@@ -24,49 +26,58 @@ export default function ProgramCard({
     onClick
 }: ProgramCardProps) {
     return (
-        <div className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
-            <div className="relative h-48 overflow-hidden shrink-0">
+        <Card className="group overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full bg-white rounded-2xl">
+            {/* Image Container */}
+            <div className="relative h-56 overflow-hidden">
                 <img
                     src={image}
                     alt={alt}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute top-4 right-4 bg-emerald-600 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-sm">
-                    {successRate} Success Rate
+                {/* Success Rate Badge */}
+                <div className="absolute top-4 left-4">
+                    <Badge className="bg-white/90 backdrop-blur-sm text-sm font-semibold text-purple-600 hover:bg-white/95 px-3 py-1 shadow-sm border-0">
+                        {successRate} Success Rate
+                    </Badge>
                 </div>
             </div>
 
-            <div className="p-6 flex flex-col flex-grow">
-                <h3 className="text-xl font-bold text-foreground mb-2">{title}</h3>
-                <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{description}</p>
+            <CardHeader className="p-6 pb-2">
+                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                    {title}
+                </h3>
+                <p className="text-gray-500 text-sm leading-relaxed line-clamp-2">
+                    {description}
+                </p>
+            </CardHeader>
 
-                <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
-                    <Clock size={16} className="text-primary" />
+            <CardContent className="p-6 pt-2 flex-grow">
+                <div className="flex items-center gap-2 mb-4 text-sm font-medium text-gray-500">
+                    <Clock size={16} />
                     <span>{duration}</span>
                 </div>
 
-                <div className="mb-4 flex-grow">
-                    <p className="text-xs font-semibold text-muted-foreground mb-2">Integrated Therapies:</p>
-                    <div className="flex flex-wrap gap-2">
-                        {therapies.map((therapy, index) => (
-                            <span
-                                key={index}
-                                className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded-md"
-                            >
-                                {therapy}
-                            </span>
-                        ))}
-                    </div>
+                <div className="flex flex-wrap gap-2">
+                    {therapies.map((therapy, index) => (
+                        <span
+                            key={index}
+                            className="px-3 py-1 bg-gray-50 text-gray-600 text-xs font-medium rounded-full border border-gray-100"
+                        >
+                            {therapy}
+                        </span>
+                    ))}
                 </div>
+            </CardContent>
 
+            <div className="p-4 pt-0 mt-auto">
                 <Button
                     onClick={onClick}
-                    className="w-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 mt-auto"
+                    className="w-full bg-gradient-to-r from-blue-400 to-pink-500 hover:from-blue-500 hover:to-pink-600 text-white font-semibold h-12 rounded-xl shadow-md transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-0.5"
                 >
                     Explore Program
-                    <ArrowRight size={16} className="ml-2" />
+                    <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1" />
                 </Button>
             </div>
-        </div>
+        </Card>
     );
 }
