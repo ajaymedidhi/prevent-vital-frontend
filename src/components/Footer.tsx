@@ -27,8 +27,8 @@ export const Footer = () => {
       { label: 'FAQs', href: '/' }
     ],
     legal: [
-      { label: 'Privacy Policy', href: '/' },
-      { label: 'Terms of Service', href: '/' },
+      { label: 'Privacy Policy', href: '/privacy-policy' },
+      { label: 'Terms of Service', href: '/terms-and-conditions' },
       { label: 'HIPAA Compliance', href: '/' },
       { label: 'Cookie Policy', href: '/' }
     ]

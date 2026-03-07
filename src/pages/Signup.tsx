@@ -6,7 +6,7 @@ import { setCredentials } from '../store';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import { ArrowLeft, Activity, Heart, Smartphone, Watch, Thermometer } from 'lucide-react';
+import { ArrowLeft, Activity, Heart, Smartphone, Watch, Thermometer, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Signup = () => {
@@ -14,6 +14,8 @@ const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -195,7 +197,7 @@ const Signup = () => {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     required
-                                    className="h-12 bg-white border-slate-200 focus:border-blue-500 focus:ring-blue-500/20 rounded-lg"
+                                    className="h-12 bg-white border-slate-200 rounded-lg"
                                 />
                             </div>
 
@@ -208,36 +210,54 @@ const Signup = () => {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
-                                    className="h-12 bg-white border-slate-200 focus:border-blue-500 focus:ring-blue-500/20 rounded-lg"
+                                    className="h-12 bg-white border-slate-200 rounded-lg"
                                 />
                             </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="password" className="text-slate-700">Password</Label>
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    placeholder="••••••••"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                    minLength={8}
-                                    className="h-12 bg-white border-slate-200 focus:border-blue-500 focus:ring-blue-500/20 rounded-lg"
-                                />
+                                <div className="relative">
+                                    <Input
+                                        id="password"
+                                        type={showPassword ? 'text' : 'password'}
+                                        placeholder="••••••••"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
+                                        minLength={8}
+                                        className="h-12 bg-white border-slate-200 rounded-lg pr-10"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 focus:outline-none"
+                                    >
+                                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </button>
+                                </div>
                             </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="confirmPassword" className="text-slate-700">Confirm Password</Label>
-                                <Input
-                                    id="confirmPassword"
-                                    type="password"
-                                    placeholder="••••••••"
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    required
-                                    minLength={8}
-                                    className="h-12 bg-white border-slate-200 focus:border-blue-500 focus:ring-blue-500/20 rounded-lg"
-                                />
+                                <div className="relative">
+                                    <Input
+                                        id="confirmPassword"
+                                        type={showConfirmPassword ? 'text' : 'password'}
+                                        placeholder="••••••••"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        required
+                                        minLength={8}
+                                        className="h-12 bg-white border-slate-200 rounded-lg pr-10"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 focus:outline-none"
+                                    >
+                                        {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </button>
+                                </div>
                             </div>
                         </div>
 

@@ -53,9 +53,15 @@ const Header = ({ className = '' }: HeaderProps) => {
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2.5 px-4 text-center text-xs sm:text-sm font-medium relative z-50">
         <div className="container mx-auto">
           <span>Transform your health with AI-powered prevention. </span>
-          <Link to="/ai-health-assessment" className="hover:underline hover:text-blue-100 ml-1 inline-flex items-center">
-            Start Free Assessment <span className="ml-1">→</span>
-          </Link>
+          {isAuthenticated ? (
+            <Link to="/account/assessment" className="hover:underline hover:text-blue-100 ml-1 inline-flex items-center">
+              Start Free Assessment <span className="ml-1">→</span>
+            </Link>
+          ) : (
+            <Link to="/login?redirect=account/assessment" className="hover:underline hover:text-blue-100 ml-1 inline-flex items-center">
+              Start Free Assessment <span className="ml-1">→</span>
+            </Link>
+          )}
         </div>
       </div>
 

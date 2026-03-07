@@ -44,6 +44,8 @@ import AboutUs from "./pages/AboutUs";
 import Team from "./pages/Team";
 import Contact from "./pages/Contact";
 import WellnessPhilosophy from "./pages/WellnessPhilosophy";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
 // New Auth & Admin Pages
 import Login from './pages/Login';
@@ -68,6 +70,7 @@ import RiskCalculator from './pages/admin/RiskCalculator';
 import { Outlet } from "react-router-dom";
 
 import CustomerDashboard from './pages/customer/CustomerDashboard';
+import Assessment from './pages/customer/Assessment';
 
 // Customer Pages
 import CustomerLayout from './layouts/CustomerLayout';
@@ -116,6 +119,8 @@ const App = () => (
                             <Route path="/team" element={<Team />} />
                             <Route path="/contact" element={<Contact />} />
                             <Route path="/wellness-philosophy" element={<WellnessPhilosophy />} />
+                            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
                         </Route>
 
                         {/* AUTH */}
@@ -188,6 +193,7 @@ const App = () => (
                             <Route path="programs/:id" element={<ProgramDetailPage />} />
                             <Route path="history" element={<CustomerOrders />} />
                             <Route path="billing" element={<CustomerBilling />} />
+                            <Route path="assessment" element={<Assessment />} />
                             {/* <Route path="corporate" element={<CustomerCorporate />} /> */}
                         </Route>
 
