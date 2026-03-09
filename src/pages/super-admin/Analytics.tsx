@@ -1,11 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     BarChart3, Download, TrendingUp, Users,
-    Activity, Building2, Calendar, ChevronDown
+    Activity, Building2, Calendar, ChevronDown, Loader2
 } from 'lucide-react';
+import superAdminApi from '../../admin-shared/services/superAdminApi';
+import toast from 'react-hot-toast';
 
 const Analytics = () => {
     const [timeRange, setTimeRange] = useState('Last 30 Days');
+    const [analyticsData, setAnalyticsData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchAnalytics = async () => {
+            setLoading(true);
+            try {
+                const res = await superAdminApi.get('/analytics');
+                setAnalyticsData(res.data);
+            } catch (error) {
+                console.error("Error fetching analytics:", error);
+                toast.error("Failed to load analytics data");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchAnalytics();
+    }, [timeRange]); // Future refactor: pass timeRange to API
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center p-20">
+                <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
+                <span className="ml-3 font-semibold text-gray-500">Loading platform analytics...</span>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6 animate-in fade-in duration-500 pb-10">
@@ -38,15 +67,16 @@ const Analytics = () => {
 
             {/* Top Level KPIs */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                {/* Card 1: Active Users */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group">
                     <div className="absolute -right-4 -top-4 w-24 h-24 bg-blue-50 rounded-full group-hover:bg-blue-100 transition-colors z-0"></div>
                     <div className="relative z-10 flex justify-between items-start">
                         <div>
                             <p className="text-sm font-semibold text-gray-500 mb-1">Total Active Users</p>
-                            <h3 className="text-3xl font-bold text-gray-900">12,543</h3>
+                            <h3 className="text-3xl font-bold text-gray-900">{analyticsData?.totalActiveUsers?.toLocaleString() ?? 0}</h3>
                             <div className="flex items-center gap-1 text-sm text-green-600 mt-2 font-medium">
                                 <TrendingUp size={16} />
-                                <span>+14.5% <span className="text-gray-400 text-xs font-normal">vs last period</span></span>
+                                <span>+{analyticsData?.newUsersLast30Days ?? 0} new this month</span>
                             </div>
                         </div>
                         <div className="w-10 h-10 bg-white shadow-sm border border-gray-100 rounded-xl flex items-center justify-center text-blue-600">
@@ -55,15 +85,16 @@ const Analytics = () => {
                     </div>
                 </div>
 
+                {/* Card 2: Platform MRR */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group">
                     <div className="absolute -right-4 -top-4 w-24 h-24 bg-emerald-50 rounded-full group-hover:bg-emerald-100 transition-colors z-0"></div>
                     <div className="relative z-10 flex justify-between items-start">
                         <div>
-                            <p className="text-sm font-semibold text-gray-500 mb-1">Monthly Recurring Revenue</p>
-                            <h3 className="text-3xl font-bold text-gray-900">₹4.2M</h3>
-                            <div className="flex items-center gap-1 text-sm text-green-600 mt-2 font-medium">
+                            <p className="text-sm font-semibold text-gray-500 mb-1">Platform Revenue</p>
+                            <h3 className="text-3xl font-bold text-gray-900">₹{((analyticsData?.mrr || 0) / 100000).toFixed(1)}L</h3>
+                            <div className="flex items-center gap-1 text-sm text-emerald-600 mt-2 font-medium">
                                 <TrendingUp size={16} />
-                                <span>+8.2% <span className="text-gray-400 text-xs font-normal">vs last period</span></span>
+                                <span>{analyticsData?.paidSubscribers ?? 0} paid subscribers</span>
                             </div>
                         </div>
                         <div className="w-10 h-10 bg-white shadow-sm border border-gray-100 rounded-xl flex items-center justify-center text-emerald-600">
@@ -72,14 +103,15 @@ const Analytics = () => {
                     </div>
                 </div>
 
+                {/* Card 3: Active Programmes */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group">
                     <div className="absolute -right-4 -top-4 w-24 h-24 bg-purple-50 rounded-full group-hover:bg-purple-100 transition-colors z-0"></div>
                     <div className="relative z-10 flex justify-between items-start">
                         <div>
                             <p className="text-sm font-semibold text-gray-500 mb-1">Active Programmes</p>
-                            <h3 className="text-3xl font-bold text-gray-900">18</h3>
+                            <h3 className="text-3xl font-bold text-gray-900">{analyticsData?.activeProgrammes ?? 0}</h3>
                             <div className="flex items-center gap-1 text-sm text-gray-500 mt-2 font-medium">
-                                <span>2 new <span className="text-gray-400 text-xs font-normal">this month</span></span>
+                                <span>B2C: {analyticsData?.totalB2CUsers ?? 0} · B2B: {analyticsData?.totalB2BUsers ?? 0} users</span>
                             </div>
                         </div>
                         <div className="w-10 h-10 bg-white shadow-sm border border-gray-100 rounded-xl flex items-center justify-center text-purple-600">
@@ -88,15 +120,16 @@ const Analytics = () => {
                     </div>
                 </div>
 
+                {/* Card 4: B2B Organisations */}
                 <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group">
                     <div className="absolute -right-4 -top-4 w-24 h-24 bg-amber-50 rounded-full group-hover:bg-amber-100 transition-colors z-0"></div>
                     <div className="relative z-10 flex justify-between items-start">
                         <div>
                             <p className="text-sm font-semibold text-gray-500 mb-1">B2B Organisations</p>
-                            <h3 className="text-3xl font-bold text-gray-900">45</h3>
-                            <div className="flex items-center gap-1 text-sm text-green-600 mt-2 font-medium">
+                            <h3 className="text-3xl font-bold text-gray-900">{analyticsData?.totalB2BOrgs ?? 0}</h3>
+                            <div className="flex items-center gap-1 text-sm text-amber-600 mt-2 font-medium">
                                 <TrendingUp size={16} />
-                                <span>+3 <span className="text-gray-400 text-xs font-normal">new tenants</span></span>
+                                <span>{analyticsData?.dauCount ?? 0} active (30d)</span>
                             </div>
                         </div>
                         <div className="w-10 h-10 bg-white shadow-sm border border-gray-100 rounded-xl flex items-center justify-center text-amber-600">
@@ -107,7 +140,7 @@ const Analytics = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Chart Mock: User Growth */}
+                {/* Chart: User Growth */}
                 <div className="bg-white rounded-[18px] shadow-sm border border-gray-100 p-6 lg:col-span-2">
                     <div className="flex justify-between items-center mb-6">
                         <h3 className="font-bold text-lg text-gray-800">Platform User Growth</h3>
@@ -116,29 +149,36 @@ const Analytics = () => {
                             <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded-full bg-purple-500"></div><span className="text-xs text-gray-500">B2B</span></div>
                         </div>
                     </div>
-                    {/* CSS Mock Chart */}
-                    <div className="h-64 flex items-end gap-2 sm:gap-4 pt-10 px-2 relative border-b border-gray-100">
-                        {/* Grid lines */}
-                        <div className="absolute left-0 right-0 top-0 h-px bg-gray-50"></div>
-                        <div className="absolute left-0 right-0 top-1/4 h-px bg-gray-50"></div>
-                        <div className="absolute left-0 right-0 top-2/4 h-px bg-gray-50"></div>
-                        <div className="absolute left-0 right-0 top-3/4 h-px bg-gray-50"></div>
-
-                        {/* Bars */}
-                        {[35, 45, 30, 60, 55, 75, 65, 85, 80, 95].map((h, i) => (
-                            <div key={i} className="flex-1 flex flex-col justify-end gap-1 relative group h-full pb-2">
-                                <div className="w-full bg-purple-500 rounded-t-sm opacity-90 transition-all duration-300 group-hover:opacity-100 relative z-10" style={{ height: `${h * 0.4}%` }}></div>
-                                <div className="w-full bg-blue-500 rounded-t-sm opacity-90 transition-all duration-300 group-hover:opacity-100 relative z-10" style={{ height: `${h * 0.6}%` }}></div>
-                                {/* Tooltip */}
-                                <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] font-bold py-1 px-2 rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-20 transition-opacity">
-                                    Total: {h * 120}
+                    {(() => {
+                        const growth: any[] = analyticsData?.monthlyGrowth || [];
+                        const maxVal = Math.max(...growth.map((m: any) => (m.b2c || 0) + (m.b2b || 0)), 1);
+                        return (
+                            <>
+                                <div className="h-64 flex items-end gap-2 sm:gap-4 pt-10 px-2 relative border-b border-gray-100">
+                                    <div className="absolute left-0 right-0 top-0 h-px bg-gray-50"></div>
+                                    <div className="absolute left-0 right-0 top-1/4 h-px bg-gray-50"></div>
+                                    <div className="absolute left-0 right-0 top-2/4 h-px bg-gray-50"></div>
+                                    <div className="absolute left-0 right-0 top-3/4 h-px bg-gray-50"></div>
+                                    {growth.map((m: any, i: number) => {
+                                        const b2cH = Math.round(((m.b2c || 0) / maxVal) * 100);
+                                        const b2bH = Math.round(((m.b2b || 0) / maxVal) * 100);
+                                        return (
+                                            <div key={i} className="flex-1 flex flex-col justify-end gap-1 relative group h-full pb-2">
+                                                <div className="w-full bg-purple-500 rounded-t-sm opacity-90 transition-all duration-300 group-hover:opacity-100 relative z-10" style={{ height: `${b2bH}%` }}></div>
+                                                <div className="w-full bg-blue-500 rounded-t-sm opacity-90 transition-all duration-300 group-hover:opacity-100 relative z-10" style={{ height: `${b2cH}%` }}></div>
+                                                <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] font-bold py-1 px-2 rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-20 transition-opacity">
+                                                    B2C: {m.b2c} / B2B: {m.b2b}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="flex justify-between text-[10px] font-semibold text-gray-400 mt-3 px-2 uppercase tracking-widest">
-                        <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span>
-                    </div>
+                                <div className="flex justify-between text-[10px] font-semibold text-gray-400 mt-3 px-2 uppercase tracking-widest">
+                                    {growth.map((m: any, i: number) => <span key={i}>{m.month}</span>)}
+                                </div>
+                            </>
+                        );
+                    })()}
                 </div>
 
                 {/* Right Column Metrics */}
@@ -147,22 +187,27 @@ const Analytics = () => {
                     <div className="bg-white rounded-[18px] shadow-sm border border-gray-100 p-6">
                         <h3 className="font-bold text-gray-800 mb-5">Top Programmes by Enrollment</h3>
                         <div className="space-y-4">
-                            {[
-                                { name: 'Cardio Health Pro', val: 85, color: 'bg-red-500', users: '3.2k' },
-                                { name: 'Diabetes Management', val: 65, color: 'bg-orange-500', users: '2.1k' },
-                                { name: 'Stress Reduction', val: 45, color: 'bg-purple-500', users: '1.5k' },
-                                { name: 'Sleep Optimization', val: 30, color: 'bg-indigo-500', users: '980' },
-                            ].map((prog, i) => (
-                                <div key={i}>
-                                    <div className="flex justify-between text-sm mb-1.5">
-                                        <span className="font-semibold text-gray-700">{prog.name}</span>
-                                        <span className="text-gray-500 text-xs font-medium">{prog.users} users</span>
+                            {(() => {
+                                const programs: any[] = analyticsData?.topProgrammes || [];
+                                const colors = ['bg-red-500', 'bg-orange-500', 'bg-purple-500', 'bg-indigo-500'];
+                                const maxEnroll = Math.max(...programs.map((p: any) => p.enrolledCount || 0), 1);
+                                return programs.length > 0 ? programs.map((prog: any, i: number) => (
+                                    <div key={i}>
+                                        <div className="flex justify-between text-sm mb-1.5">
+                                            <span className="font-semibold text-gray-700">{prog.title}</span>
+                                            <span className="text-gray-500 text-xs font-medium">{prog.enrolledCount.toLocaleString()} users</span>
+                                        </div>
+                                        <div className="w-full bg-gray-100 rounded-full h-2">
+                                            <div
+                                                className={`${colors[i % colors.length]} h-2 rounded-full`}
+                                                style={{ width: `${Math.max(Math.round((prog.enrolledCount / maxEnroll) * 100), prog.enrolledCount > 0 ? 4 : 0)}%` }}
+                                            ></div>
+                                        </div>
                                     </div>
-                                    <div className="w-full bg-gray-100 rounded-full h-2">
-                                        <div className={`${prog.color} h-2 rounded-full`} style={{ width: `${prog.val}%` }}></div>
-                                    </div>
-                                </div>
-                            ))}
+                                )) : (
+                                    <p className="text-sm text-gray-400 text-center py-4">No programme data yet.</p>
+                                );
+                            })()}
                         </div>
                     </div>
 
@@ -185,15 +230,18 @@ const Analytics = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* App Engagement Funnel */}
                 <div className="bg-white rounded-[18px] shadow-sm border border-gray-100 p-6">
-                    <h3 className="font-bold text-lg text-gray-800 mb-6">User Funnel & Drop-off</h3>
+                    <h3 className="font-bold text-lg text-gray-800 mb-6">User Funnel &amp; Drop-off</h3>
                     <div className="space-y-5">
+                        {/* App Downloads — not tracked server-side */}
                         <div className="relative">
                             <div className="flex justify-between text-sm mb-1 z-10 relative">
                                 <span className="font-bold text-gray-700">App Downloads</span>
-                                <span className="font-bold text-gray-900">45,210</span>
+                                <span className="font-bold text-gray-400 italic text-xs">Not tracked in-app</span>
                             </div>
-                            <div className="w-full bg-blue-50 h-8 rounded-lg flex items-center overflow-hidden border border-blue-100">
-                                <div className="bg-blue-500 h-full w-[100%]"></div>
+                            <div className="w-full bg-gray-100 h-8 rounded-lg flex items-center overflow-hidden border border-gray-200">
+                                <div className="bg-gray-300 h-full w-full flex items-center justify-center">
+                                    <span className="text-xs text-gray-500 font-medium">Connect app store analytics to see downloads</span>
+                                </div>
                             </div>
                         </div>
                         <div className="relative pl-4">
@@ -203,24 +251,28 @@ const Analytics = () => {
                                     <div className="w-4 h-px bg-gray-300 -ml-4"></div>
                                     Account Creation
                                 </span>
-                                <span className="font-bold text-gray-900">32,805 <span className="text-xs text-gray-400 font-normal">(72%)</span></span>
+                                <span className="font-bold text-gray-900">{(analyticsData?.funnel?.accountCreation ?? 0).toLocaleString()}</span>
                             </div>
                             <div className="w-full bg-indigo-50 h-8 rounded-lg flex items-center overflow-hidden border border-indigo-100">
-                                <div className="bg-indigo-500 h-full w-[72%]"></div>
+                                <div className="bg-indigo-500 h-full w-full"></div>
                             </div>
                         </div>
                         <div className="relative pl-8">
-                            <div className="absolute left-0 top-0 bottom-0 w-px bg-gray-200 hidden"></div>
                             <div className="absolute left-4 top-0 bottom-0 w-px bg-gray-200"></div>
                             <div className="flex justify-between text-sm mb-1 z-10 relative">
                                 <span className="font-bold text-gray-700 flex items-center gap-2">
                                     <div className="w-4 h-px bg-gray-300 -ml-4"></div>
                                     Completed Assessment
                                 </span>
-                                <span className="font-bold text-gray-900">18,500 <span className="text-xs text-gray-400 font-normal">(56%)</span></span>
+                                <span className="font-bold text-gray-900">
+                                    {(analyticsData?.funnel?.completedAssessment ?? 0).toLocaleString()}&nbsp;
+                                    <span className="text-xs text-gray-400 font-normal">
+                                        ({Math.round(((analyticsData?.funnel?.completedAssessment ?? 0) / ((analyticsData?.funnel?.accountCreation || 1))) * 100)}%)
+                                    </span>
+                                </span>
                             </div>
                             <div className="w-full bg-purple-50 h-8 rounded-lg flex items-center overflow-hidden border border-purple-100">
-                                <div className="bg-purple-500 h-full w-[56%]"></div>
+                                <div className="bg-purple-500 h-full" style={{ width: `${Math.round(((analyticsData?.funnel?.completedAssessment ?? 0) / (analyticsData?.funnel?.accountCreation || 1)) * 100)}%` }}></div>
                             </div>
                         </div>
                         <div className="relative pl-12">
@@ -230,10 +282,15 @@ const Analytics = () => {
                                     <div className="w-4 h-px bg-gray-300 -ml-4"></div>
                                     Started Programme
                                 </span>
-                                <span className="font-bold text-gray-900">12,543 <span className="text-xs text-gray-400 font-normal">(67%)</span></span>
+                                <span className="font-bold text-gray-900">
+                                    {(analyticsData?.funnel?.startedProgramme ?? 0).toLocaleString()}&nbsp;
+                                    <span className="text-xs text-gray-400 font-normal">
+                                        ({Math.round(((analyticsData?.funnel?.startedProgramme ?? 0) / (analyticsData?.funnel?.completedAssessment || 1)) * 100)}%)
+                                    </span>
+                                </span>
                             </div>
                             <div className="w-full bg-emerald-50 h-8 rounded-lg flex items-center overflow-hidden border border-emerald-100">
-                                <div className="bg-emerald-500 h-full w-[67%]"></div>
+                                <div className="bg-emerald-500 h-full" style={{ width: `${Math.round(((analyticsData?.funnel?.startedProgramme ?? 0) / (analyticsData?.funnel?.completedAssessment || 1)) * 100)}%` }}></div>
                             </div>
                         </div>
                     </div>

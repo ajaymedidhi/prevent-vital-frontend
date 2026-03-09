@@ -1,30 +1,38 @@
 // ══════════════════════════════════════════════════════════════════════════════
 // SuperAdmin.jsx
 // ══════════════════════════════════════════════════════════════════════════════
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Zap, Plus, Building2, Users, CreditCard, TrendingUp, Search, Edit2, Eye, Power, ChevronDown } from 'lucide-react'
 import { Badge, Modal, SectionHeader, PlanBadge, Avatar, SearchInput } from '../../admin-shared/components/ui'
 import { useAuthStore, useUIStore } from '../../admin-shared/store'
+import superAdminApi from '../../admin-shared/services/superAdminApi'
+import { useSelector } from 'react-redux'
 
-const ORGS = [
-  { id: 1, name: 'Infosys Limited', display: 'Infosys', plan: 'enterprise', seats: 500, seatsUsed: 347, status: 'active', renewal: 'Jan 1, 2027', industry: 'IT/Software', admin: 'admin@infosys.com', revenue: '₹1,59,300', colour: '#007CC3' },
-  { id: 2, name: 'Wipro Technologies', display: 'Wipro', plan: 'growth', seats: 200, seatsUsed: 156, status: 'active', renewal: 'Mar 15, 2027', industry: 'IT/Software', admin: 'hr@wipro.com', revenue: '₹55,200', colour: '#221F63' },
-  { id: 3, name: 'Apollo Hospitals', display: 'Apollo', plan: 'enterprise', seats: 300, seatsUsed: 189, status: 'active', renewal: 'Jun 1, 2027', industry: 'Healthcare', admin: 'wellness@apollo.com', revenue: '₹95,400', colour: '#00529B' },
-  { id: 4, name: 'HDFC Bank', display: 'HDFC', plan: 'growth', seats: 150, seatsUsed: 82, status: 'trial', renewal: 'Apr 1, 2026', industry: 'BFSI', admin: 'hr@hdfcbank.com', revenue: 'Trial', colour: '#004C8F' },
-  { id: 5, name: 'Sun Pharma', display: 'Sun Pharma', plan: 'starter', seats: 50, seatsUsed: 38, status: 'active', renewal: 'Aug 30, 2026', industry: 'Pharma', admin: 'admin@sunpharma.com', revenue: '₹14,160', colour: '#FF6600' },
-  { id: 6, name: 'Mahindra Group', display: 'Mahindra', plan: 'enterprise', seats: 400, seatsUsed: 212, status: 'suspended', renewal: 'Dec 31, 2025', industry: 'Manufacturing', admin: 'hr@mahindra.com', revenue: 'Suspended', colour: '#E03A00' },
-]
-
-function CreateOrgModal({ open, onClose }) {
+function CreateOrgModal({ open, onClose, onSuccess }) {
   const { toast } = useUIStore()
   const [form, setForm] = useState({ name: '', displayName: '', slug: '', plan: 'growth', seats: 100, adminName: '', adminEmail: '', adminMobile: '', brandColor: '#3B7BF8' })
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true)
+      await superAdminApi.post('/tenants', form)
+      toast('Organisation created! Welcome email sent to admin.', 'success')
+      if (onSuccess) onSuccess()
+      onClose()
+    } catch (err) {
+      toast(err.message || 'Failed to create organisation', 'error')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <Modal open={open} onClose={onClose} title="Create Organisation" maxWidth="max-w-2xl"
       footer={<>
-        <button className="btn-secondary btn" onClick={onClose}>Cancel</button>
-        <button className="btn-primary btn gap-2" onClick={() => { toast('Organisation created! Welcome email sent to admin.', 'success'); onClose() }}>
-          <Zap size={14} /> Provision Organisation
+        <button className="btn-secondary btn" onClick={onClose} disabled={loading}>Cancel</button>
+        <button className="btn-primary btn gap-2" onClick={handleSubmit} disabled={loading}>
+          <Zap size={14} /> {loading ? 'Provisioning...' : 'Provision Organisation'}
         </button>
       </>}>
       <div className="grid grid-cols-2 gap-4">
@@ -74,21 +82,44 @@ export default function SuperAdminPage() {
   const [activeTab, setActiveTab] = useState('platform') // 'platform', 'b2b', 'b2c'
   const { toast } = useUIStore()
 
-  if (!admin?.isSuperAdmin) return (
+  const [orgs, setOrgs] = useState([])
+  const [stats, setStats] = useState(null)
+  const [b2cStats, setB2cStats] = useState(null)
+
+  const fetchData = useCallback(async () => {
+    try {
+      const [tenantsRes, statsRes, b2cRes] = await Promise.all([
+        superAdminApi.get('/tenants'),
+        superAdminApi.get('/stats'),
+        superAdminApi.get('/b2c-stats')
+      ])
+      setOrgs(tenantsRes.data?.tenants || [])
+      setStats(statsRes.data || null)
+      setB2cStats(b2cRes.data || null)
+    } catch (err) {
+      toast('Failed to load dashboard data', 'error')
+    }
+  }, [toast])
+
+  useEffect(() => {
+    if (admin?.role === 'super_admin') {
+      fetchData()
+    }
+  }, [admin, fetchData])
+
+  if (admin?.role !== 'super_admin') return (
     <div className="flex items-center justify-center h-96 flex-col gap-4">
       <div className="w-16 h-16 rounded-2xl bg-amber-100 flex items-center justify-center"><Zap size={28} className="text-amber-600" /></div>
       <h2 className="font-display text-xl text-slate-800">Super Admin Access Required</h2>
-      <p className="text-sm text-slate-500">This section is restricted to gruentzig.ai platform administrators.</p>
+      <p className="text-sm text-slate-500">This section is restricted to platform administrators.</p>
     </div>
   )
 
-  const filtered = ORGS.filter(o => {
-    if (search && !o.name.toLowerCase().includes(search.toLowerCase()) && !o.display.toLowerCase().includes(search.toLowerCase())) return false
+  const filtered = orgs.filter(o => {
+    if (search && !o.name?.toLowerCase().includes(search.toLowerCase())) return false
     if (statusFilter !== 'all' && o.status !== statusFilter) return false
     return true
   })
-
-  const totalRevenue = ORGS.filter(o => o.status === 'active').reduce((sum, o) => sum + (parseFloat(o.revenue.replace(/[₹,]/g, '')) || 0), 0)
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -130,10 +161,10 @@ export default function SuperAdminPage() {
           {/* Platform stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { label: 'Total Organisations', value: 6, icon: '🏢', color: 'text-blue-600' },
-              { label: 'Active Organisations', value: 4, icon: '✅', color: 'text-emerald-600' },
-              { label: 'Total Staff Enrolled', value: '1,024', icon: '👥', color: 'text-purple-600' },
-              { label: 'Est. Annual Revenue', value: `₹${Math.round(totalRevenue / 1000)}k+`, icon: '💰', color: 'text-amber-600' },
+              { label: 'Total Organisations', value: orgs.length, icon: '🏢', color: 'text-blue-600' },
+              { label: 'Active Organisations', value: orgs.filter(o => o.status === 'active').length, icon: '✅', color: 'text-emerald-600' },
+              { label: 'Total Platform Users', value: stats?.users?.total || 0, icon: '👥', color: 'text-purple-600' },
+              { label: 'Platform Monthly Revenue', value: `₹${Math.round((stats?.revenue?.month || 0) / 1000)}k+`, icon: '💰', color: 'text-amber-600' },
             ].map(s => (
               <div key={s.label} className="card p-5">
                 <div className="text-2xl mb-2">{s.icon}</div>
@@ -167,50 +198,54 @@ export default function SuperAdminPage() {
                   <th>Seat Usage</th>
                   <th>Status</th>
                   <th>Renewal</th>
-                  <th>Industry</th>
-                  <th>Revenue</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.map(o => (
-                  <tr key={o.id}>
-                    <td>
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style={{ background: o.colour }}>
-                          {o.display[0]}
+                {filtered.map(o => {
+                  const brandColor = o.branding?.primaryColor || '#007CC3'
+                  const display = o.name
+                  const seatsUsed = o.usersCount || 0
+                  const seats = o.maxUsers || 100
+                  const renewalDate = o.contractEnd ? new Date(o.contractEnd).toLocaleDateString() : 'N/A'
+
+                  return (
+                    <tr key={o._id}>
+                      <td>
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style={{ background: brandColor }}>
+                            {display?.[0]?.toUpperCase() || 'O'}
+                          </div>
+                          <div>
+                            <div className="font-semibold text-slate-800 text-sm">{display}</div>
+                            <div className="text-xs text-slate-400">{o.adminEmail}</div>
+                          </div>
                         </div>
-                        <div>
-                          <div className="font-semibold text-slate-800 text-sm">{o.display}</div>
-                          <div className="text-xs text-slate-400">{o.admin}</div>
+                      </td>
+                      <td><PlanBadge plan={o.subscriptionPlan || 'starter'} /></td>
+                      <td>
+                        <div className="text-xs mb-1">{seatsUsed}/{seats} <span className="text-slate-400">({Math.round((seatsUsed / seats) * 100)}%)</span></div>
+                        <div className="h-1.5 w-24 bg-slate-100 rounded-full overflow-hidden">
+                          <div className="h-full rounded-full bg-blue-500" style={{ width: `${Math.min((seatsUsed / seats) * 100, 100)}%` }} />
                         </div>
-                      </div>
-                    </td>
-                    <td><PlanBadge plan={o.plan} /></td>
-                    <td>
-                      <div className="text-xs mb-1">{o.seatsUsed}/{o.seats} <span className="text-slate-400">({Math.round((o.seatsUsed / o.seats) * 100)}%)</span></div>
-                      <div className="h-1.5 w-24 bg-slate-100 rounded-full overflow-hidden">
-                        <div className="h-full rounded-full bg-blue-500" style={{ width: `${(o.seatsUsed / o.seats) * 100}%` }} />
-                      </div>
-                    </td>
-                    <td>
-                      <span className={`badge ${o.status === 'active' ? 'badge-green' : o.status === 'trial' ? 'badge-orange' : 'badge-red'}`}>{o.status}</span>
-                    </td>
-                    <td className="text-xs text-slate-500">{o.renewal}</td>
-                    <td className="text-xs text-slate-600">{o.industry}</td>
-                    <td className="text-sm font-semibold text-slate-800">{o.revenue}</td>
-                    <td>
-                      <div className="flex gap-1">
-                        <button onClick={() => toast(`Viewing ${o.display}`, 'info')} className="btn btn-sm btn-ghost btn-icon" title="View">
-                          <Eye size={13} />
-                        </button>
-                        <button onClick={() => toast(`Editing ${o.display}`, 'info')} className="btn btn-sm btn-ghost btn-icon" title="Edit">
-                          <Edit2 size={13} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td>
+                        <span className={`badge ${o.status === 'active' ? 'badge-green' : o.status === 'trial' ? 'badge-orange' : 'badge-red'}`}>{o.status}</span>
+                      </td>
+                      <td className="text-xs text-slate-500">{renewalDate}</td>
+                      <td>
+                        <div className="flex gap-1">
+                          <button onClick={() => toast(`Viewing ${display}`, 'info')} className="btn btn-sm btn-ghost btn-icon" title="View">
+                            <Eye size={13} />
+                          </button>
+                          <button onClick={() => toast(`Editing ${display}`, 'info')} className="btn btn-sm btn-ghost btn-icon" title="Edit">
+                            <Edit2 size={13} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
@@ -223,23 +258,23 @@ export default function SuperAdminPage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="card p-5">
               <div className="text-2xl mb-2">📱</div>
-              <div className="font-display text-3xl text-blue-600">45.2k</div>
+              <div className="font-display text-3xl text-blue-600">{b2cStats?.totalB2CUsers || 0}</div>
               <div className="text-xs text-slate-500 mt-0.5">Total Registered Consumers</div>
             </div>
             <div className="card p-5">
               <div className="text-2xl mb-2">🔥</div>
-              <div className="font-display text-3xl text-emerald-600">12.5k</div>
+              <div className="font-display text-3xl text-emerald-600">{b2cStats?.activeSubscriptions || 0}</div>
               <div className="text-xs text-slate-500 mt-0.5">Active App Subscriptions</div>
             </div>
             <div className="card p-5">
               <div className="text-2xl mb-2">🏃</div>
-              <div className="font-display text-3xl text-purple-600">8.1k</div>
+              <div className="font-display text-3xl text-purple-600">{b2cStats?.dailyActiveUsers || 0}</div>
               <div className="text-xs text-slate-500 mt-0.5">Daily Active Users</div>
             </div>
             <div className="card p-5">
               <div className="text-2xl mb-2">💳</div>
-              <div className="font-display text-3xl text-amber-600">₹8.5L+</div>
-              <div className="text-xs text-slate-500 mt-0.5">B2C MRR</div>
+              <div className="font-display text-3xl text-amber-600">₹{b2cStats?.b2cRevenue || 0}</div>
+              <div className="text-xs text-slate-500 mt-0.5">B2C Total Revenue</div>
             </div>
           </div>
 
@@ -255,7 +290,7 @@ export default function SuperAdminPage() {
         </div>
       )}
 
-      <CreateOrgModal open={createOpen} onClose={() => setCreateOpen(false)} />
+      <CreateOrgModal open={createOpen} onClose={() => setCreateOpen(false)} onSuccess={fetchData} />
     </div >
   )
 }

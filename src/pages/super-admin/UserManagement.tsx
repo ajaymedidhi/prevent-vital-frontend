@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
 import { User } from '../../types/auth';
 import { Modal } from '../../admin-shared/components/ui';
 import { Users, Shield, UserPlus, Search, Filter, MoreVertical, Edit2, Ban, CheckCircle } from 'lucide-react';
+import superAdminApi from '../../admin-shared/services/superAdminApi';
+import toast from 'react-hot-toast';
 
 const UserManagement = () => {
-    const { token } = useSelector((state: RootState) => state.auth);
     const [users, setUsers] = useState<(User & { _id: string, createdAt: string })[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -24,13 +22,12 @@ const UserManagement = () => {
 
     const fetchUsers = async () => {
         try {
-            const res = await axios.get('/api/admin/users', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setUsers(res.data.data.users);
+            const res = await superAdminApi.get('/users');
+            setUsers(res.data?.users || res.data?.data?.users || []);
             setLoading(false);
         } catch (err) {
             console.error(err);
+            toast.error("Failed to load staff list");
             setLoading(false);
         }
     };
@@ -40,26 +37,24 @@ const UserManagement = () => {
         if (!window.confirm(`Are you sure you want to change status to ${newStatus}?`)) return;
 
         try {
-            await axios.patch(`/api/admin/users/${id}/suspend`, { status: newStatus }, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await superAdminApi.patch(`/users/${id}/suspend`, { status: newStatus });
             fetchUsers();
+            toast.success(`User successfully ${newStatus}`);
         } catch (err) {
-            alert('Error updating user status');
+            toast.error('Error updating user status');
         }
     };
 
     const handleCreateUser = async () => {
         try {
-            await axios.post('/api/admin/users', newUserData, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await superAdminApi.post('/users', newUserData);
             fetchUsers();
             setIsAddingUser(false);
             setNewUserData({ name: '', email: '', password: '', role: 'admin' });
+            toast.success('Successfully provisioned new administrator');
         } catch (err) {
             console.error('Error creating user', err);
-            alert('Error creating user. Check console.');
+            toast.error('Error creating user');
         }
     };
 

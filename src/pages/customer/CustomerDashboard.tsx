@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import {
     HeartPulse, PlayCircle, ShieldCheck, ChevronRight, Activity,
     TrendingUp, Home, ShoppingBag, Settings, Star, Zap,
-    LogOut, User, Bell, Search, Plus, Play, Info
+    LogOut, User, Bell, Search, Plus, Play, Info, Lock,
+    Clock, BookOpen, Crown, Loader2, Filter
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
@@ -26,14 +27,42 @@ const CustomerDashboard = () => {
 
     const [selectedVideo, setSelectedVideo] = useState<any>(null);
     const [isVitalsModalOpen, setIsVitalsModalOpen] = useState(false);
-    const [vitalForm, setVitalForm] = useState({
+
+    // Programs state
+    const [livePrograms, setLivePrograms] = useState<any[]>([]);
+    const [programsLoading, setProgramsLoading] = useState(false);
+    const [progSearch, setProgSearch] = useState('');
+    const [progCat, setProgCat] = useState('all');
+    const [selectedProgram, setSelectedProgram] = useState<any>(null);
+    const [enrolling, setEnrolling] = useState<string | null>(null);
+    const [activeProgram, setActiveProgram] = useState<any>(null);
+    const [activeSession, setActiveSession] = useState(0);
+    const [completedSessions, setCompletedSessions] = useState<number[]>([]);
+
+    const userPlan = (user as any)?.subscription?.plan || 'free';
+
+    const PLAN_COLORS: Record<string, string> = {
+        free: 'bg-gray-100 text-gray-600',
+        silver: 'bg-blue-100 text-blue-700',
+        gold: 'bg-amber-100 text-amber-700',
+        platinum: 'bg-purple-100 text-purple-700'
+    };
+
+    const CAT_EMOJI: Record<string, string> = {
+        hypertension: '🫀', diabetes: '🩸', cardiac: '❤️', stress: '🧠', sleep: '😴',
+        fitness: '💪', nutrition: '🥗', metabolic: '🔬', cardiovascular: '🫁',
+        respiratory: '🌬️', mental: '🧘', musculoskeletal: '🦴', preventive: '🛡️',
+    };
+
+    const vitalForm_init = {
         bloodPressureSys: '',
         bloodPressureDia: '',
         heartRate: '',
         glucose: '',
         spo2: '',
         weight: ''
-    });
+    };
+    const [vitalForm, setVitalForm] = useState(vitalForm_init);
 
     const handleVitalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setVitalForm({ ...vitalForm, [e.target.name]: e.target.value });
@@ -101,41 +130,119 @@ const CustomerDashboard = () => {
         fetchProfile();
     }, [dispatch]);
 
-    const sampleVideos = [
+    // Fetch programmes from API
+    useEffect(() => {
+        if (activeTab === 'programs' || activeTab === 'home') {
+            const fetchPrograms = async () => {
+                setProgramsLoading(true);
+                try {
+                    const token = localStorage.getItem('token');
+                    const headers: any = {};
+                    if (token) headers.Authorization = `Bearer ${token}`;
+                    const res = await axios.get('/api/programs?limit=50', { headers });
+                    setLivePrograms(res.data?.data?.programs || []);
+                } catch (err) {
+                    console.error('Failed to fetch programs', err);
+                }
+                setProgramsLoading(false);
+            };
+            fetchPrograms();
+        }
+    }, [activeTab]);
+
+    const handleEnroll = async (programId: string) => {
+        setEnrolling(programId);
+        try {
+            const token = localStorage.getItem('token');
+            const res = await axios.post(`/api/programs/${programId}/enroll`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            // Refresh programs to update enrollment status
+            const refreshRes = await axios.get('/api/programs?limit=50', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setLivePrograms(refreshRes.data?.data?.programs || []);
+        } catch (err: any) {
+            console.error('Enrollment failed', err);
+        }
+        setEnrolling(null);
+    };
+
+    // ── Recommended Programs with YouTube Sessions (Demo for investors) ──
+    const recommendedPrograms = [
         {
-            id: 1,
-            title: "Morning Mobility Routine",
-            duration: "10 min",
-            category: "Yoga",
-            thumbnail: "https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=2070&auto=format&fit=crop",
-            type: 'youtube',
-            videoId: "klmBssEYkdU"
+            id: 'rp-1',
+            title: 'Guided Meditation',
+            category: 'Mindfulness',
+            emoji: '🧘',
+            color: 'from-purple-500 to-indigo-600',
+            bgLight: 'bg-purple-50',
+            textColor: 'text-purple-600',
+            description: 'Calm your mind with guided meditation sessions for stress relief and mental clarity.',
+            duration: '4 weeks',
+            difficulty: 'Beginner',
+            sessions: [
+                { title: '10-Minute Morning Meditation', duration: '10 min', videoId: 'inpok4MKVLM', thumbnail: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&auto=format&fit=crop' },
+                { title: 'Deep Sleep Meditation', duration: '20 min', videoId: 'aEqlQvczMJQ', thumbnail: 'https://images.unsplash.com/photo-1515894203077-9cd36032142f?w=400&auto=format&fit=crop' },
+                { title: 'Stress Relief Body Scan', duration: '15 min', videoId: 'MIr3RsUWrdo', thumbnail: 'https://images.unsplash.com/photo-1544367563-eab5cbaf1dfe?w=400&auto=format&fit=crop' },
+            ]
         },
         {
-            id: 2,
-            title: "How the Heart Actually Pumps",
-            duration: "5 min",
-            category: "Education",
-            thumbnail: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop",
-            type: 'youtube',
-            videoId: "H04d3rJCLCE"
+            id: 'rp-2',
+            title: 'Pranayam Breathing',
+            category: 'Breathing',
+            emoji: '🌬️',
+            color: 'from-teal-500 to-cyan-600',
+            bgLight: 'bg-teal-50',
+            textColor: 'text-teal-600',
+            description: 'Ancient breathing techniques to boost oxygen levels, reduce anxiety, and improve lung function.',
+            duration: '3 weeks',
+            difficulty: 'Beginner',
+            sessions: [
+                { title: 'Anulom Vilom for Beginners', duration: '12 min', videoId: '8VwufJrUhic', thumbnail: 'https://images.unsplash.com/photo-1593811167562-9cef47bfc4d7?w=400&auto=format&fit=crop' },
+                { title: 'Kapalbhati Pranayam', duration: '10 min', videoId: 'DcUjhJTmHbg', thumbnail: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400&auto=format&fit=crop' },
+                { title: 'Bhramari (Bee Breath)', duration: '8 min', videoId: 'hJD0uFnylQo', thumbnail: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&auto=format&fit=crop' },
+            ]
         },
         {
-            id: 3,
-            title: "Stress Relief Meditation",
-            duration: "15 min",
-            category: "Mindfulness",
-            thumbnail: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1999&auto=format&fit=crop",
-            type: 'youtube',
-            videoId: "SlhBgt2deyk"
+            id: 'rp-3',
+            title: 'Morning Exercise',
+            category: 'Fitness',
+            emoji: '💪',
+            color: 'from-orange-500 to-red-500',
+            bgLight: 'bg-orange-50',
+            textColor: 'text-orange-600',
+            description: 'Start your day with energizing workouts that improve cardiovascular health and build strength.',
+            duration: '6 weeks',
+            difficulty: 'Intermediate',
+            sessions: [
+                { title: '15-Min Full Body Workout', duration: '15 min', videoId: 'UBMk30rjy0o', thumbnail: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&auto=format&fit=crop' },
+                { title: 'Cardio HIIT for Heart Health', duration: '20 min', videoId: 'ml6cT4AZdqI', thumbnail: 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?w=400&auto=format&fit=crop' },
+                { title: 'Core Strength for Beginners', duration: '12 min', videoId: 'AnYl6Nmu9Qo', thumbnail: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&auto=format&fit=crop' },
+            ]
+        },
+        {
+            id: 'rp-4',
+            title: 'Yoga for Health',
+            category: 'Yoga',
+            emoji: '🧎',
+            color: 'from-emerald-500 to-green-600',
+            bgLight: 'bg-emerald-50',
+            textColor: 'text-emerald-600',
+            description: 'Holistic yoga practices combining asanas with breathing to improve flexibility and inner peace.',
+            duration: '8 weeks',
+            difficulty: 'All Levels',
+            sessions: [
+                { title: 'Sun Salutation (Surya Namaskar)', duration: '15 min', videoId: 'klmBssEYkdU', thumbnail: 'https://images.unsplash.com/photo-1544367563-12123d8965cd?w=400&auto=format&fit=crop' },
+                { title: 'Yoga for Back Pain Relief', duration: '20 min', videoId: 'XeXz8fIZDCE', thumbnail: 'https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=400&auto=format&fit=crop' },
+                { title: 'Evening Relaxation Yoga', duration: '18 min', videoId: 'COp7BR_Dvps', thumbnail: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&auto=format&fit=crop' },
+            ]
         },
     ];
 
-    const programs = [
-        { id: 1, title: 'Cardio Health Pro', category: 'Heart', users: '12.5k', image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80', description: 'Advanced cardiovascular strengthening.' },
-        { id: 2, title: 'Diabetes Management', category: 'Chronic', users: '8.2k', image: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&q=80', description: 'Lifestyle and nutritional control for type 2.' },
-        { id: 3, title: 'Mindfulness & Stress', category: 'Mental', users: '24k', image: 'https://images.unsplash.com/photo-1536622432212-4b6a8367b237?auto=format&fit=crop&q=80', description: 'Stress reduction through meditation.' },
-    ];
+    const [activeRecProgram, setActiveRecProgram] = useState<string | null>(null);
+
+
 
     const products = [
         { id: 1, name: 'Premium Heart Kit', price: '₹4,999', image: 'https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80' },
@@ -277,94 +384,268 @@ const CustomerDashboard = () => {
                 </Card>
             </div>
 
-            {/* Recommended Content */}
+            {/* ── Recommended Programs for You ────────────────────────── */}
             <div className="pt-4">
                 <div className="flex justify-between items-end mb-6">
                     <div>
-                        <h3 className="font-serif text-2xl font-black text-gray-900">Recommended</h3>
-                        <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mt-1">Curated for your profile</p>
+                        <h3 className="font-serif text-2xl font-black text-gray-900">Recommended Programs</h3>
+                        <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mt-1">Curated wellness sessions for you</p>
                     </div>
-                    <Button variant="ghost" className="text-blue-600 font-bold text-sm">See all <ChevronRight className="ml-1 w-4 h-4" /></Button>
+                    <Button variant="ghost" className="text-blue-600 font-bold text-sm" onClick={() => setActiveTab('programs')}>
+                        Browse All <ChevronRight className="ml-1 w-4 h-4" />
+                    </Button>
                 </div>
-                <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
-                    {sampleVideos.map((video) => (
-                        <div key={video.id} className="min-w-[260px] group cursor-pointer" onClick={() => setSelectedVideo(video)}>
-                            <div className="aspect-video rounded-[24px] overflow-hidden relative shadow-lg">
-                                <img src={video.thumbnail} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="" />
-                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all flex items-center justify-center">
-                                    <div className="w-12 h-12 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl">
-                                        <Play className="w-5 h-5 text-white fill-white" />
+
+                {/* Program Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {recommendedPrograms.map(prog => {
+                        const isExpanded = activeRecProgram === prog.id;
+                        return (
+                            <div key={prog.id} className="group">
+                                {/* Program Card */}
+                                <div
+                                    onClick={() => setActiveRecProgram(isExpanded ? null : prog.id)}
+                                    className={`rounded-[24px] overflow-hidden bg-white border shadow-sm cursor-pointer transition-all duration-300 hover:shadow-lg ${isExpanded ? 'border-blue-200 shadow-md ring-1 ring-blue-100' : 'border-gray-100'
+                                        }`}
+                                >
+                                    {/* Gradient Header */}
+                                    <div className={`bg-gradient-to-r ${prog.color} p-5 relative overflow-hidden`}>
+                                        <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full blur-xl -mr-8 -mt-8"></div>
+                                        <div className="relative z-10 flex items-center gap-3">
+                                            <span className="text-4xl">{prog.emoji}</span>
+                                            <div>
+                                                <h4 className="text-lg font-black text-white leading-tight">{prog.title}</h4>
+                                                <span className="text-white/70 text-[10px] font-bold uppercase tracking-wider">{prog.category}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Body */}
+                                    <div className="p-4">
+                                        <p className="text-xs text-gray-500 leading-relaxed mb-3">{prog.description}</p>
+                                        <div className="flex items-center gap-2 flex-wrap">
+                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${prog.bgLight} ${prog.textColor}`}>{prog.difficulty}</span>
+                                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 flex items-center gap-1">
+                                                <Clock className="w-2.5 h-2.5" /> {prog.duration}
+                                            </span>
+                                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">
+                                                {prog.sessions.length} Sessions
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center justify-between mt-3">
+                                            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">🆓 Free Access</span>
+                                            <span className={`text-[10px] font-bold ${prog.textColor} flex items-center gap-1`}>
+                                                {isExpanded ? 'Hide' : 'View'} Sessions <ChevronRight className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-lg">
-                                    {video.duration}
-                                </div>
+
+                                {/* Expandable Sessions */}
+                                {isExpanded && (
+                                    <div className="mt-3 space-y-2.5 animate-in fade-in slide-in-from-top-2 duration-300">
+                                        {prog.sessions.map((session, si) => (
+                                            <div key={si}
+                                                onClick={() => setSelectedVideo({ type: 'youtube', videoId: session.videoId, title: session.title })}
+                                                className="flex gap-3 bg-white rounded-2xl p-3 border border-gray-100 hover:border-blue-200 hover:shadow-sm cursor-pointer transition-all group/s"
+                                            >
+                                                {/* Thumbnail */}
+                                                <div className="w-28 h-20 rounded-xl overflow-hidden relative flex-shrink-0">
+                                                    <img src={session.thumbnail} className="w-full h-full object-cover group-hover/s:scale-105 transition-transform duration-500" alt="" />
+                                                    <div className="absolute inset-0 bg-black/20 group-hover/s:bg-black/40 transition-all flex items-center justify-center">
+                                                        <div className="w-8 h-8 bg-white/40 backdrop-blur-sm rounded-full flex items-center justify-center group-hover/s:scale-110 transition-transform">
+                                                            <Play className="w-3.5 h-3.5 text-white fill-white" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="absolute bottom-1.5 right-1.5 bg-black/70 backdrop-blur-sm text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
+                                                        {session.duration}
+                                                    </div>
+                                                </div>
+
+                                                {/* Info */}
+                                                <div className="flex-1 flex flex-col justify-center">
+                                                    <span className={`text-[9px] font-black uppercase tracking-widest ${prog.textColor}`}>Session {si + 1}</span>
+                                                    <h5 className="text-sm font-bold text-gray-900 mt-0.5 leading-snug">{session.title}</h5>
+                                                    <div className="flex items-center gap-2 mt-1.5">
+                                                        <span className="text-[10px] text-gray-400 flex items-center gap-1"><Play className="w-2.5 h-2.5" /> Play Now</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
-                            <div className="mt-3 px-1">
-                                <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest">{video.category}</span>
-                                <h4 className="text-sm font-bold text-gray-900 mt-1 line-clamp-1">{video.title}</h4>
-                            </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </div>
     );
 
+    const filteredPrograms = livePrograms.filter(p => {
+        if (progSearch && !p.title?.toLowerCase().includes(progSearch.toLowerCase())) return false;
+        if (progCat !== 'all' && p.category !== progCat) return false;
+        return true;
+    });
+
+    const uniqueCats = ['all', ...Array.from(new Set(livePrograms.map((p: any) => p.category).filter(Boolean)))];
+
     const renderPrograms = () => (
         <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+            {/* Header */}
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-3xl font-black text-gray-900 font-serif">Vital Programs</h1>
-                    <p className="text-xs text-blue-600 font-bold uppercase tracking-widest mt-1">Full Access Granted</p>
+                    <p className="text-xs font-bold uppercase tracking-widest mt-1 flex items-center gap-1.5">
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${PLAN_COLORS[userPlan]}`}>
+                            {userPlan === 'free' ? '🆓' : userPlan === 'platinum' ? '💎' : '⭐'} {userPlan} Plan
+                        </span>
+                    </p>
                 </div>
-                <div className="bg-emerald-100 text-emerald-700 text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-wide flex items-center gap-1.5">
-                    <Zap className="w-3 h-3 fill-emerald-700" /> All Unlocked
+                {userPlan === 'free' && (
+                    <button onClick={() => navigate('/pricing')}
+                        className="flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[11px] font-bold px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all">
+                        <Crown className="w-3.5 h-3.5" /> Upgrade Plan
+                    </button>
+                )}
+            </div>
+
+            {/* Search + Category Filter */}
+            <div className="space-y-3">
+                <div className="relative">
+                    <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input className="w-full pl-11 pr-4 py-3 bg-white rounded-2xl border border-gray-100 shadow-sm text-sm outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400"
+                        placeholder="Search programmes…" value={progSearch} onChange={e => setProgSearch(e.target.value)} />
+                </div>
+                <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+                    {uniqueCats.map(c => (
+                        <button key={c as string} onClick={() => setProgCat(c as string)}
+                            className={`px-3.5 py-1.5 rounded-full text-xs font-bold capitalize whitespace-nowrap transition-all ${progCat === c ? 'bg-blue-600 text-white shadow-sm' : 'bg-white border border-gray-200 text-gray-600 hover:border-blue-300'
+                                }`}>
+                            {(c as string) === 'all' ? '🏷️ All' : `${CAT_EMOJI[c as string] || '📋'} ${c}`}
+                        </button>
+                    ))}
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-6">
-                {programs.map((program) => (
-                    <Card key={program.id} className="rounded-[24px] border-none shadow-sm overflow-hidden bg-white group hover:shadow-xl transition-all duration-300">
-                        <div className="flex flex-col md:flex-row">
-                            <div className="w-full md:w-48 h-48 relative overflow-hidden">
-                                <img src={program.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="" />
-                                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-gray-900 text-[10px] font-black px-2 py-1 rounded-lg uppercase tracking-wider">
-                                    {program.category}
-                                </div>
-                            </div>
-                            <CardContent className="p-6 flex-1 flex flex-col justify-between">
-                                <div>
-                                    <div className="flex justify-between items-start mb-2">
-                                        <h3 className="text-xl font-black text-gray-900">{program.title}</h3>
-                                        <div className="flex items-center gap-1 text-amber-500">
-                                            <Star className="w-3 h-3 fill-amber-500" />
-                                            <span className="text-xs font-bold">4.9</span>
-                                        </div>
+            {/* Programs Grid */}
+            {programsLoading ? (
+                <div className="flex items-center justify-center py-20">
+                    <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                </div>
+            ) : filteredPrograms.length === 0 ? (
+                <div className="text-center py-16">
+                    <BookOpen className="w-12 h-12 mx-auto text-gray-300 mb-3" />
+                    <p className="text-sm text-gray-400">No programmes found.</p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 gap-5">
+                    {filteredPrograms.map((program: any) => {
+                        const isLocked = program.locked;
+                        const reqPlan = program.requiredPlan;
+
+                        return (
+                            <Card key={program._id} className={`rounded-[24px] border-none shadow-sm overflow-hidden bg-white group hover:shadow-xl transition-all duration-300 relative ${isLocked ? 'opacity-90' : ''
+                                }`}>
+                                {/* Lock overlay badge */}
+                                {isLocked && (
+                                    <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 bg-gray-900/80 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1.5 rounded-full">
+                                        <Lock className="w-3 h-3" /> {reqPlan?.charAt(0).toUpperCase() + reqPlan?.slice(1)}+ Only
                                     </div>
-                                    <p className="text-sm text-gray-500 leading-relaxed mb-4">{program.description}</p>
-                                    <div className="flex items-center gap-3 mb-6">
-                                        <div className="flex -space-x-2">
-                                            {[1, 2, 3].map(i => (
-                                                <div key={i} className="w-6 h-6 rounded-full border-2 border-white bg-gray-200"></div>
-                                            ))}
+                                )}
+
+                                <div className="flex flex-col md:flex-row">
+                                    {/* Image */}
+                                    <div className="w-full md:w-52 h-48 relative overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50">
+                                        <div className="w-full h-full flex items-center justify-center">
+                                            <span className="text-6xl">{CAT_EMOJI[program.category] || '📋'}</span>
                                         </div>
-                                        <span className="text-[10px] font-bold text-gray-400 capitalize">{program.users} Enrolled</span>
+                                        {isLocked && (
+                                            <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] flex items-center justify-center">
+                                                <Lock className="w-10 h-10 text-white/60" />
+                                            </div>
+                                        )}
+                                        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-gray-900 text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider">
+                                            {program.category}
+                                        </div>
+                                        {program.pricingType === 'free' && (
+                                            <div className="absolute bottom-3 left-3 bg-emerald-500 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase">
+                                                Free
+                                            </div>
+                                        )}
                                     </div>
+
+                                    {/* Content */}
+                                    <CardContent className="p-5 flex-1 flex flex-col justify-between">
+                                        <div>
+                                            <div className="flex justify-between items-start mb-2">
+                                                <h3 className="text-lg font-black text-gray-900 leading-tight">{program.title}</h3>
+                                                {(program.averageRating || 0) > 0 && (
+                                                    <div className="flex items-center gap-1 text-amber-500 flex-shrink-0 ml-2">
+                                                        <Star className="w-3.5 h-3.5 fill-amber-500" />
+                                                        <span className="text-xs font-bold">{program.averageRating?.toFixed(1)}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <p className="text-sm text-gray-500 leading-relaxed mb-3 line-clamp-2">{program.description}</p>
+
+                                            {/* Meta chips */}
+                                            <div className="flex items-center gap-3 text-xs text-gray-400 mb-4">
+                                                <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {program.durationWeeks}w</span>
+                                                <span className="flex items-center gap-1"><BookOpen className="w-3 h-3" /> {program.totalSessions} sessions</span>
+                                                <span className="flex items-center gap-1 capitalize text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100">{program.difficulty}</span>
+                                                {(program.enrollmentCount || 0) > 0 && (
+                                                    <span className="flex items-center gap-1">👥 {program.enrollmentCount.toLocaleString()}</span>
+                                                )}
+                                            </div>
+
+                                            {/* Plan access badges */}
+                                            <div className="flex flex-wrap gap-1 mb-3">
+                                                {(program.accessiblePlans || []).map((plan: string) => (
+                                                    <span key={plan} className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded-full ${PLAN_COLORS[plan] || 'bg-gray-100 text-gray-500'}`}>
+                                                        {plan}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Action buttons */}
+                                        <div className="flex gap-3">
+                                            {isLocked ? (
+                                                <Button onClick={() => navigate('/pricing')}
+                                                    className="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl font-bold py-5 text-white">
+                                                    <Crown className="w-4 h-4 mr-2" /> Upgrade to {reqPlan?.charAt(0).toUpperCase() + reqPlan?.slice(1)}
+                                                </Button>
+                                            ) : program.enrollmentRequired && program.enrollmentStatus === 'not_enrolled' ? (
+                                                <Button
+                                                    disabled={enrolling === program._id}
+                                                    onClick={() => handleEnroll(program._id)}
+                                                    className="flex-1 bg-indigo-600 hover:bg-indigo-700 rounded-xl font-bold py-5 text-white">
+                                                    {enrolling === program._id ? (
+                                                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                                    ) : (
+                                                        <Plus className="w-4 h-4 mr-2" />
+                                                    )}
+                                                    Enroll Now
+                                                </Button>
+                                            ) : (
+                                                <Button className="flex-1 bg-blue-600 rounded-xl font-bold py-5"
+                                                    onClick={() => { setActiveProgram(program); setActiveSession(0); setCompletedSessions([]); }}>
+                                                    <PlayCircle className="w-4 h-4 mr-2" /> {program.enrollmentStatus === 'active' ? 'Continue' : 'Start Program'}
+                                                </Button>
+                                            )}
+                                            <Button variant="outline" className="rounded-xl border-gray-200 text-gray-400 hover:text-blue-600"
+                                                onClick={() => setSelectedProgram(program)}>
+                                                <Info className="w-5 h-5" />
+                                            </Button>
+                                        </div>
+                                    </CardContent>
                                 </div>
-                                <div className="flex gap-3">
-                                    <Button className="flex-1 bg-blue-600 rounded-xl font-bold py-5">
-                                        <PlayCircle className="w-4 h-4 mr-2" /> Start Program
-                                    </Button>
-                                    <Button variant="outline" className="rounded-xl border-gray-200 text-gray-400 hover:text-blue-600">
-                                        <Info className="w-5 h-5" />
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </div>
-                    </Card>
-                ))}
-            </div>
+                            </Card>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 
@@ -465,14 +746,246 @@ const CustomerDashboard = () => {
         </div>
     );
 
+    // ── Programme Execution View ──────────────────────────────────────
+    const generateSessions = (count: number) => {
+        return Array.from({ length: count }, (_, i) => ({
+            id: i,
+            title: `Session ${i + 1}`,
+            subtitle: i === 0 ? 'Getting Started' : i < 3 ? 'Foundation Building' : i < count - 2 ? 'Deep Practice' : 'Mastery & Review',
+            modules: [
+                { type: 'video', title: 'Introduction & Overview', duration: '8 min', icon: '🎬', content: 'Video content will be available when cloud integration is complete. This module covers key concepts and theory.' },
+                { type: 'exercise', title: 'Guided Practice', duration: '15 min', icon: '🏃', content: 'Follow along with the guided exercises. Track your vitals before and after for best results.' },
+                { type: 'quiz', title: 'Knowledge Check', duration: '5 min', icon: '✅', content: 'Test your understanding with a quick assessment. Score 80% or higher to unlock the next session.' },
+            ]
+        }));
+    };
+
+    const renderProgramPlayer = () => {
+        if (!activeProgram) return null;
+        const sessions = generateSessions(activeProgram.totalSessions || 8);
+        const current = sessions[activeSession] || sessions[0];
+        const progress = Math.round(((completedSessions.length) / sessions.length) * 100);
+
+        return (
+            <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-24">
+                {/* Hero */}
+                <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-[28px] p-7 shadow-xl text-white">
+                    <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
+                    <div className="absolute bottom-0 left-1/4 w-32 h-32 bg-purple-500/20 rounded-full blur-2xl"></div>
+                    <div className="relative z-10">
+                        <button onClick={() => setActiveProgram(null)} className="flex items-center gap-1.5 text-white/70 hover:text-white text-xs font-bold mb-4 transition-colors">
+                            <ChevronRight className="w-3.5 h-3.5 rotate-180" /> Back to Programs
+                        </button>
+                        <div className="flex items-center gap-4">
+                            <span className="text-5xl">{CAT_EMOJI[activeProgram.category] || '📋'}</span>
+                            <div>
+                                <h1 className="text-2xl font-black leading-tight">{activeProgram.title}</h1>
+                                <p className="text-blue-100 text-xs mt-1 opacity-80">{activeProgram.category} • {activeProgram.difficulty} • {activeProgram.durationWeeks} weeks</p>
+                            </div>
+                        </div>
+                        {/* Progress Bar */}
+                        <div className="mt-6">
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-[10px] font-bold text-blue-200 uppercase tracking-wider">Overall Progress</span>
+                                <span className="text-sm font-black">{progress}%</span>
+                            </div>
+                            <div className="h-2.5 bg-white/20 rounded-full overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-emerald-400 to-green-300 rounded-full transition-all duration-700 ease-out"
+                                    style={{ width: `${progress}%` }}></div>
+                            </div>
+                            <p className="text-[10px] text-blue-200 mt-1.5">{completedSessions.length} of {sessions.length} sessions completed</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    {/* Session Sidebar */}
+                    <div className="lg:col-span-1">
+                        <h3 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-3">Sessions</h3>
+                        <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1 no-scrollbar">
+                            {sessions.map((session, idx) => {
+                                const isCompleted = completedSessions.includes(idx);
+                                const isCurrent = idx === activeSession;
+                                const isLocked = idx > completedSessions.length && idx !== 0;
+
+                                return (
+                                    <button key={idx}
+                                        onClick={() => !isLocked && setActiveSession(idx)}
+                                        disabled={isLocked}
+                                        className={`w-full text-left p-3.5 rounded-2xl border transition-all duration-200 ${isCurrent ? 'bg-blue-50 border-blue-200 shadow-sm ring-1 ring-blue-100' :
+                                            isCompleted ? 'bg-emerald-50/60 border-emerald-100' :
+                                                isLocked ? 'bg-gray-50 border-gray-100 opacity-50 cursor-not-allowed' :
+                                                    'bg-white border-gray-100 hover:border-blue-200 hover:shadow-sm'
+                                            }`}>
+                                        <div className="flex items-center gap-3">
+                                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black flex-shrink-0 ${isCurrent ? 'bg-blue-600 text-white' :
+                                                isCompleted ? 'bg-emerald-500 text-white' :
+                                                    isLocked ? 'bg-gray-200 text-gray-400' :
+                                                        'bg-gray-100 text-gray-600'
+                                                }`}>
+                                                {isCompleted ? '✓' : isLocked ? <Lock className="w-3.5 h-3.5" /> : idx + 1}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <p className={`text-sm font-bold truncate ${isCurrent ? 'text-blue-700' : isCompleted ? 'text-emerald-700' : 'text-gray-700'}`}>
+                                                    {session.title}
+                                                </p>
+                                                <p className="text-[10px] text-gray-400">{session.subtitle}</p>
+                                            </div>
+                                            {isCurrent && (
+                                                <span className="px-2 py-0.5 bg-blue-600 text-white text-[9px] font-bold rounded-full uppercase animate-pulse">Live</span>
+                                            )}
+                                        </div>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    {/* Main Content Area */}
+                    <div className="lg:col-span-2 space-y-5">
+                        {/* Current Session Header */}
+                        <Card className="rounded-[22px] border-gray-100 shadow-sm bg-white overflow-hidden">
+                            <CardContent className="p-6">
+                                <div className="flex items-center justify-between mb-4">
+                                    <div>
+                                        <h2 className="text-xl font-black text-gray-900">{current.title}</h2>
+                                        <p className="text-xs text-gray-400 mt-0.5">{current.subtitle}</p>
+                                    </div>
+                                    <span className={`text-[10px] font-black px-3 py-1 rounded-full uppercase ${completedSessions.includes(activeSession) ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'
+                                        }`}>
+                                        {completedSessions.includes(activeSession) ? '✓ Completed' : '● In Progress'}
+                                    </span>
+                                </div>
+
+                                {/* Modules */}
+                                <div className="space-y-3">
+                                    {current.modules.map((module, mi) => (
+                                        <div key={mi} className="group bg-gray-50 hover:bg-white rounded-2xl p-4 border border-gray-100 hover:border-blue-200 hover:shadow-sm transition-all cursor-pointer">
+                                            <div className="flex items-start gap-3">
+                                                <span className="text-2xl flex-shrink-0 mt-0.5">{module.icon}</span>
+                                                <div className="flex-1">
+                                                    <div className="flex items-center justify-between">
+                                                        <h4 className="text-sm font-bold text-gray-900">{module.title}</h4>
+                                                        <span className="text-[10px] text-gray-400 font-bold flex items-center gap-1">
+                                                            <Clock className="w-3 h-3" /> {module.duration}
+                                                        </span>
+                                                    </div>
+                                                    <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">{module.content}</p>
+
+                                                    {/* Placeholder Action */}
+                                                    <div className="mt-3 flex items-center gap-2">
+                                                        {module.type === 'video' && (
+                                                            <div className="flex items-center gap-2 bg-blue-50 text-blue-600 text-[10px] font-bold px-3 py-1.5 rounded-lg">
+                                                                <Play className="w-3 h-3" /> Video Coming Soon
+                                                            </div>
+                                                        )}
+                                                        {module.type === 'exercise' && (
+                                                            <div className="flex items-center gap-2 bg-amber-50 text-amber-600 text-[10px] font-bold px-3 py-1.5 rounded-lg">
+                                                                <Activity className="w-3 h-3" /> Interactive Exercise
+                                                            </div>
+                                                        )}
+                                                        {module.type === 'quiz' && (
+                                                            <div className="flex items-center gap-2 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-3 py-1.5 rounded-lg">
+                                                                <ShieldCheck className="w-3 h-3" /> Assessment Ready
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Daily Health Tips */}
+                        <Card className="rounded-[22px] border-gray-100 shadow-sm bg-white">
+                            <CardContent className="p-6">
+                                <h3 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-4">💡 Today's Health Tips</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    {[
+                                        { emoji: '💧', tip: 'Stay hydrated — drink 8 glasses of water throughout the day', color: 'bg-blue-50 border-blue-100' },
+                                        { emoji: '🧘', tip: 'Practice 5 minutes of deep breathing before each session', color: 'bg-purple-50 border-purple-100' },
+                                        { emoji: '🥗', tip: 'Eat a balanced meal 1 hour before exercising', color: 'bg-emerald-50 border-emerald-100' },
+                                        { emoji: '😴', tip: 'Aim for 7-8 hours of quality sleep tonight', color: 'bg-amber-50 border-amber-100' },
+                                    ].map((item, i) => (
+                                        <div key={i} className={`${item.color} border rounded-xl p-3 flex items-start gap-2.5`}>
+                                            <span className="text-lg flex-shrink-0">{item.emoji}</span>
+                                            <p className="text-xs text-gray-600 leading-relaxed">{item.tip}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Upcoming: Live Sessions Placeholder */}
+                        <Card className="rounded-[22px] border-dashed border-2 border-gray-200 bg-gray-50/50">
+                            <CardContent className="p-6 text-center">
+                                <div className="w-14 h-14 bg-indigo-100 rounded-2xl mx-auto flex items-center justify-center mb-3">
+                                    <Play className="w-6 h-6 text-indigo-600" />
+                                </div>
+                                <h3 className="text-sm font-black text-gray-700">Live Sessions Coming Soon</h3>
+                                <p className="text-xs text-gray-400 mt-1 max-w-sm mx-auto">Interactive video classes with health experts and real-time vitals monitoring will be available after cloud integration.</p>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
+
+                {/* Floating Bottom Action Bar */}
+                <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-100 p-4 z-30 shadow-2xl">
+                    <div className="max-w-[1400px] mx-auto flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                            <span className="text-2xl">{CAT_EMOJI[activeProgram.category] || '📋'}</span>
+                            <div>
+                                <p className="text-sm font-bold text-gray-900">{current.title}</p>
+                                <p className="text-[10px] text-gray-400">{current.subtitle}</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Button variant="outline" size="sm"
+                                disabled={activeSession === 0}
+                                onClick={() => setActiveSession(prev => Math.max(0, prev - 1))}
+                                className="rounded-xl border-gray-200 text-xs font-bold">
+                                <ChevronRight className="w-3.5 h-3.5 rotate-180 mr-1" /> Previous
+                            </Button>
+                            {completedSessions.includes(activeSession) ? (
+                                <Button size="sm"
+                                    disabled={activeSession >= sessions.length - 1}
+                                    onClick={() => setActiveSession(prev => Math.min(sessions.length - 1, prev + 1))}
+                                    className="rounded-xl bg-emerald-600 text-xs font-bold">
+                                    Next Session <ChevronRight className="w-3.5 h-3.5 ml-1" />
+                                </Button>
+                            ) : (
+                                <Button size="sm"
+                                    onClick={() => {
+                                        setCompletedSessions(prev => [...prev, activeSession]);
+                                        if (activeSession < sessions.length - 1) {
+                                            setTimeout(() => setActiveSession(prev => prev + 1), 500);
+                                        }
+                                    }}
+                                    className="rounded-xl bg-blue-600 text-xs font-bold">
+                                    Complete Session <Zap className="w-3.5 h-3.5 ml-1 fill-white" />
+                                </Button>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <div className="min-h-screen bg-[#F8FAFC]">
             <div className="max-w-[1400px] mx-auto px-4 pt-6">
                 {/* Standard Page Content based on Tab */}
-                {activeTab === 'home' && renderHome()}
-                {activeTab === 'programs' && renderPrograms()}
-                {activeTab === 'shop' && renderShop()}
-                {activeTab === 'settings' && renderSettings()}
+                {activeProgram ? renderProgramPlayer() : (
+                    <>
+                        {activeTab === 'home' && renderHome()}
+                        {activeTab === 'programs' && renderPrograms()}
+                        {activeTab === 'shop' && renderShop()}
+                        {activeTab === 'settings' && renderSettings()}
+                    </>
+                )}
             </div>
 
             {/* Vitals Input Modal */}
@@ -538,6 +1051,105 @@ const CustomerDashboard = () => {
                     )}
                 </DialogContent>
             </Dialog>
+
+            {/* Programme Detail Modal */}
+            <Dialog open={!!selectedProgram} onOpenChange={() => setSelectedProgram(null)}>
+                <DialogContent className="max-w-lg rounded-[28px] border-none shadow-2xl p-0 overflow-hidden">
+                    {selectedProgram && (
+                        <>
+                            {/* Top banner */}
+                            <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-6 text-white relative overflow-hidden">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+                                <div className="flex items-center gap-4 relative z-10">
+                                    <span className="text-5xl">{CAT_EMOJI[selectedProgram.category] || '📋'}</span>
+                                    <div>
+                                        <h2 className="text-xl font-black leading-tight">{selectedProgram.title}</h2>
+                                        <div className="flex items-center gap-2 mt-2 flex-wrap">
+                                            <span className="bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">{selectedProgram.category}</span>
+                                            <span className="bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{selectedProgram.difficulty}</span>
+                                            {selectedProgram.locked && (
+                                                <span className="bg-red-500/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                                                    <Lock className="w-2.5 h-2.5" /> Locked
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="p-6 space-y-5">
+                                <p className="text-sm text-gray-600 leading-relaxed">{selectedProgram.description}</p>
+
+                                {/* Stats */}
+                                <div className="grid grid-cols-3 gap-3">
+                                    {[
+                                        ['⏱️', `${selectedProgram.durationWeeks}w`, 'Duration'],
+                                        ['📋', `${selectedProgram.totalSessions}`, 'Sessions'],
+                                        ['👥', `${selectedProgram.enrollmentCount || 0}`, 'Enrolled'],
+                                    ].map(([emoji, val, label]) => (
+                                        <div key={label as string} className="bg-gray-50 rounded-2xl p-3 text-center border border-gray-100">
+                                            <span className="text-xl">{emoji}</span>
+                                            <p className="font-bold text-gray-900 text-sm mt-1">{val}</p>
+                                            <p className="text-[10px] text-gray-400">{label}</p>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Plan access */}
+                                <div>
+                                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-2">Available for Plans</p>
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {(selectedProgram.accessiblePlans || []).map((plan: string) => (
+                                            <span key={plan} className={`text-[10px] font-bold uppercase px-2.5 py-1 rounded-full ${PLAN_COLORS[plan] || 'bg-gray-100 text-gray-500'} ${plan === userPlan ? 'ring-2 ring-blue-400' : ''}`}>
+                                                {plan === userPlan ? `✓ ${plan} (your plan)` : plan}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Pricing */}
+                                <div className="flex items-center justify-between bg-gray-50 rounded-2xl p-4 border border-gray-100">
+                                    <div>
+                                        <p className="text-[10px] text-gray-400 font-bold uppercase">Pricing</p>
+                                        <p className="text-lg font-black text-gray-900">
+                                            {selectedProgram.price > 0 ? `₹${selectedProgram.price.toLocaleString()}` : 'Free'}
+                                            {selectedProgram.pricingType === 'subscription' && <span className="text-xs text-gray-400 font-normal">/mo</span>}
+                                        </p>
+                                    </div>
+                                    {(selectedProgram.averageRating || 0) > 0 && (
+                                        <div className="flex items-center gap-1">
+                                            {[1, 2, 3, 4, 5].map(i => (
+                                                <Star key={i} className={`w-4 h-4 ${i <= Math.floor(selectedProgram.averageRating) ? 'text-amber-400 fill-amber-400' : 'text-gray-200'}`} />
+                                            ))}
+                                            <span className="text-xs text-gray-500 ml-1">{selectedProgram.averageRating?.toFixed(1)}</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Action */}
+                                {selectedProgram.locked ? (
+                                    <Button onClick={() => { setSelectedProgram(null); navigate('/pricing'); }}
+                                        className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl font-bold py-6">
+                                        <Crown className="w-4 h-4 mr-2" /> Upgrade to Unlock
+                                    </Button>
+                                ) : selectedProgram.enrollmentRequired && selectedProgram.enrollmentStatus === 'not_enrolled' ? (
+                                    <Button disabled={enrolling === selectedProgram._id}
+                                        onClick={() => { handleEnroll(selectedProgram._id); setSelectedProgram(null); }}
+                                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold py-6">
+                                        {enrolling === selectedProgram._id ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Plus className="w-4 h-4 mr-2" />}
+                                        Enroll in Programme
+                                    </Button>
+                                ) : (
+                                    <Button className="w-full bg-blue-600 text-white rounded-xl font-bold py-6">
+                                        <PlayCircle className="w-4 h-4 mr-2" /> {selectedProgram.enrollmentStatus === 'active' ? 'Continue Programme' : 'Start Programme'}
+                                    </Button>
+                                )}
+                            </div>
+                        </>
+                    )}
+                </DialogContent>
+            </Dialog>
+
         </div >
     );
 };

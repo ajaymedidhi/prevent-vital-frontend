@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
-import { Shield, Lock, Eye, AlertTriangle, Key, Search, FileText, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Shield, Lock, Eye, AlertTriangle, Key, Search, FileText, CheckCircle2, Loader2 } from 'lucide-react';
+import superAdminApi from '../../admin-shared/services/superAdminApi';
+import toast from 'react-hot-toast';
 
 const Security = () => {
+    const [loading, setLoading] = useState(true);
+    const [auditLogs, setAuditLogs] = useState<any[]>([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const [policies, setPolicies] = useState([
         { id: 1, name: 'Enforce MFA for all Admins', active: true, desc: 'Requires multi-factor authentication for Super, Platform, and Corporate Admins.' },
         { id: 2, name: 'Strict Session Timeouts', active: true, desc: 'Automatically logs out idle users after 15 minutes of inactivity.' },
@@ -9,8 +15,48 @@ const Security = () => {
         { id: 4, name: 'Enforce Complex Passwords', active: true, desc: 'Requires minimum 12 chars, uppercase, lowercase, numbers, and symbols.' },
     ]);
 
-    const togglePolicy = (id: number) => {
-        setPolicies(policies.map(p => p.id === id ? { ...p, active: !p.active } : p));
+    useEffect(() => {
+        const fetchSecurityData = async () => {
+            try {
+                const [logsRes, configRes] = await Promise.all([
+                    superAdminApi.get(`/audit-logs?page=${page}&limit=10`),
+                    superAdminApi.get('/config/security-policies').catch(() => null) // Ignore 404 if not seeded
+                ]);
+
+                if (logsRes.data?.logs) {
+                    setAuditLogs(logsRes.data.logs);
+                    setTotalPages(logsRes.totalPages || 1);
+                }
+
+                if (configRes?.data?.config?.value) {
+                    setPolicies(configRes.data.config.value);
+                }
+            } catch (err) {
+                console.error("Error fetching security data:", err);
+                toast.error("Failed to load security commands");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchSecurityData();
+    }, [page]);
+
+    const togglePolicy = async (id: number) => {
+        const updatedPolicies = policies.map(p => p.id === id ? { ...p, active: !p.active } : p);
+        setPolicies(updatedPolicies); // Optimistic UI update
+
+        try {
+            await superAdminApi.patch('/config', {
+                key: 'security-policies',
+                value: updatedPolicies
+            });
+            toast.success("Security policy updated");
+        } catch (err) {
+            toast.error("Failed to update policy");
+            // Revert on fail
+            setPolicies(policies);
+        }
     };
 
     return (
@@ -125,23 +171,21 @@ const Security = () => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {[
-                                { date: '2023-10-27 14:32:01', actor: 'superadmin@gruentzig.ai', event: 'toggle_policy', resource: 'Policy: MFA', ip: '192.168.1.45', status: 'Success' },
-                                { date: '2023-10-27 10:15:22', actor: 'john.doe@techcorp.com', event: 'login_attempt', resource: 'Auth: Login App', ip: '203.0.113.42', status: 'Failed: Invalid Password' },
-                                { date: '2023-10-26 16:45:10', actor: 'system', event: 'schema_migration', resource: 'DB: Users', ip: 'internal', status: 'Success' },
-                                { date: '2023-10-26 09:12:33', actor: 'hr@infosys.com', event: 'create_user', resource: 'User: jane.smith@infosys.com', ip: '104.28.19.11', status: 'Success' },
-                                { date: '2023-10-25 22:01:00', actor: 'superadmin@gruentzig.ai', event: 'export_data', resource: 'Report: Billing Oct', ip: '192.168.1.45', status: 'Success' }
-                            ].map((log, i) => (
-                                <tr key={i} className="hover:bg-gray-50/50">
-                                    <td className="px-6 py-3 text-xs whitespace-nowrap">{log.date}</td>
-                                    <td className="px-6 py-3 font-medium text-gray-800">{log.actor}</td>
-                                    <td className="px-6 py-3"><span className="font-mono text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-600">{log.event}</span></td>
+                            {auditLogs.length === 0 ? (
+                                <tr>
+                                    <td colSpan={6} className="px-6 py-8 text-center text-gray-400">No audit logs found.</td>
+                                </tr>
+                            ) : auditLogs.map((log, i) => (
+                                <tr key={log._id || i} className="hover:bg-gray-50/50">
+                                    <td className="px-6 py-3 text-xs whitespace-nowrap">{new Date(log.timestamp).toLocaleString()}</td>
+                                    <td className="px-6 py-3 font-medium text-gray-800">{log.user?.email || 'System'}</td>
+                                    <td className="px-6 py-3"><span className="font-mono text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-600">{log.action || log.event}</span></td>
                                     <td className="px-6 py-3 text-gray-500">{log.resource}</td>
                                     <td className="px-6 py-3 font-mono text-xs">{log.ip}</td>
                                     <td className="px-6 py-3">
                                         <div className="flex items-center gap-1.5">
-                                            {log.status === 'Success' ? <CheckCircle2 className="w-3.5 h-3.5 text-green-500" /> : <AlertTriangle className="w-3.5 h-3.5 text-red-500" />}
-                                            <span className={`text-xs font-medium ${log.status === 'Success' ? 'text-green-700' : 'text-red-600'}`}>{log.status}</span>
+                                            {(log.status === 'Success' || !log.status) ? <CheckCircle2 className="w-3.5 h-3.5 text-green-500" /> : <AlertTriangle className="w-3.5 h-3.5 text-red-500" />}
+                                            <span className={`text-xs font-medium ${(log.status === 'Success' || !log.status) ? 'text-green-700' : 'text-red-600'}`}>{log.status || 'Success'}</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -149,6 +193,29 @@ const Security = () => {
                         </tbody>
                     </table>
                 </div>
+                {auditLogs.length > 0 && (
+                    <div className="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between">
+                        <div className="text-xs text-gray-500 font-medium">
+                            Showing page <span className="text-gray-900 font-bold">{page}</span> of <span className="text-gray-900 font-bold">{totalPages}</span>
+                        </div>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => setPage(p => Math.max(1, p - 1))}
+                                disabled={page === 1}
+                                className="px-3 py-1.5 border border-gray-200 rounded-lg text-xs font-semibold text-gray-600 hover:bg-white hover:border-blue-400 hover:text-blue-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                            >
+                                Previous
+                            </button>
+                            <button
+                                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                                disabled={page === totalPages}
+                                className="px-3 py-1.5 border border-gray-200 rounded-lg text-xs font-semibold text-gray-600 hover:bg-white hover:border-blue-400 hover:text-blue-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

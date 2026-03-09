@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
 import { AlertCircle, Activity, Heart, DollarSign } from 'lucide-react';
+import superAdminApi from '../../admin-shared/services/superAdminApi';
+import toast from 'react-hot-toast';
 
 interface Thresholds {
     systolic: { high: number; low: number };
@@ -11,7 +10,6 @@ interface Thresholds {
 }
 
 const GlobalConfig = () => {
-    const { token } = useSelector((state: RootState) => state.auth);
     const [thresholds, setThresholds] = useState<Thresholds>({
         systolic: { high: 140, low: 90 },
         diastolic: { high: 90, low: 60 },
@@ -26,30 +24,27 @@ const GlobalConfig = () => {
 
     const fetchConfig = async () => {
         try {
-            const res = await axios.get('/api/admin/config/who-thresholds', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            if (res.data.data.config.value) {
-                setThresholds(res.data.data.config.value);
+            const res = await superAdminApi.get('/config/who-thresholds');
+            if (res.data?.config?.value) {
+                setThresholds(res.data.config.value);
             }
             setLoading(false);
         } catch (err) {
             console.error(err);
             setLoading(false);
+            // Don't toast on initial fetch fail if it's just a 404 (not seeded yet)
         }
     };
 
     const handleUpdate = async () => {
         try {
-            await axios.post('/api/admin/config/who-thresholds', {
+            await superAdminApi.patch('/config', {
+                key: 'who-thresholds',
                 value: thresholds
-            }, {
-                headers: { Authorization: `Bearer ${token}` }
             });
-            setMessage('Configuration updated successfully!');
-            setTimeout(() => setMessage(''), 3000);
+            toast.success('Configuration updated successfully!');
         } catch (err) {
-            setMessage('Error updating configuration.');
+            toast.error('Error updating configuration.');
         }
     };
 
@@ -73,12 +68,10 @@ const GlobalConfig = () => {
                     <h2 className="text-2xl font-bold text-gray-900">Platform Configuration</h2>
                     <p className="text-gray-500">Manage global thresholds and subscription models.</p>
                 </div>
-                <button onClick={handleUpdate} className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 shadow-md">
+                <button onClick={handleUpdate} className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 shadow-md transition-colors">
                     Save Changes
                 </button>
             </div>
-
-            {message && <div className={`p-4 rounded ${message.includes('Error') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>{message}</div>}
 
             {/* Subscription & Pricing Section */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
