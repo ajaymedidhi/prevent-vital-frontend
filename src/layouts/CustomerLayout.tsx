@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Link, Outlet, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store';
 import { Layout, Clock, CreditCard, Building2, ShoppingBag, LogOut, Heart, User, Video, ShieldCheck } from 'lucide-react';
@@ -24,14 +24,19 @@ const CustomerLayout = () => {
         navigate('/login');
     };
 
-    const isActive = (path: string) => location.pathname.includes(path);
+    const isActive = (path: string) => {
+        // Handle query param matches for dashboard
+        if (path.includes('?tab=')) {
+            return location.pathname + location.search === path;
+        }
+        return location.pathname.includes(path);
+    };
 
     const navItems = [
-        { path: '/account/dashboard', label: 'Overview', icon: Layout },
-        { path: '/account/programs', label: 'Programs', icon: Video },
-        { path: '/account/history', label: 'Order History', icon: Clock },
-        { path: '/account/billing', label: 'Membership & Billing', icon: CreditCard },
-        { path: '/shop', label: 'Shop Store', icon: ShoppingBag },
+        { path: '/account/dashboard?tab=home', label: 'Overview', icon: Layout },
+        { path: '/account/dashboard?tab=programs', label: 'Vital-P', icon: Video },
+        { path: '/account/dashboard?tab=shop', label: 'Store', icon: ShoppingBag },
+        { path: '/account/dashboard?tab=settings', label: 'Console', icon: ShieldCheck },
     ];
 
     // Add Corporate link if user has corporate profile

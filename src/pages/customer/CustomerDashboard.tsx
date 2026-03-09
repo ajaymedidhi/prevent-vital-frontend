@@ -8,7 +8,7 @@ import {
     TrendingUp, Home, ShoppingBag, Settings, Star, Zap,
     LogOut, User, Bell, Search, Plus, Play, Info
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
@@ -20,7 +20,10 @@ const CustomerDashboard = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [activeTab, setActiveTab] = useState('home'); // 'home', 'programs', 'shop', 'settings'
+    const [searchParams, setSearchParams] = useSearchParams();
+    const activeTab = searchParams.get('tab') || 'home';
+    const setActiveTab = (tab: string) => setSearchParams({ tab });
+
     const [selectedVideo, setSelectedVideo] = useState<any>(null);
     const [isVitalsModalOpen, setIsVitalsModalOpen] = useState(false);
     const [vitalForm, setVitalForm] = useState({
@@ -140,7 +143,7 @@ const CustomerDashboard = () => {
     ];
 
     const renderHome = () => (
-        <div className="space-y-6 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Super Admin Style Banner */}
             <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-[28px] p-8 shadow-xl text-white">
                 <div className="relative z-10">
@@ -309,7 +312,7 @@ const CustomerDashboard = () => {
     );
 
     const renderPrograms = () => (
-        <div className="space-y-6 pb-20 animate-in fade-in slide-in-from-right-4 duration-500">
+        <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-3xl font-black text-gray-900 font-serif">Vital Programs</h1>
@@ -366,7 +369,7 @@ const CustomerDashboard = () => {
     );
 
     const renderShop = () => (
-        <div className="space-y-6 pb-20 animate-in fade-in slide-in-from-left-4 duration-500">
+        <div className="space-y-6 animate-in fade-in slide-in-from-left-4 duration-500">
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-3xl font-black text-gray-900 font-serif">Lifestyle Shop</h1>
@@ -404,7 +407,7 @@ const CustomerDashboard = () => {
     );
 
     const renderSettings = () => (
-        <div className="space-y-6 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <h1 className="text-3xl font-black text-gray-900 font-serif">Account Console</h1>
 
             <div className="bg-white rounded-[28px] border border-gray-100 shadow-sm overflow-hidden">
@@ -472,29 +475,6 @@ const CustomerDashboard = () => {
                 {activeTab === 'settings' && renderSettings()}
             </div>
 
-            {/* Premium Mobile Bottom Navigation Bar */}
-            <nav className="fixed bottom-0 left-0 right-0 bg-white/70 backdrop-blur-xl border-t border-gray-100 z-50 flex justify-around items-center px-4 h-20 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] pb-2">
-                {[
-                    { id: 'home', icon: Home, label: 'Home' },
-                    { id: 'programs', icon: PlayCircle, label: 'Vital-P' },
-                    { id: 'shop', icon: ShoppingBag, label: 'Store' },
-                    { id: 'settings', icon: Settings, label: 'Console' }
-                ].map((tab) => (
-                    <button
-                        key={tab.id}
-                        onClick={() => setActiveTab(tab.id)}
-                        className="flex flex-col items-center gap-1.5 transition-all w-16 group relative"
-                    >
-                        <div className={`p-2 rounded-xl transition-all duration-300 ${activeTab === tab.id ? 'bg-blue-600 shadow-lg shadow-blue-200 -translate-y-1' : 'text-gray-400 group-hover:text-blue-500'}`}>
-                            <tab.icon size={22} className={activeTab === tab.id ? 'text-white' : ''} />
-                        </div>
-                        <span className={`text-[10px] font-black uppercase tracking-tight transition-all ${activeTab === tab.id ? 'text-blue-600 opacity-100' : 'text-gray-400 opacity-60'}`}>
-                            {tab.label}
-                        </span>
-                    </button>
-                ))}
-            </nav>
-
             {/* Vitals Input Modal */}
             <Dialog open={isVitalsModalOpen} onOpenChange={setIsVitalsModalOpen}>
                 <DialogContent className="sm:max-w-[425px] rounded-[28px] border-none shadow-2xl">
@@ -558,7 +538,7 @@ const CustomerDashboard = () => {
                     )}
                 </DialogContent>
             </Dialog>
-        </div>
+        </div >
     );
 };
 
