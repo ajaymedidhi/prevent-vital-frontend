@@ -26,6 +26,14 @@ import CreatorDashboard from './pages/creator/Dashboard';
 import ProgramBuilder from './pages/creator/ProgramBuilder';
 import CorporateDashboard from './pages/corporate/Dashboard';
 import EmployeeManagement from './pages/corporate/EmployeeManagement';
+import CorporateAnalytics from './pages/corporate/Analytics';
+import CorporateBilling from './pages/corporate/Billing';
+import CorporateCampaigns from './pages/corporate/Campaigns';
+import CorporateProgrammes from './pages/corporate/Programmes';
+import CorporateSecurity from './pages/corporate/Security';
+import CorporateSettings from './pages/corporate/Settings';
+import CorporateSuperAdmin from './pages/corporate/SuperAdmin';
+import CorporateSupport from './pages/corporate/Support';
 
 // Program Module Pages
 import ProgramListingPage from "./features/programs/pages/ProgramListingPage";
@@ -58,6 +66,12 @@ import Approvals from './pages/super-admin/Approvals';
 import TenantsPage from './pages/super-admin/Tenants';
 import MedicalPrograms from './pages/super-admin/MedicalPrograms';
 import AuditLogs from './pages/super-admin/AuditLogs';
+import Programmes from './pages/super-admin/Programmes';
+import Campaigns from './pages/super-admin/Campaigns';
+import Analytics from './pages/super-admin/Analytics';
+import Billing from './pages/super-admin/Billing';
+import Security from './pages/super-admin/Security';
+import Support from './pages/super-admin/Support';
 
 // Stubs for other roles
 // New Admin Pages
@@ -67,6 +81,9 @@ import AdminUsers from './pages/admin/Users';
 import AdminOrders from './pages/admin/Orders';
 import AdminAlerts from './pages/admin/Alerts';
 import RiskCalculator from './pages/admin/RiskCalculator';
+import AdminReports from './pages/admin/Reports';
+import AdminSettings from './pages/admin/Settings';
+import AdminSupport from './pages/admin/Support';
 import { Outlet } from "react-router-dom";
 
 import CustomerDashboard from './pages/customer/CustomerDashboard';
@@ -141,11 +158,19 @@ const App = () => (
                             <Route path="users" element={<UserManagement />} />
                             <Route path="approvals" element={<Approvals />} />
                             <Route path="audit-logs" element={<AuditLogs />} />
+                            <Route path="programmes" element={<Programmes />} />
+                            <Route path="campaigns" element={<Campaigns />} />
+                            <Route path="analytics" element={<Analytics />} />
+                            <Route path="billing" element={<Billing />} />
+                            <Route path="security" element={<Security />} />
+                            <Route path="support" element={<Support />} />
+                            <Route path="settings" element={<GlobalConfig />} />
+                            <Route path="platform" element={<SuperAdminDashboard />} />
                         </Route>
 
                         {/* ADMIN ROUTE GROUP */}
                         <Route path="/admin" element={
-                            <ProtectedRoute allowedRoles={['admin']}>
+                            <ProtectedRoute allowedRoles={['admin', 'super_admin']}>
                                 <AdminLayout />
                             </ProtectedRoute>
                         }>
@@ -155,6 +180,9 @@ const App = () => (
                             <Route path="orders" element={<AdminOrders />} />
                             <Route path="alerts" element={<AdminAlerts />} />
                             <Route path="risk-calculator" element={<RiskCalculator />} />
+                            <Route path="reports" element={<AdminReports />} />
+                            <Route path="settings" element={<AdminSettings />} />
+                            <Route path="support" element={<AdminSupport />} />
                         </Route>
 
                         {/* CREATOR ROUTE GROUP */}
@@ -166,8 +194,11 @@ const App = () => (
                             <Route index element={<Navigate to="dashboard" replace />} />
                             <Route path="dashboard" element={<CreatorDashboard />} />
                             <Route path="programs/new" element={<ProgramBuilder />} />
-                            <Route path="programs" element={<div className="p-8">My Programs List (Stub)</div>} />
-                            <Route path="earnings" element={<div className="p-8">Earnings History (Stub)</div>} />
+                            <Route path="programs" element={<div className="p-8 text-center text-gray-500 font-medium">Content Manager (Coming Soon)</div>} />
+                            <Route path="live" element={<div className="p-8 text-center text-pink-600 font-medium tracking-wide">Live Sessions Scheduler (Coming Soon)</div>} />
+                            <Route path="earnings" element={<div className="p-8 text-center text-gray-500 font-medium">Earnings Analytics (Coming Soon)</div>} />
+                            <Route path="community" element={<div className="p-8 text-center text-gray-500 font-medium">My Community (Coming Soon)</div>} />
+                            <Route path="settings" element={<div className="p-8 text-center text-gray-500 font-medium">Studio Settings (Coming Soon)</div>} />
                         </Route>
 
                         {/* CORPORATE ROUTE GROUP */}
@@ -178,7 +209,15 @@ const App = () => (
                         }>
                             <Route index element={<Navigate to="dashboard" replace />} />
                             <Route path="dashboard" element={<CorporateDashboard />} />
-                            <Route path="employees" element={<EmployeeManagement />} /> {/* Note: Need to add link in Sidebar */}
+                            <Route path="employees" element={<EmployeeManagement />} />
+                            <Route path="analytics" element={<CorporateAnalytics />} />
+                            <Route path="billing" element={<CorporateBilling />} />
+                            <Route path="campaigns" element={<CorporateCampaigns />} />
+                            <Route path="programmes" element={<CorporateProgrammes />} />
+                            <Route path="security" element={<CorporateSecurity />} />
+                            <Route path="settings" element={<CorporateSettings />} />
+                            <Route path="super-admin" element={<CorporateSuperAdmin />} />
+                            <Route path="support" element={<CorporateSupport />} />
                         </Route>
 
                         {/* CUSTOMER ROUTE GROUP */}

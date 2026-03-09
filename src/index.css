@@ -269,3 +269,268 @@
     animation: scroll 30s linear infinite;
   }
 }
+
+/* ── CORP-ADMIN EXTENSIONS ── */
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+  }
+
+  .corp-header {
+    @apply fixed top-0 right-0 left-0 z-20 flex items-center gap-4 px-6 bg-white/80 backdrop-blur-md border-b border-slate-200 h-16 transition-all duration-300;
+  }
+
+  @media (min-width: 1024px) {
+    .corp-header {
+      left: var(--sidebar-w, 260px);
+    }
+  }
+
+  .corp-main {
+    @apply transition-all duration-300 pt-24 min-h-screen;
+  }
+
+  @media (min-width: 1024px) {
+    .corp-main {
+      margin-left: var(--sidebar-w, 260px);
+    }
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 6px;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold;
+  }
+
+  .badge-blue {
+    @apply bg-blue-50 text-blue-700 border border-blue-200;
+  }
+
+  .badge-green {
+    @apply bg-emerald-50 text-emerald-700 border border-emerald-200;
+  }
+
+  .badge-red {
+    @apply bg-red-50 text-red-700 border border-red-200;
+  }
+
+  .badge-orange {
+    @apply bg-orange-50 text-orange-700 border border-orange-200;
+  }
+
+  .badge-purple {
+    @apply bg-purple-50 text-purple-700 border border-purple-200;
+  }
+
+  .badge-slate {
+    @apply bg-slate-100 text-slate-600 border border-slate-200;
+  }
+
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 text-sm font-medium transition-all duration-150 cursor-pointer select-none;
+  }
+
+  .nav-item:hover {
+    @apply bg-slate-100 text-slate-800;
+  }
+
+  .nav-item.active {
+    @apply bg-blue-600 text-white shadow-glow-brand;
+  }
+
+  .nav-item.active svg {
+    @apply text-white;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl border border-slate-200 shadow-card;
+  }
+
+  .card:hover {
+    @apply shadow-card-hover;
+  }
+
+  .input {
+    @apply w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 outline-none transition-all duration-150 font-body;
+  }
+
+  .input:focus {
+    @apply border-blue-400 ring-2 ring-blue-100;
+  }
+
+  .input:disabled {
+    @apply bg-slate-50 text-slate-400 cursor-not-allowed;
+  }
+
+  .btn {
+    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 cursor-pointer select-none border border-transparent;
+  }
+
+  .btn:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 shadow-sm;
+  }
+
+  .btn-secondary {
+    @apply btn bg-white text-slate-700 border-slate-200 hover:bg-slate-50 hover:border-slate-300;
+  }
+
+  .btn-danger {
+    @apply btn bg-red-600 text-white hover:bg-red-700;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-slate-600 hover:bg-slate-100;
+  }
+
+  .btn-sm {
+    @apply text-xs px-3 py-1.5 gap-1.5;
+  }
+
+  .btn-lg {
+    @apply text-base px-6 py-3.5 gap-2.5;
+  }
+
+  .btn-icon {
+    @apply w-9 h-9 p-0 justify-center;
+  }
+
+  .stat-card {
+    @apply card p-6 hover:shadow-card-hover transition-all duration-300;
+  }
+
+  .data-table {
+    @apply w-full border-collapse;
+  }
+
+  .data-table th {
+    @apply text-left text-xs font-semibold text-slate-500 uppercase tracking-wider px-4 py-3 bg-slate-50 border-b border-slate-200;
+  }
+
+  .data-table td {
+    @apply px-4 py-3.5 border-b border-slate-100 text-sm text-slate-700;
+  }
+
+  .data-table tr:last-child td {
+    @apply border-0;
+  }
+
+  .data-table tbody tr {
+    @apply transition-colors duration-100;
+  }
+
+  .data-table tbody tr:hover td {
+    @apply bg-blue-50/50;
+  }
+
+  .modal-overlay {
+    @apply fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .modal-box {
+    @apply bg-white rounded-2xl shadow-modal w-full max-w-lg max-h-[90vh] overflow-y-auto;
+    animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .page-header {
+    @apply flex items-start justify-between mb-6;
+  }
+
+  .page-title {
+    @apply font-display text-2xl text-slate-900 leading-tight;
+  }
+
+  .page-subtitle {
+    @apply text-sm text-slate-500 mt-1;
+  }
+
+  .sidebar {
+    @apply fixed left-0 top-0 bottom-0 z-40 flex flex-col;
+    width: var(--sidebar-w, 260px);
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  }
+
+  .progress-bar {
+    @apply h-1.5 bg-slate-200 rounded-full overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full rounded-full transition-all duration-700;
+  }
+
+  .dropdown {
+    @apply absolute top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-modal z-30 py-1.5 min-w-48;
+    animation: scaleIn 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: top;
+  }
+
+  .dropdown-item {
+    @apply flex items-center gap-2.5 px-3.5 py-2 text-sm text-slate-700 hover:bg-slate-50 cursor-pointer transition-colors;
+  }
+
+  .dropdown-item:hover {
+    color: #1e40af;
+  }
+
+  .status-dot {
+    @apply w-2 h-2 rounded-full flex-shrink-0;
+  }
+
+  .status-active {
+    @apply bg-emerald-500 shadow-glow-green;
+  }
+
+  .status-engaged {
+    @apply bg-blue-500;
+  }
+
+  .status-drifting {
+    @apply bg-orange-400;
+  }
+
+  .status-inactive {
+    @apply bg-red-400;
+  }
+
+  .status-not_started {
+    @apply bg-slate-300;
+  }
+
+  .notif-dot {
+    @apply absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-red-500;
+    animation: pulseGlow 2s infinite;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'DM Serif Display', Georgia, serif;
+  }
+
+  .font-body {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .mesh-bg {
+    background: radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 60% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
+      #f8fafc;
+  }
+}

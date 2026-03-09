@@ -56,7 +56,7 @@ const CustomerLayout = () => {
             `}>
                 <div className="p-6 border-b border-gray-800">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-500 p-0.5 shadow-lg shadow-teal-900/20">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 p-0.5 shadow-lg shadow-blue-900/20">
                             <div className="w-full h-full bg-[#0F172A] rounded-[10px] flex items-center justify-center overflow-hidden">
                                 <img
                                     src="/images/logo-new.png"
@@ -69,7 +69,7 @@ const CustomerLayout = () => {
                             <h1 className="text-lg font-bold tracking-tight text-white leading-none">
                                 PREVENT VITAL
                             </h1>
-                            <p className="text-[10px] text-teal-400 font-medium mt-1 tracking-wider uppercase flex items-center gap-1">
+                            <p className="text-[10px] text-blue-400 font-medium mt-1 tracking-wider uppercase flex items-center gap-1">
                                 <Heart className="w-3 h-3" /> Member Portal
                             </p>
                         </div>
@@ -82,7 +82,7 @@ const CustomerLayout = () => {
                             key={item.path}
                             to={item.path}
                             className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${isActive(item.path)
-                                ? 'bg-teal-600 text-white shadow-lg shadow-teal-900/40 font-medium'
+                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40 font-medium'
                                 : 'text-slate-400 hover:bg-slate-800 hover:text-white'
                                 }`}
                         >
@@ -105,7 +105,7 @@ const CustomerLayout = () => {
 
                 <div className="p-4 border-t border-gray-800 bg-[#0b1120]">
                     <div className="flex items-center gap-3 mb-4 px-2">
-                        <div className="w-8 h-8 rounded-full bg-teal-900/50 border border-teal-700/50 flex items-center justify-center text-teal-400 text-xs font-bold">
+                        <div className="w-8 h-8 rounded-full bg-blue-900/50 border border-blue-700/50 flex items-center justify-center text-blue-400 text-xs font-bold">
                             {user?.name?.charAt(0) || 'U'}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -143,9 +143,9 @@ const CustomerLayout = () => {
                         </div>
                     </div>
                     <div className="flex items-center gap-2 md:gap-4">
-                        <div className="flex items-center gap-2 bg-teal-50 px-2 md:px-3 py-1.5 rounded-full border border-teal-100">
-                            <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-teal-500 rounded-full animate-pulse"></span>
-                            <span className="text-[10px] md:text-xs font-bold text-teal-700 uppercase tracking-wide">{(user as any)?.gamification?.points || 0} XP</span>
+                        <div className="flex items-center gap-2 bg-blue-50 px-2 md:px-3 py-1.5 rounded-full border border-blue-100">
+                            <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-500 rounded-full animate-pulse"></span>
+                            <span className="text-[10px] md:text-xs font-bold text-blue-700 uppercase tracking-wide">{(user as any)?.gamification?.points || 0} XP</span>
                         </div>
                     </div>
                 </header>

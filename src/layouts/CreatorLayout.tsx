@@ -2,7 +2,50 @@ import React from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../store';
-import { Layout, FileText, PlusCircle, DollarSign, LogOut, Palette } from 'lucide-react';
+import {
+    LayoutDashboard,
+    Video,
+    PlayCircle,
+    BarChart3,
+    Settings,
+    LogOut,
+    CheckCircle,
+    PlusCircle,
+    Users
+} from 'lucide-react';
+
+const NAV_OVERVIEW = [
+    { path: '/creator/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { path: '/creator/programs', label: 'Content Manager', icon: Video },
+    { path: '/creator/programs/new', label: 'Create Program', icon: PlusCircle, badge: 'New' },
+    { path: '/creator/live', label: 'Live Sessions', icon: PlayCircle },
+];
+
+const NAV_ANALYTICS = [
+    { path: '/creator/earnings', label: 'Earnings & Progress', icon: BarChart3 },
+    { path: '/creator/community', label: 'My Community', icon: Users },
+];
+
+function NavItem({ path, icon: Icon, label, badge }: any) {
+    const location = useLocation();
+    const isActive = location.pathname === path || (path !== '/creator/dashboard' && location.pathname.startsWith(path));
+
+    return (
+        <Link to={path}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 cursor-pointer select-none ${isActive
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-slate-300 hover:bg-white/10 hover:text-white'
+                }`}>
+            <Icon size={18} className={`flex-shrink-0 ${isActive ? 'text-white' : ''}`} />
+            <span className="flex-1 text-sm">{label}</span>
+            {badge && (
+                <span className="bg-gradient-to-r from-pink-500 to-purple-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full text-center">
+                    {badge}
+                </span>
+            )}
+        </Link>
+    );
+}
 
 const CreatorLayout = () => {
     const dispatch = useDispatch();
@@ -13,7 +56,6 @@ const CreatorLayout = () => {
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
-    // Close sidebar on route change on mobile
     React.useEffect(() => {
         setSidebarOpen(false);
     }, [location.pathname]);
@@ -23,107 +65,104 @@ const CreatorLayout = () => {
         navigate('/login');
     };
 
-    const isActive = (path: string) => location.pathname.includes(path);
-
-    const navItems = [
-        { path: '/creator/dashboard', label: 'Dashboard', icon: Layout },
-        { path: '/creator/programs', label: 'My Programs', icon: FileText },
-        { path: '/creator/programs/new', label: 'Create Program', icon: PlusCircle },
-        { path: '/creator/earnings', label: 'Earnings', icon: DollarSign },
-    ];
+    const getCurrentLabel = () => {
+        const allNavs = [...NAV_OVERVIEW, ...NAV_ANALYTICS];
+        const activeItem = allNavs.find(i => location.pathname.includes(i.path) && i.path !== '/creator/dashboard');
+        return activeItem ? activeItem.label : 'Dashboard';
+    };
 
     return (
-        <div className="flex min-h-screen bg-gray-50 font-sans text-gray-900">
+        <div className="flex min-h-screen font-sans text-gray-900 bg-gray-50/50" style={{ background: '#f8f9fa' }}>
             {/* Mobile Overlay */}
             {sidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 z-20 md:hidden"
+                    className="fixed inset-0 bg-black/50 z-30 lg:hidden"
                     onClick={() => setSidebarOpen(false)}
                 />
             )}
 
             {/* Sidebar */}
             <aside className={`
-                w-64 bg-[#0F172A] text-white flex flex-col fixed h-full z-30 shadow-xl transition-transform duration-300 ease-in-out
-                ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0
+                w-64 bg-[#0F172A] text-white flex flex-col fixed h-full z-40 transition-transform duration-300 ease-in-out
+                ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
             `}>
-                <div className="p-6 border-b border-gray-800">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 p-0.5 shadow-lg shadow-purple-900/20">
-                            <div className="w-full h-full bg-[#0F172A] rounded-[10px] flex items-center justify-center overflow-hidden">
-                                <img
-                                    src="/images/logo-new.png"
-                                    alt="PreventVital Logo"
-                                    className="w-8 h-8 object-contain"
-                                />
-                            </div>
+                <div className="flex items-center gap-3 px-5 py-5 border-b border-white/10">
+                    <div className="w-8 h-8 rounded-lg bg-pink-600 flex items-center justify-center text-white p-1">
+                        <img
+                            src="/images/logo-new.png"
+                            alt="PreventVital Logo"
+                            className="w-full h-full object-contain filter brightness-0 invert"
+                        />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <div className="text-white font-bold text-[14px] truncate tracking-tight">PreventVital</div>
+                        <div className="text-pink-400 text-[11px] uppercase tracking-wider font-bold">Creator Studio</div>
+                    </div>
+                    <button onClick={toggleSidebar} className="lg:hidden text-slate-400 hover:text-white transition-colors">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar py-4 px-3 flex flex-col gap-6">
+                    <div>
+                        <div className="px-3 mb-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Creation</div>
+                        <div className="space-y-1">
+                            {NAV_OVERVIEW.map(item => <NavItem key={item.path} {...item} />)}
                         </div>
-                        <div>
-                            <h1 className="text-lg font-bold tracking-tight text-white leading-none">
-                                PREVENT VITAL
-                            </h1>
-                            <p className="text-[10px] text-purple-400 font-medium mt-1 tracking-wider uppercase flex items-center gap-1">
-                                <Palette className="w-3 h-3" /> Creator Studio
-                            </p>
+                    </div>
+
+                    <div>
+                        <div className="px-3 mb-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Performance</div>
+                        <div className="space-y-1">
+                            {NAV_ANALYTICS.map(item => <NavItem key={item.path} {...item} />)}
                         </div>
                     </div>
                 </div>
-                <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-                    {navItems.map((item) => (
-                        <Link
-                            key={item.path}
-                            to={item.path}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${isActive(item.path)
-                                ? 'bg-purple-600 text-white shadow-lg shadow-purple-900/40 font-medium'
-                                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                                }`}
-                        >
-                            <item.icon className={`w-5 h-5 transition-colors ${isActive(item.path) ? 'text-white' : 'text-slate-500 group-hover:text-white'}`} />
-                            <span className="text-sm">{item.label}</span>
-                        </Link>
-                    ))}
-                </nav>
-                <div className="p-4 border-t border-gray-800 bg-[#0b1120]">
-                    <button onClick={handleLogout} className="flex items-center gap-2 text-slate-400 hover:text-red-400 w-full px-4 py-2 transition-colors">
-                        <LogOut className="w-4 h-4" />
-                        <span className="text-sm font-medium">Logout System</span>
+
+                <div className="p-4 border-t border-white/10 bg-[#0B1120]">
+                    <NavItem path="/creator/settings" icon={Settings} label="Studio Settings" />
+                    <button onClick={handleLogout} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-red-400 hover:bg-white/5 w-full transition-colors mt-2">
+                        <LogOut size={18} className="flex-shrink-0" />
+                        <span className="flex-1 text-left">Sign Out</span>
                     </button>
-                    <p className="text-[10px] text-center text-slate-600 mt-4">v2.1.0-PV</p>
                 </div>
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 md:ml-64 overflow-y-auto min-h-screen flex flex-col">
-                {/* Top Header */}
-                <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-4 md:py-5 flex justify-between items-center sticky top-0 z-10 shadow-sm">
+            <main className="flex-1 lg:ml-64 flex flex-col min-h-screen overflow-hidden">
+                {/* Header Navbar */}
+                <header className="h-16 bg-white/80 backdrop-blur-md border-b border-gray-200/80 sticky top-0 z-20 flex items-center justify-between px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center gap-4">
-                        <button
-                            onClick={toggleSidebar}
-                            className="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
-                        >
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
+                        <button onClick={toggleSidebar} className="lg:hidden p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
                         </button>
-                        <div>
-                            <h2 className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight">
-                                {navItems.find(i => isActive(i.path))?.label || 'Overview'}
-                            </h2>
-                            <div className="text-xs md:text-sm text-gray-500 mt-1 hidden md:block">Welcome back, Creator</div>
-                        </div>
+                        <h1 className="text-xl font-bold text-gray-900 tracking-tight hidden sm:block">
+                            {getCurrentLabel()}
+                        </h1>
                     </div>
-                    <div className="flex items-center gap-2 md:gap-4">
-                        <div className="flex items-center gap-2 bg-purple-50 px-2 md:px-3 py-1.5 rounded-full border border-purple-100">
-                            <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-purple-500 rounded-full animate-pulse"></span>
-                            <span className="text-[10px] md:text-xs font-bold text-purple-700 uppercase tracking-wide">Creator Mode</span>
+
+                    <div className="flex items-center gap-3 sm:gap-4">
+                        <div className="hidden md:flex items-center gap-2 bg-pink-50 border border-pink-100 px-3 py-1.5 rounded-full">
+                            <CheckCircle size={14} className="text-pink-600" />
+                            <span className="text-[11px] font-bold text-pink-700 uppercase tracking-wide">Studio Online</span>
                         </div>
-                        <div className="w-8 h-8 md:w-10 md:h-10 bg-slate-100 rounded-full border border-gray-200 shadow-inner flex items-center justify-center font-bold text-slate-600 text-sm md:text-base">
-                            CR
+                        <div className="h-4 w-px bg-gray-200 hidden sm:block"></div>
+                        <div className="flex items-center gap-3">
+                            <div className="text-right hidden sm:block">
+                                <p className="text-sm font-bold text-gray-900 leading-tight">Creator</p>
+                                <p className="text-[11px] font-medium text-gray-500">Coach Profile</p>
+                            </div>
+                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 border-2 border-white shadow-sm flex items-center justify-center text-white font-bold text-sm">
+                                CR
+                            </div>
                         </div>
                     </div>
                 </header>
-                <div className="p-4 md:p-8 max-w-7xl mx-auto w-full">
-                    <Outlet />
+
+                <div className="flex-1 overflow-x-hidden overflow-y-auto">
+                    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
+                        <Outlet />
+                    </div>
                 </div>
             </main>
         </div>

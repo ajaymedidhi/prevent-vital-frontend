@@ -1,168 +1,341 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import { Plus, Trash2, Search, UserPlus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { toast } from 'sonner';
+import { useState } from 'react'
+import { Users, UserPlus, Download, Upload, Filter, ChevronDown, Mail, Trash2, Building2, MapPin, Smartphone, CheckCircle, X, Copy, QrCode, RefreshCw } from 'lucide-react'
+import { SearchInput, WellnessBadge, Avatar, Modal, Badge, EmptyState, SectionHeader, Tabs } from '../../admin-shared/components/ui'
+import { useUIStore } from '../../admin-shared/store'
 
-const EmployeeManagement = () => {
-    const { token } = useSelector((state: RootState) => state.auth);
-    const [employees, setEmployees] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+const MOCK_STAFF = [
+  { id: 1, name: 'Aarav Sharma', email: 'aarav.sharma0@infosys.com', empId: 'EMP1000', dept: 'Engineering', location: 'Hyderabad HQ', linkedAt: '2026-01-10', programmes: 3, sessions: 42, status: 'active', devices: ['apple_watch'], lastActive: '1h ago', profilePct: 95 },
+  { id: 2, name: 'Priya Patel', email: 'priya.patel1@infosys.com', empId: 'EMP1001', dept: 'Human Resources', location: 'Hyderabad HQ', linkedAt: '2026-01-12', programmes: 2, sessions: 38, status: 'active', devices: [], lastActive: '3h ago', profilePct: 88 },
+  { id: 3, name: 'Rohit Kumar', email: 'rohit.kumar2@infosys.com', empId: 'EMP1002', dept: 'Finance', location: 'Hyderabad HQ', linkedAt: '2026-01-15', programmes: 1, sessions: 35, status: 'engaged', devices: ['bp_monitor'], lastActive: '2d ago', profilePct: 72 },
+  { id: 4, name: 'Sneha Singh', email: 'sneha.singh3@infosys.com', empId: 'EMP1003', dept: 'Sales & Marketing', location: 'Mumbai', linkedAt: '2026-01-18', programmes: 2, sessions: 29, status: 'engaged', devices: ['fitbit'], lastActive: '5d ago', profilePct: 80 },
+  { id: 5, name: 'Arjun Reddy', email: 'arjun.reddy4@infosys.com', empId: 'EMP1004', dept: 'Engineering', location: 'Hyderabad HQ', linkedAt: '2026-01-20', programmes: 0, sessions: 0, status: 'drifting', devices: [], lastActive: '18d ago', profilePct: 45 },
+  { id: 6, name: 'Meera Nair', email: 'meera.nair5@infosys.com', empId: 'EMP1005', dept: 'Operations', location: 'Pune', linkedAt: '2026-01-22', programmes: 1, sessions: 12, status: 'drifting', devices: [], lastActive: '20d ago', profilePct: 62 },
+  { id: 7, name: 'Kiran Iyer', email: 'kiran.iyer6@infosys.com', empId: 'EMP1006', dept: 'Product', location: 'Bangalore', linkedAt: '2026-01-25', programmes: 0, sessions: 0, status: 'inactive', devices: [], lastActive: '38d ago', profilePct: 30 },
+  { id: 8, name: 'Divya Gupta', email: 'divya.gupta7@infosys.com', empId: 'EMP1007', dept: 'Finance', location: 'Hyderabad HQ', linkedAt: '2026-01-28', programmes: 1, sessions: 8, status: 'inactive', devices: [], lastActive: '42d ago', profilePct: 55 },
+  { id: 9, name: 'Vikram Verma', email: 'vikram.verma8@infosys.com', empId: 'EMP1008', dept: 'Engineering', location: 'Hyderabad HQ', linkedAt: '2026-02-01', programmes: 2, sessions: 25, status: 'active', devices: ['google_fit'], lastActive: '1d ago', profilePct: 78 },
+  { id: 10, name: 'Ananya Menon', email: 'ananya.menon9@infosys.com', empId: 'EMP1009', dept: 'HR', location: 'Hyderabad HQ', linkedAt: '2026-02-03', programmes: 3, sessions: 33, status: 'active', devices: ['apple_watch', 'bp_monitor'], lastActive: '6h ago', profilePct: 92 },
+]
 
-    // Invite Form State
-    const [inviteOpen, setInviteOpen] = useState(false);
-    const [formData, setFormData] = useState({
-        firstName: '', lastName: '', email: '', department: '', employeeId: '', designation: ''
-    });
+const DEPTS = ['All Departments', 'Engineering', 'Finance', 'Human Resources', 'Sales & Marketing', 'Operations', 'Product']
+const STATUSES = ['All Status', 'active', 'engaged', 'drifting', 'inactive']
 
-    const fetchEmployees = async () => {
-        try {
-            const res = await axios.get('/api/corporate/employees', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setEmployees(res.data.data);
-        } catch (err) {
-            console.error("Failed to fetch employees", err);
-            toast.error("Failed to load employees");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (token) fetchEmployees();
-    }, [token]);
-
-    const handleInvite = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            await axios.post('/api/corporate/employees/invite', formData, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            toast.success("Employee invited successfully");
-            setInviteOpen(false);
-            setFormData({ firstName: '', lastName: '', email: '', department: '', employeeId: '', designation: '' });
-            fetchEmployees(); // Refresh list
-        } catch (err: any) {
-            toast.error(err.response?.data?.message || "Failed to invite employee");
-        }
-    };
-
-    const handleRemove = async (id: string) => {
-        if (!confirm("Are you sure you want to remove this employee?")) return;
-        try {
-            await axios.delete(`/api/corporate/employees/${id}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            toast.success("Employee removed");
-            fetchEmployees();
-        } catch (err) {
-            toast.error("Failed to remove employee");
-        }
-    };
-
-    return (
-        <div className="p-6 md:p-10">
-            <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Employee Management</h1>
-                    <p className="text-gray-500">Manage access and view employee status.</p>
-                </div>
-
-                <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
-                    <DialogTrigger asChild>
-                        <Button className="flex items-center gap-2">
-                            <UserPlus size={16} /> Invite Employee
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>Invite New Employee</DialogTitle>
-                        </DialogHeader>
-                        <form onSubmit={handleInvite} className="space-y-4 mt-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <Input placeholder="First Name" value={formData.firstName} onChange={e => setFormData({ ...formData, firstName: e.target.value })} required />
-                                <Input placeholder="Last Name" value={formData.lastName} onChange={e => setFormData({ ...formData, lastName: e.target.value })} required />
-                            </div>
-                            <Input placeholder="Email Address" type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} required />
-                            <div className="grid grid-cols-2 gap-4">
-                                <Input placeholder="Employee ID" value={formData.employeeId} onChange={e => setFormData({ ...formData, employeeId: e.target.value })} required />
-                                <Input placeholder="Department" value={formData.department} onChange={e => setFormData({ ...formData, department: e.target.value })} required />
-                            </div>
-                            <Input placeholder="Designation" value={formData.designation} onChange={e => setFormData({ ...formData, designation: e.target.value })} required />
-                            <div className="flex justify-end pt-4">
-                                <Button type="submit">Send Invite</Button>
-                            </div>
-                        </form>
-                    </DialogContent>
-                </Dialog>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                {loading ? (
-                    <div className="p-8 text-center">Loading...</div>
-                ) : (
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left">
-                            <thead className="bg-gray-50 border-b border-gray-200">
-                                <tr>
-                                    <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Employee</th>
-                                    <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Dept / ID</th>
-                                    <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Status</th>
-                                    <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Risk Data</th>
-                                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100">
-                                {employees.map((emp) => (
-                                    <tr key={emp._id} className="hover:bg-gray-50 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div className="font-medium text-gray-900">{emp.profile?.firstName} {emp.profile?.lastName}</div>
-                                            <div className="text-xs text-gray-500">{emp.email}</div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-sm text-gray-900">{emp.corporateProfile?.department || '-'}</div>
-                                            <div className="text-xs text-gray-500">{emp.corporateProfile?.employeeId || '-'}</div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className={`px-2 py-1 text-xs font-medium rounded-full ${emp.status === 'active' ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
-                                                {emp.status || 'Active'}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {/* Privacy Masking if needed, or simple status */}
-                                            <span className="text-sm text-gray-500">
-                                                {emp.healthProfile?.totalCholesterol ? 'Available' : 'Pending'}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <button
-                                                onClick={() => handleRemove(emp._id)}
-                                                className="text-gray-400 hover:text-red-600 transition-colors p-1"
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                                {employees.length === 0 && (
-                                    <tr>
-                                        <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
-                                            No employees found. Invite your first employee above.
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-            </div>
+function StaffProfileModal({ staff, open, onClose }) {
+  if (!staff) return null
+  const deviceLabel = { apple_watch: 'Apple Watch', fitbit: 'Fitbit', bp_monitor: 'BP Monitor', google_fit: 'Google Fit', cgm: 'CGM' }
+  return (
+    <Modal open={open} onClose={onClose} title="Staff Profile" maxWidth="max-w-xl">
+      <div className="space-y-5">
+        <div className="flex items-center gap-4">
+          <Avatar name={staff.name} size="xl" />
+          <div>
+            <h3 className="font-semibold text-lg text-slate-900">{staff.name}</h3>
+            <p className="text-sm text-slate-500">{staff.empId} · {staff.dept}</p>
+            <WellnessBadge status={staff.status} />
+          </div>
         </div>
-    );
-};
+        <div className="grid grid-cols-2 gap-4">
+          {[
+            { label: 'Email', value: staff.email },
+            { label: 'Location', value: staff.location },
+            { label: 'Joined', value: new Date(staff.linkedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) },
+            { label: 'Last Active', value: staff.lastActive },
+            { label: 'Programmes Enrolled', value: staff.programmes },
+            { label: 'Sessions Completed', value: staff.sessions },
+          ].map(f => (
+            <div key={f.label} className="bg-slate-50 rounded-xl p-3">
+              <div className="text-xs text-slate-500 mb-0.5">{f.label}</div>
+              <div className="text-sm font-semibold text-slate-800">{f.value}</div>
+            </div>
+          ))}
+        </div>
+        <div>
+          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Profile Completeness</div>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-full rounded-full bg-blue-500 transition-all" style={{ width: `${staff.profilePct}%` }} />
+            </div>
+            <span className="text-sm font-semibold text-slate-700">{staff.profilePct}%</span>
+          </div>
+        </div>
+        <div>
+          <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Connected Devices</div>
+          {staff.devices.length ? (
+            <div className="flex flex-wrap gap-2">
+              {staff.devices.map(d => <Badge key={d} color="blue">{deviceLabel[d] || d}</Badge>)}
+            </div>
+          ) : (
+            <p className="text-sm text-slate-400 italic">No devices connected</p>
+          )}
+        </div>
+        <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-700">
+          ⚠️ Individual health scores and vital readings are not visible in the corporate portal to protect employee privacy.
+        </div>
+      </div>
+    </Modal>
+  )
+}
 
-export default EmployeeManagement;
+function InviteModal({ open, onClose }) {
+  const [tab, setTab] = useState('individual')
+  const [email, setEmail] = useState('')
+  const [bulkText, setBulkText] = useState('')
+  const { toast } = useUIStore()
+  const inviteCode = 'INFY2026'
+
+  const send = () => {
+    toast('Invite sent successfully!', 'success')
+    setEmail(''); onClose()
+  }
+
+  return (
+    <Modal open={open} onClose={onClose} title="Invite Staff Members" maxWidth="max-w-lg"
+      footer={<>
+        <button className="btn-secondary btn" onClick={onClose}>Cancel</button>
+        <button className="btn-primary btn" onClick={send}>Send Invites</button>
+      </>}>
+      <div className="space-y-5">
+        <div className="flex gap-1 bg-slate-100 rounded-xl p-1">
+          {['individual', 'bulk', 'code'].map(t => (
+            <button key={t} onClick={() => setTab(t)}
+              className={`flex-1 py-2 rounded-lg text-xs font-semibold capitalize transition-all ${tab === t ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
+              {t === 'code' ? 'Invite Code' : t === 'bulk' ? 'Bulk Upload' : 'Individual'}
+            </button>
+          ))}
+        </div>
+
+        {tab === 'individual' && (
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Employee Email</label>
+              <input className="input" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="employee@infosys.com" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Personal Message (optional)</label>
+              <textarea className="input" rows={3} placeholder="Hey! We've launched an exciting wellness programme..." />
+            </div>
+          </div>
+        )}
+
+        {tab === 'bulk' && (
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Paste Email Addresses</label>
+              <textarea className="input font-mono text-xs" rows={6} value={bulkText} onChange={e => setBulkText(e.target.value)}
+                placeholder="employee1@infosys.com&#10;employee2@infosys.com&#10;employee3@infosys.com" />
+              <p className="text-xs text-slate-400 mt-1">{bulkText.split('\n').filter(e => e.trim()).length} emails detected</p>
+            </div>
+            <div className="border-2 border-dashed border-slate-200 rounded-xl p-6 text-center cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all">
+              <Upload size={20} className="mx-auto text-slate-400 mb-2" />
+              <p className="text-sm text-slate-600 font-medium">Drop CSV file here</p>
+              <p className="text-xs text-slate-400 mt-1">or click to browse · Name, Email columns required</p>
+            </div>
+          </div>
+        )}
+
+        {tab === 'code' && (
+          <div className="space-y-4">
+            <div className="bg-slate-950 rounded-2xl p-6 text-center">
+              <p className="text-slate-400 text-xs mb-3 uppercase tracking-wider">Corporate Invite Code</p>
+              <p className="font-mono text-4xl font-bold tracking-[0.3em] text-white mb-4">{inviteCode}</p>
+              <div className="flex gap-2 justify-center">
+                <button onClick={() => { navigator.clipboard.writeText(inviteCode); toast('Copied!', 'success') }}
+                  className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
+                  <Copy size={14} /> Copy Code
+                </button>
+                <button className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
+                  <QrCode size={14} /> Download QR
+                </button>
+              </div>
+            </div>
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-700">
+              Share this code with employees. They enter it during PreventalVital app onboarding to link to <strong>Infosys</strong>'s wellness programme.
+            </div>
+            <button className="btn-secondary btn w-full justify-center text-sm gap-2">
+              <RefreshCw size={14} /> Regenerate Code
+            </button>
+          </div>
+        )}
+      </div>
+    </Modal>
+  )
+}
+
+export default function StaffPage() {
+  const [search, setSearch] = useState('')
+  const [dept, setDept] = useState('All Departments')
+  const [statusFilter, setStatusFilter] = useState('All Status')
+  const [selected, setSelected] = useState([])
+  const [profileStaff, setProfileStaff] = useState(null)
+  const [inviteOpen, setInviteOpen] = useState(false)
+  const [tab, setTab] = useState('all')
+  const { toast } = useUIStore()
+
+  const filtered = MOCK_STAFF.filter(s => {
+    if (search && !s.name.toLowerCase().includes(search.toLowerCase()) && !s.email.toLowerCase().includes(search.toLowerCase()) && !s.empId.toLowerCase().includes(search.toLowerCase())) return false
+    if (dept !== 'All Departments' && s.dept !== dept) return false
+    if (statusFilter !== 'All Status' && s.status !== statusFilter) return false
+    if (tab === 'active' && !['active', 'engaged'].includes(s.status)) return false
+    if (tab === 'attention' && !['drifting', 'inactive'].includes(s.status)) return false
+    return true
+  })
+
+  const toggleSelect = (id) => setSelected(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
+  const toggleAll = () => setSelected(selected.length === filtered.length ? [] : filtered.map(s => s.id))
+
+  const deviceLabel = { apple_watch: '🍎', fitbit: '⌚', bp_monitor: '🩺', google_fit: '📱', cgm: '💉' }
+
+  return (
+    <div className="space-y-6 animate-fade-in">
+      <SectionHeader
+        title="Staff Management"
+        description="Manage enrolled employees and track engagement"
+        action={
+          <div className="flex gap-2">
+            <button className="btn-secondary btn gap-2 text-sm" onClick={() => toast('Export started', 'success')}>
+              <Download size={15} /> Export
+            </button>
+            <button className="btn-primary btn gap-2 text-sm" onClick={() => setInviteOpen(true)}>
+              <UserPlus size={15} /> Invite Staff
+            </button>
+          </div>
+        }
+      />
+
+      {/* Stats row */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {[
+          { label: 'Total Enrolled', value: 347, color: 'text-blue-600' },
+          { label: 'Active This Week', value: 268, color: 'text-emerald-600' },
+          { label: 'Need Attention', value: 121, color: 'text-orange-500' },
+          { label: 'Seats Available', value: 153, color: 'text-slate-600' },
+        ].map((s, i) => (
+          <div key={i} className="card p-4">
+            <div className={`font-display text-2xl ${s.color}`}>{s.value}</div>
+            <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Tabs + Filters */}
+      <div className="card p-5">
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <Tabs
+            active={tab} onChange={setTab}
+            tabs={[
+              { id: 'all', label: 'All Staff', count: 347 },
+              { id: 'active', label: 'Active', count: 226 },
+              { id: 'attention', label: 'Need Attention', count: 121 },
+            ]}
+          />
+          <div className="flex items-center gap-2">
+            <SearchInput value={search} onChange={setSearch} placeholder="Search by name, email, ID..." className="w-64" />
+            <select value={dept} onChange={e => setDept(e.target.value)} className="input w-auto text-sm">
+              {DEPTS.map(d => <option key={d}>{d}</option>)}
+            </select>
+            <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="input w-auto text-sm capitalize">
+              {STATUSES.map(s => <option key={s}>{s}</option>)}
+            </select>
+          </div>
+        </div>
+
+        {/* Bulk actions */}
+        {selected.length > 0 && (
+          <div className="flex items-center gap-3 mb-4 p-3 bg-blue-50 border border-blue-200 rounded-xl animate-fade-in">
+            <span className="text-sm font-semibold text-blue-700">{selected.length} selected</span>
+            <div className="flex gap-2 ml-auto">
+              <button className="btn btn-sm btn-secondary gap-1.5" onClick={() => { toast(`Nudge sent to ${selected.length} staff`, 'success'); setSelected([]) }}>
+                <Mail size={12} /> Send Nudge
+              </button>
+              <button className="btn btn-sm btn-secondary gap-1.5">
+                <Building2 size={12} /> Assign Dept
+              </button>
+              <button className="btn btn-sm btn-danger gap-1.5">
+                <Trash2 size={12} /> Delink
+              </button>
+              <button onClick={() => setSelected([])} className="btn btn-sm btn-ghost">
+                <X size={12} />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Table */}
+        <div className="overflow-x-auto">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th className="w-10">
+                  <input type="checkbox" checked={selected.length === filtered.length && filtered.length > 0}
+                    onChange={toggleAll} className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer" />
+                </th>
+                <th>Employee</th>
+                <th>Department</th>
+                <th>Wellness Status</th>
+                <th>Programmes</th>
+                <th>Devices</th>
+                <th>Last Active</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.length === 0 ? (
+                <tr><td colSpan={8} className="py-16 text-center text-slate-400 text-sm">No staff found matching your filters</td></tr>
+              ) : filtered.map(s => (
+                <tr key={s.id} className={selected.includes(s.id) ? 'bg-blue-50' : ''}>
+                  <td>
+                    <input type="checkbox" checked={selected.includes(s.id)} onChange={() => toggleSelect(s.id)}
+                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer" />
+                  </td>
+                  <td>
+                    <button className="flex items-center gap-3 text-left hover:opacity-80 transition-opacity" onClick={() => setProfileStaff(s)}>
+                      <Avatar name={s.name} size="sm" />
+                      <div>
+                        <div className="font-semibold text-slate-800 text-sm hover:text-blue-600">{s.name}</div>
+                        <div className="text-xs text-slate-400">{s.empId} · {s.email}</div>
+                      </div>
+                    </button>
+                  </td>
+                  <td>
+                    <div className="text-sm text-slate-700">{s.dept}</div>
+                    <div className="text-xs text-slate-400 flex items-center gap-1"><MapPin size={10} />{s.location}</div>
+                  </td>
+                  <td><WellnessBadge status={s.status} /></td>
+                  <td>
+                    <span className="font-semibold text-slate-800">{s.programmes}</span>
+                    <span className="text-slate-400 text-xs"> enrolled</span>
+                  </td>
+                  <td>
+                    <div className="flex gap-1 flex-wrap">
+                      {s.devices.length ? s.devices.map(d => (
+                        <span key={d} title={d} className="text-base">{deviceLabel[d] || '📱'}</span>
+                      )) : <span className="text-slate-300 text-xs">—</span>}
+                    </div>
+                  </td>
+                  <td className="text-xs text-slate-500">{s.lastActive}</td>
+                  <td>
+                    <div className="flex gap-1">
+                      <button onClick={() => setProfileStaff(s)} className="btn btn-sm btn-ghost text-xs">View</button>
+                      <button onClick={() => toast(`Nudge sent to ${s.name}`, 'success')} className="btn btn-sm btn-ghost text-xs text-blue-600">Nudge</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
+          <p className="text-sm text-slate-500">Showing {filtered.length} of 347 staff members</p>
+          <div className="flex gap-1">
+            {[1, 2, 3, '...', 12].map((p, i) => (
+              <button key={i} className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${p === 1 ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}>{p}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <StaffProfileModal staff={profileStaff} open={!!profileStaff} onClose={() => setProfileStaff(null)} />
+      <InviteModal open={inviteOpen} onClose={() => setInviteOpen(false)} />
+    </div>
+  )
+}
