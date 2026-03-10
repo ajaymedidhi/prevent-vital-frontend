@@ -9,22 +9,22 @@ export const useAuthStore = create((set, get) => ({
 
   login: async (email, password) => {
     const data = await api.post('/auth/login', { email, password })
-    localStorage.setItem('corp_token', data.token)
-    localStorage.setItem('corp_refresh', data.refreshToken)
+    sessionStorage.setItem('corp_token', data.token)
+    sessionStorage.setItem('corp_refresh', data.refreshToken)
     set({ admin: data.admin, org: data.org, isAuthenticated: true })
     return data
   },
 
   logout: () => {
-    localStorage.removeItem('corp_token')
-    localStorage.removeItem('corp_refresh')
+    sessionStorage.removeItem('corp_token')
+    sessionStorage.removeItem('corp_refresh')
     set({ admin: null, org: null, isAuthenticated: false })
     window.location.href = '/corp-admin/login'
   },
 
   fetchMe: async () => {
     try {
-      const token = localStorage.getItem('corp_token')
+      const token = sessionStorage.getItem('corp_token')
       if (!token) { set({ isLoading: false }); return }
       const data = await api.get('/auth/me')
       set({ admin: data.admin, org: data.org, isAuthenticated: true, isLoading: false })

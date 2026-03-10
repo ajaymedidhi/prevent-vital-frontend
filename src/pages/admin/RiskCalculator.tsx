@@ -59,7 +59,7 @@ const RiskCalculator = () => {
                 }
             };
 
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const res = await axios.post('/api/admin/calculate-risk', payload, {
                 headers: { Authorization: `Bearer ${token}` }
             });

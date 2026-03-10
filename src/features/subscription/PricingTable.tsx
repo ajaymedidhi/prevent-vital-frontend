@@ -19,7 +19,7 @@ const PricingTable = () => {
     const handleSubscribe = async (plan: any) => {
         try {
             // Check auth (assuming localStorage token or similar context check)
-            const token = localStorage.getItem('token'); // Simplistic check, ideally use Auth Context
+            const token = sessionStorage.getItem('token'); // Simplistic check, ideally use Auth Context
             if (!token) {
                 toast({ title: "Login Required", description: "Please login to subscribe.", variant: "destructive" });
                 navigate('/login');
@@ -91,8 +91,8 @@ const PricingTable = () => {
             console.error(err);
             if (err.response && err.response.status === 401) {
                 // Auto-logout on 401
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
+                sessionStorage.removeItem('token');
+                sessionStorage.removeItem('user');
                 toast({ title: "Session Expired", description: "Please login again to continue.", variant: "destructive" });
                 navigate('/login');
                 return;

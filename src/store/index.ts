@@ -10,8 +10,8 @@ const initialState: AuthState = {
 // Validating localStorage data safety
 const loadState = (): AuthState => {
     try {
-        const token = localStorage.getItem('token');
-        const user = localStorage.getItem('user');
+        const token = sessionStorage.getItem('token');
+        const user = sessionStorage.getItem('user');
         if (token && user) {
             return {
                 token,
@@ -34,15 +34,15 @@ const authSlice = createSlice({
             state.user = user;
             state.token = token;
             state.isAuthenticated = true;
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(user));
+            sessionStorage.setItem('token', token);
+            sessionStorage.setItem('user', JSON.stringify(user));
         },
         logout: (state) => {
             state.user = null;
             state.token = null;
             state.isAuthenticated = false;
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('user');
         },
     },
 });

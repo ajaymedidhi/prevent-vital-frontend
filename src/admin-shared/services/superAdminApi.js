@@ -8,7 +8,7 @@ const superAdminApi = axios.create({
 
 superAdminApi.interceptors.request.use(cfg => {
     // Super-admin session uses 'token'; corp-admin uses 'corp_token'
-    const token = localStorage.getItem('token') || localStorage.getItem('corp_token')
+    const token = sessionStorage.getItem('token') || sessionStorage.getItem('corp_token')
     if (token) cfg.headers.Authorization = `Bearer ${token}`
     return cfg
 })
@@ -20,14 +20,14 @@ superAdminApi.interceptors.response.use(
         if (err.response?.status === 401 && !orig._retry) {
             orig._retry = true
             try {
-                const rt = localStorage.getItem('corp_refresh')
+                const rt = sessionStorage.getItem('corp_refresh')
                 if (!rt) throw new Error('No refresh token')
                 const { token } = await axios.post('/api/corporate/auth/refresh', { refreshToken: rt }).then(r => r.data)
-                localStorage.setItem('corp_token', token)
+                sessionStorage.setItem('corp_token', token)
                 orig.headers.Authorization = `Bearer ${token}`
                 return superAdminApi(orig)
             } catch {
-                localStorage.clear()
+                sessionStorage.clear()
                 window.location.href = '/corp-admin/login'
             }
         }

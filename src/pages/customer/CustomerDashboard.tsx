@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import CustomerOrders from './Orders';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -35,6 +36,10 @@ const CustomerDashboard = () => {
     const [progCat, setProgCat] = useState('all');
     const [selectedProgram, setSelectedProgram] = useState<any>(null);
     const [enrolling, setEnrolling] = useState<string | null>(null);
+    const [stats, setStats] = useState<any>(null);
+    const [assessmentHistory, setAssessmentHistory] = useState<any[]>([]); // New State
+    const [loading, setLoading] = useState(false); // Added loading state
+
     const [activeProgram, setActiveProgram] = useState<any>(null);
     const [activeSession, setActiveSession] = useState(0);
     const [completedSessions, setCompletedSessions] = useState<number[]>([]);
@@ -70,7 +75,7 @@ const CustomerDashboard = () => {
 
     const handleVitalSubmit = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const payload: any = {};
             if (vitalForm.bloodPressureSys && vitalForm.bloodPressureDia) {
                 payload.bloodPressure = {
@@ -111,7 +116,7 @@ const CustomerDashboard = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 if (!token) return;
                 const res = await axios.get('/api/auth/me', {
                     headers: { Authorization: `Bearer ${token}` }
@@ -130,30 +135,52 @@ const CustomerDashboard = () => {
         fetchProfile();
     }, [dispatch]);
 
-    // Fetch programmes from API
+    // Fetch programmes and assessment history from API
     useEffect(() => {
-        if (activeTab === 'programs' || activeTab === 'home') {
-            const fetchPrograms = async () => {
-                setProgramsLoading(true);
-                try {
-                    const token = localStorage.getItem('token');
-                    const headers: any = {};
-                    if (token) headers.Authorization = `Bearer ${token}`;
-                    const res = await axios.get('/api/programs?limit=50', { headers });
-                    setLivePrograms(res.data?.data?.programs || []);
-                } catch (err) {
-                    console.error('Failed to fetch programs', err);
+        window.scrollTo(0, 0);
+        const fetchData = async () => {
+            setLoading(true);
+            const token = sessionStorage.getItem('token');
+            if (!token) {
+                setLoading(false);
+                return;
+            }
+
+            try {
+                // Fetch live programs if tab is 'programs' or 'home'
+                if (activeTab === 'programs' || activeTab === 'home') {
+                    const progRes = await axios.get('/api/programs?limit=50', {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    setLivePrograms(progRes.data?.data?.programs || []);
+                    setCompletedSessions((user as any)?.completedSessions || []);
                 }
-                setProgramsLoading(false);
-            };
-            fetchPrograms();
-        }
-    }, [activeTab]);
+
+                // Fetch Assessment History when on 'home' tab
+                if (activeTab === 'home') {
+                    try {
+                        const assessRes = await axios.get('/api/vitals/assessments', {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
+                        setAssessmentHistory(assessRes.data?.data?.assessments || []);
+                    } catch (err) {
+                        console.error('Failed to fetch assessment history:', err);
+                    }
+                }
+
+            } catch (err: any) {
+                console.error('Dashboard error:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [activeTab, user, dispatch]); // Added user and dispatch to dependencies
 
     const handleEnroll = async (programId: string) => {
         setEnrolling(programId);
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const res = await axios.post(`/api/programs/${programId}/enroll`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -273,13 +300,6 @@ const CustomerDashboard = () => {
                         >
                             <ShieldCheck className="mr-2 h-4 w-4" /> Run AI Assessment
                         </Button>
-                        <Button
-                            onClick={() => setActiveTab('shop')}
-                            variant="outline"
-                            className="bg-white/10 border-white/20 text-white hover:bg-white/20 rounded-xl px-6 backdrop-blur-sm"
-                        >
-                            Shop Vital Gear
-                        </Button>
                     </div>
                 </div>
                 {/* Decorative circles */}
@@ -382,6 +402,188 @@ const CustomerDashboard = () => {
                         </div>
                     </CardContent>
                 </Card>
+
+                {/* B2C Stats - Coming soon placeholder */}
+                <Card className="rounded-[22px] border-dashed border-2 border-gray-200 bg-gray-50/50 flex flex-col items-center justify-center p-6 text-center shadow-sm">
+                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                        <Lock className="w-5 h-5 text-gray-400" />
+                    </div>
+                    <h3 className="text-sm font-bold text-gray-700">Detailed Analytics</h3>
+                    <p className="text-xs text-gray-500 mt-1 max-w-[200px]">Unlock comprehensive health insights by connecting your smartwatch.</p>
+                </Card>
+            </div>
+
+            {/* AI Health Assessment History Panel */}
+            <div className="mt-8">
+                <div className="flex justify-between items-end mb-4 px-2">
+                    <div>
+                        <h2 className="text-xl font-black text-gray-900 font-serif">Assessment History</h2>
+                        <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mt-1">AI Health Check Records</p>
+                    </div>
+                    <Button variant="ghost" size="sm" onClick={() => navigate('/ai-health-assessment')} className="text-blue-600 font-bold hover:bg-blue-50">
+                        Take Assessment <ChevronRight className="w-4 h-4 ml-1" />
+                    </Button>
+                </div>
+
+                <Card className="rounded-[22px] border-gray-100 shadow-sm overflow-hidden bg-white">
+                    <CardContent className="p-0">
+                        {assessmentHistory.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
+                                <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-4 border border-blue-100/50">
+                                    <ShieldCheck className="w-8 h-8" />
+                                </div>
+                                <h3 className="text-lg font-bold text-gray-900">No Assessments Yet</h3>
+                                <p className="text-sm text-gray-500 max-w-sm mt-2 mb-6">Take your first AI health assessment to establish your cardiovascular baseline and generate personalized insights.</p>
+                                <Button onClick={() => navigate('/ai-health-assessment')} className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:shadow-lg hover:shadow-blue-500/25 transition-all">
+                                    Begin AI Assessment
+                                </Button>
+                            </div>
+                        ) : (
+                            <div className="divide-y divide-gray-50">
+                                {assessmentHistory.map((assessment, idx) => {
+                                    const date = new Date(assessment.completedAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+                                    const score = assessment.results?.cvitalScore || '--';
+                                    const tierLabel = assessment.results?.cvitalTierDetails?.label || assessment.results?.cvitalTier || 'Unknown';
+                                    const color = assessment.results?.cvitalTierDetails?.color || '#3b82f6';
+                                    const ascvdRisk = assessment.results?.ascvdRisk || '--';
+
+                                    return (
+                                        <div key={assessment._id} className="p-5 hover:bg-gray-50/80 transition-colors flex items-center justify-between group">
+                                            <div className="flex items-center gap-4">
+                                                <div
+                                                    className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm shrink-0 border border-black/5"
+                                                    style={{ backgroundColor: `${color}15`, color: color }}
+                                                >
+                                                    <HeartPulse className="w-6 h-6" />
+                                                </div>
+                                                <div>
+                                                    <div className="flex items-center gap-2">
+                                                        <h4 className="text-sm font-bold text-gray-900">CVITAL™ Score</h4>
+                                                        <span
+                                                            className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full"
+                                                            style={{ backgroundColor: `${color}15`, color: color }}
+                                                        >
+                                                            {tierLabel}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
+                                                        <span className="flex items-center gap-1">
+                                                            <Clock className="w-3 h-3" /> {date}
+                                                        </span>
+                                                        <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                                                        <span>ASCVD Risk: <strong className="text-gray-700">{ascvdRisk !== '--' ? `${ascvdRisk}%` : 'N/A'}</strong></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center gap-6">
+                                                <div className="text-right hidden sm:block">
+                                                    <span className="text-2xl font-black" style={{ color: color }}>{score}</span>
+                                                    <span className="text-gray-400 text-xs font-bold block -mt-1">/ 100</span>
+                                                </div>
+                                                <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-blue-600 transition-colors" />
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
+
+            {/* Existing Health Modules sections... */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+                {/* Health Modules */}
+                <Card className="rounded-[22px] border-gray-100 shadow-sm hover:shadow-md transition-all bg-white">
+                    <CardContent className="p-6">
+                        <div className="flex justify-between items-start mb-6">
+                            <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl">
+                                <HeartPulse className="w-6 h-6" />
+                            </div>
+                            <Button variant="ghost" size="sm" className="text-blue-600 font-bold text-xs hover:bg-blue-50">
+                                View All <ChevronRight className="w-3 h-3 ml-1" />
+                            </Button>
+                        </div>
+                        <h3 className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-4">Health Modules</h3>
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-3 p-3 bg-emerald-50/50 rounded-xl border border-emerald-100">
+                                <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                                    <ShieldCheck className="w-4 h-4" />
+                                </div>
+                                <p className="text-sm font-bold text-gray-900">Cardiovascular Health</p>
+                            </div>
+                            <div className="flex items-center gap-3 p-3 bg-blue-50/50 rounded-xl border border-blue-100">
+                                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                    <Activity className="w-4 h-4" />
+                                </div>
+                                <p className="text-sm font-bold text-gray-900">Metabolic Balance</p>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Quick Actions */}
+                <Card className="rounded-[22px] border-gray-100 shadow-sm hover:shadow-md transition-all bg-white">
+                    <CardContent className="p-6">
+                        <div className="flex justify-between items-start mb-6">
+                            <div className="p-3 bg-purple-50 text-purple-600 rounded-2xl">
+                                <Zap className="w-6 h-6" />
+                            </div>
+                            <Button variant="ghost" size="sm" className="text-blue-600 font-bold text-xs hover:bg-blue-50">
+                                Customize <ChevronRight className="w-3 h-3 ml-1" />
+                            </Button>
+                        </div>
+                        <h3 className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-4">Quick Actions</h3>
+                        <div className="grid grid-cols-2 gap-3">
+                            <Button variant="outline" className="rounded-xl h-auto py-3 flex flex-col items-center justify-center text-gray-600 hover:text-blue-600">
+                                <PlayCircle className="w-5 h-5 mb-1" />
+                                <span className="text-xs font-bold">Start Program</span>
+                            </Button>
+                            <Button variant="outline" className="rounded-xl h-auto py-3 flex flex-col items-center justify-center text-gray-600 hover:text-blue-600">
+                                <HeartPulse className="w-5 h-5 mb-1" />
+                                <span className="text-xs font-bold">Log Vitals</span>
+                            </Button>
+                            <Button variant="outline" className="rounded-xl h-auto py-3 flex flex-col items-center justify-center text-gray-600 hover:text-blue-600">
+                                <ShoppingBag className="w-5 h-5 mb-1" />
+                                <span className="text-xs font-bold">Shop Products</span>
+                            </Button>
+                            <Button variant="outline" className="rounded-xl h-auto py-3 flex flex-col items-center justify-center text-gray-600 hover:text-blue-600">
+                                <Settings className="w-5 h-5 mb-1" />
+                                <span className="text-xs font-bold">Settings</span>
+                            </Button>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Premium Products */}
+                <Card className="rounded-[22px] border-gray-100 shadow-sm hover:shadow-md transition-all bg-white">
+                    <CardContent className="p-6">
+                        <div className="flex justify-between items-start mb-6">
+                            <div className="p-3 bg-amber-50 text-amber-600 rounded-2xl">
+                                <ShoppingBag className="w-6 h-6" />
+                            </div>
+                            <Button variant="ghost" size="sm" className="text-blue-600 font-bold text-xs hover:bg-blue-50">
+                                View All <ChevronRight className="w-3 h-3 ml-1" />
+                            </Button>
+                        </div>
+                        <h3 className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-4">Premium Products</h3>
+                        <div className="space-y-3">
+                            {products.map(product => (
+                                <div key={product.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                                    <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                                        <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm font-bold text-gray-900">{product.name}</p>
+                                        <p className="text-xs text-gray-500">{product.price}</p>
+                                    </div>
+                                    <Button size="sm" className="bg-blue-600 rounded-lg text-xs font-bold">Buy</Button>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
             </div>
 
             {/* ── Recommended Programs for You ────────────────────────── */}
@@ -410,7 +612,7 @@ const CustomerDashboard = () => {
                                 >
                                     {/* Gradient Header */}
                                     <div className={`bg-gradient-to-r ${prog.color} p-5 relative overflow-hidden`}>
-                                        <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full blur-xl -mr-8 -mt-8"></div>
+                                        <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full blur-3xl -mr-8 -mt-8"></div>
                                         <div className="relative z-10 flex items-center gap-3">
                                             <span className="text-4xl">{prog.emoji}</span>
                                             <div>
@@ -646,44 +848,6 @@ const CustomerDashboard = () => {
                     })}
                 </div>
             )}
-        </div>
-    );
-
-    const renderShop = () => (
-        <div className="space-y-6 animate-in fade-in slide-in-from-left-4 duration-500">
-            <div className="flex justify-between items-end">
-                <div>
-                    <h1 className="text-3xl font-black text-gray-900 font-serif">Lifestyle Shop</h1>
-                    <p className="text-xs text-blue-600 font-bold uppercase tracking-widest mt-1">Curated Vitality Gear</p>
-                </div>
-                <Button variant="ghost" className="bg-gray-100 rounded-xl h-12 w-12 flex items-center justify-center p-0">
-                    <Search className="w-5 h-5 text-gray-500" />
-                </Button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-                {products.map((product) => (
-                    <div key={product.id} className="group">
-                        <div className="aspect-square rounded-[24px] overflow-hidden relative shadow-sm bg-gray-50 border border-gray-100 mb-3">
-                            <img src={product.image} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="" />
-                            <button className="absolute bottom-3 right-3 w-10 h-10 bg-white rounded-xl shadow-lg flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-all scale-0 group-hover:scale-100">
-                                <Plus className="w-5 h-5" />
-                            </button>
-                        </div>
-                        <h3 className="text-sm font-bold text-gray-900">{product.name}</h3>
-                        <p className="text-blue-600 font-black text-sm mt-0.5">{product.price}</p>
-                    </div>
-                ))}
-            </div>
-
-            <Card className="rounded-[28px] border-none bg-gradient-to-br from-indigo-600 to-purple-700 p-6 text-white overflow-hidden relative group cursor-pointer mt-8 shadow-xl">
-                <div className="relative z-10 w-2/3">
-                    <h3 className="text-xl font-black mb-2 leading-tight">VITA Starter Kit arrives in 3 days</h3>
-                    <p className="text-xs text-indigo-100 opacity-80 mb-4">Complete your toolkit for 100% telemetry coverage.</p>
-                    <Button className="bg-white text-indigo-600 font-bold rounded-xl text-xs h-9 px-4 hover:bg-white/90">View Order</Button>
-                </div>
-                <ShoppingBag className="absolute -right-4 -bottom-4 w-32 h-32 text-white/10 group-hover:scale-110 transition-transform duration-700" />
-            </Card>
         </div>
     );
 
@@ -982,7 +1146,7 @@ const CustomerDashboard = () => {
                     <>
                         {activeTab === 'home' && renderHome()}
                         {activeTab === 'programs' && renderPrograms()}
-                        {activeTab === 'shop' && renderShop()}
+                        {activeTab === 'orders' && <CustomerOrders />}
                         {activeTab === 'settings' && renderSettings()}
                     </>
                 )}

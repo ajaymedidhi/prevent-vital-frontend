@@ -10,7 +10,7 @@ const CustomerOrders = () => {
     React.useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 const res = await axios.get('/api/shop/orders/my', {
                     headers: { Authorization: `Bearer ${token}` }
                 });

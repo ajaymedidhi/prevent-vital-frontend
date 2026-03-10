@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Outlet, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store';
-import { Layout, Clock, CreditCard, Building2, ShoppingBag, LogOut, Heart, User, Video, ShieldCheck } from 'lucide-react';
+import { Layout, Clock, CreditCard, Building2, ShoppingBag, LogOut, Heart, User, Video, ShieldCheck, Package } from 'lucide-react';
 import { RootState } from '../store';
 
 const CustomerLayout = () => {
@@ -35,7 +35,8 @@ const CustomerLayout = () => {
     const navItems = [
         { path: '/account/dashboard?tab=home', label: 'Overview', icon: Layout },
         { path: '/account/dashboard?tab=programs', label: 'Vital-P', icon: Video },
-        { path: '/account/dashboard?tab=shop', label: 'Store', icon: ShoppingBag },
+        { path: '/shop', label: 'Store', icon: ShoppingBag },
+        { path: '/account/dashboard?tab=orders', label: 'Order History', icon: Package },
         { path: '/account/dashboard?tab=settings', label: 'Console', icon: ShieldCheck },
     ];
 

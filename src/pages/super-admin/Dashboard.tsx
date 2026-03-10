@@ -59,7 +59,7 @@ const SuperAdminDashboard = () => {
 
     const fetchDashboardData = async () => {
         try {
-            const authHeader = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+            const authHeader = { Authorization: `Bearer ${sessionStorage.getItem('token')}` };
 
             const [statsRes, analyticsRes, tenantsRes, b2cRes, b2cUsersRes, alertsRes, predictionsRes] = await Promise.all([
                 axios.get('/api/admin/stats', { headers: authHeader }).catch(() => null),
@@ -496,7 +496,7 @@ const SuperAdminDashboard = () => {
                         const handleSuspend = async (org: any) => {
                             if (!confirm(`Suspend "${org.name}"? Their admin and employees will lose access.`)) return;
                             try {
-                                const authHeader = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+                                const authHeader = { Authorization: `Bearer ${sessionStorage.getItem('token')}` };
                                 await axios.patch(`/api/super-admin/tenants/${org.id}/status`, { status: 'suspended' }, { headers: authHeader });
                                 toast.success(`${org.name} has been suspended.`);
                                 fetchDashboardData();
@@ -507,7 +507,7 @@ const SuperAdminDashboard = () => {
 
                         const handleReactivate = async (org: any) => {
                             try {
-                                const authHeader = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+                                const authHeader = { Authorization: `Bearer ${sessionStorage.getItem('token')}` };
                                 await axios.patch(`/api/super-admin/tenants/${org.id}/status`, { status: 'active' }, { headers: authHeader });
                                 toast.success(`${org.name} has been reactivated!`);
                                 fetchDashboardData();
@@ -769,7 +769,7 @@ const SuperAdminDashboard = () => {
                     <button className="btn-secondary btn" onClick={() => setIsCreatingOrg(false)}>Cancel</button>
                     <button className="btn-primary btn" onClick={async () => {
                         try {
-                            const authHeader = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+                            const authHeader = { Authorization: `Bearer ${sessionStorage.getItem('token')}` };
                             const domainSlug = (newOrgData.companyDomain || newOrgData.name)
                                 .replace(/https?:\/\//, '').replace(/\.com.*/, '')
                                 .toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '');
@@ -945,7 +945,7 @@ const SuperAdminDashboard = () => {
                     <button className="btn-secondary btn" onClick={() => setIsManagingOrgPlan(false)}>Cancel</button>
                     <button className="btn-primary btn" onClick={async () => {
                         try {
-                            const authHeader = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+                            const authHeader = { Authorization: `Bearer ${sessionStorage.getItem('token')}` };
                             await axios.patch(`/api/super-admin/tenants/${managedOrg.id}/plan`, planUpdateData, { headers: authHeader });
                             toast.success(`Plan updated to ${planUpdateData.plan} for ${managedOrg?.name}.`);
                             fetchDashboardData();
@@ -976,7 +976,7 @@ const SuperAdminDashboard = () => {
                     <button className="btn-secondary btn" onClick={() => setIsManagingUserPlan(false)}>Cancel</button>
                     <button className="btn-primary btn" onClick={async () => {
                         try {
-                            const authHeader = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+                            const authHeader = { Authorization: `Bearer ${sessionStorage.getItem('token')}` };
                             await axios.patch(`/api/super-admin/users/${managedUser._id}/plan`, { plan: planUpdateData.plan }, { headers: authHeader });
                             toast.success(`Subscription updated to ${planUpdateData.plan} for ${managedUser?.email}.`);
                             fetchDashboardData();

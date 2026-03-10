@@ -28,6 +28,7 @@ export default function Assessment() {
     const { token, user } = useSelector((state: RootState) => state.auth);
     const [currentStep, setCurrentStep] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [result, setResult] = useState<any>(null); // Added state for inline results
 
     // Basic Form State
     const [formData, setFormData] = useState({
@@ -147,13 +148,11 @@ export default function Assessment() {
             const scoreData = response.data.data;
             toast.success("Assessment completed successfully!");
 
-            // Assuming we navigate to a results page or back to dashboard
-            // If there's an AssessmentResults page, navigate there. For now, go to dashboard.
-            navigate('/account/dashboard', { state: { scoreData } });
+            // Set the result to show inline scorecard
+            setResult(scoreData);
         } catch (error: any) {
             console.error(error);
             toast.error(error.response?.data?.message || "Failed to calculate assessment score.");
-            // We can optionally navigate even on fail if desired
             navigate('/account/dashboard');
         } finally {
             setIsSubmitting(false);
@@ -492,6 +491,104 @@ export default function Assessment() {
 
     const section = SECTIONS[currentStep];
     const progressPerc = Math.round(((currentStep + 1) / SECTIONS.length) * 100);
+
+    // If result exists, render the Scorecard instead of the form
+    if (result) {
+        return (
+            <div className="min-h-screen bg-slate-900 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white pb-20 py-12 px-4 sm:px-6">
+                <div className="max-w-3xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700">
+                    <div className="text-center">
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-accent/20 text-accent mb-6 border border-accent/30 shadow-[0_0_30px_rgba(16,217,138,0.2)]">
+                            <HeartPulse className="w-8 h-8" />
+                        </div>
+                        <h1 className="text-4xl sm:text-5xl font-black text-white mb-4 tracking-tight">Your CVITAL™ Score</h1>
+                        <p className="text-slate-400 max-w-lg mx-auto text-lg leading-relaxed">
+                            Based on your health data, we've generated your personalized cardiovascular intelligence profile.
+                        </p>
+                    </div>
+
+                    <div className="bg-white/5 border border-white/10 rounded-[32px] p-8 sm:p-12 relative overflow-hidden backdrop-blur-xl shadow-2xl">
+                        {/* Decorative background glow */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
+                            {/* CVITAL Score Section */}
+                            <div className="space-y-6">
+                                <div className="flex items-center gap-3">
+                                    <Activity className="w-5 h-5 text-accent" />
+                                    <h3 className="text-sm font-bold tracking-widest text-slate-300 uppercase">Overall Vitality</h3>
+                                </div>
+                                <div className="flex items-end gap-3 border-b border-white/10 pb-8">
+                                    <span className="text-7xl font-black text-white leading-none tracking-tighter shadow-sm" style={{ color: result.cvitalTierDetails?.color || '#10d98a' }}>
+                                        {result.cvitalScore}
+                                    </span>
+                                    <span className="text-xl text-slate-400 font-medium mb-2">/ 100</span>
+                                </div>
+                                <div>
+                                    <p className="text-sm font-bold uppercase tracking-wider mb-2" style={{ color: result.cvitalTierDetails?.color || '#10d98a' }}>
+                                        {result.cvitalTierDetails?.label || result.cvitalTier} Profile
+                                    </p>
+                                    <p className="text-slate-300 text-sm leading-relaxed">
+                                        {result.cvitalTierDetails?.action || "Review your lifestyle metrics to improve your score."}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Risk & Vascular Age Section */}
+                            <div className="space-y-8 md:pl-8 md:border-l border-white/10">
+                                <div>
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <Heart className="w-5 h-5 text-rose-400" />
+                                        <h3 className="text-sm font-bold tracking-widest text-slate-300 uppercase">10-Year ASCVD Risk</h3>
+                                    </div>
+                                    <div className="flex items-baseline gap-2">
+                                        <span className={`text-4xl font-black ${result.ascvdTier === 'high' ? 'text-rose-400' : 'text-amber-400'}`}>
+                                            {result.ascvdRisk != null ? `${result.ascvdRisk}%` : 'N/A'}
+                                        </span>
+                                    </div>
+                                    <p className="text-xs text-slate-400 mt-2 uppercase tracking-wider font-semibold">
+                                        Risk Tier: <span className="text-white">{result.ascvdTier || 'Not Assessed'}</span>
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <User className="w-5 h-5 text-blue-400" />
+                                        <h3 className="text-sm font-bold tracking-widest text-slate-300 uppercase">Vascular Age</h3>
+                                    </div>
+                                    <div className="flex items-baseline gap-2">
+                                        <span className="text-4xl font-black text-blue-400">
+                                            {result.vascularAge}
+                                        </span>
+                                        <span className="text-slate-400 font-medium text-sm">years old</span>
+                                    </div>
+                                    <p className="text-xs text-slate-400 mt-2 uppercase tracking-wider font-semibold">
+                                        Chronological: <span className="text-white">{formData.age} yrs</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Next Steps Buttons */}
+                        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row gap-4 justify-center">
+                            <button
+                                onClick={() => window.print()}
+                                className="px-8 py-4 rounded-xl border-2 border-white/10 text-white font-bold hover:bg-white/5 transition-colors focus:outline-none"
+                            >
+                                Download Report
+                            </button>
+                            <button
+                                onClick={() => navigate('/account/dashboard')}
+                                className="px-8 py-4 rounded-xl bg-gradient-to-br from-accent to-[#0ab87a] text-slate-900 font-bold hover:shadow-[0_0_20px_rgba(16,217,138,0.3)] transition-all flex items-center justify-center gap-2"
+                            >
+                                Return to Dashboard <ArrowRight className="w-5 h-5" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-slate-900 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white pb-20">

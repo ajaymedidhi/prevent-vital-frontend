@@ -62,7 +62,7 @@ const Billing = () => {
     const [invoiceSearch, setInvoiceSearch] = useState('');
     const [isIssuing, setIsIssuing] = useState(false);
 
-    const authHeader = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+    const authHeader = { Authorization: `Bearer ${sessionStorage.getItem('token')}` };
 
     const fetchOrgs = async () => {
         try {

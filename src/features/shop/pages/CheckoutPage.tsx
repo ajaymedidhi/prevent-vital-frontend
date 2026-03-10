@@ -73,7 +73,7 @@ const CheckoutPage = () => {
             const { data: orderData } = await axios.post('/api/shop/create-order', {
                 amount: total * 100
             }, {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
             });
 
             const orderInfo = orderData.order || orderData.data?.razorpayOrder;
@@ -98,7 +98,7 @@ const CheckoutPage = () => {
                     })),
                     totalAmount: total,
                     shippingAddress
-                }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+                }, { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } });
 
                 if (verifyRes.data.status === 'success') {
                     dispatch(clearCart());
@@ -125,7 +125,7 @@ const CheckoutPage = () => {
                             })),
                             totalAmount: total,
                             shippingAddress
-                        }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+                        }, { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } });
 
                         if (verifyRes.data.status === 'success') {
                             dispatch(clearCart());

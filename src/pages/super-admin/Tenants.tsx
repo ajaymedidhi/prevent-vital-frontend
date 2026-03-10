@@ -13,7 +13,7 @@ const TenantsPage = () => {
 
     const fetchTenants = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             const res = await axios.get('/api/super-admin/tenants', {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -26,7 +26,7 @@ const TenantsPage = () => {
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             await axios.post('/api/super-admin/tenants', formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
