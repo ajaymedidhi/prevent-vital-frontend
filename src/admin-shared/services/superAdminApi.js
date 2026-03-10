@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const superAdminApi = axios.create({
-    baseURL: '/api/super-admin',
+    baseURL: (import.meta.env.VITE_API_URL || '') + '/api/super-admin',
     headers: { 'Content-Type': 'application/json' },
     timeout: 15000,
 })
