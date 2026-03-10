@@ -14,6 +14,9 @@ function CreateOrgModal({ open, onClose, onSuccess }) {
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async () => {
+    if (!form.name) return toast('Legal Name is required.', 'error')
+    if (!form.adminEmail) return toast('Work Email for the Admin is required to receive the password.', 'error')
+
     try {
       setLoading(true)
       await superAdminApi.post('/tenants', form)

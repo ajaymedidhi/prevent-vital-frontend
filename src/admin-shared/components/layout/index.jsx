@@ -143,11 +143,11 @@ export function Sidebar() {
 
           {profileOpen && (
             <div className="absolute bottom-full left-3 right-3 mb-1 bg-slate-800 border border-white/10 rounded-xl py-1.5 shadow-modal">
-              <NavLink to="/corp-admin/settings/profile" onClick={() => setProfileOpen(false)}
+              <NavLink to={`/corporate/${user?.tenantId || user?.corporateId || 'default'}/settings`} onClick={() => setProfileOpen(false)}
                 className="flex items-center gap-2.5 px-3.5 py-2 text-sm text-slate-300 hover:bg-white/5 hover:text-white transition-colors cursor-pointer">
                 <User size={14} /> My Profile
               </NavLink>
-              <NavLink to="/corp-admin/settings/security" onClick={() => setProfileOpen(false)}
+              <NavLink to={`/corporate/${user?.tenantId || user?.corporateId || 'default'}/security`} onClick={() => setProfileOpen(false)}
                 className="flex items-center gap-2.5 px-3.5 py-2 text-sm text-slate-300 hover:bg-white/5 hover:text-white transition-colors cursor-pointer">
                 <Key size={14} /> Security
               </NavLink>
@@ -250,7 +250,7 @@ export function NotificationsPanel() {
           ))}
         </div>
         <div className="p-3 border-t border-slate-100">
-          <NavLink to="/corp-admin/notifications" onClick={toggleNotif} className="block text-center text-sm text-blue-600 hover:text-blue-700 font-medium py-1">
+          <NavLink to="#" onClick={toggleNotif} className="block text-center text-sm text-blue-600 hover:text-blue-700 font-medium py-1">
             View all notifications →
           </NavLink>
         </div>
