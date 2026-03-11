@@ -3,7 +3,8 @@ import axios from 'axios';
 import {
     Users, Activity, DollarSign, AlertCircle,
     RefreshCw, Brain, AlertTriangle, TrendingDown,
-    Building2, Eye, Edit2, Zap, Plus, ChevronLeft, ChevronRight, Ban, CheckCircle2, X
+    Building2, Eye, Edit2, Zap, Plus, ChevronLeft, ChevronRight, Ban, CheckCircle2, X,
+    History, Award, BookOpen, ArrowRight
 } from 'lucide-react';
 import { AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Modal } from '../../admin-shared/components/ui';
@@ -61,14 +62,15 @@ const SuperAdminDashboard = () => {
         try {
             const authHeader = { Authorization: `Bearer ${sessionStorage.getItem('token')}` };
 
-            const [statsRes, analyticsRes, tenantsRes, b2cRes, b2cUsersRes, alertsRes, predictionsRes] = await Promise.all([
+            const [statsRes, analyticsRes, tenantsRes, b2cRes, b2cUsersRes, alertsRes, predictionsRes, healthRes] = await Promise.all([
                 axios.get('/api/admin/stats', { headers: authHeader }).catch(() => null),
                 axios.get('/api/super-admin/analytics', { headers: authHeader }).catch(() => null),
                 axios.get('/api/super-admin/tenants', { headers: authHeader }).catch(() => null),
                 axios.get('/api/super-admin/b2c-stats', { headers: authHeader }).catch(() => null),
                 axios.get('/api/super-admin/users?role=customer', { headers: authHeader }).catch(() => null),
                 axios.get('/api/super-admin/alerts', { headers: authHeader }).catch(() => null),
-                axios.get('/api/super-admin/predictions', { headers: authHeader }).catch(() => null)
+                axios.get('/api/super-admin/predictions', { headers: authHeader }).catch(() => null),
+                axios.get('/api/super-admin/system-health', { headers: authHeader }).catch(() => null)
             ]);
 
             const statsData = statsRes?.data?.data;
@@ -78,6 +80,7 @@ const SuperAdminDashboard = () => {
             const b2cUsersPayload = b2cUsersRes?.data?.data?.users;
             const alertsPayload = alertsRes?.data?.data;
             const predictionsPayload = predictionsRes?.data?.data;
+            const healthPayload = healthRes?.data?.data;
 
             if (statsData) {
                 setStats({
@@ -119,14 +122,25 @@ const SuperAdminDashboard = () => {
             if (Array.isArray(alertsPayload)) setAlerts(alertsPayload);
             if (Array.isArray(predictionsPayload)) setPredictions(predictionsPayload);
 
-            setRealtimeMetrics({
-                activeUsers: analyticsPayload?.totalActiveUsers || 0,
-                activeSessions: 0,
-                vitalsPerMinute: 0,
-                apiResponseTime: 0,
-                systemHealth: 99.9,
-                databaseConnections: 5
-            });
+            if (healthPayload) {
+                setRealtimeMetrics({
+                    activeUsers: healthPayload.activeUsers || 0,
+                    activeSessions: healthPayload.activeSessions || 0,
+                    vitalsPerMinute: healthPayload.vitalsPerMinute || 0,
+                    apiResponseTime: healthPayload.apiResponseTime || 0,
+                    systemHealth: healthPayload.systemHealth || 0,
+                    databaseConnections: healthPayload.databaseConnections || 0
+                });
+            } else {
+                setRealtimeMetrics({
+                    activeUsers: analyticsPayload?.totalActiveUsers || 0,
+                    activeSessions: 0,
+                    vitalsPerMinute: 0,
+                    apiResponseTime: 0,
+                    systemHealth: 99.9,
+                    databaseConnections: 5
+                });
+            }
 
         } catch (err) {
             console.error("Dashboard fetch err:", err);
@@ -338,6 +352,88 @@ const SuperAdminDashboard = () => {
                         </div>
                     </div>
 
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {/* Recent System Activity */}
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col">
+                            <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                                <History className="w-5 h-5 text-blue-500" />
+                                Recent Activity
+                            </h3>
+                            <div className="space-y-4 flex-1">
+                                {analyticsData?.recentActivity?.length > 0 ? (
+                                    analyticsData.recentActivity.slice(0, 6).map((item: any, i: number) => (
+                                        <div key={i} className="flex items-start gap-3 pb-3 border-b border-gray-50 last:border-0 last:pb-0">
+                                            <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${item.action.includes('PUBLISH') ? 'bg-green-500' :
+                                                item.action.includes('REJECT') ? 'bg-red-500' :
+                                                    item.action.includes('LOGIN') ? 'bg-blue-400' : 'bg-gray-300'
+                                                }`}></div>
+                                            <div className="min-w-0 flex-1">
+                                                <div className="text-[12px] text-gray-900 font-semibold line-clamp-1">
+                                                    {item.action.replace(/_/g, ' ')}
+                                                </div>
+                                                <div className="flex justify-between items-center mt-0.5">
+                                                    <span className="text-[10px] text-gray-500 truncate">
+                                                        {item.user?.profile?.firstName || 'System'} • {item.resource}
+                                                    </span>
+                                                    <span className="text-[10px] text-gray-400 whitespace-nowrap">
+                                                        {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center py-10 text-gray-400">
+                                        <History className="w-8 h-8 opacity-20 mb-2" />
+                                        <p className="text-xs italic">No recent activity detected.</p>
+                                    </div>
+                                )}
+                            </div>
+                            <button className="mt-4 text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                                View Full Audit Trail <ArrowRight size={14} />
+                            </button>
+                        </div>
+
+                        {/* Top Performing Creators */}
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                            <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                                <Award className="w-5 h-5 text-amber-500" />
+                                Top Creators
+                            </h3>
+                            <div className="space-y-5">
+                                {analyticsData?.topCreators?.length > 0 ? (
+                                    analyticsData.topCreators.map((creator: any, i: number) => (
+                                        <div key={i} className="flex items-center justify-between">
+                                            <div className="flex items-center gap-3">
+                                                <div className="relative">
+                                                    <div className="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-sm border-2 border-white shadow-sm">
+                                                        {creator.name?.[0]?.toUpperCase() || 'C'}
+                                                    </div>
+                                                    {i === 0 && (
+                                                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-amber-400 rounded-full flex items-center justify-center text-[8px] text-white">🏆</div>
+                                                    )}
+                                                </div>
+                                                <div>
+                                                    <div className="font-bold text-[12px] text-gray-900">{creator.name}</div>
+                                                    <div className="text-[10px] text-gray-500">{creator.email}</div>
+                                                </div>
+                                            </div>
+                                            <div className="text-right">
+                                                <div className="font-bold text-gray-900 text-[12px]">{creator.totalEnrolled}</div>
+                                                <div className="text-[10px] text-gray-400">Total Enrolled</div>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center py-10 text-gray-400">
+                                        <Users className="w-8 h-8 opacity-20 mb-2" />
+                                        <p className="text-xs italic">No creator performance data yet.</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Critical Health Alerts — real vitals from DB */}
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -417,20 +513,20 @@ const SuperAdminDashboard = () => {
                 <div className="space-y-5">
                     <div className="grid grid-cols-4 gap-4">
                         <div className="bg-amber-50 p-4 rounded-[18px]">
-                            <div className="text-amber-500 text-[26px] font-serif leading-none">6</div>
+                            <div className="text-amber-500 text-[26px] font-serif leading-none">{orgs.length}</div>
                             <div className="text-gray-500 text-[12px] mt-1">Total Organisations</div>
                         </div>
                         <div className="bg-emerald-50 p-4 rounded-[18px]">
-                            <div className="text-emerald-500 text-[26px] font-serif leading-none">4</div>
+                            <div className="text-emerald-500 text-[26px] font-serif leading-none">{orgs.filter(o => o.status === 'active').length}</div>
                             <div className="text-gray-500 text-[12px] mt-1">Active Orgs</div>
                         </div>
                         <div className="bg-blue-50 p-4 rounded-[18px]">
-                            <div className="text-blue-600 text-[26px] font-serif leading-none">1,024</div>
+                            <div className="text-blue-600 text-[26px] font-serif leading-none">{orgs.reduce((acc, o) => acc + (o.seatsUsed || 0), 0).toLocaleString()}</div>
                             <div className="text-gray-500 text-[12px] mt-1">Total Staff Enrolled</div>
                         </div>
                         <div className="bg-purple-50 p-4 rounded-[18px]">
-                            <div className="text-purple-500 text-[26px] font-serif leading-none">₹3.2L+</div>
-                            <div className="text-gray-500 text-[12px] mt-1">Annual Revenue (ARR)</div>
+                            <div className="text-purple-500 text-[26px] font-serif leading-none">₹{(((analyticsData?.b2bRevenue || 0) * 12) / 100000).toFixed(1)}L+</div>
+                            <div className="text-gray-500 text-[12px] mt-1">Estimated ARR (B2B)</div>
                         </div>
                     </div>
 
@@ -440,15 +536,15 @@ const SuperAdminDashboard = () => {
                             <div className="h-64">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <BarChart
-                                        data={mockTopOrgs}
+                                        data={orgs.sort((a, b) => (b.seatsUsed || 0) - (a.seatsUsed || 0)).slice(0, 5)}
                                         layout="vertical"
                                         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                                     >
                                         <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f3f4f6" />
                                         <XAxis type="number" hide />
-                                        <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#4b5563', fontWeight: 600 }} width={60} />
+                                        <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#4b5563', fontWeight: 600 }} width={80} />
                                         <Tooltip cursor={{ fill: '#f3f4f6' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-                                        <Bar dataKey="seats" name="Staff Enrolled" fill="#3b82f6" radius={[0, 4, 4, 0]} barSize={24} />
+                                        <Bar dataKey="seatsUsed" name="Staff Enrolled" fill="#3b82f6" radius={[0, 4, 4, 0]} barSize={24} />
                                     </BarChart>
                                 </ResponsiveContainer>
                             </div>
@@ -460,9 +556,9 @@ const SuperAdminDashboard = () => {
                                     <PieChart>
                                         <Pie
                                             data={[
-                                                { name: 'Active', value: 4 },
-                                                { name: 'Trial', value: 1 },
-                                                { name: 'Suspended', value: 1 },
+                                                { name: 'Active', value: orgs.filter(o => o.status === 'active').length },
+                                                { name: 'Trial', value: orgs.filter(o => o.plan === 'trial').length },
+                                                { name: 'Suspended', value: orgs.filter(o => o.status === 'suspended' || o.status === 'inactive').length },
                                             ]}
                                             cx="50%"
                                             cy="50%"
@@ -1019,14 +1115,14 @@ const SuperAdminDashboard = () => {
                             <div>
                                 <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wide mb-0.5">Status</p>
                                 <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${viewingOrg.status === 'active' ? 'bg-green-100 text-green-700' :
-                                        viewingOrg.status === 'suspended' ? 'bg-red-100 text-red-700' : 'bg-gray-200 text-gray-600'
+                                    viewingOrg.status === 'suspended' ? 'bg-red-100 text-red-700' : 'bg-gray-200 text-gray-600'
                                     }`}>{viewingOrg.status}</span>
                             </div>
                             <div>
                                 <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wide mb-0.5">Subscription Plan</p>
                                 <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${viewingOrg.plan === 'enterprise' ? 'bg-purple-100 text-purple-700' :
-                                        viewingOrg.plan === 'growth' ? 'bg-indigo-100 text-indigo-700' :
-                                            viewingOrg.plan === 'standard' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700'
+                                    viewingOrg.plan === 'growth' ? 'bg-indigo-100 text-indigo-700' :
+                                        viewingOrg.plan === 'standard' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700'
                                     }`}>{viewingOrg.plan}</span>
                             </div>
                             <div>

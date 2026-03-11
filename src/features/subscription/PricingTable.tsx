@@ -12,9 +12,29 @@ import { setCredentials } from '../../store';
 
 const PricingTable = () => {
     const [isAnnual, setIsAnnual] = useState(false);
+    const [plans, setPlans] = useState(PLANS);
+    const [loading, setLoading] = useState(true);
     const { toast } = useToast();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        const fetchPlans = async () => {
+            try {
+                // Using the public config endpoint
+                const res = await axios.get('/api/public/config/pricing-plans');
+                if (res.data?.data?.config?.value?.b2c) {
+                    setPlans(res.data.data.config.value.b2c);
+                }
+            } catch (err) {
+                console.error('Error fetching public pricing plans:', err);
+                // Fallback to hardcoded PLANS if API fails
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchPlans();
+    }, []);
 
     const handleSubscribe = async (plan: any) => {
         try {
@@ -101,6 +121,12 @@ const PricingTable = () => {
         }
     };
 
+    if (loading) return (
+        <div className="flex items-center justify-center py-20">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+    );
+
     return (
         <div className="py-12">
             <div className="flex justify-center mb-8 gap-4 items-center">
@@ -115,9 +141,9 @@ const PricingTable = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {PLANS.map((plan) => (
+                {plans.map((plan) => (
                     <Card key={plan.id} className={`relative flex flex-col ${plan.id === 'gold' ? 'border-primary border-2 shadow-xl scale-105 z-10' : ''}`}>
-                        {plan.isPopular && (
+                        {(plan as any).isPopular && (
                             <div className="absolute top-0 right-0 transform translate-x-2 -translate-y-2">
                                 <Badge className="bg-yellow-500 text-black px-3 py-1">Best Value</Badge>
                             </div>
@@ -131,7 +157,7 @@ const PricingTable = () => {
                         </CardHeader>
                         <CardContent className="flex-1">
                             <ul className="space-y-3">
-                                {plan.features.map((feature, idx) => (
+                                {plan.features.map((feature: string, idx: number) => (
                                     <li key={idx} className="flex items-center gap-2 text-sm">
                                         <Icon name="CheckCircle" className="text-green-500 w-4 h-4" />
                                         {feature}

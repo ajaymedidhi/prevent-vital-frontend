@@ -28,6 +28,8 @@ const CATEGORIES = [
 
 const STATUS_COLORS: Record<string, string> = {
     draft: 'bg-gray-100 text-gray-600',
+    pending_approval: 'bg-amber-100 text-amber-700',
+    needs_improvement: 'bg-orange-100 text-orange-700',
     published: 'bg-green-100 text-green-700',
     archived: 'bg-red-100 text-red-600',
 };
@@ -436,6 +438,8 @@ const Programmes = () => {
                     value={statusFilter} onChange={e => { setStatusFilter(e.target.value); setPage(1); }}>
                     <option value="all">All Status</option>
                     <option value="draft">Draft</option>
+                    <option value="pending_approval">Pending Approval</option>
+                    <option value="needs_improvement">Needs Improvement</option>
                     <option value="published">Published</option>
                     <option value="archived">Archived</option>
                 </select>

@@ -8,37 +8,39 @@ import superAdminApi from '../../admin-shared/services/superAdminApi';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-// ─── Plan Definitions ──────────────────────────────────────────────────────────
-const B2B_PLANS: Record<string, { label: string; price: string; seats: number; color: string; icon: any }> = {
-    trial: { label: 'Trial', price: '₹0 / mo', seats: 10, color: 'amber', icon: Star },
-    standard: { label: 'Standard', price: '₹25,000 / mo', seats: 50, color: 'blue', icon: Shield },
-    growth: { label: 'Growth', price: '₹55,000 / mo', seats: 250, color: 'indigo', icon: Zap },
-    enterprise: { label: 'Enterprise', price: '₹1,50,000+ / mo', seats: 500, color: 'purple', icon: Crown },
+// ─── Plan Styles & Icons (Static Metadata) ──────────────────────────────────
+const PLAN_METADATA: Record<string, { label: string; color: string; icon: any }> = {
+    // B2B
+    trial: { label: 'Trial', color: 'amber', icon: Star },
+    standard: { label: 'Standard', color: 'blue', icon: Shield },
+    growth: { label: 'Growth', color: 'indigo', icon: Zap },
+    enterprise: { label: 'Enterprise', color: 'purple', icon: Crown },
+    premium: { label: 'Premium', color: 'purple', icon: Crown },
+    // B2C
+    free: { label: 'Free', color: 'gray', icon: Star },
+    silver: { label: 'Silver', color: 'slate', icon: Shield },
+    gold: { label: 'Gold', color: 'amber', icon: Zap },
+    platinum: { label: 'Platinum', color: 'purple', icon: Crown },
 };
 
-const B2C_PLANS: Record<string, { label: string; price: string; color: string; icon: any }> = {
-    free: { label: 'Free', price: '₹0 / mo', color: 'gray', icon: Star },
-    silver: { label: 'Silver', price: '₹299 / mo', color: 'slate', icon: Shield },
-    gold: { label: 'Gold', price: '₹799 / mo', color: 'amber', icon: Zap },
-    platinum: { label: 'Platinum', price: '₹1,499 / mo', color: 'purple', icon: Crown },
-};
-
-const planBadge = (plan: string, type: 'b2b' | 'b2c') => {
-    const defs = type === 'b2b' ? B2B_PLANS : B2C_PLANS;
-    const p = defs[plan];
-    if (!p) return <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-100 text-gray-600 uppercase">{plan || 'free'}</span>;
+const planBadge = (planId: string) => {
+    const meta = PLAN_METADATA[planId.toLowerCase()] || { label: planId, color: 'gray', icon: Star };
     const colorMap: Record<string, string> = {
         amber: 'bg-amber-100 text-amber-700', blue: 'bg-blue-100 text-blue-700',
         indigo: 'bg-indigo-100 text-indigo-700', purple: 'bg-purple-100 text-purple-700',
         gray: 'bg-gray-100 text-gray-600', slate: 'bg-slate-100 text-slate-700',
     };
-    return <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${colorMap[p.color]}`}>{p.label}</span>;
+    return <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${colorMap[meta.color]}`}>{meta.label}</span>;
 };
 
 // ────────────────────────────────────────────────────────────────────────────────
 
 const Billing = () => {
     const [activeTab, setActiveTab] = useState<'b2b' | 'b2c' | 'invoices'>('b2b');
+
+    // Pricing Config from Backend
+    const [b2bPlans, setB2bPlans] = useState<any[]>([]);
+    const [b2cPlans, setB2cPlans] = useState<any[]>([]);
 
     // B2B state
     const [orgs, setOrgs] = useState<any[]>([]);
@@ -63,6 +65,19 @@ const Billing = () => {
     const [isIssuing, setIsIssuing] = useState(false);
 
     const authHeader = { Authorization: `Bearer ${sessionStorage.getItem('token')}` };
+
+    const fetchPricing = async () => {
+        try {
+            const res = await superAdminApi.get('/config/pricing-plans');
+            const data = res.data?.data?.config?.value;
+            if (data) {
+                setB2bPlans(data.b2b || []);
+                setB2cPlans(data.b2c || []);
+            }
+        } catch (err) {
+            console.error('Failed to load pricing config');
+        }
+    };
 
     const fetchOrgs = async () => {
         try {
@@ -101,6 +116,7 @@ const Billing = () => {
     };
 
     useEffect(() => {
+        fetchPricing();
         fetchOrgs();
         fetchB2cUsers();
         fetchInvoices();
@@ -111,7 +127,8 @@ const Billing = () => {
         try {
             setIsUpdatingOrg(true);
             await axios.patch(`/api/super-admin/tenants/${changingOrg._id}/plan`, orgPlanForm, { headers: authHeader });
-            toast.success(`Plan updated to "${B2B_PLANS[orgPlanForm.plan]?.label || orgPlanForm.plan}" for ${changingOrg.name}`);
+            const planLabel = PLAN_METADATA[orgPlanForm.plan]?.label || orgPlanForm.plan;
+            toast.success(`Plan updated to "${planLabel}" for ${changingOrg.name}`);
             fetchOrgs();
             setChangingOrg(null);
         } catch (err: any) {
@@ -126,7 +143,8 @@ const Billing = () => {
         try {
             setIsUpdatingUser(true);
             await axios.patch(`/api/super-admin/users/${changingUser._id}/plan`, { plan: userPlanForm.plan }, { headers: authHeader });
-            toast.success(`Subscription updated to "${B2C_PLANS[userPlanForm.plan]?.label || userPlanForm.plan}"`);
+            const planLabel = PLAN_METADATA[userPlanForm.plan]?.label || userPlanForm.plan;
+            toast.success(`Subscription updated to "${planLabel}"`);
             fetchB2cUsers();
             setChangingUser(null);
         } catch (err: any) {
@@ -225,14 +243,15 @@ const Billing = () => {
                     </div>
 
                     {/* Plan Summary Bar */}
-                    <div className="grid grid-cols-4 border-b border-gray-100">
-                        {Object.entries(B2B_PLANS).map(([key, plan]) => {
-                            const count = orgs.filter(o => o.subscriptionPlan === key).length;
+                    <div className="grid grid-cols-5 border-b border-gray-100">
+                        {b2bPlans.map((plan) => {
+                            const count = orgs.filter(o => o.subscriptionPlan === plan.id).length;
+                            const meta = PLAN_METADATA[plan.id] || { label: plan.name, price: '₹' + plan.monthlyPrice };
                             return (
-                                <div key={key} className="p-4 text-center border-r border-gray-100 last:border-0">
-                                    <p className="text-xs text-gray-500 mb-1">{plan.label}</p>
+                                <div key={plan.id} className="p-4 text-center border-r border-gray-100 last:border-0">
+                                    <p className="text-xs text-gray-500 mb-1">{plan.name}</p>
                                     <p className="text-xl font-bold text-gray-900">{count}</p>
-                                    <p className="text-[10px] text-gray-400 mt-0.5">{plan.price}</p>
+                                    <p className="text-[10px] text-gray-400 mt-0.5">₹{plan.monthlyPrice.toLocaleString()} / mo</p>
                                 </div>
                             );
                         })}
@@ -267,7 +286,7 @@ const Billing = () => {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="py-3.5 px-5">{planBadge(org.subscriptionPlan || 'trial', 'b2b')}</td>
+                                        <td className="py-3.5 px-5">{planBadge(org.subscriptionPlan || 'trial')}</td>
                                         <td className="py-3.5 px-5 text-sm text-gray-600">{org.maxUsers || '—'}</td>
                                         <td className="py-3.5 px-5">
                                             <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${org.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
@@ -305,13 +324,13 @@ const Billing = () => {
 
                     {/* Plan Summary Bar */}
                     <div className="grid grid-cols-4 border-b border-gray-100">
-                        {Object.entries(B2C_PLANS).map(([key, plan]) => {
-                            const count = b2cUsers.filter(u => (u.subscription?.plan || 'free') === key).length;
+                        {b2cPlans.map((plan) => {
+                            const count = b2cUsers.filter(u => (u.subscription?.plan || 'free') === plan.id).length;
                             return (
-                                <div key={key} className="p-4 text-center border-r border-gray-100 last:border-0">
-                                    <p className="text-xs text-gray-500 mb-1">{plan.label}</p>
+                                <div key={plan.id} className="p-4 text-center border-r border-gray-100 last:border-0">
+                                    <p className="text-xs text-gray-500 mb-1">{plan.name}</p>
                                     <p className="text-xl font-bold text-gray-900">{count}</p>
-                                    <p className="text-[10px] text-gray-400 mt-0.5">{plan.price}</p>
+                                    <p className="text-[10px] text-gray-400 mt-0.5">₹{plan.monthlyPrice.toLocaleString()} / mo</p>
                                 </div>
                             );
                         })}
@@ -345,7 +364,7 @@ const Billing = () => {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="py-3.5 px-5">{planBadge(u.subscription?.plan || 'free', 'b2c')}</td>
+                                        <td className="py-3.5 px-5">{planBadge(u.subscription?.plan || 'free')}</td>
                                         <td className="py-3.5 px-5 text-xs text-gray-500">{u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—'}</td>
                                         <td className="py-3.5 px-5 text-right">
                                             <button onClick={() => { setChangingUser(u); setUserPlanForm({ plan: u.subscription?.plan || 'free' }); }}
@@ -435,19 +454,20 @@ const Billing = () => {
 
                     {/* Plan Cards */}
                     <div className="grid grid-cols-2 gap-3">
-                        {Object.entries(B2B_PLANS).map(([key, plan]) => {
-                            const Icon = plan.icon;
-                            const isSelected = orgPlanForm.plan === key;
+                        {b2bPlans.map((plan) => {
+                            const meta = PLAN_METADATA[plan.id.toLowerCase()] || { label: plan.name, color: 'blue', icon: Shield };
+                            const Icon = meta.icon;
+                            const isSelected = orgPlanForm.plan === plan.id;
                             const colorBorder: Record<string, string> = { amber: 'border-amber-400', blue: 'border-blue-500', indigo: 'border-indigo-500', purple: 'border-purple-500' };
                             const colorBg: Record<string, string> = { amber: 'bg-amber-50', blue: 'bg-blue-50', indigo: 'bg-indigo-50', purple: 'bg-purple-50' };
                             const colorText: Record<string, string> = { amber: 'text-amber-600', blue: 'text-blue-600', indigo: 'text-indigo-600', purple: 'text-purple-600' };
                             return (
-                                <button key={key} onClick={() => setOrgPlanForm(prev => ({ ...prev, plan: key, seats: plan.seats }))}
-                                    className={`p-4 rounded-xl border-2 text-left transition-all ${isSelected ? `${colorBorder[plan.color]} ${colorBg[plan.color]}` : 'border-gray-100 bg-gray-50 hover:border-gray-200'}`}>
-                                    <div className={`flex items-center gap-2 mb-2 font-bold text-sm ${isSelected ? colorText[plan.color] : 'text-gray-700'}`}>
-                                        <Icon size={14} /> {plan.label}
+                                <button key={plan.id} onClick={() => setOrgPlanForm(prev => ({ ...prev, plan: plan.id, seats: plan.seats }))}
+                                    className={`p-4 rounded-xl border-2 text-left transition-all ${isSelected ? `${colorBorder[meta.color]} ${colorBg[meta.color]}` : 'border-gray-100 bg-gray-50 hover:border-gray-200'}`}>
+                                    <div className={`flex items-center gap-2 mb-2 font-bold text-sm ${isSelected ? colorText[meta.color] : 'text-gray-700'}`}>
+                                        <Icon size={14} /> {plan.name}
                                     </div>
-                                    <div className="text-[11px] text-gray-500 font-mono">{plan.price}</div>
+                                    <div className="text-[11px] text-gray-500 font-mono">₹{plan.monthlyPrice.toLocaleString()} / mo</div>
                                     <div className="text-[10px] text-gray-400 mt-1">Up to {plan.seats} seats</div>
                                 </button>
                             );
@@ -478,19 +498,20 @@ const Billing = () => {
                     <p className="text-sm text-gray-500">Select a new subscription tier for this consumer.</p>
 
                     <div className="grid grid-cols-2 gap-3">
-                        {Object.entries(B2C_PLANS).map(([key, plan]) => {
-                            const Icon = plan.icon;
-                            const isSelected = userPlanForm.plan === key;
+                        {b2cPlans.map((plan) => {
+                            const meta = PLAN_METADATA[plan.id.toLowerCase()] || { label: plan.name, color: 'blue', icon: Shield };
+                            const Icon = meta.icon;
+                            const isSelected = userPlanForm.plan === plan.id;
                             const colorBorder: Record<string, string> = { gray: 'border-gray-400', slate: 'border-slate-400', amber: 'border-amber-400', purple: 'border-purple-500' };
                             const colorBg: Record<string, string> = { gray: 'bg-gray-100', slate: 'bg-slate-50', amber: 'bg-amber-50', purple: 'bg-purple-50' };
                             const colorText: Record<string, string> = { gray: 'text-gray-700', slate: 'text-slate-600', amber: 'text-amber-600', purple: 'text-purple-600' };
                             return (
-                                <button key={key} onClick={() => setUserPlanForm({ plan: key })}
-                                    className={`p-4 rounded-xl border-2 text-left transition-all ${isSelected ? `${colorBorder[plan.color]} ${colorBg[plan.color]}` : 'border-gray-100 bg-gray-50 hover:border-gray-200'}`}>
-                                    <div className={`flex items-center gap-2 mb-2 font-bold text-sm ${isSelected ? colorText[plan.color] : 'text-gray-700'}`}>
-                                        <Icon size={14} /> {plan.label}
+                                <button key={plan.id} onClick={() => setUserPlanForm({ plan: plan.id })}
+                                    className={`p-4 rounded-xl border-2 text-left transition-all ${isSelected ? `${colorBorder[meta.color]} ${colorBg[meta.color]}` : 'border-gray-100 bg-gray-50 hover:border-gray-200'}`}>
+                                    <div className={`flex items-center gap-2 mb-2 font-bold text-sm ${isSelected ? colorText[meta.color] : 'text-gray-700'}`}>
+                                        <Icon size={14} /> {plan.name}
                                     </div>
-                                    <div className="text-[11px] text-gray-500 font-mono">{plan.price}</div>
+                                    <div className="text-[11px] text-gray-500 font-mono">₹{plan.monthlyPrice.toLocaleString()} / mo</div>
                                 </button>
                             );
                         })}
