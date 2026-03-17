@@ -8,9 +8,9 @@ export function ToastContainer() {
 
   const icons = {
     success: <CheckCircle size={16} className="text-emerald-500 flex-shrink-0" />,
-    error:   <AlertCircle size={16} className="text-red-500 flex-shrink-0" />,
+    error: <AlertCircle size={16} className="text-red-500 flex-shrink-0" />,
     warning: <AlertTriangle size={16} className="text-orange-500 flex-shrink-0" />,
-    info:    <Info size={16} className="text-blue-500 flex-shrink-0" />,
+    info: <Info size={16} className="text-blue-500 flex-shrink-0" />,
   }
 
   return (
@@ -49,7 +49,7 @@ export function Modal({ open, onClose, title, children, maxWidth = 'max-w-lg', f
 
 // ── Badge ─────────────────────────────────────────────────────────────────────
 export function Badge({ children, color = 'blue' }) {
-  const map = { blue:'badge-blue', green:'badge-green', red:'badge-red', orange:'badge-orange', purple:'badge-purple', slate:'badge-slate' }
+  const map = { blue: 'badge-blue', green: 'badge-green', red: 'badge-red', orange: 'badge-orange', purple: 'badge-purple', slate: 'badge-slate' }
   return <span className={`badge ${map[color] || 'badge-slate'}`}>{children}</span>
 }
 
@@ -116,10 +116,10 @@ export function ConfirmDialog({ open, onClose, onConfirm, title, message, confir
 
 // ── Progress ring ─────────────────────────────────────────────────────────────
 export function ProgressRing({ value, max = 100, size = 64, strokeWidth = 6, color = '#2563eb' }) {
-  const r  = (size - strokeWidth) / 2
+  const r = (size - strokeWidth) / 2
   const cx = size / 2, cy = size / 2
   const circ = 2 * Math.PI * r
-  const pct  = Math.min(value / max, 1)
+  const pct = Math.min(value / max, 1)
   const dash = circ * pct
 
   return (
@@ -157,10 +157,10 @@ export function StatCard({ label, value, sub, icon: Icon, iconBg = 'bg-blue-100'
 
 // ── Wellness badge ────────────────────────────────────────────────────────────
 const WELLNESS = {
-  active:      { label: 'Active',      dot: 'status-active',    badge: 'badge-green' },
-  engaged:     { label: 'Engaged',     dot: 'status-engaged',   badge: 'badge-blue' },
-  drifting:    { label: 'Drifting',    dot: 'status-drifting',  badge: 'badge-orange' },
-  inactive:    { label: 'Inactive',    dot: 'status-inactive',  badge: 'badge-red' },
+  active: { label: 'Active', dot: 'status-active', badge: 'badge-green' },
+  engaged: { label: 'Engaged', dot: 'status-engaged', badge: 'badge-blue' },
+  drifting: { label: 'Drifting', dot: 'status-drifting', badge: 'badge-orange' },
+  inactive: { label: 'Inactive', dot: 'status-inactive', badge: 'badge-red' },
   not_started: { label: 'Not Started', dot: 'status-not_started', badge: 'badge-slate' },
 }
 export function WellnessBadge({ status }) {
@@ -177,9 +177,11 @@ export function WellnessBadge({ status }) {
 export function PlanBadge({ plan }) {
   const map = {
     enterprise: { label: 'Enterprise', color: 'purple' },
-    growth:     { label: 'Growth',     color: 'blue' },
-    starter:    { label: 'Starter',    color: 'green' },
-    trial:      { label: 'Trial',      color: 'orange' },
+    premium: { label: 'Premium', color: 'purple' },
+    growth: { label: 'Growth', color: 'blue' },
+    standard: { label: 'Standard', color: 'green' },
+    starter: { label: 'Starter', color: 'green' },
+    trial: { label: 'Trial', color: 'orange' },
   }
   const p = map[plan] || map.trial
   return <Badge color={p.color}>{p.label}</Badge>
@@ -189,8 +191,8 @@ export function PlanBadge({ plan }) {
 export function Avatar({ name = '', src, size = 'md' }) {
   const sizes = { sm: 'w-7 h-7 text-xs', md: 'w-9 h-9 text-sm', lg: 'w-12 h-12 text-base', xl: 'w-16 h-16 text-lg' }
   const initials = name.split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase()
-  const colours  = ['bg-blue-500','bg-purple-500','bg-emerald-500','bg-rose-500','bg-amber-500','bg-cyan-500']
-  const bg       = colours[name.charCodeAt(0) % colours.length]
+  const colours = ['bg-blue-500', 'bg-purple-500', 'bg-emerald-500', 'bg-rose-500', 'bg-amber-500', 'bg-cyan-500']
+  const bg = colours[name.charCodeAt(0) % colours.length]
 
   if (src) return <img src={src} alt={name} className={`${sizes[size]} rounded-full object-cover ring-2 ring-white`} />
   return (
@@ -207,9 +209,8 @@ export function Tabs({ tabs, active, onChange }) {
       {tabs.map(t => (
         <button key={t.id}
           onClick={() => onChange(t.id)}
-          className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-150 ${
-            active === t.id ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'
-          }`}>
+          className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-150 ${active === t.id ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+            }`}>
           {t.label}
           {t.count !== undefined && (
             <span className={`ml-1.5 px-1.5 py-0.5 rounded-full text-xs ${active === t.id ? 'bg-blue-100 text-blue-700' : 'bg-slate-200 text-slate-500'}`}>
@@ -227,7 +228,7 @@ export function SearchInput({ value, onChange, placeholder = 'Search...', classN
   return (
     <div className={`relative ${className}`}>
       <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
       </svg>
       <input type="text" value={value} onChange={e => onChange(e.target.value)}
         placeholder={placeholder}

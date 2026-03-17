@@ -35,6 +35,7 @@ import CorporateSecurity from './pages/corporate/Security';
 import CorporateSettings from './pages/corporate/Settings';
 import CorporateSuperAdmin from './pages/corporate/SuperAdmin';
 import CorporateSupport from './pages/corporate/Support';
+import CorporateChallenges from './pages/corporate/Challenges';
 
 // Program Module Pages
 import ProgramListingPage from "./features/programs/pages/ProgramListingPage";
@@ -220,6 +221,7 @@ const App = () => (
                             <Route path="settings" element={<CorporateSettings />} />
                             <Route path="super-admin" element={<CorporateSuperAdmin />} />
                             <Route path="support" element={<CorporateSupport />} />
+                            <Route path="challenges" element={<CorporateChallenges />} />
                         </Route>
 
                         {/* CUSTOMER ROUTE GROUP */}

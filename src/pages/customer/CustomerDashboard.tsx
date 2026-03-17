@@ -818,7 +818,7 @@ const CustomerDashboard = () => {
                                                     className="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl font-bold py-5 text-white">
                                                     <Crown className="w-4 h-4 mr-2" /> Upgrade to {reqPlan?.charAt(0).toUpperCase() + reqPlan?.slice(1)}
                                                 </Button>
-                                            ) : program.enrollmentRequired && program.enrollmentStatus === 'not_enrolled' ? (
+                                            ) : program.enrollmentStatus === 'not_enrolled' ? (
                                                 <Button
                                                     disabled={enrolling === program._id}
                                                     onClick={() => handleEnroll(program._id)}
@@ -1296,7 +1296,7 @@ const CustomerDashboard = () => {
                                         className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl font-bold py-6">
                                         <Crown className="w-4 h-4 mr-2" /> Upgrade to Unlock
                                     </Button>
-                                ) : selectedProgram.enrollmentRequired && selectedProgram.enrollmentStatus === 'not_enrolled' ? (
+                                ) : selectedProgram.enrollmentStatus === 'not_enrolled' ? (
                                     <Button disabled={enrolling === selectedProgram._id}
                                         onClick={() => { handleEnroll(selectedProgram._id); setSelectedProgram(null); }}
                                         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold py-6">

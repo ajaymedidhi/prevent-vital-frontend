@@ -69,7 +69,7 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
                         <img
                             src={slide.image}
                             alt={slide.alt}
-                            className={`w-full h-full object-cover origin-center transform transition-transform duration-[20s] ease-linear ${currentSlide === index ? 'scale-110' : 'scale-100'
+                            className={`w-full h-full object-cover origin-center transform transition-transform duration-[20000ms] ease-linear ${currentSlide === index ? 'scale-110' : 'scale-100'
                                 }`}
                         />
                     </div>

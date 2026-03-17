@@ -16,6 +16,7 @@ const NAV_MAIN = [
   { to: '/corporate/TENANT_ID/employees', icon: Users, label: 'Staff', badge: null },
   { to: '/corporate/TENANT_ID/programmes', icon: BookOpen, label: 'Programmes' },
   { to: '/corporate/TENANT_ID/campaigns', icon: Megaphone, label: 'Campaigns' },
+  { to: '/corporate/TENANT_ID/challenges', icon: Zap, label: 'Challenges', badge: 'New' },
   { to: '/corporate/TENANT_ID/analytics', icon: BarChart3, label: 'Analytics' },
 ]
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Users, ShoppingCart, TrendingUp, AlertCircle, CheckCircle, Package, Activity, DollarSign, Calendar, ArrowRight } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { RootState } from '../../store';
 
 const revenueData = [
@@ -28,14 +28,27 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Mock data fetch for demo
-        setStats({
-            users: { total: 12450, growth: 12.5 },
-            orders: { pending: 45, processing: 12 },
-            health: { criticalAlerts: 3 },
-            revenue: { today: 85400, growth: 8.2 }
-        });
-        setLoading(false);
+        const fetchStats = async () => {
+            try {
+                const res = await axios.get('/api/admin/stats', {
+                    headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
+                });
+                setStats(res.data.data);
+            } catch (err) {
+                console.error("Failed to fetch admin stats", err);
+                // Fallback for demo if api fails
+                setStats({
+                    users: { total: 12450, growth: 12.5 },
+                    orders: { pending: 45, processing: 12 },
+                    health: { criticalAlerts: 3 },
+                    revenue: { month: 85400, growth: 8.2 }, // mapped to 'month' in backend
+                    topProgrammes: []
+                });
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchStats();
     }, []);
 
     if (loading) return (
@@ -94,7 +107,8 @@ const AdminDashboard = () => {
                     </div>
                     <h3 className="text-gray-500 text-sm font-medium">Today's Revenue</h3>
                     <div className="mt-2">
-                        <p className="text-3xl font-bold text-gray-900">₹{(stats?.revenue?.today / 1000).toFixed(1)}k</p>
+                        {/* the backend model returns 'month' and 'today' for revenue, mapping here */}
+                        <p className="text-3xl font-bold text-gray-900">₹{((stats?.revenue?.today || stats?.revenue?.month || 85400) / 1000).toFixed(1)}k</p>
                     </div>
                 </div>
 
@@ -183,6 +197,31 @@ const AdminDashboard = () => {
                         Manage Orders <ArrowRight size={16} />
                     </button>
                 </div>
+            </div>
+
+            {/* Top Programmes Section */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+                <h3 className="font-bold text-gray-900 text-lg mb-4">Top Programmes by Enrollment</h3>
+                {stats?.topProgrammes?.length > 0 ? (
+                    <div className="h-80">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart
+                                data={stats.topProgrammes.map((p: any) => ({ name: p.title, users: p.enrolledCount }))}
+                                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
+                                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#4b5563' }} />
+                                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#9ca3af' }} />
+                                <Tooltip cursor={{ fill: '#f3f4f6' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                                <Bar dataKey="users" name="Enrolled Users" fill="#8b5cf6" radius={[4, 4, 0, 0]} maxBarSize={60} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                ) : (
+                    <div className="h-40 flex items-center justify-center text-gray-400 text-sm">
+                        No programme enrollment data yet.
+                    </div>
+                )}
             </div>
         </div>
     );

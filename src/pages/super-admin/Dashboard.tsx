@@ -96,6 +96,7 @@ const SuperAdminDashboard = () => {
                     },
                     health: {
                         programsActive: analyticsPayload?.activeProgrammes || 0,
+                        totalEnrollments: analyticsPayload?.totalEnrollments || 0,
                         criticalAlerts: statsData.health?.criticalAlerts || 0
                     }
                 });
@@ -258,7 +259,7 @@ const SuperAdminDashboard = () => {
                             <h3 className="text-gray-500 text-sm font-medium">Active Programs</h3>
                             <div className="mt-1">
                                 <p className="text-3xl font-bold text-gray-900">{stats?.health?.programsActive || 0}</p>
-                                <p className="text-xs text-gray-400 mt-1">0 consultations</p>
+                                <p className="text-xs text-gray-400 mt-1">{stats?.health?.totalEnrollments || 0} global enrollments</p>
                             </div>
                         </div>
 
@@ -284,7 +285,7 @@ const SuperAdminDashboard = () => {
                                 {analyticsData?.monthlyGrowth?.length > 0 ? (
                                     <ResponsiveContainer width="100%" height="100%">
                                         <AreaChart
-                                            data={analyticsData.monthlyGrowth.map((m: any) => ({ month: m.month, b2b: m.b2b, b2c: m.b2c }))}
+                                            data={analyticsData.monthlyGrowth}
                                             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
                                         >
                                             <defs>
@@ -296,6 +297,10 @@ const SuperAdminDashboard = () => {
                                                     <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
                                                     <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
                                                 </linearGradient>
+                                                <linearGradient id="colorEnroll" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="5%" stopColor="#fbbf24" stopOpacity={0.8} />
+                                                    <stop offset="95%" stopColor="#fbbf24" stopOpacity={0} />
+                                                </linearGradient>
                                             </defs>
                                             <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#9ca3af' }} />
                                             <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#9ca3af' }} />
@@ -304,6 +309,7 @@ const SuperAdminDashboard = () => {
                                             <Legend verticalAlign="top" height={36} />
                                             <Area type="monotone" dataKey="b2b" name="B2B Signups" stroke="#8884d8" fillOpacity={1} fill="url(#colorB2b)" />
                                             <Area type="monotone" dataKey="b2c" name="B2C Signups" stroke="#82ca9d" fillOpacity={1} fill="url(#colorB2c)" />
+                                            <Area type="monotone" dataKey="enrollments" name="Program Enrollments" stroke="#fbbf24" fillOpacity={1} fill="url(#colorEnroll)" />
                                         </AreaChart>
                                     </ResponsiveContainer>
                                 ) : (
@@ -350,6 +356,41 @@ const SuperAdminDashboard = () => {
                                 })()}
                             </div>
                         </div>
+                    </div>
+
+                    {/* Top Programmes Section — MOVED FROM B2C TAB for global visibility */}
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="font-bold text-lg flex items-center gap-2">
+                                <BookOpen className="w-5 h-5 text-indigo-500" />
+                                Top Programmes by Enrollment
+                            </h3>
+                            <span className="text-xs text-indigo-600 font-bold bg-indigo-50 px-2.5 py-1 rounded-full">Global Engagement</span>
+                        </div>
+                        {analyticsData?.topProgrammes?.length > 0 ? (
+                            <div className="h-80">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart
+                                        data={analyticsData.topProgrammes.map((p: any) => ({ name: p.title, users: p.enrolledCount }))}
+                                        margin={{ top: 10, right: 30, left: 20, bottom: 5 }}
+                                    >
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
+                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#6b7280' }} />
+                                        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#9ca3af' }} />
+                                        <Tooltip
+                                            cursor={{ fill: '#f9fafb' }}
+                                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                        />
+                                        <Bar dataKey="users" name="Enrolled Users" fill="#6366f1" radius={[6, 6, 0, 0]} maxBarSize={50} />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                        ) : (
+                            <div className="h-40 flex flex-col items-center justify-center text-gray-400 text-sm border-2 border-dashed border-gray-100 rounded-xl">
+                                <BookOpen className="w-8 h-8 opacity-20 mb-2" />
+                                <p className="italic">No programme enrollment data yet.</p>
+                            </div>
+                        )}
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -772,30 +813,7 @@ const SuperAdminDashboard = () => {
                         </div>
                     </div>
 
-                    {/* Active Programmes Mix — real top programmes from analytics */}
-                    <div className="bg-white rounded-[18px] border border-gray-100 shadow-sm p-6 mb-6">
-                        <h3 className="font-bold text-gray-800 mb-4">Top Programmes by Enrollment</h3>
-                        {analyticsData?.topProgrammes?.length > 0 ? (
-                            <div className="h-80">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart
-                                        data={analyticsData.topProgrammes.map((p: any) => ({ name: p.title, users: p.enrolledCount }))}
-                                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                                    >
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
-                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#4b5563' }} />
-                                        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#9ca3af' }} />
-                                        <Tooltip cursor={{ fill: '#f3f4f6' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-                                        <Bar dataKey="users" name="Enrolled Users" fill="#8b5cf6" radius={[4, 4, 0, 0]} maxBarSize={60} />
-                                    </BarChart>
-                                </ResponsiveContainer>
-                            </div>
-                        ) : (
-                            <div className="h-40 flex items-center justify-center text-gray-400 text-sm">
-                                No programme enrollment data yet.
-                            </div>
-                        )}
-                    </div>
+                    {/* Section moved to Platform Overview for global visibility */}
 
                     <div className="bg-white rounded-[18px] border border-gray-100 shadow-sm overflow-hidden">
                         <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
