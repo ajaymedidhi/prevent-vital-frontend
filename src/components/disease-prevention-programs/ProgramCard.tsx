@@ -10,7 +10,6 @@ interface ProgramCardProps {
     image: string;
     alt: string;
     therapies: string[];
-    successRate: string;
     duration: string;
     onClick: () => void;
 }
@@ -21,7 +20,6 @@ export default function ProgramCard({
     image,
     alt,
     therapies,
-    successRate,
     duration,
     onClick
 }: ProgramCardProps) {
@@ -34,12 +32,6 @@ export default function ProgramCard({
                     alt={alt}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                {/* Success Rate Badge */}
-                <div className="absolute top-4 left-4">
-                    <Badge className="bg-white/90 backdrop-blur-sm text-sm font-semibold text-purple-600 hover:bg-white/95 px-3 py-1 shadow-sm border-0">
-                        {successRate} Success Rate
-                    </Badge>
-                </div>
             </div>
 
             <CardHeader className="p-6 pb-2">

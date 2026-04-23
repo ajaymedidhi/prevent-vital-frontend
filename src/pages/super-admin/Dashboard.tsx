@@ -16,7 +16,7 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 const mockTopOrgs = [
     { name: 'Infosys', seats: 450, engagement: 85 },
     { name: 'Wipro', seats: 320, engagement: 72 },
-    { name: 'ApolloH', seats: 280, engagement: 92 },
+    { name: 'HealthCareOne', seats: 280, engagement: 92 },
     { name: 'HDFC', seats: 210, engagement: 65 },
     { name: 'TataM', seats: 190, engagement: 78 },
 ];

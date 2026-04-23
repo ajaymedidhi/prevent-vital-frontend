@@ -26,7 +26,7 @@ const CTASection = () => {
                     </h2>
 
                     <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
-                        Join 50,000+ users who have transformed their health with AI-powered preventive care.
+                        Join thousands of users who have transformed their health with AI-powered preventive care.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
@@ -47,7 +47,7 @@ const CTASection = () => {
                         </Link>
                     </div>
 
-                    <div className="mt-16 pt-16 border-t border-white/10 grid grid-cols-3 gap-8 max-w-3xl mx-auto">
+                    <div className="mt-16 pt-16 border-t border-white/10 grid grid-cols-2 gap-8 max-w-2xl mx-auto">
                         <div className="text-center">
                             <div className="text-4xl lg:text-5xl font-bold text-white mb-2">5<span className="text-accent text-2xl">min</span></div>
                             <div className="text-sm font-medium text-white/60 uppercase tracking-widest">Assessment</div>
@@ -55,10 +55,6 @@ const CTASection = () => {
                         <div className="text-center border-l border-white/10">
                             <div className="text-4xl lg:text-5xl font-bold text-white mb-2">24<span className="text-accent text-2xl">/7</span></div>
                             <div className="text-sm font-medium text-white/60 uppercase tracking-widest">Monitoring</div>
-                        </div>
-                        <div className="text-center border-l border-white/10">
-                            <div className="text-4xl lg:text-5xl font-bold text-white mb-2">95<span className="text-accent text-2xl">%</span></div>
-                            <div className="text-sm font-medium text-white/60 uppercase tracking-widest">Success Rate</div>
                         </div>
                     </div>
                 </div>

@@ -21,8 +21,8 @@ interface PartnerCase {
 
 const partnerCases: PartnerCase[] = [
     {
-        id: 'apollo',
-        partnerName: 'Apollo Hospitals',
+        id: 'unity',
+        partnerName: 'Unity Hospital Group',
         partnerType: 'Hospital Partnership',
         logo: "https://img.rocket.new/generatedImages/rocket_gen_img_180fba7dc-1764649751287.png",
         logoAlt: 'Modern hospital building exterior with glass facade and medical cross signage',
@@ -35,7 +35,7 @@ const partnerCases: PartnerCase[] = [
         ],
         testimonial: 'PreventVital has transformed how we deliver preventive care. The predictive analytics have enabled us to intervene earlier, resulting in significantly better patient outcomes and reduced healthcare costs.',
         author: 'Dr. Rajesh Kumar',
-        authorRole: 'Chief Medical Officer, Apollo Hospitals'
+        authorRole: 'Chief Medical Officer, Unity Hospital Group'
     },
     {
         id: 'max',

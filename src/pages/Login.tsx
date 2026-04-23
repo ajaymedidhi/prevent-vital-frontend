@@ -8,12 +8,18 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { ArrowLeft, Activity, Heart, Smartphone, Watch, Thermometer, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { preWarmBackend } from '../utils/performance';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    React.useEffect(() => {
+        preWarmBackend();
+    }, []);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 

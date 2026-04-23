@@ -19,7 +19,7 @@ const recentOrders = [
     { id: 'ORD-2026-891', user: 'Sarah Jenkins', amount: '₹12,499', status: 'Processing', date: '2 mins ago' },
     { id: 'ORD-2026-890', user: 'Michael Chang', amount: '₹4,999', status: 'Shipped', date: '1 hr ago' },
     { id: 'ORD-2026-889', user: 'Dr. Anita Roy', amount: '₹24,000', status: 'Delivered', date: '3 hrs ago' },
-    { id: 'ORD-2026-888', user: 'Apollo Clinics', amount: '₹1,50,000', status: 'Pending', date: '5 hrs ago' },
+    { id: 'ORD-2026-888', user: 'LifeCare Hospital', amount: '₹1,50,000', status: 'Pending', date: '5 hrs ago' },
 ];
 
 const AdminDashboard = () => {

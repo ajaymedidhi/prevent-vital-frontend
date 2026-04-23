@@ -94,7 +94,7 @@ const Analytics = () => {
                             <h3 className="text-3xl font-bold text-gray-900">₹{((analyticsData?.mrr || 0) / 100000).toFixed(1)}L</h3>
                             <div className="flex items-center gap-1 text-sm text-emerald-600 mt-2 font-medium">
                                 <TrendingUp size={16} />
-                                <span>{analyticsData?.paidSubscribers ?? 0} paid subscribers</span>
+                                <span>{analyticsData?.paidSubscribers ?? 0} active memberships</span>
                             </div>
                         </div>
                         <div className="w-10 h-10 bg-white shadow-sm border border-gray-100 rounded-xl flex items-center justify-center text-emerald-600">

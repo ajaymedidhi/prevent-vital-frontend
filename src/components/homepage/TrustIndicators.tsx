@@ -9,11 +9,6 @@ interface TrustIndicator {
 const TrustIndicators = () => {
     const indicators: TrustIndicator[] = [
         {
-            icon: 'UserGroupIcon',
-            value: '50,000+',
-            label: 'Active Users'
-        },
-        {
             icon: 'HeartIcon',
             value: '95%',
             label: 'Health Improvement'
@@ -31,7 +26,6 @@ const TrustIndicators = () => {
     ];
 
     const IconMap: Record<string, any> = {
-        UserGroupIcon: Users,
         HeartIcon: Heart,
         ShieldCheckIcon: ShieldCheck,
         AcademicCapIcon: GraduationCap,

@@ -22,7 +22,7 @@ const ConditionCards = () => {
             image: "https://images.unsplash.com/photo-1685660375327-47bcca398780",
             alt: 'Blood glucose meter',
             riskFactors: ['Family History', 'Obesity', 'Sedentary Lifestyle'],
-            preventionRate: '78%'
+            preventionRate: ''
         },
         {
             id: 'hypertension',
@@ -32,7 +32,7 @@ const ConditionCards = () => {
             image: "https://images.unsplash.com/photo-1623658045230-605cb00c80d6",
             alt: 'Digital blood pressure monitor',
             riskFactors: ['High Sodium', 'Stress', 'Age'],
-            preventionRate: '82%'
+            preventionRate: ''
         },
         {
             id: 'cardiac',
@@ -42,7 +42,7 @@ const ConditionCards = () => {
             image: "https://img.rocket.new/generatedImages/rocket_gen_img_19c8b52ae-1765801567685.png",
             alt: 'Cardiologist examining ECG',
             riskFactors: ['Cholesterol', 'Smoking', 'Inactivity'],
-            preventionRate: '85%'
+            preventionRate: ''
         },
         {
             id: 'respiratory',
@@ -52,7 +52,7 @@ const ConditionCards = () => {
             image: "https://img.rocket.new/generatedImages/rocket_gen_img_11b83cbcc-1764755888108.png",
             alt: 'Person practicing deep breathing',
             riskFactors: ['Pollution', 'Allergies', 'Smoking'],
-            preventionRate: '76%'
+            preventionRate: ''
         },
         {
             id: 'mental',
@@ -62,7 +62,7 @@ const ConditionCards = () => {
             image: "https://img.rocket.new/generatedImages/rocket_gen_img_11552d387-1764832853014.png",
             alt: 'Peaceful woman meditating',
             riskFactors: ['Stress', 'Sleep Issues', 'Isolation'],
-            preventionRate: '88%'
+            preventionRate: ''
         },
         {
             id: 'weight',
@@ -72,7 +72,7 @@ const ConditionCards = () => {
             image: "https://img.rocket.new/generatedImages/rocket_gen_img_1bb8da715-1764844202208.png",
             alt: 'Healthy lifestyle concept',
             riskFactors: ['Poor Diet', 'Inactivity', 'Metabolism'],
-            preventionRate: '80%'
+            preventionRate: ''
         }
     ];
 
@@ -117,12 +117,6 @@ const ConditionCards = () => {
                                         alt={condition.alt}
                                         className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                                     />
-
-                                    <div className="absolute top-4 right-4 z-20">
-                                        <span className="inline-flex items-center px-3 py-1 bg-white/90 backdrop-blur-sm text-primary text-xs font-bold rounded-full shadow-sm">
-                                            {condition.preventionRate} Success
-                                        </span>
-                                    </div>
 
                                     <div className="absolute bottom-4 left-4 z-20">
                                         <div className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-md">

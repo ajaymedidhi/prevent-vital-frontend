@@ -1,65 +1,8 @@
-import { Check, ShieldCheck, FileCheck, Building2, ClipboardCheck, Lock } from 'lucide-react';
-
-interface Credential {
-    icon: string;
-    title: string;
-    description: string;
-    stat?: string;
-}
-
-interface Partnership {
-    name: string;
-    logo: string;
-    alt: string;
-}
+import { ShieldCheck, FileCheck, Building2, Lock } from 'lucide-react';
 
 const ClinicalCredibility = () => {
-    const credentials: Credential[] = [
-        {
-            icon: 'SecurityIcon', // Custom composite icon
-            title: 'Enterprise Security',
-            description: 'ISO 27001 Certified & HIPAA Compliant for maximum data protection.',
-            stat: '100%'
-        },
-        {
-            icon: 'FileCheckIcon',
-            title: 'Research Validation',
-            description: 'Peer-reviewed studies validating our AI algorithms.',
-            stat: '15+'
-        },
-        {
-            icon: 'BuildingOffice2Icon',
-            title: 'Hospital Partners',
-            description: 'Trust by leading healthcare institutions globally.',
-            stat: '50+'
-        }
-    ];
-
-    const partnerships: Partnership[] = [
-        {
-            name: 'AIIMS Delhi',
-            logo: "https://img.rocket.new/generatedImages/rocket_gen_img_10bf31906-1764694999295.png",
-            alt: 'AIIMS Delhi medical institution logo with red cross symbol on white background'
-        },
-        {
-            name: 'Apollo Hospitals',
-            logo: "https://img.rocket.new/generatedImages/rocket_gen_img_1caca0fd5-1765188828860.png",
-            alt: 'Apollo Hospitals healthcare network logo with medical caduceus symbol'
-        },
-        {
-            name: 'Fortis Healthcare',
-            logo: "https://img.rocket.new/generatedImages/rocket_gen_img_11f99d653-1765188827488.png",
-            alt: 'Fortis Healthcare group logo with blue medical cross and modern typography'
-        },
-        {
-            name: 'Max Healthcare',
-            logo: "https://img.rocket.new/generatedImages/rocket_gen_img_1c3d41836-1765188827986.png",
-            alt: 'Max Healthcare hospital chain logo with green heart symbol and professional design'
-        }
-    ];
-
     return (
-        <section className="pt-24 pb-12 bg-background relative overflow-hidden">
+        <section className="pt-24 pb-20 bg-background relative overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 z-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#64748b 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
 
@@ -81,7 +24,7 @@ const ClinicalCredibility = () => {
                 </div>
 
                 {/* Bento Grid Layout */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24 max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                     {/* Card 1: Security (Large) */}
                     <div className="md:col-span-1 row-span-1 h-full">
                         <div className="relative h-full bg-card rounded-[2rem] p-8 border border-white/10 shadow-xl overflow-hidden group hover:-translate-y-1 transition-all duration-300">
@@ -161,56 +104,7 @@ const ClinicalCredibility = () => {
                     </div>
                 </div>
 
-                {/* Seamless Partner Ticker */}
-                <div className="relative w-full max-w-6xl mx-auto px-4">
-                    <div className="flex items-center justify-center gap-2 md:gap-4 mb-8 md:mb-12">
-                        <div className="h-px w-8 md:w-12 bg-gradient-to-r from-transparent to-purple-200" />
-                        <h3 className="text-center text-sm md:text-lg lg:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 uppercase tracking-[0.15em] md:tracking-[0.2em] whitespace-nowrap">
-                            Trusted by Industry Leaders
-                        </h3>
-                        <div className="h-px w-8 md:w-12 bg-gradient-to-l from-transparent to-purple-200" />
-                    </div>
 
-                    <div className="relative w-full overflow-hidden">
-                        <div className="flex w-max animate-scroll">
-                            {/* Original List */}
-                            <div className="flex gap-20 items-center pr-20">
-                                {partnerships.map((partner, index) => (
-                                    <div
-                                        key={`original-${index}`}
-                                        className="relative w-36 lg:w-48 transition-all duration-300 hover:scale-105 cursor-pointer opacity-80 hover:opacity-100"
-                                    >
-                                        <img
-                                            src={partner.logo}
-                                            alt={partner.alt}
-                                            className="w-full h-auto object-contain"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* Duplicated List for Seamless Loop */}
-                            <div className="flex gap-20 items-center pr-20">
-                                {partnerships.map((partner, index) => (
-                                    <div
-                                        key={`duplicate-${index}`}
-                                        className="relative w-36 lg:w-48 transition-all duration-300 hover:scale-105 cursor-pointer opacity-80 hover:opacity-100"
-                                    >
-                                        <img
-                                            src={partner.logo}
-                                            alt={partner.alt}
-                                            className="w-full h-auto object-contain"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Side Fades */}
-                        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
-                        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
-                    </div>
-                </div>
             </div>
         </section>
     );

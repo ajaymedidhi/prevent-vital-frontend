@@ -13,7 +13,6 @@ interface Program {
     image: string;
     alt: string;
     therapies: string[];
-    successRate: string;
     duration: string;
     category: 'prevention' | 'therapy';
 }
@@ -29,7 +28,6 @@ export default function DiseaseProgramsInteractive() {
             image: "https://img.rocket.new/generatedImages/rocket_gen_img_1c7fc6a7f-1764743297281.png",
             alt: 'Diabetes prevention',
             therapies: ['Yoga', 'Meditation', 'Nutrition', 'Breathwork'],
-            successRate: '87%',
             duration: '12 weeks',
             category: 'prevention'
         },
@@ -40,7 +38,6 @@ export default function DiseaseProgramsInteractive() {
             image: "https://img.rocket.new/generatedImages/rocket_gen_img_18fdc3d89-1765186858638.png",
             alt: 'Hypertension control',
             therapies: ['Meditation', 'Breathwork', 'Physiotherapy', 'Yoga'],
-            successRate: '82%',
             duration: '10 weeks',
             category: 'prevention'
         },
@@ -51,7 +48,6 @@ export default function DiseaseProgramsInteractive() {
             image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
             alt: 'Weight management',
             therapies: ['Yoga', 'Nutrition', 'Physiotherapy'],
-            successRate: '91%',
             duration: '16 weeks',
             category: 'prevention'
         },
@@ -62,7 +58,6 @@ export default function DiseaseProgramsInteractive() {
             image: "https://img.rocket.new/generatedImages/rocket_gen_img_1b56c2cc1-1764999507242.png",
             alt: 'Stress relief',
             therapies: ['Meditation', 'Breathwork', 'Yoga'],
-            successRate: '89%',
             duration: '8 weeks',
             category: 'prevention'
         },
@@ -74,7 +69,6 @@ export default function DiseaseProgramsInteractive() {
             image: "https://images.unsplash.com/photo-1544367563-12123d8965cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
             alt: 'Yoga therapy',
             therapies: ['Hatha Yoga', 'Pranayama'],
-            successRate: '95%',
             duration: '60 mins',
             category: 'therapy'
         },
@@ -85,7 +79,6 @@ export default function DiseaseProgramsInteractive() {
             image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
             alt: 'Physiotherapy',
             therapies: ['Manual Therapy', 'Exercises'],
-            successRate: '92%',
             duration: '45 mins',
             category: 'therapy'
         }

@@ -33,7 +33,7 @@ const conditions: Condition[] = [
         image: "https://images.unsplash.com/photo-1685660375327-47bcca398780",
         alt: 'Blood glucose meter with test strips on wooden table showing diabetes monitoring equipment',
         riskFactors: ['Family History', 'Obesity', 'Sedentary Lifestyle'],
-        preventionRate: '78%'
+        preventionRate: ''
     },
     {
         id: 'hypertension',
@@ -43,7 +43,7 @@ const conditions: Condition[] = [
         image: "https://images.unsplash.com/photo-1623658045230-605cb00c80d6",
         alt: 'Digital blood pressure monitor displaying readings with stethoscope on medical examination table',
         riskFactors: ['High Sodium', 'Stress', 'Age'],
-        preventionRate: '82%'
+        preventionRate: ''
     },
     {
         id: 'cardiac',
@@ -53,7 +53,7 @@ const conditions: Condition[] = [
         image: "https://img.rocket.new/generatedImages/rocket_gen_img_19c8b52ae-1765801567685.png",
         alt: 'Cardiologist examining ECG heart rhythm chart with medical equipment in modern clinic',
         riskFactors: ['Cholesterol', 'Smoking', 'Inactivity'],
-        preventionRate: '85%'
+        preventionRate: ''
     },
     {
         id: 'respiratory',
@@ -63,7 +63,7 @@ const conditions: Condition[] = [
         image: "https://img.rocket.new/generatedImages/rocket_gen_img_11b83cbcc-1764755888108.png",
         alt: 'Person practicing deep breathing exercises outdoors in fresh mountain air with clear blue sky',
         riskFactors: ['Pollution', 'Allergies', 'Smoking'],
-        preventionRate: '76%'
+        preventionRate: ''
     },
     {
         id: 'mental',
@@ -73,7 +73,7 @@ const conditions: Condition[] = [
         image: "https://img.rocket.new/generatedImages/rocket_gen_img_11552d387-1764832853014.png",
         alt: 'Peaceful woman meditating in lotus position with eyes closed in tranquil indoor setting',
         riskFactors: ['Stress', 'Sleep Issues', 'Isolation'],
-        preventionRate: '88%'
+        preventionRate: ''
     },
     {
         id: 'weight',
@@ -83,7 +83,7 @@ const conditions: Condition[] = [
         image: "https://img.rocket.new/generatedImages/rocket_gen_img_1bb8da715-1764844202208.png",
         alt: 'Athletic person jogging on outdoor trail wearing fitness tracker with healthy lifestyle concept',
         riskFactors: ['Poor Diet', 'Inactivity', 'Metabolism'],
-        preventionRate: '80%'
+        preventionRate: ''
     }
 ];
 
@@ -119,9 +119,6 @@ export const FeaturedPrograms = () => {
                                     <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
                                         <condition.icon size={20} className="text-primary-foreground" />
                                     </div>
-                                    <span className="text-sm font-semibold text-white bg-emerald-600 px-3 py-1 rounded-full">
-                                        {condition.preventionRate} Success Rate
-                                    </span>
                                 </div>
                             </div>
 

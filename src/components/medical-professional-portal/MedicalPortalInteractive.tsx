@@ -73,7 +73,6 @@ export default function MedicalPortalInteractive() {
 
     const stats = [
         { icon: 'users', label: 'Active Patients', value: '247', trend: '+12%', trendDirection: 'up' as const },
-        { icon: 'chart', label: 'Success Rate', value: '94.8%', trend: '+3.2%', trendDirection: 'up' as const },
         { icon: 'calendar', label: 'Today\'s Appointments', value: '18', trend: '-2', trendDirection: 'down' as const },
         { icon: 'medical', label: 'Avg. Risk Reduction', value: '38%', trend: '+5%', trendDirection: 'up' as const }
     ];
@@ -189,7 +188,7 @@ export default function MedicalPortalInteractive() {
             id: 1,
             name: 'Dr. Anil Mehta',
             role: 'Chief Cardiologist',
-            hospital: 'Apollo Hospitals, Mumbai',
+            hospital: 'City Medical Center, Mumbai',
             quote: 'PreventVital has transformed how I manage high-risk cardiac patients. The predictive alerts have prevented multiple emergency situations.',
             image: "https://img.rocket.new/generatedImages/rocket_gen_img_1fe03ce7b-1763294977207.png",
             alt: 'Senior Indian male doctor with gray hair wearing white coat and stethoscope'
