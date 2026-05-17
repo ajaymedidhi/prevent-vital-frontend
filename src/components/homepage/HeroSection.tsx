@@ -103,6 +103,7 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
 
                         <div className="space-y-4">
                             <motion.h1
+                                id="preventvital-hero-heading"
                                 className="text-4xl md:text-5xl lg:text-7xl font-bold text-foreground leading-[1.1] tracking-tight pb-2"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}

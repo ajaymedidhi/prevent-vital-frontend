@@ -48,9 +48,9 @@ const CustomerDashboard = () => {
 
     const PLAN_COLORS: Record<string, string> = {
         free: 'bg-gray-100 text-gray-600',
-        silver: 'bg-blue-100 text-blue-700',
-        gold: 'bg-amber-100 text-amber-700',
-        platinum: 'bg-purple-100 text-purple-700'
+        premium: 'bg-blue-100 text-blue-700',
+        pro: 'bg-amber-100 text-amber-700',
+        family: 'bg-purple-100 text-purple-700'
     };
 
     const CAT_EMOJI: Record<string, string> = {
@@ -439,53 +439,92 @@ const CustomerDashboard = () => {
                                 </Button>
                             </div>
                         ) : (
-                            <div className="divide-y divide-gray-50">
-                                {assessmentHistory.map((assessment, idx) => {
-                                    const date = new Date(assessment.completedAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
-                                    const score = assessment.results?.cvitalScore || '--';
-                                    const tierLabel = assessment.results?.cvitalTierDetails?.label || assessment.results?.cvitalTier || 'Unknown';
-                                    const color = assessment.results?.cvitalTierDetails?.color || '#3b82f6';
-                                    const ascvdRisk = assessment.results?.ascvdRisk || '--';
+                            <div>
+                                <div className="divide-y divide-gray-50">
+                                    {assessmentHistory.map((assessment, idx) => {
+                                        if (userPlan === 'free' && idx >= 1) return null;
+                                        const date = new Date(assessment.completedAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+                                        const score = assessment.results?.cvitalScore || '--';
+                                        const tierLabel = assessment.results?.cvitalTierDetails?.label || assessment.results?.cvitalTier || 'Unknown';
+                                        const color = assessment.results?.cvitalTierDetails?.color || '#3b82f6';
+                                        const ascvdRisk = assessment.results?.ascvdRisk || '--';
 
-                                    return (
-                                        <div key={assessment._id} className="p-5 hover:bg-gray-50/80 transition-colors flex items-center justify-between group">
-                                            <div className="flex items-center gap-4">
-                                                <div
-                                                    className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm shrink-0 border border-black/5"
-                                                    style={{ backgroundColor: `${color}15`, color: color }}
-                                                >
-                                                    <HeartPulse className="w-6 h-6" />
+                                        return (
+                                            <div key={assessment._id} className="p-5 hover:bg-gray-50/80 transition-colors flex items-center justify-between group">
+                                                <div className="flex items-center gap-4">
+                                                    <div
+                                                        className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm shrink-0 border border-black/5"
+                                                        style={{ backgroundColor: `${color}15`, color: color }}
+                                                    >
+                                                        <HeartPulse className="w-6 h-6" />
+                                                    </div>
+                                                    <div>
+                                                        <div className="flex items-center gap-2">
+                                                            <h4 className="text-sm font-bold text-gray-900">CVITAL™ Score</h4>
+                                                            <span
+                                                                className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full"
+                                                                style={{ backgroundColor: `${color}15`, color: color }}
+                                                            >
+                                                                {tierLabel}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
+                                                            <span className="flex items-center gap-1">
+                                                                <Clock className="w-3 h-3" /> {date}
+                                                            </span>
+                                                            <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                                                            <span>ASCVD Risk: <strong className="text-gray-700">{ascvdRisk !== '--' ? `${ascvdRisk}%` : 'N/A'}</strong></span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <div className="flex items-center gap-2">
-                                                        <h4 className="text-sm font-bold text-gray-900">CVITAL™ Score</h4>
-                                                        <span
-                                                            className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full"
-                                                            style={{ backgroundColor: `${color}15`, color: color }}
-                                                        >
-                                                            {tierLabel}
-                                                        </span>
+
+                                                <div className="flex items-center gap-6">
+                                                    <div className="text-right hidden sm:block">
+                                                        <span className="text-2xl font-black" style={{ color: color }}>{score}</span>
+                                                        <span className="text-gray-400 text-xs font-bold block -mt-1">/ 100</span>
                                                     </div>
-                                                    <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
-                                                        <span className="flex items-center gap-1">
-                                                            <Clock className="w-3 h-3" /> {date}
-                                                        </span>
-                                                        <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                                        <span>ASCVD Risk: <strong className="text-gray-700">{ascvdRisk !== '--' ? `${ascvdRisk}%` : 'N/A'}</strong></span>
-                                                    </div>
+                                                    <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-blue-600 transition-colors" />
                                                 </div>
                                             </div>
+                                        );
+                                    })}
+                                </div>
 
-                                            <div className="flex items-center gap-6">
-                                                <div className="text-right hidden sm:block">
-                                                    <span className="text-2xl font-black" style={{ color: color }}>{score}</span>
-                                                    <span className="text-gray-400 text-xs font-bold block -mt-1">/ 100</span>
+                                {/* Soft paywall for free users with more than 1 assessment */}
+                                {userPlan === 'free' && assessmentHistory.length > 1 && (
+                                    <div className="relative">
+                                        {/* Blurred ghost rows */}
+                                        <div className="divide-y divide-gray-50 blur-sm pointer-events-none select-none" aria-hidden>
+                                            {assessmentHistory.slice(1, Math.min(3, assessmentHistory.length)).map((assessment, idx) => (
+                                                <div key={idx} className="p-5 flex items-center justify-between">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 shrink-0" />
+                                                        <div className="space-y-2">
+                                                            <div className="h-3 w-32 bg-gray-200 rounded-full" />
+                                                            <div className="h-2 w-48 bg-gray-100 rounded-full" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="h-8 w-10 bg-gray-200 rounded-lg" />
                                                 </div>
-                                                <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-blue-600 transition-colors" />
-                                            </div>
+                                            ))}
                                         </div>
-                                    )
-                                })}
+                                        {/* Lock overlay */}
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-[2px] px-6 py-5 text-center">
+                                            <div className="w-10 h-10 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-3">
+                                                <Crown className="w-5 h-5" />
+                                            </div>
+                                            <p className="text-sm font-bold text-gray-900 mb-1">Score trend history is a Pro feature</p>
+                                            <p className="text-xs text-gray-500 mb-4 max-w-xs">Upgrade to see your full progress. <span className="font-semibold text-gray-700">{assessmentHistory.length - 1} more record{assessmentHistory.length - 1 > 1 ? 's' : ''} locked.</span></p>
+                                            <Button
+                                                size="sm"
+                                                onClick={() => navigate('/pricing')}
+                                                className="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl px-5 shadow-md hover:shadow-lg transition-all"
+                                            >
+                                                <Crown className="w-3.5 h-3.5 mr-1.5" /> Upgrade to Pro
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </CardContent>
@@ -700,7 +739,7 @@ const CustomerDashboard = () => {
                     <h1 className="text-3xl font-black text-gray-900 font-serif">Vital Programs</h1>
                     <p className="text-xs font-bold uppercase tracking-widest mt-1 flex items-center gap-1.5">
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${PLAN_COLORS[userPlan]}`}>
-                            {userPlan === 'free' ? '🆓' : userPlan === 'platinum' ? '💎' : '⭐'} {userPlan} Plan
+                            {userPlan === 'free' ? '🆓' : userPlan === 'family' ? '💎' : '⭐'} {userPlan} Plan
                         </span>
                     </p>
                 </div>

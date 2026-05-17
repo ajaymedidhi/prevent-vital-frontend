@@ -95,7 +95,7 @@ const Support = () => {
                             </div>
                             <div className="flex-1 bg-gray-50 p-3 rounded-xl border border-gray-100">
                                 <span className="block text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-1">Current Plan</span>
-                                <span className="text-sm font-semibold text-gray-800">Gold Enterprise</span>
+                                <span className="text-sm font-semibold text-gray-800">Pro Enterprise</span>
                                 <span className="block text-xs text-gray-500">$999/mo</span>
                             </div>
                         </div>
@@ -108,7 +108,7 @@ const Support = () => {
                             <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100  rounded-tl-sm w-full">
                                 <span className="text-xs font-bold text-gray-500 block mb-2">TechCorp Admin - 10:14 AM</span>
                                 <p className="text-sm text-gray-700 leading-relaxed">
-                                    Hello, we recently upgraded from the Silver to the Gold plan mid-month. However, our latest invoice seems to have charged us the full amount for Gold without prorating the remaining days of the Silver plan we had already paid for.
+                                    Hello, we recently upgraded from the Premium to the Pro plan mid-month. However, our latest invoice seems to have charged us the full amount for Pro without prorating the remaining days of the Premium plan we had already paid for.
                                     <br /><br />
                                     Could you please review invoice #INV-2023-149 and adjust accordingly?
                                 </p>

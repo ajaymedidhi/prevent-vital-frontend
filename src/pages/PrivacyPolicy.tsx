@@ -1,9 +1,14 @@
 import React from 'react';
 import { Shield, FileText, AlertTriangle, Lock, Activity, Globe, Scale } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const PrivacyPolicy = () => {
     return (
         <div className="min-h-screen flex flex-col bg-background">
+            <Helmet>
+                <title>Privacy Policy | PreventVital</title>
+                <meta name="description" content="Read PreventVital's Privacy Policy to understand how we collect, use, share, and protect your personal and health information." />
+            </Helmet>
             <main className="flex-grow">
                 {/* Colorful Hero Section */}
                 <section className="pt-16 md:pt-24 pb-16 md:pb-24 bg-gradient-to-br from-primary/10 via-accent/10 to-background border-b border-primary/10 relative overflow-hidden">

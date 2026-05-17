@@ -1,4 +1,5 @@
 import { Heart, Shield, Lightbulb, Users, Eye } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 const values = [
     {
@@ -31,6 +32,10 @@ const values = [
 const AboutUs = () => {
     return (
         <div className="min-h-screen flex flex-col">
+            <Helmet>
+                <title>About Us | PreventVital</title>
+                <meta name="description" content="Learn about PreventVital's mission to democratize preventive medicine in India through AI-powered technology and holistic wellness." />
+            </Helmet>
             <main className="flex-grow pt-20">
                 {/* Hero Section */}
                 <section className="section-padding bg-primary text-primary-foreground">

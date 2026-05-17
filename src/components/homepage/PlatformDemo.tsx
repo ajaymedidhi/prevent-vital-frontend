@@ -74,7 +74,7 @@ const PlatformDemo = () => {
                         </div>
 
                         <div className="mb-12 md:mb-16">
-                            <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4 md:mb-6 leading-tight">
+                            <h2 id="platform-technology" className="text-3xl md:text-5xl font-bold text-foreground mb-4 md:mb-6 leading-tight">
                                 Experience the <br className="hidden md:block" />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600">
                                     Future of Care
@@ -132,6 +132,7 @@ const PlatformDemo = () => {
                             <img
                                 src={features[activeFeature].image}
                                 alt={features[activeFeature].alt}
+                                loading="lazy"
                                 className="w-full h-full object-cover opacity-90 transition-all duration-500"
                             />
 

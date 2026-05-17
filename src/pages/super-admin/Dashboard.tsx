@@ -851,7 +851,7 @@ const SuperAdminDashboard = () => {
                                                 </div>
                                             </td>
                                             <td className="py-3 px-4 border-b border-gray-50">
-                                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${u.subscription?.plan === 'platinum' ? 'bg-purple-100 text-purple-700' : u.subscription?.plan === 'gold' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600'}`}>
+                                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${u.subscription?.plan === 'family' ? 'bg-purple-100 text-purple-700' : u.subscription?.plan === 'pro' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600'}`}>
                                                     {u.subscription?.plan || 'free'}
                                                 </span>
                                             </td>
@@ -1103,9 +1103,9 @@ const SuperAdminDashboard = () => {
                         <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Subscription Tier</label>
                         <select className="w-full border border-gray-200 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white" value={planUpdateData.plan} onChange={e => setPlanUpdateData({ ...planUpdateData, plan: e.target.value })}>
                             <option value="free">Free Tier</option>
-                            <option value="silver">Silver Tier</option>
-                            <option value="gold">Gold Tier</option>
-                            <option value="platinum">Platinum (VIP)</option>
+                            <option value="premium">Premium Tier</option>
+                            <option value="pro">Pro Tier</option>
+                            <option value="family">Family (VIP)</option>
                         </select>
                     </div>
                     <p className="text-[11px] text-gray-500 italic">Plan changes will take effect immediately for the user.</p>

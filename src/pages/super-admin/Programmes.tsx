@@ -55,7 +55,7 @@ const emptyForm = {
     title: '', description: '', category: 'hypertension', difficulty: 'Beginner',
     durationWeeks: 4, totalSessions: 12, price: 0, pricingType: 'free' as string,
     status: 'draft', targetAudience: 'all', tags: '',
-    accessiblePlans: ['free', 'silver', 'gold', 'platinum'] as string[],
+    accessiblePlans: ['free', 'premium', 'pro', 'family'] as string[],
     b2bAccessiblePlans: ['trial', 'standard', 'growth', 'enterprise'] as string[],
     enrollmentRequired: false
 };
@@ -180,7 +180,7 @@ const Programmes = () => {
             pricingType: prog.pricingType || 'free', status: prog.status,
             targetAudience: prog.targetAudience || 'all',
             tags: (prog.tags || []).join(', '),
-            accessiblePlans: prog.accessiblePlans || ['free', 'silver', 'gold', 'platinum'],
+            accessiblePlans: prog.accessiblePlans || ['free', 'premium', 'pro', 'family'],
             b2bAccessiblePlans: prog.b2bAccessiblePlans || ['trial', 'standard', 'growth', 'enterprise'],
             enrollmentRequired: prog.enrollmentRequired || false
         });
@@ -325,9 +325,9 @@ const Programmes = () => {
                         <div className="space-y-2">
                             {[
                                 { value: 'free', label: 'Free', desc: 'All users', color: 'text-gray-600' },
-                                { value: 'silver', label: 'Silver', desc: 'Basic paid', color: 'text-blue-600' },
-                                { value: 'gold', label: 'Gold', desc: 'Premium', color: 'text-amber-600' },
-                                { value: 'platinum', label: 'Platinum', desc: 'VIP', color: 'text-purple-600' },
+                                { value: 'premium', label: 'Premium', desc: 'Basic paid', color: 'text-blue-600' },
+                                { value: 'pro', label: 'Pro', desc: 'Premium', color: 'text-amber-600' },
+                                { value: 'family', label: 'Family', desc: 'VIP', color: 'text-purple-600' },
                             ].map(plan => (
                                 <label key={plan.value} className="flex items-center gap-2 cursor-pointer group">
                                     <input type="checkbox"

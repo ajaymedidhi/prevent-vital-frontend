@@ -76,7 +76,7 @@ const TestimonialSection = () => {
                             <span className="text-xs font-bold text-accent uppercase tracking-widest">Success Stories</span>
                         </div>
 
-                        <h2 className="text-4xl lg:text-5xl font-bold text-foreground leading-[1.1]">
+                        <h2 id="success-stories" className="text-4xl lg:text-5xl font-bold text-foreground leading-[1.1]">
                             Life-Changing <br />
                             <span className="text-accent">Transformations</span>
                         </h2>
@@ -115,6 +115,7 @@ const TestimonialSection = () => {
                                         <img
                                             src={testimonials[currentIndex].image}
                                             alt={testimonials[currentIndex].alt}
+                                            loading="lazy"
                                             className="w-full h-full rounded-2xl object-cover shadow-lg"
                                         />
                                         <div className="absolute -bottom-3 -right-3 w-10 h-10 bg-accent rounded-full flex items-center justify-center shadow-md border-2 border-background">

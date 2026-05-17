@@ -8,7 +8,7 @@ import { Product } from '@/store/shopSlice';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@/store/shopSlice';
 import { toast } from "sonner";
-import { ShoppingCart, Eye, Heart, Star } from 'lucide-react';
+import { ShoppingCart, Eye, Heart, Star, HeartPulse } from 'lucide-react';
 
 interface ProductCardProps {
     product: Product;
@@ -28,6 +28,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, userRegion }) => {
     };
 
     const badge = getBadge();
+
+    const getHealthBenefitTag = (): { label: string; color: string } => {
+        switch (product.category) {
+            case 'wearables': return { label: '❤️ Supports Heart Health', color: 'text-rose-600 bg-rose-50 border-rose-100' };
+            case 'test_kits': return { label: '🔬 Know Your Risk Profile', color: 'text-blue-600 bg-blue-50 border-blue-100' };
+            case 'supplements': return { label: '💊 Supports Metabolic Health', color: 'text-emerald-600 bg-emerald-50 border-emerald-100' };
+            default: return { label: '🛡️ Supports Wellness', color: 'text-purple-600 bg-purple-50 border-purple-100' };
+        }
+    };
+
+    const healthTag = getHealthBenefitTag();
 
     return (
         <Card className="group relative border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 bg-white rounded-xl overflow-hidden flex flex-col h-full">
@@ -84,10 +95,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, userRegion }) => {
                     </h3>
                 </Link>
 
-                <div className="flex items-center gap-1 mb-4">
+                <div className="flex items-center gap-1 mb-2">
                     <Star size={12} className="text-yellow-400 fill-yellow-400" />
                     <span className="text-xs font-medium text-gray-600">4.8</span>
                 </div>
+
+                <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border mb-3 ${healthTag.color}`}>
+                    {healthTag.label}
+                </span>
 
                 <div className="mt-auto flex items-center justify-between">
                     <div className="flex flex-col">

@@ -90,7 +90,7 @@ const ConditionCards = () => {
             <div className="container mx-auto px-6 md:px-16">
                 <div className="text-center mb-16">
                     <span className="text-primary font-bold tracking-widest uppercase text-xs mb-4 block">Targeted Programs</span>
-                    <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4 tracking-tight pb-1">
+                    <h2 id="preventive-health-conditions" className="text-3xl lg:text-4xl font-bold text-foreground mb-4 tracking-tight pb-1">
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600">
                             Condition-Specific Prevention
                         </span>
@@ -115,6 +115,7 @@ const ConditionCards = () => {
                                     <img
                                         src={condition.image}
                                         alt={condition.alt}
+                                        loading="lazy"
                                         className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                                     />
 

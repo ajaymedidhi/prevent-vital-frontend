@@ -142,7 +142,7 @@ const PricingTable = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {plans.map((plan) => (
-                    <Card key={plan.id} className={`relative flex flex-col ${plan.id === 'gold' ? 'border-primary border-2 shadow-xl scale-105 z-10' : ''}`}>
+                    <Card key={plan.id} className={`relative flex flex-col ${plan.id === 'pro' ? 'border-primary border-2 shadow-xl scale-105 z-10' : ''}`}>
                         {(plan as any).isPopular && (
                             <div className="absolute top-0 right-0 transform translate-x-2 -translate-y-2">
                                 <Badge className="bg-yellow-500 text-black px-3 py-1">Best Value</Badge>
@@ -167,7 +167,7 @@ const PricingTable = () => {
                         </CardContent>
                         <CardFooter>
                             <Button
-                                className={`w-full ${plan.id === 'gold' ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black' : ''}`}
+                                className={`w-full ${plan.id === 'pro' ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black' : ''}`}
                                 onClick={() => handleSubscribe(plan)}
                             >
                                 {plan.monthlyPrice === 0 ? 'Current Plan' : 'Upgrade Now'}

@@ -1,9 +1,14 @@
 import React from 'react';
 import { Scale, Shield, AlertTriangle, FileText, Activity, HeartPulse } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const TermsAndConditions = () => {
     return (
         <div className="min-h-screen flex flex-col bg-background">
+            <Helmet>
+                <title>Terms & Conditions | PreventVital</title>
+                <meta name="description" content="Read PreventVital's Terms & Conditions to understand the legal agreements and operational guidelines for using our platform." />
+            </Helmet>
             <main className="flex-grow">
                 {/* Colorful Hero Section */}
                 <section className="pt-16 md:pt-24 pb-16 md:pb-24 bg-gradient-to-tr from-accent/10 via-primary/5 to-background border-b border-primary/10 relative overflow-hidden">

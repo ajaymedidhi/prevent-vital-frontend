@@ -376,7 +376,7 @@ const UserManagement = () => {
                                 <h5 className="text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100 pb-2">Subscription & Access</h5>
                                 <div>
                                     <p className="text-[10px] text-gray-400 font-bold uppercase mb-0.5">Plan Level</p>
-                                    <span className={`px-2 py-1 rounded-lg text-xs font-bold uppercase ${selectedUser.subscription?.plan === 'platinum' ? 'bg-purple-100 text-purple-700' : selectedUser.subscription?.plan === 'gold' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600'}`}>
+                                    <span className={`px-2 py-1 rounded-lg text-xs font-bold uppercase ${selectedUser.subscription?.plan === 'family' ? 'bg-purple-100 text-purple-700' : selectedUser.subscription?.plan === 'pro' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600'}`}>
                                         {selectedUser.subscription?.plan || 'Free'}
                                     </span>
                                 </div>

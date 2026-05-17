@@ -328,7 +328,7 @@ export default function TherapeuticInteractive() {
             name: 'Galaxy Watch',
             brand: 'Samsung',
             image: "https://images.unsplash.com/photo-1597923709001-5a061c88418d",
-            alt: 'Silver Samsung smartwatch with circular display showing fitness data',
+            alt: 'Premium Samsung smartwatch with circular display showing fitness data',
             connected: false,
             lastSync: 'Not connected'
         },

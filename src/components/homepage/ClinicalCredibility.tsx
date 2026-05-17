@@ -15,7 +15,7 @@ const ClinicalCredibility = () => {
                         <ShieldCheck size={16} className="text-primary" />
                         <span className="text-sm font-bold text-primary uppercase tracking-widest">Clinical Excellence</span>
                     </div>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 md:mb-6 tracking-tight">
+                    <h2 id="clinical-credibility" className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 md:mb-6 tracking-tight">
                         Built on <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600">Trust & Science</span>
                     </h2>
                     <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4 md:px-0">

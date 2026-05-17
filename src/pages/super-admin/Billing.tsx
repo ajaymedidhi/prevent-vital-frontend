@@ -18,9 +18,9 @@ const PLAN_METADATA: Record<string, { label: string; color: string; icon: any }>
     premium: { label: 'Premium', color: 'purple', icon: Crown },
     // B2C
     free: { label: 'Free', color: 'gray', icon: Star },
-    silver: { label: 'Silver', color: 'slate', icon: Shield },
-    gold: { label: 'Gold', color: 'amber', icon: Zap },
-    platinum: { label: 'Platinum', color: 'purple', icon: Crown },
+    premium: { label: 'Premium', color: 'slate', icon: Shield },
+    pro: { label: 'Pro', color: 'amber', icon: Zap },
+    family: { label: 'Family', color: 'purple', icon: Crown },
 };
 
 const planBadge = (planId: string) => {

@@ -29,7 +29,7 @@ const integrations: Integration[] = [
         category: 'Wearable Device',
         description: 'Advanced health metrics including ECG and blood oxygen monitoring',
         image: "https://img.rocket.new/generatedImages/rocket_gen_img_1daf25bf1-1764679076102.png",
-        alt: 'Silver Apple Watch on wrist showing health app with heart rate and activity rings',
+        alt: 'Premium Apple Watch on wrist showing health app with heart rate and activity rings',
         status: 'active',
         capabilities: ['ECG', 'Blood Oxygen', 'Fall Detection', 'Workout Tracking']
     },

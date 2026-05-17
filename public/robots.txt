@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://preventvital.com/sitemap.xml

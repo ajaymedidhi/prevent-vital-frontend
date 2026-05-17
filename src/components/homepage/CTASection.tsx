@@ -18,7 +18,7 @@ const CTASection = () => {
                         <span className="text-sm font-semibold text-white tracking-wide">Start Your Prevention Journey</span>
                     </div>
 
-                    <h2 className="text-4xl lg:text-6xl font-bold text-white mb-8 leading-tight tracking-tight">
+                    <h2 id="join-preventvital" className="text-4xl lg:text-6xl font-bold text-white mb-8 leading-tight tracking-tight">
                         Take Control of Your <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200">
                             Health Future Today
