@@ -15,7 +15,7 @@ interface PartnershipHeroProps {
 
 const PartnershipHero = ({ className = '' }: PartnershipHeroProps) => {
     return (
-        <section className={`relative bg-gradient-to-br from-primary/5 via-blue-500/5 to-cyan-500/5 py-20 lg:py-28 ${className}`}>
+        <section className={`relative bg-gradient-to-br from-primary/5 via-blue-500/5 to-cyan-500/5 py-12 lg:py-20 ${className}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center max-w-4xl mx-auto animate-fade-in-up">
                     <div className="inline-flex items-center space-x-2 px-4 py-2 bg-primary/10 rounded-full mb-6">

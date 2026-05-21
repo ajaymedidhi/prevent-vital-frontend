@@ -11,8 +11,8 @@ export const Hero = () => {
         display: "grid",
         placeItems: "center",
         /* Fluid top padding to clear the sticky header on any screen size */
-        paddingTop: "clamp(5rem, 8vw, 7rem)",
-        paddingBottom: "clamp(3rem, 6vw, 5rem)",
+        paddingTop: "clamp(2.5rem, 2rem + 3vw, 5rem)",
+        paddingBottom: "clamp(2.5rem, 2rem + 3.5vw, 5rem)",
       }}
     >
       {/* Base gradient background */}

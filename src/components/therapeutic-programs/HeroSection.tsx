@@ -13,7 +13,7 @@ export default function HeroSection({ className = '' }: HeroSectionProps) {
                 <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
             </div>
 
-            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
                     <div className="space-y-6 animate-fade-in-up">
                         <div className="inline-flex items-center space-x-2 px-4 py-2 bg-purple-100 dark:bg-purple-900/30 rounded-full">

@@ -12,7 +12,7 @@ const stats = [
 const CTASection = () => {
   return (
     <section
-      className="py-20 md:py-28 relative overflow-hidden"
+      className="section-padding relative overflow-hidden"
       style={{ background: 'var(--gradient-health)' }}
       aria-labelledby="cta-heading"
     >
@@ -26,8 +26,10 @@ const CTASection = () => {
       />
 
       {/* Soft radial glow */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-white/5 rounded-full blur-[80px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[80px] pointer-events-none" />
+      <div className="absolute top-0 left-1/4 rounded-full blur-[80px] pointer-events-none bg-white/5"
+        style={{ width: 'clamp(16rem, 36vw, 36rem)', height: 'clamp(16rem, 36vw, 36rem)' }} />
+      <div className="absolute bottom-0 right-1/4 rounded-full blur-[80px] pointer-events-none bg-accent/10"
+        style={{ width: 'clamp(14rem, 28vw, 28rem)', height: 'clamp(14rem, 28vw, 28rem)' }} />
 
       <div className="container-wide relative z-10">
         <div className="max-w-3xl mx-auto text-center space-y-8">
@@ -41,7 +43,7 @@ const CTASection = () => {
           {/* Headline */}
           <h2
             id="cta-heading"
-            className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white leading-[1.15] tracking-tight"
+            className="text-fluid-h1 font-semibold text-white leading-[1.15] tracking-tight"
           >
             Take Control of Your{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-emerald-200">
@@ -50,7 +52,7 @@ const CTASection = () => {
           </h2>
 
           {/* Subtext */}
-          <p className="text-base md:text-lg text-white/65 max-w-xl mx-auto leading-relaxed">
+          <p className="text-fluid-lg text-white/65 max-w-xl mx-auto leading-relaxed">
             Join thousands of users who have transformed their health with AI-powered preventive care.
           </p>
 
@@ -83,7 +85,7 @@ const CTASection = () => {
                 <div className="flex justify-center mb-2">
                   <Icon size={16} className="text-white/40" />
                 </div>
-                <div className="text-2xl md:text-3xl font-bold text-white">{value}</div>
+                <div className="text-fluid-3xl font-bold text-white">{value}</div>
                 <div className="text-xs font-medium text-white/50 uppercase tracking-wider">{label}</div>
               </div>
             ))}

@@ -34,11 +34,12 @@ const cards = [
 ];
 
 const ClinicalCredibility = () => (
-  <section className="pt-20 pb-16 md:pt-24 md:pb-20 bg-background relative overflow-hidden">
+  <section className="section-padding bg-background relative overflow-hidden">
     {/* Background */}
     <div className="absolute inset-0 z-0 opacity-[0.025]"
       style={{ backgroundImage: 'radial-gradient(hsl(var(--primary)) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] rounded-full blur-[100px] pointer-events-none bg-primary/5" />
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px] pointer-events-none bg-primary/5"
+      style={{ width: 'clamp(18rem, 40vw, 34rem)', height: 'clamp(18rem, 40vw, 34rem)' }} />
 
     <div className="container-wide relative z-10">
 
@@ -50,12 +51,12 @@ const ClinicalCredibility = () => (
         </div>
         <h2
           id="clinical-credibility"
-          className="text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground tracking-tight text-balance"
+          className="text-fluid-h1 font-semibold text-foreground tracking-tight text-balance"
         >
           Built on{' '}
           <span className="gradient-text-soft">Trust & Science</span>
         </h2>
-        <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+        <p className="text-fluid-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
           Clinically validated by top institutions and secured by world-class standards.
         </p>
       </div>
@@ -77,7 +78,7 @@ const ClinicalCredibility = () => (
             </div>
 
             <div className="mt-8 pt-6 border-t border-border/60">
-              <div className={`text-3xl md:text-4xl font-bold ${statColor}`}>{stat}</div>
+              <div className={`text-fluid-4xl font-bold ${statColor}`}>{stat}</div>
               <div className="text-xs font-medium text-muted-foreground mt-1 uppercase tracking-wider">{statLabel}</div>
             </div>
           </div>

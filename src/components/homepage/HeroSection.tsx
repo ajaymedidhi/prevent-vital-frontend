@@ -308,7 +308,7 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
   return (
     <section
       className={`relative w-full overflow-hidden bg-background ${className}`}
-      style={{ minHeight: 'clamp(680px, 85svh, 900px)' }}
+      style={{ minHeight: 'clamp(620px, 80svh, 860px)' }}
       aria-labelledby="hero-heading"
     >
       {/* ── Background layers ── */}
@@ -343,8 +343,8 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
       <div
         className="relative z-10 container-wide w-full h-full"
         style={{
-          paddingTop:    'clamp(4.5rem, 9vw, 7.5rem)',
-          paddingBottom: 'clamp(3rem,   6vw, 5rem)',
+          paddingTop:    'clamp(2.5rem, 2rem + 3vw, 5rem)',
+          paddingBottom: 'clamp(3rem, 2rem + 4vw, 6rem)',
           display: 'grid',
           alignItems: 'center',
           minHeight: 'inherit',

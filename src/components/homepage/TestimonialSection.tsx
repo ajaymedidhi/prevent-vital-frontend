@@ -58,7 +58,7 @@ const TestimonialSection = () => {
     const handleNext = () => setCurrentIndex((p) => (p === testimonials.length - 1 ? 0 : p + 1));
 
     return (
-        <section className="py-24 bg-section-alt/40 relative overflow-hidden">
+        <section className="section-padding bg-section-alt/40 relative overflow-hidden">
             {/* Background pattern */}
             <div
                 className="absolute inset-0 opacity-[0.025] pointer-events-none"
@@ -72,7 +72,7 @@ const TestimonialSection = () => {
                         <Star size={13} className="text-accent fill-accent" />
                         <span className="text-xs font-bold text-accent uppercase tracking-widest">Success Stories</span>
                     </div>
-                    <h2 className="text-3xl md:text-4xl font-semibold text-foreground leading-tight tracking-tight mb-3">
+                    <h2 className="text-fluid-4xl font-semibold text-foreground leading-tight tracking-tight mb-3">
                         Life-Changing{' '}
                         <span className="gradient-text-soft">Transformations</span>
                     </h2>

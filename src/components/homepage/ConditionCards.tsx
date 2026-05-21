@@ -93,13 +93,13 @@ const ConditionCards = () => {
     };
 
     return (
-        <section className="py-24 bg-section-alt/30">
-            <div className="container mx-auto px-6 md:px-16">
+        <section className="section-padding bg-section-alt/30">
+            <div className="container-wide">
                 <div className="text-center mb-16">
                     <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-primary/6 border border-primary/15 rounded-full mb-5">
                         <span className="text-xs font-bold text-primary uppercase tracking-widest">Targeted Programs</span>
                     </div>
-                    <h2 id="preventive-health-conditions" className="text-3xl lg:text-4xl font-bold text-foreground mb-4 tracking-tight">
+                    <h2 id="preventive-health-conditions" className="text-fluid-4xl font-bold text-foreground mb-4 tracking-tight">
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-800 to-wellness-600">
                             Condition-Specific Prevention
                         </span>

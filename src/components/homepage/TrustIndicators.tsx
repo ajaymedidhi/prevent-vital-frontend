@@ -8,7 +8,7 @@ const indicators = [
 ];
 
 const TrustIndicators = () => (
-  <section className="py-14 md:py-20 bg-background relative z-30">
+  <section className="section-padding-sm bg-background relative z-30">
     {/* Subtle top divider gradient */}
     <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
@@ -28,10 +28,10 @@ const TrustIndicators = () => (
             {/* Subtle top accent line */}
             <div className={`absolute top-0 inset-x-0 h-0.5 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${bg}`} />
 
-            <div className={`w-13 h-13 w-[52px] h-[52px] ${bg} ${ring} ring-1 ${color} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
+            <div className={`w-12 h-12 ${bg} ${ring} ring-1 ${color} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
               <Icon size={24} strokeWidth={2} />
             </div>
-            <div className="text-2xl lg:text-3xl font-bold text-foreground mb-1.5 tracking-tight">
+            <div className="text-fluid-3xl font-bold text-foreground mb-1.5 tracking-tight">
               {value}
             </div>
             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">

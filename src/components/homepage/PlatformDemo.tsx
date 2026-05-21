@@ -63,8 +63,8 @@ const PlatformDemo = () => {
     };
 
     return (
-        <section className="py-20 lg:py-28 bg-background overflow-hidden">
-            <div className="container mx-auto px-6 md:px-16">
+        <section className="section-padding bg-background overflow-hidden">
+            <div className="container-wide">
                 <div className="flex flex-col lg:flex-row gap-16 items-center">
                     {/* Content Side */}
                     <div className="w-full lg:w-5/12 space-y-8 animate-fade-in-left">
@@ -73,14 +73,14 @@ const PlatformDemo = () => {
                             <span className="text-xs font-bold text-primary uppercase tracking-widest">Platform Technology</span>
                         </div>
 
-                        <div className="mb-12 md:mb-16">
-                            <h2 id="platform-technology" className="text-3xl md:text-5xl font-bold text-foreground mb-4 md:mb-6 leading-tight">
+                        <div className="mb-fluid-12">
+                            <h2 id="platform-technology" className="text-fluid-h1 font-bold text-foreground mb-4 leading-tight">
                                 Experience the <br className="hidden md:block" />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-800 to-wellness-600">
                                     Future of Care
                                 </span>
                             </h2>
-                            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+                            <p className="text-fluid-xl text-muted-foreground leading-relaxed">
                                 Our AI-powered platform transforms raw health data into actionable, life-saving insights with clinical precision.
                             </p>
                         </div>
