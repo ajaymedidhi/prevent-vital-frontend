@@ -51,7 +51,7 @@ const ClinicalCredibility = () => (
         </div>
         <h2
           id="clinical-credibility"
-          className="text-fluid-h1 font-semibold text-foreground tracking-tight text-balance"
+          className="text-fluid-4xl font-semibold text-foreground tracking-tight text-balance"
         >
           Built on{' '}
           <span className="gradient-text-soft">Trust & Science</span>

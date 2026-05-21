@@ -41,8 +41,8 @@
     /* ── Fluid Container & Section Spacing ── */
     /* Calibrated 375px→1440px: matches original px-5 (20px) mobile, px-8 (32px) desktop */
     --container-px:   clamp(1.25rem, 0.875rem + 1.5625vw, 2rem);
-    --section-py:     clamp(3.5rem, 2.5rem + 4.5vw, 6.5rem);
-    --section-py-sm:  clamp(2.5rem, 2rem + 3vw, 5rem);
+    --section-py:     clamp(2rem, 1.25rem + 3vw, 4rem);
+    --section-py-sm:  clamp(1.25rem, 0.75rem + 2vw, 2.5rem);
 
     /* Secondary: Soft Blue-Grey — Calm, Balance */
     --secondary: 214 25% 96%;

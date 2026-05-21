@@ -15,8 +15,11 @@ import {
     Video,
     UserPlus,
     FileBarChart,
-    FileText
+    FileText,
+    ArrowRight,
+    Sparkles,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface Patient {
     id: number;
@@ -72,195 +75,135 @@ export default function MedicalPortalInteractive() {
     }, []);
 
     const stats = [
-        { icon: 'users', label: 'Active Patients', value: '247', trend: '+12%', trendDirection: 'up' as const },
-        { icon: 'calendar', label: 'Today\'s Appointments', value: '18', trend: '-2', trendDirection: 'down' as const },
-        { icon: 'medical', label: 'Avg. Risk Reduction', value: '38%', trend: '+5%', trendDirection: 'up' as const }
+        { icon: 'users',    label: 'Active Patients',        value: '247', trend: '+12%', trendDirection: 'up'   as const },
+        { icon: 'calendar', label: "Today's Appointments",   value: '18',  trend: '-2',   trendDirection: 'down' as const },
+        { icon: 'medical',  label: 'Avg. Risk Reduction',    value: '38%', trend: '+5%',  trendDirection: 'up'   as const },
     ];
 
     const patients: Patient[] = [
-        {
-            id: 1,
-            name: 'Rajesh Kumar',
-            age: 52,
-            condition: 'Type 2 Diabetes',
-            riskLevel: 'medium',
-            lastVisit: '15 Dec 2025',
-            nextAppointment: '22 Dec 2025',
-            image: "https://img.rocket.new/generatedImages/rocket_gen_img_120b5a424-1764871012824.png",
-            alt: 'Middle-aged Indian man with gray hair wearing blue shirt smiling at camera'
-        },
-        {
-            id: 2,
-            name: 'Priya Sharma',
-            age: 45,
-            condition: 'Hypertension',
-            riskLevel: 'low',
-            lastVisit: '18 Dec 2025',
-            nextAppointment: '25 Dec 2025',
-            image: "https://img.rocket.new/generatedImages/rocket_gen_img_1a6cc7b76-1763300209811.png",
-            alt: 'Indian woman in her forties with long black hair wearing white coat in medical setting'
-        },
-        {
-            id: 3,
-            name: 'Amit Patel',
-            age: 58,
-            condition: 'Cardiac Risk',
-            riskLevel: 'high',
-            lastVisit: '19 Dec 2025',
-            nextAppointment: '20 Dec 2025',
-            image: "https://img.rocket.new/generatedImages/rocket_gen_img_18160d972-1763296688320.png",
-            alt: 'Senior Indian man with glasses and gray beard wearing formal attire'
-        },
-        {
-            id: 4,
-            name: 'Sneha Reddy',
-            age: 38,
-            condition: 'Weight Management',
-            riskLevel: 'low',
-            lastVisit: '17 Dec 2025',
-            nextAppointment: '24 Dec 2025',
-            image: "https://img.rocket.new/generatedImages/rocket_gen_img_14e479cba-1763300676390.png",
-            alt: 'Young Indian woman with shoulder-length hair smiling in casual attire'
-        }
+        { id: 1, name: 'Rajesh Kumar',  age: 52, condition: 'Type 2 Diabetes',   riskLevel: 'medium', lastVisit: '15 Dec 2025', nextAppointment: '22 Dec 2025', image: "https://img.rocket.new/generatedImages/rocket_gen_img_120b5a424-1764871012824.png",  alt: 'Middle-aged Indian man' },
+        { id: 2, name: 'Priya Sharma',  age: 45, condition: 'Hypertension',       riskLevel: 'low',    lastVisit: '18 Dec 2025', nextAppointment: '25 Dec 2025', image: "https://img.rocket.new/generatedImages/rocket_gen_img_1a6cc7b76-1763300209811.png",  alt: 'Indian woman in white coat' },
+        { id: 3, name: 'Amit Patel',    age: 58, condition: 'Cardiac Risk',       riskLevel: 'high',   lastVisit: '19 Dec 2025', nextAppointment: '20 Dec 2025', image: "https://img.rocket.new/generatedImages/rocket_gen_img_18160d972-1763296688320.png",  alt: 'Senior Indian man' },
+        { id: 4, name: 'Sneha Reddy',   age: 38, condition: 'Weight Management',  riskLevel: 'low',    lastVisit: '17 Dec 2025', nextAppointment: '24 Dec 2025', image: "https://img.rocket.new/generatedImages/rocket_gen_img_14e479cba-1763300676390.png",  alt: 'Young Indian woman' },
     ];
 
     const appointments: Appointment[] = [
-        { id: 1, patientName: 'Rajesh Kumar', time: '09:00 AM', type: 'Follow-up', status: 'scheduled' },
-        { id: 2, patientName: 'Priya Sharma', time: '10:30 AM', type: 'Consultation', status: 'in-progress' },
-        { id: 3, patientName: 'Amit Patel', time: '11:45 AM', type: 'Emergency', status: 'scheduled' },
-        { id: 4, patientName: 'Sneha Reddy', time: '02:00 PM', type: 'Routine Check', status: 'scheduled' },
-        { id: 5, patientName: 'Vikram Singh', time: '03:30 PM', type: 'Telemedicine', status: 'scheduled' }
+        { id: 1, patientName: 'Rajesh Kumar',  time: '09:00 AM', type: 'Follow-up',     status: 'scheduled'   },
+        { id: 2, patientName: 'Priya Sharma',  time: '10:30 AM', type: 'Consultation',  status: 'in-progress' },
+        { id: 3, patientName: 'Amit Patel',    time: '11:45 AM', type: 'Emergency',     status: 'scheduled'   },
+        { id: 4, patientName: 'Sneha Reddy',   time: '02:00 PM', type: 'Routine Check', status: 'scheduled'   },
+        { id: 5, patientName: 'Vikram Singh',  time: '03:30 PM', type: 'Telemedicine',  status: 'scheduled'   },
     ];
 
     const features: Feature[] = [
-        {
-            icon: 'ChartBarIcon',
-            title: 'AI-Powered Risk Assessment',
-            description: 'Advanced predictive analytics identify patient risks before symptoms appear, enabling proactive intervention strategies.',
-            color: 'primary'
-        },
-        {
-            icon: 'DevicePhoneMobileIcon',
-            title: 'Real-Time Monitoring',
-            description: 'Continuous health data from wearables provides instant alerts for critical changes in patient vitals.',
-            color: 'success'
-        },
-        {
-            icon: 'DocumentTextIcon',
-            title: 'EHR Integration',
-            description: 'Seamless connectivity with existing electronic health records ensures comprehensive patient history access.',
-            color: 'accent'
-        },
-        {
-            icon: 'VideoCameraIcon',
-            title: 'Telemedicine Suite',
-            description: 'Secure video consultations with integrated prescription management and follow-up scheduling.',
-            color: 'trust'
-        }
+        { icon: 'ChartBarIcon',          title: 'AI-Powered Risk Assessment', description: 'Advanced predictive analytics identify patient risks before symptoms appear, enabling proactive intervention strategies.', color: 'primary' },
+        { icon: 'DevicePhoneMobileIcon', title: 'Real-Time Monitoring',       description: 'Continuous health data from wearables provides instant alerts for critical changes in patient vitals.',                     color: 'success' },
+        { icon: 'DocumentTextIcon',      title: 'EHR Integration',            description: 'Seamless connectivity with existing electronic health records ensures comprehensive patient history access.',               color: 'accent'  },
+        { icon: 'VideoCameraIcon',       title: 'Telemedicine Suite',         description: 'Secure video consultations with integrated prescription management and follow-up scheduling.',                               color: 'trust'   },
     ];
 
     const research: Research[] = [
-        {
-            id: 1,
-            title: 'AI-Driven Diabetes Prevention: A 5-Year Longitudinal Study',
-            journal: 'Indian Journal of Medical Research',
-            date: 'Nov 2025',
-            category: 'Diabetes'
-        },
-        {
-            id: 2,
-            title: 'Predictive Analytics in Cardiac Risk Assessment: Clinical Validation',
-            journal: 'Journal of Preventive Cardiology',
-            date: 'Oct 2025',
-            category: 'Cardiology'
-        },
-        {
-            id: 3,
-            title: 'Integration of Yoga Therapy with Digital Health Monitoring',
-            journal: 'Complementary Medicine Research',
-            date: 'Sep 2025',
-            category: 'Holistic Care'
-        }
+        { id: 1, title: 'AI-Driven Diabetes Prevention: A 5-Year Longitudinal Study',              journal: 'Indian Journal of Medical Research',    date: 'Nov 2025', category: 'Diabetes'     },
+        { id: 2, title: 'Predictive Analytics in Cardiac Risk Assessment: Clinical Validation',    journal: 'Journal of Preventive Cardiology',      date: 'Oct 2025', category: 'Cardiology'   },
+        { id: 3, title: 'Integration of Yoga Therapy with Digital Health Monitoring',             journal: 'Complementary Medicine Research',       date: 'Sep 2025', category: 'Holistic Care' },
     ];
 
     const testimonials: Testimonial[] = [
-        {
-            id: 1,
-            name: 'Dr. Anil Mehta',
-            role: 'Chief Cardiologist',
-            hospital: 'City Medical Center, Mumbai',
-            quote: 'PreventVital has transformed how I manage high-risk cardiac patients. The predictive alerts have prevented multiple emergency situations.',
-            image: "https://img.rocket.new/generatedImages/rocket_gen_img_1fe03ce7b-1763294977207.png",
-            alt: 'Senior Indian male doctor with gray hair wearing white coat and stethoscope'
-        },
-        {
-            id: 2,
-            name: 'Dr. Kavita Desai',
-            role: 'Endocrinologist',
-            hospital: 'Fortis Healthcare, Delhi',
-            quote: 'The AI-powered insights help me personalize diabetes management plans with unprecedented precision. Patient outcomes have improved dramatically.',
-            image: "https://img.rocket.new/generatedImages/rocket_gen_img_100d9dcb9-1764892974318.png",
-            alt: 'Indian female doctor with long black hair in white medical coat holding tablet'
-        }
+        { id: 1, name: 'Dr. Anil Mehta',  role: 'Chief Cardiologist',  hospital: 'City Medical Center, Mumbai',  quote: 'PreventVital has transformed how I manage high-risk cardiac patients. The predictive alerts have prevented multiple emergency situations.', image: "https://img.rocket.new/generatedImages/rocket_gen_img_1fe03ce7b-1763294977207.png", alt: 'Senior Indian male doctor' },
+        { id: 2, name: 'Dr. Kavita Desai', role: 'Endocrinologist',    hospital: 'Fortis Healthcare, Delhi',     quote: 'The AI-powered insights help me personalize diabetes management plans with unprecedented precision. Patient outcomes have improved dramatically.',  image: "https://img.rocket.new/generatedImages/rocket_gen_img_100d9dcb9-1764892974318.png", alt: 'Indian female doctor' },
     ];
 
-    const handleViewPatientDetails = (id: number) => {
-        alert(`Opening detailed records for Patient ID: ${id}`);
-    };
-
-    const handleManageAppointment = (id: number) => {
-        alert(`Managing appointment ID: ${id}`);
-    };
+    const handleViewPatientDetails = (id: number) => alert(`Opening detailed records for Patient ID: ${id}`);
+    const handleManageAppointment  = (id: number) => alert(`Managing appointment ID: ${id}`);
 
     if (!isReady) {
         return (
-            <div className="min-h-screen bg-slate-50 pt-24 pb-16 px-4">
-                <div className="max-w-7xl mx-auto">
-                    {/* Skeleton matching the layout */}
-                    <div className="animate-pulse space-y-8">
-                        <div className="h-12 bg-slate-200 rounded-lg w-2/3"></div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {[1, 2, 3, 4].map((i) => (
-                                <div key={i} className="h-32 bg-slate-200 rounded-xl"></div>
-                            ))}
-                        </div>
+            <div className="min-h-screen bg-background pt-24 pb-16 px-4">
+                <div className="container-wide animate-pulse space-y-8">
+                    <div className="h-12 bg-muted rounded-lg w-2/3" />
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {[1, 2, 3].map((i) => <div key={i} className="h-32 bg-muted rounded-xl" />)}
                     </div>
                 </div>
             </div>
         );
     }
 
-    const TabIcon = ({ icon, className }: { icon: string, className?: string }) => {
+    const TabIcon = ({ icon, className }: { icon: string; className?: string }) => {
         switch (icon) {
-            case 'HomeIcon': return <Home size={18} className={className} />;
-            case 'UserGroupIcon': return <Users size={18} className={className} />;
-            case 'CalendarIcon': return <Calendar size={18} className={className} />;
+            case 'HomeIcon':        return <Home        size={18} className={className} />;
+            case 'UserGroupIcon':   return <Users       size={18} className={className} />;
+            case 'CalendarIcon':    return <Calendar    size={18} className={className} />;
             case 'AcademicCapIcon': return <GraduationCap size={18} className={className} />;
             default: return null;
         }
-    }
+    };
+
+    const tabs = [
+        { id: 'dashboard',   label: 'Dashboard',            icon: 'HomeIcon'        },
+        { id: 'patients',    label: 'Patient Management',   icon: 'UserGroupIcon'   },
+        { id: 'appointments',label: 'Appointments',         icon: 'CalendarIcon'    },
+        { id: 'research',    label: 'Research & Education', icon: 'AcademicCapIcon' },
+    ];
 
     return (
-        <div className="min-h-screen bg-slate-50/50">
-            {/* Hero Section */}
-            <section className="pt-10 lg:pt-14 pb-12 px-4 bg-white border-b border-slate-100">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-12 animate-fade-in-up">
-                        <div className="inline-flex items-center space-x-2 px-3 py-1 bg-blue-50 rounded-full mb-6 border border-blue-100/50">
-                            <ShieldCheck size={16} className="text-blue-600" />
-                            <span className="text-xs font-bold text-blue-700 tracking-wider uppercase">Medical Professional Portal</span>
+        <div className="min-h-screen bg-background">
+
+            {/* ── HERO ── */}
+            <section
+                className="relative w-full overflow-hidden border-b border-border"
+                style={{ paddingTop: 'clamp(3rem, 2rem + 4vw, 6rem)', paddingBottom: 'clamp(2rem, 1.5rem + 3vw, 4rem)' }}
+                aria-labelledby="medical-portal-heading"
+            >
+                <div className="absolute inset-0 healthcare-mesh" />
+                <div
+                    className="absolute inset-0 opacity-[0.025]"
+                    style={{
+                        backgroundImage: `
+                            linear-gradient(hsl(var(--primary)) 1px, transparent 1px),
+                            linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)
+                        `,
+                        backgroundSize: '60px 60px',
+                    }}
+                />
+                <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 60%, hsl(var(--primary) / 0.08) 0%, transparent 70%)' }}
+                />
+
+                <div className="container-wide relative z-10">
+                    <motion.div
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                        className="text-center space-y-6 mb-12"
+                    >
+                        <div className="flex justify-center">
+                            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-border rounded-full shadow-xs">
+                                <Sparkles size={13} className="text-accent" />
+                                <span className="text-xs font-semibold text-primary tracking-wide">Medical Professional Portal</span>
+                            </div>
                         </div>
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight tracking-tight">
-                            Empower Your Practice with<br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-600">AI-Driven Patient Care</span>
+
+                        <h1
+                            id="medical-portal-heading"
+                            className="font-semibold leading-[1.1] tracking-tight text-foreground text-balance mx-auto"
+                            style={{ fontSize: 'var(--fz-h1)', maxWidth: '20ch' }}
+                        >
+                            Empower Your Practice with{' '}
+                            <span className="gradient-text-soft">AI-Driven Patient Care</span>
                         </h1>
-                        <p className="text-lg md:text-xl text-slate-500 max-w-3xl mx-auto leading-relaxed">
+
+                        <p
+                            className="text-muted-foreground leading-relaxed mx-auto"
+                            style={{ fontSize: 'var(--fz-lg)', maxWidth: '52ch' }}
+                        >
                             Comprehensive patient management tools, clinical decision support, and telemedicine integration designed for modern healthcare professionals.
                         </p>
-                    </div>
+                    </motion.div>
 
-                    {/* Stats Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+                    {/* Stats grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                         {stats.map((stat, index) => (
                             <StatsCard key={index} {...stat} />
                         ))}
@@ -268,80 +211,84 @@ export default function MedicalPortalInteractive() {
                 </div>
             </section>
 
-            {/* Navigation Tabs - Sticky & Glassmorphic */}
-            <section className="sticky top-20 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200/60 shadow-sm">
-                <div className="max-w-7xl mx-auto px-4">
-                    <div className="flex space-x-1 overflow-x-auto py-3 no-scrollbar">
-                        {[
-                            { id: 'dashboard', label: 'Dashboard', icon: 'HomeIcon' },
-                            { id: 'patients', label: 'Patient Management', icon: 'UserGroupIcon' },
-                            { id: 'appointments', label: 'Appointments', icon: 'CalendarIcon' },
-                            { id: 'research', label: 'Research & Education', icon: 'AcademicCapIcon' }
-                        ].map((tab) => (
+            {/* ── STICKY TABS ── */}
+            <nav className="sticky top-[72px] z-40 bg-background/90 backdrop-blur-md border-b border-border shadow-sm">
+                <div className="container-wide">
+                    <div className="flex gap-1 overflow-x-auto py-3 no-scrollbar">
+                        {tabs.map((tab) => (
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id as any)}
-                                className={`flex items-center space-x-2 px-5 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap transition-all duration-300 ${activeTab === tab.id
-                                    ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/10 scale-[1.02]'
-                                    : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
-                                    }`}
+                                className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap transition-all duration-200 ${
+                                    activeTab === tab.id
+                                        ? 'bg-foreground text-background shadow-sm'
+                                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                                }`}
                             >
-                                <TabIcon icon={tab.icon} className={activeTab === tab.id ? "text-blue-400" : ""} />
+                                <TabIcon icon={tab.icon} className={activeTab === tab.id ? 'text-primary' : ''} />
                                 <span>{tab.label}</span>
                             </button>
                         ))}
                     </div>
                 </div>
-            </section>
+            </nav>
 
-            {/* Content Area */}
-            <main className="py-12 px-4 max-w-7xl mx-auto min-h-[600px]">
+            {/* ── CONTENT ── */}
+            <main className="section-padding container-wide min-h-[600px]">
+
                 {/* Dashboard Tab */}
                 {activeTab === 'dashboard' && (
                     <div className="animate-fade-in-up">
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            {/* Left Column: Schedule & Key Info */}
+                            {/* Left column */}
                             <div className="lg:col-span-2 space-y-8">
-                                {/* Today's Schedule Panel */}
-                                <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
-                                    <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                                        <h2 className="text-lg font-bold text-slate-900 flex items-center">
-                                            <Calendar className="mr-2 text-blue-600" size={20} />
+                                {/* Today's Schedule */}
+                                <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+                                    <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-muted/30">
+                                        <h2 className="text-base font-bold text-foreground flex items-center gap-2">
+                                            <Calendar size={18} className="text-primary" />
                                             Today's Schedule
                                         </h2>
-                                        <button className="text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline">
+                                        <button className="text-sm font-semibold text-primary hover:opacity-80 transition-opacity">
                                             View Calendar
                                         </button>
                                     </div>
-                                    <div className="divide-y divide-slate-100">
+                                    <div className="divide-y divide-border">
                                         {appointments.slice(0, 3).map((appointment) => (
-                                            <div key={appointment.id} className="group hover:bg-slate-50/80 transition-colors p-4 flex items-center justify-between">
-                                                <div className="flex items-center space-x-4">
-                                                    <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-xs ring-2 ring-white shadow-sm">
+                                            <div key={appointment.id} className="group hover:bg-muted/30 transition-colors p-4 flex items-center justify-between">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-[10px] ring-2 ring-background shadow-sm">
                                                         {appointment.time}
                                                     </div>
                                                     <div>
-                                                        <h3 className="font-bold text-slate-900">{appointment.patientName}</h3>
-                                                        <p className="text-sm text-slate-500">{appointment.type} • <span className={`capitalize ${appointment.status === 'in-progress' ? 'text-emerald-600 font-medium' : ''}`}>{appointment.status}</span></p>
+                                                        <p className="font-semibold text-foreground text-sm">{appointment.patientName}</p>
+                                                        <p className="text-xs text-muted-foreground">
+                                                            {appointment.type} ·{' '}
+                                                            <span className={`capitalize ${appointment.status === 'in-progress' ? 'text-emerald-600 font-medium' : ''}`}>
+                                                                {appointment.status}
+                                                            </span>
+                                                        </p>
                                                     </div>
                                                 </div>
                                                 <button
                                                     onClick={() => handleManageAppointment(appointment.id)}
-                                                    className="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-sm font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-all hover:bg-slate-50 hover:border-slate-300 shadow-sm"
+                                                    className="px-4 py-2 bg-card border border-border text-foreground text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-all hover:bg-muted shadow-sm"
                                                 >
                                                     Manage
                                                 </button>
                                             </div>
                                         ))}
                                     </div>
-                                    <div className="p-3 bg-slate-50 border-t border-slate-100 text-center">
-                                        <button className="text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors">View all 18 appointments</button>
+                                    <div className="p-3 bg-muted/20 border-t border-border text-center">
+                                        <button className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                                            View all 18 appointments
+                                        </button>
                                     </div>
                                 </div>
 
-                                {/* Platform Capabilities (Moved here for better flow) */}
+                                {/* Platform Capabilities */}
                                 <div>
-                                    <h2 className="text-xl font-bold text-slate-900 mb-6">Platform Capabilities</h2>
+                                    <h2 className="text-fluid-4xl font-bold text-foreground mb-6 tracking-tight">Platform Capabilities</h2>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {features.map((feature, index) => (
                                             <FeatureCard key={index} feature={feature} />
@@ -350,50 +297,46 @@ export default function MedicalPortalInteractive() {
                                 </div>
                             </div>
 
-                            {/* Right Column: Quick Actions & Alerts */}
-                            <div className="space-y-8">
-                                <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-6">
-                                    <h2 className="text-lg font-bold text-slate-900 mb-6">Quick Actions</h2>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <button className="col-span-1 p-4 bg-blue-50 border border-blue-100 rounded-xl text-left hover:bg-blue-100/80 transition-all group">
-                                            <Video className="text-blue-600 mb-3 group-hover:scale-110 transition-transform" size={24} />
-                                            <span className="block text-sm font-bold text-slate-900">Start Telemedicine</span>
-                                        </button>
-                                        <button className="col-span-1 p-4 bg-emerald-50 border border-emerald-100 rounded-xl text-left hover:bg-emerald-100/80 transition-all group">
-                                            <UserPlus className="text-emerald-600 mb-3 group-hover:scale-110 transition-transform" size={24} />
-                                            <span className="block text-sm font-bold text-slate-900">Add Patient</span>
-                                        </button>
-                                        <button className="col-span-1 p-4 bg-amber-50 border border-amber-100 rounded-xl text-left hover:bg-amber-100/80 transition-all group">
-                                            <FileBarChart className="text-amber-600 mb-3 group-hover:scale-110 transition-transform" size={24} />
-                                            <span className="block text-sm font-bold text-slate-900">Reports</span>
-                                        </button>
-                                        <button className="col-span-1 p-4 bg-indigo-50 border border-indigo-100 rounded-xl text-left hover:bg-indigo-100/80 transition-all group">
-                                            <FileText className="text-indigo-600 mb-3 group-hover:scale-110 transition-transform" size={24} />
-                                            <span className="block text-sm font-bold text-slate-900">Access EHR</span>
-                                        </button>
+                            {/* Right column */}
+                            <div className="space-y-6">
+                                {/* Quick Actions */}
+                                <div className="bg-card rounded-2xl border border-border shadow-sm p-6">
+                                    <h2 className="text-base font-bold text-foreground mb-5">Quick Actions</h2>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {[
+                                            { icon: Video,       label: 'Start Telemedicine', style: 'bg-primary/8 border-primary/15 text-primary'   },
+                                            { icon: UserPlus,    label: 'Add Patient',         style: 'bg-emerald-50 border-emerald-100 text-emerald-600' },
+                                            { icon: FileBarChart,label: 'Reports',             style: 'bg-amber-50 border-amber-100 text-amber-600'      },
+                                            { icon: FileText,    label: 'Access EHR',          style: 'bg-accent/8 border-accent/15 text-accent'         },
+                                        ].map(({ icon: Icon, label, style }) => (
+                                            <button key={label} className={`p-4 rounded-xl border text-left hover:opacity-80 transition-all group ${style}`}>
+                                                <Icon size={22} className="mb-3 group-hover:scale-110 transition-transform" />
+                                                <span className="block text-xs font-bold text-foreground">{label}</span>
+                                            </button>
+                                        ))}
                                     </div>
                                 </div>
 
-                                {/* Recent Alerts / Updates (Mock) */}
-                                <div className="bg-slate-900 rounded-2xl text-white p-6 shadow-xl shadow-slate-900/10">
-                                    <h2 className="text-lg font-bold mb-4 flex items-center">
-                                        <span className="relative flex h-3 w-3 mr-3">
-                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                            <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                                {/* Critical Alerts */}
+                                <div className="bg-foreground rounded-2xl text-background p-6 shadow-xl">
+                                    <h2 className="text-base font-bold mb-4 flex items-center gap-2">
+                                        <span className="relative flex h-3 w-3">
+                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                                            <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
                                         </span>
                                         Critical Alerts
                                     </h2>
-                                    <div className="space-y-4">
-                                        <div className="bg-white/10 rounded-lg p-3 backdrop-blur-sm border border-white/10">
-                                            <p className="text-sm font-medium text-red-200 mb-1">High Risk Detected</p>
-                                            <p className="text-xs text-slate-300">Patient <span className="text-white font-bold">Amit Patel</span> approaching critical cardiac threshold.</p>
+                                    <div className="space-y-3">
+                                        <div className="bg-white/10 rounded-xl p-3 border border-white/10">
+                                            <p className="text-xs font-semibold text-red-300 mb-1">High Risk Detected</p>
+                                            <p className="text-xs text-white/60">Patient <span className="text-white font-bold">Amit Patel</span> approaching critical cardiac threshold.</p>
                                         </div>
-                                        <div className="bg-white/10 rounded-lg p-3 backdrop-blur-sm border border-white/10">
-                                            <p className="text-sm font-medium text-amber-200 mb-1">Missed Check-in</p>
-                                            <p className="text-xs text-slate-300">Patient <span className="text-white font-bold">Sneha Reddy</span> missed daily vitals log.</p>
+                                        <div className="bg-white/10 rounded-xl p-3 border border-white/10">
+                                            <p className="text-xs font-semibold text-amber-300 mb-1">Missed Check-in</p>
+                                            <p className="text-xs text-white/60">Patient <span className="text-white font-bold">Sneha Reddy</span> missed daily vitals log.</p>
                                         </div>
                                     </div>
-                                    <button className="w-full mt-4 py-2 text-xs font-bold text-slate-400 hover:text-white transition-colors border-t border-white/10 uppercase tracking-wider">
+                                    <button className="w-full mt-4 py-2 text-xs font-bold text-white/40 hover:text-white/80 transition-colors border-t border-white/10 uppercase tracking-wider">
                                         View All Alerts
                                     </button>
                                 </div>
@@ -406,25 +349,24 @@ export default function MedicalPortalInteractive() {
                 {activeTab === 'patients' && (
                     <section className="animate-fade-in-up">
                         <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
-                            <h2 className="text-2xl font-bold text-slate-900">Patient Management</h2>
-                            <div className="flex items-center space-x-3">
+                            <h2 className="text-fluid-4xl font-bold text-foreground tracking-tight">Patient Management</h2>
+                            <div className="flex items-center gap-3">
                                 <input
                                     type="text"
                                     placeholder="Search patients..."
-                                    className="px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white w-full md:w-64"
+                                    className="px-4 py-2 border border-border rounded-lg text-sm bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary w-full md:w-64"
                                 />
-                                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-all shadow-md hover:shadow-lg">
+                                <button
+                                    className="px-4 py-2.5 rounded-lg text-sm font-semibold text-primary-foreground hover:opacity-90 transition-all"
+                                    style={{ background: 'hsl(var(--primary))' }}
+                                >
                                     Add New Patient
                                 </button>
                             </div>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             {patients.map((patient) => (
-                                <PatientCard
-                                    key={patient.id}
-                                    patient={patient}
-                                    onViewDetails={handleViewPatientDetails}
-                                />
+                                <PatientCard key={patient.id} patient={patient} onViewDetails={handleViewPatientDetails} />
                             ))}
                         </div>
                     </section>
@@ -434,18 +376,17 @@ export default function MedicalPortalInteractive() {
                 {activeTab === 'appointments' && (
                     <section className="animate-fade-in-up">
                         <div className="flex items-center justify-between mb-8">
-                            <h2 className="text-2xl font-bold text-slate-900">Appointment Management</h2>
-                            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-all shadow-md">
+                            <h2 className="text-fluid-4xl font-bold text-foreground tracking-tight">Appointment Management</h2>
+                            <button
+                                className="px-4 py-2.5 rounded-lg text-sm font-semibold text-primary-foreground hover:opacity-90 transition-all"
+                                style={{ background: 'hsl(var(--primary))' }}
+                            >
                                 Schedule New
                             </button>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                             {appointments.map((appointment) => (
-                                <AppointmentCard
-                                    key={appointment.id}
-                                    appointment={appointment}
-                                    onManage={handleManageAppointment}
-                                />
+                                <AppointmentCard key={appointment.id} appointment={appointment} onManage={handleManageAppointment} />
                             ))}
                         </div>
                     </section>
@@ -454,28 +395,28 @@ export default function MedicalPortalInteractive() {
                 {/* Research Tab */}
                 {activeTab === 'research' && (
                     <section className="animate-fade-in-up">
-                        <h2 className="text-2xl font-bold text-slate-900 mb-8 border-b border-slate-200 pb-4">Research & Continuing Education</h2>
+                        <h2 className="text-fluid-4xl font-bold text-foreground mb-10 pb-4 border-b border-border tracking-tight">
+                            Research & Continuing Education
+                        </h2>
 
-                        {/* Research Publications */}
-                        <div className="mb-16">
-                            <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center">
-                                <span className="w-1 h-6 bg-blue-500 rounded-full mr-3"></span>
+                        <div className="mb-14">
+                            <h3 className="text-base font-bold text-foreground mb-6 flex items-center gap-3">
+                                <span className="w-1 h-5 bg-primary rounded-full" />
                                 Latest Publications
                             </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                                 {research.map((item) => (
                                     <ResearchCard key={item.id} research={item} />
                                 ))}
                             </div>
                         </div>
 
-                        {/* Professional Testimonials */}
                         <div>
-                            <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center">
-                                <span className="w-1 h-6 bg-emerald-500 rounded-full mr-3"></span>
+                            <h3 className="text-base font-bold text-foreground mb-6 flex items-center gap-3">
+                                <span className="w-1 h-5 bg-emerald-500 rounded-full" />
                                 Peer Reviews
                             </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 {testimonials.map((testimonial) => (
                                     <TestimonialCard key={testimonial.id} testimonial={testimonial} />
                                 ))}
@@ -485,22 +426,57 @@ export default function MedicalPortalInteractive() {
                 )}
             </main>
 
-            {/* CTA Section */}
-            <section className="py-16 px-4 bg-slate-900 text-white">
-                <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-6 tracking-tight">
-                        Ready to Transform Your Practice?
-                    </h2>
-                    <p className="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">
-                        Join thousands of healthcare professionals using PreventVital to deliver superior patient outcomes through AI-powered preventive care.
-                    </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                        <button className="px-8 py-4 bg-blue-600 text-white rounded-lg text-base font-bold hover:bg-blue-500 transition-all shadow-xl shadow-blue-900/50 hover:scale-105">
-                            Request Demo
-                        </button>
-                        <button className="px-8 py-4 bg-transparent border-2 border-slate-700 text-white rounded-lg text-base font-bold hover:bg-slate-800 transition-all">
-                            Schedule Consultation
-                        </button>
+            {/* ── CTA — matches homepage CTASection ── */}
+            <section
+                className="section-padding relative overflow-hidden"
+                style={{ background: 'var(--gradient-health)' }}
+                aria-labelledby="medical-cta-heading"
+            >
+                <div
+                    className="absolute inset-0 opacity-[0.04]"
+                    style={{
+                        backgroundImage: `radial-gradient(circle at 1.5px 1.5px, white 1px, transparent 0)`,
+                        backgroundSize: '28px 28px',
+                    }}
+                />
+                <div
+                    className="absolute top-0 left-1/4 rounded-full blur-[80px] pointer-events-none bg-white/5"
+                    style={{ width: 'clamp(16rem, 36vw, 36rem)', height: 'clamp(16rem, 36vw, 36rem)' }}
+                />
+
+                <div className="container-wide relative z-10">
+                    <div className="max-w-3xl mx-auto text-center space-y-6">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 border border-white/15 rounded-full backdrop-blur-sm">
+                            <ShieldCheck size={13} className="text-emerald-300" />
+                            <span className="text-xs font-semibold text-white/80 tracking-wide">Join Our Medical Network</span>
+                        </div>
+
+                        <h2
+                            id="medical-cta-heading"
+                            className="text-fluid-4xl font-semibold text-white leading-[1.15] tracking-tight"
+                        >
+                            Ready to Transform{' '}
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-emerald-200">
+                                Your Practice?
+                            </span>
+                        </h2>
+
+                        <p className="text-fluid-lg text-white/65 max-w-xl mx-auto leading-relaxed">
+                            Join thousands of healthcare professionals using PreventVital to deliver superior patient outcomes through AI-powered preventive care.
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                            <button
+                                className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-semibold bg-white transition-all duration-300 hover:-translate-y-px hover:shadow-lg"
+                                style={{ color: 'hsl(var(--primary))' }}
+                            >
+                                Request Demo
+                                <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                            </button>
+                            <button className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-semibold text-white border border-white/20 hover:bg-white/10 transition-all duration-300">
+                                Schedule Consultation
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>

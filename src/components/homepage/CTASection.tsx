@@ -43,7 +43,7 @@ const CTASection = () => {
           {/* Headline */}
           <h2
             id="cta-heading"
-            className="text-fluid-h1 font-semibold text-white leading-[1.15] tracking-tight"
+            className="text-fluid-4xl font-semibold text-white leading-[1.15] tracking-tight"
           >
             Take Control of Your{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-emerald-200">

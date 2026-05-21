@@ -101,12 +101,12 @@ const Header = ({ className = '' }: HeaderProps) => {
 
             {/* Logo */}
             <Link to="/homepage" className="flex items-center shrink-0 hover:opacity-90 transition-opacity">
-              <div className="h-10 md:h-12 w-auto">
+              <div className="h-12 md:h-[60px] w-auto">
                 <AppImage
                   src="/images/logo-new.png"
                   alt="PreventVital"
-                  width={220}
-                  height={48}
+                  width={275}
+                  height={60}
                   className="h-full w-auto object-contain object-left"
                 />
               </div>

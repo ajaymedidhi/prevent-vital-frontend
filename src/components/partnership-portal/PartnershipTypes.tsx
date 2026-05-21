@@ -1,12 +1,5 @@
 
-import {
-    Building2,
-    Smartphone,
-    Users,
-    Code,
-    CheckCircle,
-    ArrowRight
-} from 'lucide-react';
+import { Building2, Smartphone, Users, Code, CheckCircle, ArrowRight } from 'lucide-react';
 
 interface PartnershipType {
     id: string;
@@ -14,7 +7,7 @@ interface PartnershipType {
     description: string;
     icon: any;
     benefits: string[];
-    color: string;
+    iconStyle: string;
 }
 
 const partnershipTypes: PartnershipType[] = [
@@ -28,9 +21,9 @@ const partnershipTypes: PartnershipType[] = [
             'Outcome metrics dashboard',
             'Seamless EHR integration',
             'Revenue sharing model',
-            'Co-branded patient programs'
+            'Co-branded patient programs',
         ],
-        color: 'blue'
+        iconStyle: 'bg-primary/10 text-primary',
     },
     {
         id: 'device',
@@ -42,9 +35,9 @@ const partnershipTypes: PartnershipType[] = [
             'SDK and API access',
             'Technical integration support',
             'Joint marketing opportunities',
-            'Expanded user base access'
+            'Expanded user base access',
         ],
-        color: 'amber'
+        iconStyle: 'bg-accent/10 text-accent',
     },
     {
         id: 'provider',
@@ -56,9 +49,9 @@ const partnershipTypes: PartnershipType[] = [
             'Clinical decision support',
             'Telemedicine integration',
             'Continuing education credits',
-            'Practice growth support'
+            'Practice growth support',
         ],
-        color: 'emerald'
+        iconStyle: 'bg-emerald-100 text-emerald-600',
     },
     {
         id: 'technology',
@@ -70,10 +63,10 @@ const partnershipTypes: PartnershipType[] = [
             'White-label opportunities',
             'Joint solution development',
             'Technical co-innovation',
-            'Market expansion support'
+            'Market expansion support',
         ],
-        color: 'purple'
-    }
+        iconStyle: 'bg-primary/8 text-primary',
+    },
 ];
 
 interface PartnershipTypesProps {
@@ -82,50 +75,46 @@ interface PartnershipTypesProps {
 
 const PartnershipTypes = ({ className = '' }: PartnershipTypesProps) => {
     return (
-        <section className={`py-20 lg:py-24 bg-white ${className}`}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+        <section className={`section-padding bg-background ${className}`}>
+            <div className="container-wide">
+                <div className="text-center max-w-3xl mx-auto mb-14 space-y-4">
+                    <h2 className="text-fluid-4xl font-bold text-foreground tracking-tight">
                         Partnership Opportunities
                     </h2>
-                    <p className="text-lg text-muted-foreground">
+                    <p className="text-fluid-lg text-muted-foreground leading-relaxed">
                         Choose the partnership model that aligns with your organization's goals and capabilities
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-8">
+                <div className="grid md:grid-cols-2 gap-6">
                     {partnershipTypes.map((type) => (
                         <div
                             key={type.id}
-                            className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 flex flex-col h-full"
+                            className="bg-card rounded-2xl p-8 border border-border hover:shadow-md transition-all duration-300 flex flex-col h-full"
                         >
-                            <div className="flex items-start space-x-4 mb-6">
-                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${type.color === 'blue' ? 'bg-blue-100 text-blue-600' :
-                                    type.color === 'amber' ? 'bg-purple-100 text-purple-600' :
-                                        type.color === 'emerald' ? 'bg-indigo-100 text-indigo-600' :
-                                            'bg-cyan-100 text-cyan-600'
-                                    }`}>
-                                    <type.icon size={24} />
+                            <div className="flex items-start gap-4 mb-6">
+                                <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${type.iconStyle}`}>
+                                    <type.icon size={22} />
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-bold text-foreground mb-2">{type.title}</h3>
-                                    <p className="text-gray-500 leading-relaxed text-sm">{type.description}</p>
+                                    <h3 className="text-base font-bold text-foreground mb-1.5">{type.title}</h3>
+                                    <p className="text-muted-foreground leading-relaxed text-sm">{type.description}</p>
                                 </div>
                             </div>
 
                             <div className="space-y-3 mb-8 flex-grow">
-                                <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wide mb-4">Key Benefits</h4>
+                                <p className="text-xs font-bold text-foreground uppercase tracking-widest mb-3">Key Benefits</p>
                                 {type.benefits.map((benefit, index) => (
-                                    <div key={index} className="flex items-start space-x-3">
-                                        <CheckCircle size={16} className="text-blue-500 flex-shrink-0 mt-0.5" />
-                                        <span className="text-gray-600 text-sm">{benefit}</span>
+                                    <div key={index} className="flex items-start gap-3">
+                                        <CheckCircle size={15} className="text-primary flex-shrink-0 mt-0.5" />
+                                        <span className="text-muted-foreground text-sm">{benefit}</span>
                                     </div>
                                 ))}
                             </div>
 
-                            <button className="w-full mt-auto px-6 py-3 bg-gray-50 text-gray-700 font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 flex items-center justify-center space-x-2 border border-gray-100 group">
-                                <span>Learn More</span>
-                                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                            <button className="group w-full mt-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold text-foreground bg-muted border border-border hover:bg-muted/80 transition-all duration-300">
+                                Learn More
+                                <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
                             </button>
                         </div>
                     ))}

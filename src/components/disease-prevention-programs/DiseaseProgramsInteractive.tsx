@@ -1,9 +1,8 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, PlayCircle, Users, Clock } from 'lucide-react';
+import { ArrowRight, Sparkles, Activity, Heart, Shield } from 'lucide-react';
 import ProgramCard from './ProgramCard';
-import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 
 interface Program {
@@ -61,7 +60,6 @@ export default function DiseaseProgramsInteractive() {
             duration: '8 weeks',
             category: 'prevention'
         },
-        // Therapy Sessions (Placeholders to demonstrate tab functionality)
         {
             id: 'yoga-therapy',
             title: 'Advanced Yoga Therapy',
@@ -86,82 +84,134 @@ export default function DiseaseProgramsInteractive() {
 
     const filteredPrograms = programs.filter(p => p.category === activeTab);
 
-    return (
-        <div className="min-h-screen bg-white font-sans">
-            {/* HER HERO SECTION */}
-            <section className="relative pt-10 lg:pt-14 pb-16 overflow-hidden">
-                {/* Background Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 via-purple-50/30 to-white pointer-events-none" />
+    const stats = [
+        { value: '500+', label: 'Guided Sessions', icon: Activity },
+        { value: '50+',  label: 'Expert Instructors', icon: Shield },
+        { value: '24/7', label: 'Access Anywhere', icon: Heart },
+    ];
 
-                <div className="container mx-auto px-6 md:px-16 relative z-10 text-center">
+    return (
+        <div className="min-h-screen bg-background">
+
+            {/* ── HERO ── */}
+            <section
+                className="relative w-full overflow-hidden"
+                style={{ paddingTop: 'clamp(3rem, 2rem + 4vw, 6rem)', paddingBottom: 'clamp(3rem, 2rem + 4vw, 6rem)' }}
+                aria-labelledby="programs-heading"
+            >
+                {/* Same background layers as homepage hero */}
+                <div className="absolute inset-0 healthcare-mesh" />
+                <div
+                    className="absolute inset-0 opacity-[0.025]"
+                    style={{
+                        backgroundImage: `
+                            linear-gradient(hsl(var(--primary)) 1px, transparent 1px),
+                            linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)
+                        `,
+                        backgroundSize: '60px 60px',
+                    }}
+                />
+                <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 60%, hsl(var(--primary) / 0.08) 0%, transparent 70%)' }}
+                />
+
+                <div className="container-wide relative z-10 text-center">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 24 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
+                        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                        className="space-y-6"
                     >
-                        <span className="text-cyan-600 font-semibold tracking-wide uppercase text-sm mb-4 block">
-                            Ancient Wisdom Meets AI Innovation
-                        </span>
-                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 tracking-tight leading-tight">
-                            Transform Your Health with <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500">
-                                Holistic Wellness
-                            </span>
+                        {/* Overline — matches homepage badge style */}
+                        <div className="flex justify-center">
+                            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-border rounded-full shadow-xs">
+                                <Sparkles size={13} className="text-accent" />
+                                <span className="text-xs font-semibold text-primary tracking-wide">
+                                    Ancient Wisdom Meets AI Innovation
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Headline — same size as homepage hero h1 */}
+                        <h1
+                            id="programs-heading"
+                            className="font-semibold leading-[1.1] tracking-tight text-foreground text-balance mx-auto"
+                            style={{ fontSize: 'var(--fz-h1)', maxWidth: '18ch' }}
+                        >
+                            Transform Your Health with{' '}
+                            <span className="gradient-text-soft">Holistic Wellness</span>
                         </h1>
-                        <p className="text-xl text-gray-500 max-w-3xl mx-auto mb-12 leading-relaxed">
+
+                        {/* Description */}
+                        <p
+                            className="text-muted-foreground leading-relaxed mx-auto"
+                            style={{ fontSize: 'var(--fz-lg)', maxWidth: '52ch' }}
+                        >
                             Experience personalized therapeutic programs combining yoga, meditation, breathwork, and physiotherapy—all enhanced by AI-powered insights.
                         </p>
 
-                        {/* Stats Row */}
-                        <div className="flex flex-wrap justify-center gap-12 md:gap-24 mb-16">
-                            <div className="text-center">
-                                <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">500+</div>
-                                <div className="text-sm text-gray-500 font-medium">Guided Sessions</div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">50+</div>
-                                <div className="text-sm text-gray-500 font-medium">Expert Instructors</div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">24/7</div>
-                                <div className="text-sm text-gray-500 font-medium">Access Anywhere</div>
-                            </div>
+                        {/* CTA buttons */}
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                            <Link
+                                to="/ai-health-assessment"
+                                className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold text-primary-foreground transition-all duration-300 hover:opacity-90 hover:-translate-y-px"
+                                style={{ background: 'hsl(var(--primary))', boxShadow: 'var(--shadow-md)' }}
+                            >
+                                Start Free Assessment
+                                <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                            </Link>
                         </div>
                     </motion.div>
+
+                    {/* Stats — same pattern as homepage hero */}
+                    <div className="grid grid-cols-3 gap-4 mt-12 pt-10 border-t border-border/50 max-w-lg mx-auto">
+                        {stats.map(({ value, label }) => (
+                            <div key={label} className="space-y-0.5">
+                                <p className="font-bold text-foreground leading-none" style={{ fontSize: 'var(--fz-3xl)' }}>
+                                    {value}
+                                </p>
+                                <p className="text-xs text-muted-foreground font-medium">{label}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
 
-            {/* PROGRAMS SECTION */}
-            <section className="py-16 bg-white">
-                <div className="container mx-auto px-6 md:px-16">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
-                        <h2 className="text-3xl font-bold text-gray-900">Explore Programs</h2>
+            {/* ── PROGRAMS SECTION ── */}
+            <section className="section-padding bg-background">
+                <div className="container-wide">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
+                        <h2 className="text-fluid-4xl font-bold text-foreground tracking-tight">
+                            Explore Programs
+                        </h2>
 
-                        {/* Tabs */}
-                        <div className="bg-gray-100 p-1 rounded-lg inline-flex self-start md:self-auto">
+                        {/* Tabs — matches homepage card active/inactive pattern */}
+                        <div className="bg-muted p-1 rounded-lg inline-flex self-start md:self-auto">
                             <button
                                 onClick={() => setActiveTab('prevention')}
-                                className={`px-6 py-2.5 rounded-md text-sm font-semibold transition-all duration-300 ${activeTab === 'prevention'
-                                        ? 'bg-white text-gray-900 shadow-sm'
-                                        : 'text-gray-500 hover:text-gray-900'
-                                    }`}
+                                className={`px-6 py-2.5 rounded-md text-sm font-semibold transition-all duration-300 ${
+                                    activeTab === 'prevention'
+                                        ? 'bg-card text-foreground shadow-sm'
+                                        : 'text-muted-foreground hover:text-foreground'
+                                }`}
                             >
                                 Disease Prevention
                             </button>
                             <button
                                 onClick={() => setActiveTab('therapy')}
-                                className={`px-6 py-2.5 rounded-md text-sm font-semibold transition-all duration-300 ${activeTab === 'therapy'
-                                        ? 'bg-white text-gray-900 shadow-sm'
-                                        : 'text-gray-500 hover:text-gray-900'
-                                    }`}
+                                className={`px-6 py-2.5 rounded-md text-sm font-semibold transition-all duration-300 ${
+                                    activeTab === 'therapy'
+                                        ? 'bg-card text-foreground shadow-sm'
+                                        : 'text-muted-foreground hover:text-foreground'
+                                }`}
                             >
                                 Therapeutic Sessions
                             </button>
                         </div>
                     </div>
 
-                    {/* Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {filteredPrograms.map((program) => (
                             <motion.div
                                 key={program.id}
@@ -171,7 +221,7 @@ export default function DiseaseProgramsInteractive() {
                             >
                                 <ProgramCard
                                     {...program}
-                                    onClick={() => console.log('Clicked', program.id)}
+                                    onClick={() => {}}
                                 />
                             </motion.div>
                         ))}
@@ -179,21 +229,55 @@ export default function DiseaseProgramsInteractive() {
                 </div>
             </section>
 
-            {/* CTA SECTION */}
-            <section className="py-24 bg-gray-50">
-                <div className="container mx-auto px-6 md:px-16 text-center">
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                        Ready to Start Your Wellness Journey?
-                    </h2>
-                    <p className="text-lg text-gray-500 mb-8 max-w-2xl mx-auto">
-                        Take our free AI health assessment to get personalized program recommendations.
-                    </p>
-                    <Link to="/ai-health-assessment">
-                        <Button className="bg-gradient-to-r from-blue-400 to-purple-500 hover:opacity-90 text-white px-8 py-6 h-auto text-lg rounded-xl shadow-lg transition-all hover:shadow-xl hover:-translate-y-1">
-                            Start Free Assessment
-                            <ArrowRight className="ml-2" />
-                        </Button>
-                    </Link>
+            {/* ── CTA SECTION — matches homepage CTASection ── */}
+            <section
+                className="section-padding relative overflow-hidden"
+                style={{ background: 'var(--gradient-health)' }}
+                aria-labelledby="programs-cta-heading"
+            >
+                {/* Pattern overlay */}
+                <div
+                    className="absolute inset-0 opacity-[0.04]"
+                    style={{
+                        backgroundImage: `radial-gradient(circle at 1.5px 1.5px, white 1px, transparent 0)`,
+                        backgroundSize: '28px 28px',
+                    }}
+                />
+                <div className="absolute top-0 left-1/4 rounded-full blur-[80px] pointer-events-none bg-white/5"
+                    style={{ width: 'clamp(16rem, 36vw, 36rem)', height: 'clamp(16rem, 36vw, 36rem)' }} />
+
+                <div className="container-wide relative z-10">
+                    <div className="max-w-3xl mx-auto text-center space-y-6">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 border border-white/15 rounded-full backdrop-blur-sm">
+                            <Shield size={13} className="text-emerald-300" />
+                            <span className="text-xs font-semibold text-white/80 tracking-wide">Start Your Prevention Journey</span>
+                        </div>
+
+                        <h2
+                            id="programs-cta-heading"
+                            className="text-fluid-4xl font-semibold text-white leading-[1.15] tracking-tight"
+                        >
+                            Ready to Start Your{' '}
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-emerald-200">
+                                Wellness Journey?
+                            </span>
+                        </h2>
+
+                        <p className="text-fluid-lg text-white/65 max-w-xl mx-auto leading-relaxed">
+                            Take our free AI health assessment to get personalized program recommendations.
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
+                            <Link
+                                to="/ai-health-assessment"
+                                className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-semibold bg-white transition-all duration-300 hover:-translate-y-px hover:shadow-lg"
+                                style={{ color: 'hsl(var(--primary))' }}
+                            >
+                                Start Free Assessment
+                                <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>

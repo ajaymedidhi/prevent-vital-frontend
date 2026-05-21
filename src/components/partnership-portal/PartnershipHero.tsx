@@ -1,13 +1,6 @@
 
-import {
-    Building,
-    ArrowRight,
-    FileText,
-    Building2,
-    Smartphone,
-    BadgeCheck,
-    MessageSquare
-} from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface PartnershipHeroProps {
     className?: string;
@@ -15,42 +8,92 @@ interface PartnershipHeroProps {
 
 const PartnershipHero = ({ className = '' }: PartnershipHeroProps) => {
     return (
-        <section className={`relative bg-gradient-to-br from-primary/5 via-blue-500/5 to-cyan-500/5 py-12 lg:py-20 ${className}`}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center max-w-4xl mx-auto animate-fade-in-up">
-                    <div className="inline-flex items-center space-x-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
-                        <span className="text-sm font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-pink-500">Partnership Ecosystem</span>
+        <section
+            className={`relative w-full overflow-hidden ${className}`}
+            style={{ paddingTop: 'clamp(3rem, 2rem + 4vw, 6rem)', paddingBottom: 'clamp(3rem, 2rem + 4vw, 6rem)' }}
+            aria-labelledby="partnership-heading"
+        >
+            {/* Same bg layers as homepage hero */}
+            <div className="absolute inset-0 healthcare-mesh" />
+            <div
+                className="absolute inset-0 opacity-[0.025]"
+                style={{
+                    backgroundImage: `
+                        linear-gradient(hsl(var(--primary)) 1px, transparent 1px),
+                        linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)
+                    `,
+                    backgroundSize: '60px 60px',
+                }}
+            />
+            <div
+                className="absolute inset-0 pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 60%, hsl(var(--primary) / 0.08) 0%, transparent 70%)' }}
+            />
+
+            <div className="container-wide relative z-10 text-center">
+                <motion.div
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                    className="space-y-6 max-w-4xl mx-auto"
+                >
+                    {/* Overline badge — matches homepage style */}
+                    <div className="flex justify-center">
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-border rounded-full shadow-xs">
+                            <Sparkles size={13} className="text-accent" />
+                            <span className="text-xs font-semibold text-primary tracking-wide">
+                                Partnership Ecosystem
+                            </span>
+                        </div>
                     </div>
 
-                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 tracking-tight">
-                        Build the Future of <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-pink-500">Preventive Healthcare</span> Together
+                    {/* Headline */}
+                    <h1
+                        id="partnership-heading"
+                        className="font-semibold leading-[1.1] tracking-tight text-foreground text-balance mx-auto"
+                        style={{ fontSize: 'var(--fz-h1)' }}
+                    >
+                        Build the Future of{' '}
+                        <span className="gradient-text-soft">Preventive Healthcare</span>{' '}
+                        Together
                     </h1>
 
-                    <p className="text-lg sm:text-xl text-muted-foreground mb-8 leading-relaxed max-w-3xl mx-auto">
+                    {/* Description */}
+                    <p
+                        className="text-muted-foreground leading-relaxed mx-auto"
+                        style={{ fontSize: 'var(--fz-lg)', maxWidth: '52ch' }}
+                    >
                         Join India's pioneering integrated wellness-technology platform. Partner with PreventVital to transform healthcare delivery through AI-powered prevention.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <button className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-lg hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 flex items-center justify-center space-x-2">
-                            <span>Become a Partner</span>
-                            <ArrowRight size={20} />
+                    {/* CTAs */}
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                        <button
+                            className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold text-primary-foreground transition-all duration-300 hover:opacity-90 hover:-translate-y-px"
+                            style={{ background: 'hsl(var(--primary))', boxShadow: 'var(--shadow-md)' }}
+                        >
+                            Become a Partner
+                            <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
                         </button>
-                        <button className="w-full sm:w-auto px-8 py-3 bg-white text-gray-700 font-semibold rounded-lg border border-gray-200 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center space-x-2 shadow-sm">
-                            <span className="font-medium">View API Docs</span>
+                        <button className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold text-foreground bg-card border border-border hover:bg-muted transition-all duration-300">
+                            View API Docs
                         </button>
                     </div>
-                </div>
+                </motion.div>
 
-                <div className="mt-20 grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 animate-fade-in-up delay-100">
+                {/* Stats row — matches homepage hero pattern */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-14 pt-10 border-t border-border/50 max-w-2xl mx-auto lg:max-w-none">
                     {[
                         { value: '500+', label: 'Healthcare Partners' },
-                        { value: '50+', label: 'Device Integrations' },
+                        { value: '50+',  label: 'Device Integrations' },
                         { value: '99.9%', label: 'Uptime SLA' },
-                        { value: '24/7', label: 'Technical Support' }
-                    ].map((stat, index) => (
-                        <div key={index} className="text-center">
-                            <div className="text-4xl lg:text-5xl font-bold text-slate-700 mb-2">{stat.value}</div>
-                            <div className="text-sm text-gray-500 uppercase tracking-wide font-medium">{stat.label}</div>
+                        { value: '24/7', label: 'Technical Support' },
+                    ].map((stat) => (
+                        <div key={stat.label} className="space-y-0.5 text-center lg:text-left">
+                            <p className="font-bold text-foreground leading-none" style={{ fontSize: 'var(--fz-3xl)' }}>
+                                {stat.value}
+                            </p>
+                            <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">{stat.label}</p>
                         </div>
                     ))}
                 </div>

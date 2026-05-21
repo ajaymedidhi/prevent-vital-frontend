@@ -74,7 +74,7 @@ const PlatformDemo = () => {
                         </div>
 
                         <div className="mb-fluid-12">
-                            <h2 id="platform-technology" className="text-fluid-h1 font-bold text-foreground mb-4 leading-tight">
+                            <h2 id="platform-technology" className="text-fluid-4xl font-bold text-foreground mb-4 leading-tight">
                                 Experience the <br className="hidden md:block" />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-800 to-wellness-600">
                                     Future of Care
