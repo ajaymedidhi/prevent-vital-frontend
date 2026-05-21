@@ -278,39 +278,45 @@ const CustomerDashboard = () => {
 
     const renderHome = () => (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {/* Super Admin Style Banner */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-[28px] p-8 shadow-xl text-white">
+            {/* Welcome Banner */}
+            <div
+                className="relative overflow-hidden rounded-2xl p-7 md:p-8 text-white"
+                style={{ background: 'var(--gradient-health)', boxShadow: 'var(--shadow-lg)' }}
+            >
+                {/* Subtle pattern */}
+                <div className="absolute inset-0 opacity-[0.04]"
+                    style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '24px 24px' }} />
+                <div className="absolute top-0 right-0 w-72 h-72 bg-white/5 rounded-full blur-3xl -mr-24 -mt-24 pointer-events-none" />
+
                 <div className="relative z-10">
-                    <div className="flex items-center gap-2 mb-4">
-                        <div className="bg-white/20 backdrop-blur-md p-2 rounded-xl">
-                            <Zap className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                    <div className="flex items-center gap-2 mb-3">
+                        <div className="bg-white/15 backdrop-blur-sm p-1.5 rounded-lg border border-white/20">
+                            <Activity className="w-4 h-4 text-white" />
                         </div>
-                        <span className="text-xs font-bold uppercase tracking-widest text-blue-100">Live Health Console</span>
+                        <span className="text-xs font-semibold uppercase tracking-widest text-white/70">Health Dashboard</span>
                     </div>
-                    <h1 className="text-3xl md:text-4xl font-[800] mb-2 font-serif tracking-tight">
-                        Welcome back, {user?.name?.split(' ')[0] || 'Member'}!
+                    <h1 className="text-2xl md:text-3xl font-semibold mb-2 tracking-tight">
+                        Welcome back, {user?.name?.split(' ')[0] || 'Member'}
                     </h1>
-                    <p className="text-blue-100 text-sm opacity-90 max-w-md leading-relaxed">
-                        Your health telemetry is stable. You've maintained a <span className="text-white font-bold">{(user as any)?.gamification?.streaks?.current || 0}-day streak</span>.
+                    <p className="text-white/70 text-sm max-w-md leading-relaxed">
+                        Your health metrics are being monitored.{' '}
+                        <span className="text-white font-semibold">{(user as any)?.gamification?.streaks?.current || 0}-day streak</span> maintained.
                     </p>
-                    <div className="flex flex-wrap gap-3 mt-8">
+                    <div className="flex flex-wrap gap-3 mt-6">
                         <Button
                             onClick={() => navigate('/ai-health-assessment')}
-                            className="bg-white text-blue-600 hover:bg-blue-50 font-bold rounded-xl px-6"
+                            className="bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-sm font-semibold rounded-xl px-5 transition-all duration-200"
                         >
                             <ShieldCheck className="mr-2 h-4 w-4" /> Run AI Assessment
                         </Button>
                     </div>
                 </div>
-                {/* Decorative circles */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
-                <div className="absolute bottom-0 left-1/3 w-40 h-40 bg-purple-500/20 rounded-full blur-2xl"></div>
             </div>
 
             {/* Metric Row - Super Admin Style */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {/* Live Vitals */}
-                <Card className="rounded-[22px] border-gray-100 shadow-sm hover:shadow-md transition-all overflow-hidden bg-white">
+                <Card className="rounded-xl border-gray-100 shadow-sm hover:shadow-md transition-all overflow-hidden bg-white">
                     <CardContent className="p-6">
                         <div className="flex justify-between items-start mb-6">
                             <div className="p-3 bg-blue-50 text-blue-600 rounded-2xl">
@@ -343,7 +349,7 @@ const CustomerDashboard = () => {
                 </Card>
 
                 {/* AI Safety Score - Gauge Style */}
-                <Card className="rounded-[22px] border-gray-100 shadow-sm hover:shadow-md transition-all bg-white relative overflow-hidden">
+                <Card className="rounded-xl border-gray-100 shadow-sm hover:shadow-md transition-all bg-white relative overflow-hidden">
                     <CardContent className="p-6">
                         <div className="flex justify-between items-start mb-6">
                             <div className="p-3 bg-purple-50 text-purple-600 rounded-2xl">
@@ -356,7 +362,7 @@ const CustomerDashboard = () => {
                         {(user as any)?.vitalScore ? (
                             <div className="flex flex-col">
                                 <div className="flex items-baseline gap-2 mb-4">
-                                    <span className="text-4xl font-black text-gray-900">{(user as any).vitalScore.score}</span>
+                                    <span className="text-4xl font-semibold text-gray-900">{(user as any).vitalScore.score}</span>
                                     <span className="text-xs font-bold text-gray-400 capitalize">/ 100 — {(user as any).vitalScore.status.label}</span>
                                 </div>
                                 <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -379,14 +385,14 @@ const CustomerDashboard = () => {
                 </Card>
 
                 {/* Wellness Journey */}
-                <Card className="rounded-[22px] border-gray-100 shadow-sm hover:shadow-md transition-all bg-white">
+                <Card className="rounded-xl border-gray-100 shadow-sm hover:shadow-md transition-all bg-white">
                     <CardContent className="p-6">
                         <div className="flex justify-between items-start mb-6">
                             <div className="p-3 bg-amber-50 text-amber-600 rounded-2xl">
                                 <TrendingUp className="w-6 h-6" />
                             </div>
                             <div className="text-right">
-                                <p className="text-xl font-black text-amber-600">{(user as any)?.gamification?.points || 0} <span className="text-[10px] text-gray-400">XP</span></p>
+                                <p className="text-xl font-semibold text-amber-600">{(user as any)?.gamification?.points || 0} <span className="text-[10px] text-gray-400">XP</span></p>
                             </div>
                         </div>
                         <h3 className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-4">Wellness Journey</h3>
@@ -404,7 +410,7 @@ const CustomerDashboard = () => {
                 </Card>
 
                 {/* B2C Stats - Coming soon placeholder */}
-                <Card className="rounded-[22px] border-dashed border-2 border-gray-200 bg-gray-50/50 flex flex-col items-center justify-center p-6 text-center shadow-sm">
+                <Card className="rounded-xl border-dashed border-2 border-gray-200 bg-gray-50/50 flex flex-col items-center justify-center p-6 text-center shadow-sm">
                     <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
                         <Lock className="w-5 h-5 text-gray-400" />
                     </div>
@@ -417,7 +423,7 @@ const CustomerDashboard = () => {
             <div className="mt-8">
                 <div className="flex justify-between items-end mb-4 px-2">
                     <div>
-                        <h2 className="text-xl font-black text-gray-900 font-serif">Assessment History</h2>
+                        <h2 className="text-xl font-semibold text-gray-900 font-sans">Assessment History</h2>
                         <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mt-1">AI Health Check Records</p>
                     </div>
                     <Button variant="ghost" size="sm" onClick={() => navigate('/ai-health-assessment')} className="text-blue-600 font-bold hover:bg-blue-50">
@@ -425,7 +431,7 @@ const CustomerDashboard = () => {
                     </Button>
                 </div>
 
-                <Card className="rounded-[22px] border-gray-100 shadow-sm overflow-hidden bg-white">
+                <Card className="rounded-xl border-gray-100 shadow-sm overflow-hidden bg-white">
                     <CardContent className="p-0">
                         {assessmentHistory.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
@@ -434,7 +440,7 @@ const CustomerDashboard = () => {
                                 </div>
                                 <h3 className="text-lg font-bold text-gray-900">No Assessments Yet</h3>
                                 <p className="text-sm text-gray-500 max-w-sm mt-2 mb-6">Take your first AI health assessment to establish your cardiovascular baseline and generate personalized insights.</p>
-                                <Button onClick={() => navigate('/ai-health-assessment')} className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:shadow-lg hover:shadow-blue-500/25 transition-all">
+                                <Button onClick={() => navigate('/ai-health-assessment')} className="rounded-xl transition-all duration-200 hover:-translate-y-px" style={{ background: 'hsl(var(--primary))', boxShadow: 'var(--shadow-sm)' }}>
                                     Begin AI Assessment
                                 </Button>
                             </div>
@@ -480,7 +486,7 @@ const CustomerDashboard = () => {
 
                                                 <div className="flex items-center gap-6">
                                                     <div className="text-right hidden sm:block">
-                                                        <span className="text-2xl font-black" style={{ color: color }}>{score}</span>
+                                                        <span className="text-2xl font-semibold" style={{ color: color }}>{score}</span>
                                                         <span className="text-gray-400 text-xs font-bold block -mt-1">/ 100</span>
                                                     </div>
                                                     <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-blue-600 transition-colors" />
@@ -534,7 +540,7 @@ const CustomerDashboard = () => {
             {/* Existing Health Modules sections... */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
                 {/* Health Modules */}
-                <Card className="rounded-[22px] border-gray-100 shadow-sm hover:shadow-md transition-all bg-white">
+                <Card className="rounded-xl border-gray-100 shadow-sm hover:shadow-md transition-all bg-white">
                     <CardContent className="p-6">
                         <div className="flex justify-between items-start mb-6">
                             <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl">
@@ -563,7 +569,7 @@ const CustomerDashboard = () => {
                 </Card>
 
                 {/* Quick Actions */}
-                <Card className="rounded-[22px] border-gray-100 shadow-sm hover:shadow-md transition-all bg-white">
+                <Card className="rounded-xl border-gray-100 shadow-sm hover:shadow-md transition-all bg-white">
                     <CardContent className="p-6">
                         <div className="flex justify-between items-start mb-6">
                             <div className="p-3 bg-purple-50 text-purple-600 rounded-2xl">
@@ -596,7 +602,7 @@ const CustomerDashboard = () => {
                 </Card>
 
                 {/* Premium Products */}
-                <Card className="rounded-[22px] border-gray-100 shadow-sm hover:shadow-md transition-all bg-white">
+                <Card className="rounded-xl border-gray-100 shadow-sm hover:shadow-md transition-all bg-white">
                     <CardContent className="p-6">
                         <div className="flex justify-between items-start mb-6">
                             <div className="p-3 bg-amber-50 text-amber-600 rounded-2xl">
@@ -629,7 +635,7 @@ const CustomerDashboard = () => {
             <div className="pt-4">
                 <div className="flex justify-between items-end mb-6">
                     <div>
-                        <h3 className="font-serif text-2xl font-black text-gray-900">Recommended Programs</h3>
+                        <h3 className="font-sans text-2xl font-semibold text-gray-900">Recommended Programs</h3>
                         <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mt-1">Curated wellness sessions for you</p>
                     </div>
                     <Button variant="ghost" className="text-blue-600 font-bold text-sm" onClick={() => setActiveTab('programs')}>
@@ -646,7 +652,7 @@ const CustomerDashboard = () => {
                                 {/* Program Card */}
                                 <div
                                     onClick={() => setActiveRecProgram(isExpanded ? null : prog.id)}
-                                    className={`rounded-[24px] overflow-hidden bg-white border shadow-sm cursor-pointer transition-all duration-300 hover:shadow-lg ${isExpanded ? 'border-blue-200 shadow-md ring-1 ring-blue-100' : 'border-gray-100'
+                                    className={`rounded-xl overflow-hidden bg-white border shadow-sm cursor-pointer transition-all duration-300 hover:shadow-lg ${isExpanded ? 'border-blue-200 shadow-md ring-1 ring-blue-100' : 'border-gray-100'
                                         }`}
                                 >
                                     {/* Gradient Header */}
@@ -655,7 +661,7 @@ const CustomerDashboard = () => {
                                         <div className="relative z-10 flex items-center gap-3">
                                             <span className="text-4xl">{prog.emoji}</span>
                                             <div>
-                                                <h4 className="text-lg font-black text-white leading-tight">{prog.title}</h4>
+                                                <h4 className="text-lg font-semibold text-white leading-tight">{prog.title}</h4>
                                                 <span className="text-white/70 text-[10px] font-bold uppercase tracking-wider">{prog.category}</span>
                                             </div>
                                         </div>
@@ -705,7 +711,7 @@ const CustomerDashboard = () => {
 
                                                 {/* Info */}
                                                 <div className="flex-1 flex flex-col justify-center">
-                                                    <span className={`text-[9px] font-black uppercase tracking-widest ${prog.textColor}`}>Session {si + 1}</span>
+                                                    <span className={`text-[9px] font-semibold uppercase tracking-widest ${prog.textColor}`}>Session {si + 1}</span>
                                                     <h5 className="text-sm font-bold text-gray-900 mt-0.5 leading-snug">{session.title}</h5>
                                                     <div className="flex items-center gap-2 mt-1.5">
                                                         <span className="text-[10px] text-gray-400 flex items-center gap-1"><Play className="w-2.5 h-2.5" /> Play Now</span>
@@ -736,16 +742,16 @@ const CustomerDashboard = () => {
             {/* Header */}
             <div className="flex justify-between items-end">
                 <div>
-                    <h1 className="text-3xl font-black text-gray-900 font-serif">Vital Programs</h1>
+                    <h1 className="text-3xl font-semibold text-gray-900 font-sans">Vital Programs</h1>
                     <p className="text-xs font-bold uppercase tracking-widest mt-1 flex items-center gap-1.5">
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${PLAN_COLORS[userPlan]}`}>
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase ${PLAN_COLORS[userPlan]}`}>
                             {userPlan === 'free' ? '🆓' : userPlan === 'family' ? '💎' : '⭐'} {userPlan} Plan
                         </span>
                     </p>
                 </div>
                 {userPlan === 'free' && (
                     <button onClick={() => navigate('/pricing')}
-                        className="flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[11px] font-bold px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all">
+                        className="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
                         <Crown className="w-3.5 h-3.5" /> Upgrade Plan
                     </button>
                 )}
@@ -786,7 +792,7 @@ const CustomerDashboard = () => {
                         const reqPlan = program.requiredPlan;
 
                         return (
-                            <Card key={program._id} className={`rounded-[24px] border-none shadow-sm overflow-hidden bg-white group hover:shadow-xl transition-all duration-300 relative ${isLocked ? 'opacity-90' : ''
+                            <Card key={program._id} className={`rounded-xl border-none shadow-sm overflow-hidden bg-white group hover:shadow-xl transition-all duration-300 relative ${isLocked ? 'opacity-90' : ''
                                 }`}>
                                 {/* Lock overlay badge */}
                                 {isLocked && (
@@ -806,11 +812,11 @@ const CustomerDashboard = () => {
                                                 <Lock className="w-10 h-10 text-white/60" />
                                             </div>
                                         )}
-                                        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-gray-900 text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider">
+                                        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-gray-900 text-[10px] font-semibold px-2.5 py-1 rounded-lg uppercase tracking-wider">
                                             {program.category}
                                         </div>
                                         {program.pricingType === 'free' && (
-                                            <div className="absolute bottom-3 left-3 bg-emerald-500 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase">
+                                            <div className="absolute bottom-3 left-3 bg-emerald-500 text-white text-[9px] font-semibold px-2 py-0.5 rounded-md uppercase">
                                                 Free
                                             </div>
                                         )}
@@ -820,7 +826,7 @@ const CustomerDashboard = () => {
                                     <CardContent className="p-5 flex-1 flex flex-col justify-between">
                                         <div>
                                             <div className="flex justify-between items-start mb-2">
-                                                <h3 className="text-lg font-black text-gray-900 leading-tight">{program.title}</h3>
+                                                <h3 className="text-lg font-semibold text-gray-900 leading-tight">{program.title}</h3>
                                                 {(program.averageRating || 0) > 0 && (
                                                     <div className="flex items-center gap-1 text-amber-500 flex-shrink-0 ml-2">
                                                         <Star className="w-3.5 h-3.5 fill-amber-500" />
@@ -892,11 +898,11 @@ const CustomerDashboard = () => {
 
     const renderSettings = () => (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="text-3xl font-black text-gray-900 font-serif">Account Console</h1>
+            <h1 className="text-3xl font-semibold text-gray-900 font-sans">Account Console</h1>
 
-            <div className="bg-white rounded-[28px] border border-gray-100 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                 <div className="p-6 bg-gray-50/50 border-b border-gray-100 flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xl font-black">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xl font-semibold">
                         {user?.name?.[0] || 'U'}
                     </div>
                     <div>
@@ -940,7 +946,7 @@ const CustomerDashboard = () => {
             </div>
 
             <div className="flex flex-col items-center gap-2 pt-4">
-                <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest">Prevent Vital Mobile — v2.4.0</p>
+                <p className="text-[10px] font-semibold text-gray-300 uppercase tracking-widest">Prevent Vital Mobile — v2.4.0</p>
                 <div className="flex gap-4">
                     <p className="text-[10px] font-bold text-blue-600 capitalize">Terms of Protocol</p>
                     <p className="text-[10px] font-bold text-blue-600 capitalize">Audit Log</p>
@@ -972,7 +978,7 @@ const CustomerDashboard = () => {
         return (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-24">
                 {/* Hero */}
-                <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-[28px] p-7 shadow-xl text-white">
+                <div className="relative overflow-hidden rounded-2xl p-7 text-white" style={{ background: 'var(--gradient-health)', boxShadow: 'var(--shadow-lg)' }}>
                     <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
                     <div className="absolute bottom-0 left-1/4 w-32 h-32 bg-purple-500/20 rounded-full blur-2xl"></div>
                     <div className="relative z-10">
@@ -982,7 +988,7 @@ const CustomerDashboard = () => {
                         <div className="flex items-center gap-4">
                             <span className="text-5xl">{CAT_EMOJI[activeProgram.category] || '📋'}</span>
                             <div>
-                                <h1 className="text-2xl font-black leading-tight">{activeProgram.title}</h1>
+                                <h1 className="text-2xl font-semibold leading-tight">{activeProgram.title}</h1>
                                 <p className="text-blue-100 text-xs mt-1 opacity-80">{activeProgram.category} • {activeProgram.difficulty} • {activeProgram.durationWeeks} weeks</p>
                             </div>
                         </div>
@@ -990,7 +996,7 @@ const CustomerDashboard = () => {
                         <div className="mt-6">
                             <div className="flex justify-between items-center mb-2">
                                 <span className="text-[10px] font-bold text-blue-200 uppercase tracking-wider">Overall Progress</span>
-                                <span className="text-sm font-black">{progress}%</span>
+                                <span className="text-sm font-semibold">{progress}%</span>
                             </div>
                             <div className="h-2.5 bg-white/20 rounded-full overflow-hidden">
                                 <div className="h-full bg-gradient-to-r from-emerald-400 to-green-300 rounded-full transition-all duration-700 ease-out"
@@ -1004,7 +1010,7 @@ const CustomerDashboard = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Session Sidebar */}
                     <div className="lg:col-span-1">
-                        <h3 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-3">Sessions</h3>
+                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">Sessions</h3>
                         <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1 no-scrollbar">
                             {sessions.map((session, idx) => {
                                 const isCompleted = completedSessions.includes(idx);
@@ -1021,7 +1027,7 @@ const CustomerDashboard = () => {
                                                     'bg-white border-gray-100 hover:border-blue-200 hover:shadow-sm'
                                             }`}>
                                         <div className="flex items-center gap-3">
-                                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black flex-shrink-0 ${isCurrent ? 'bg-blue-600 text-white' :
+                                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-semibold flex-shrink-0 ${isCurrent ? 'bg-blue-600 text-white' :
                                                 isCompleted ? 'bg-emerald-500 text-white' :
                                                     isLocked ? 'bg-gray-200 text-gray-400' :
                                                         'bg-gray-100 text-gray-600'
@@ -1047,14 +1053,14 @@ const CustomerDashboard = () => {
                     {/* Main Content Area */}
                     <div className="lg:col-span-2 space-y-5">
                         {/* Current Session Header */}
-                        <Card className="rounded-[22px] border-gray-100 shadow-sm bg-white overflow-hidden">
+                        <Card className="rounded-xl border-gray-100 shadow-sm bg-white overflow-hidden">
                             <CardContent className="p-6">
                                 <div className="flex items-center justify-between mb-4">
                                     <div>
-                                        <h2 className="text-xl font-black text-gray-900">{current.title}</h2>
+                                        <h2 className="text-xl font-semibold text-gray-900">{current.title}</h2>
                                         <p className="text-xs text-gray-400 mt-0.5">{current.subtitle}</p>
                                     </div>
-                                    <span className={`text-[10px] font-black px-3 py-1 rounded-full uppercase ${completedSessions.includes(activeSession) ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'
+                                    <span className={`text-[10px] font-semibold px-3 py-1 rounded-full uppercase ${completedSessions.includes(activeSession) ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'
                                         }`}>
                                         {completedSessions.includes(activeSession) ? '✓ Completed' : '● In Progress'}
                                     </span>
@@ -1102,9 +1108,9 @@ const CustomerDashboard = () => {
                         </Card>
 
                         {/* Daily Health Tips */}
-                        <Card className="rounded-[22px] border-gray-100 shadow-sm bg-white">
+                        <Card className="rounded-xl border-gray-100 shadow-sm bg-white">
                             <CardContent className="p-6">
-                                <h3 className="text-xs font-black text-gray-500 uppercase tracking-widest mb-4">💡 Today's Health Tips</h3>
+                                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-4">💡 Today's Health Tips</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     {[
                                         { emoji: '💧', tip: 'Stay hydrated — drink 8 glasses of water throughout the day', color: 'bg-blue-50 border-blue-100' },
@@ -1122,12 +1128,12 @@ const CustomerDashboard = () => {
                         </Card>
 
                         {/* Upcoming: Live Sessions Placeholder */}
-                        <Card className="rounded-[22px] border-dashed border-2 border-gray-200 bg-gray-50/50">
+                        <Card className="rounded-xl border-dashed border-2 border-gray-200 bg-gray-50/50">
                             <CardContent className="p-6 text-center">
                                 <div className="w-14 h-14 bg-indigo-100 rounded-2xl mx-auto flex items-center justify-center mb-3">
                                     <Play className="w-6 h-6 text-indigo-600" />
                                 </div>
-                                <h3 className="text-sm font-black text-gray-700">Live Sessions Coming Soon</h3>
+                                <h3 className="text-sm font-semibold text-gray-700">Live Sessions Coming Soon</h3>
                                 <p className="text-xs text-gray-400 mt-1 max-w-sm mx-auto">Interactive video classes with health experts and real-time vitals monitoring will be available after cloud integration.</p>
                             </CardContent>
                         </Card>
@@ -1135,7 +1141,7 @@ const CustomerDashboard = () => {
                 </div>
 
                 {/* Floating Bottom Action Bar */}
-                <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-100 p-4 z-30 shadow-2xl">
+                <div className="fixed bottom-0 left-0 right-0 border-t border-border p-4 z-30" style={{ background: 'var(--glass-bg)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', boxShadow: '0 -4px 16px rgba(15,30,60,0.08)' }}>
                     <div className="max-w-[1400px] mx-auto flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
                             <span className="text-2xl">{CAT_EMOJI[activeProgram.category] || '📋'}</span>
@@ -1177,9 +1183,51 @@ const CustomerDashboard = () => {
         );
     };
 
+    const navItems = [
+        { id: 'home',     icon: Home,       label: 'Home' },
+        { id: 'programs', icon: PlayCircle, label: 'Programs' },
+        { id: 'orders',   icon: ShoppingBag, label: 'Orders' },
+        { id: 'settings', icon: Settings,   label: 'Account' },
+    ];
+
     return (
-        <div className="min-h-screen bg-[#F8FAFC]">
-            <div className="max-w-[1400px] mx-auto px-4 pt-6">
+        <div className="min-h-screen bg-[hsl(var(--section-alt))]">
+            {/* Mobile bottom nav */}
+            <nav className="mobile-bottom-nav lg:hidden" aria-label="Dashboard navigation">
+                {navItems.map(item => (
+                    <button
+                        key={item.id}
+                        onClick={() => setActiveTab(item.id)}
+                        className={`mobile-nav-item ${activeTab === item.id ? 'active' : ''}`}
+                        aria-current={activeTab === item.id ? 'page' : undefined}
+                    >
+                        <item.icon size={20} strokeWidth={activeTab === item.id ? 2.5 : 1.75} />
+                        <span>{item.label}</span>
+                    </button>
+                ))}
+            </nav>
+
+            {/* Desktop tab bar */}
+            <div className="hidden lg:flex items-center gap-1 border-b border-border bg-background/80 backdrop-blur-md sticky top-[calc(var(--header-h,88px))] z-20 px-6">
+                <div className="max-w-[1400px] mx-auto w-full flex gap-1 py-1">
+                    {navItems.map(item => (
+                        <button
+                            key={item.id}
+                            onClick={() => setActiveTab(item.id)}
+                            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                                activeTab === item.id
+                                    ? 'text-primary bg-primary/8'
+                                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                            }`}
+                        >
+                            <item.icon size={16} />
+                            {item.label}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            <div className="max-w-[1400px] mx-auto px-4 pt-6 pb-24 lg:pb-8">
                 {/* Standard Page Content based on Tab */}
                 {activeProgram ? renderProgramPlayer() : (
                     <>
@@ -1193,9 +1241,9 @@ const CustomerDashboard = () => {
 
             {/* Vitals Input Modal */}
             <Dialog open={isVitalsModalOpen} onOpenChange={setIsVitalsModalOpen}>
-                <DialogContent className="sm:max-w-[425px] rounded-[28px] border-none shadow-2xl">
+                <DialogContent className="sm:max-w-[425px] rounded-2xl border-none shadow-2xl">
                     <DialogHeader>
-                        <DialogTitle className="text-2xl font-black font-serif">Update Health Vitals</DialogTitle>
+                        <DialogTitle className="text-2xl font-semibold font-sans">Update Health Vitals</DialogTitle>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-2 gap-4">
@@ -1237,7 +1285,7 @@ const CustomerDashboard = () => {
 
             {/* Video Player Modal */}
             <Dialog open={!!selectedVideo} onOpenChange={() => setSelectedVideo(null)}>
-                <DialogContent className="max-w-4xl p-0 overflow-hidden bg-black border-none rounded-none md:rounded-[28px] shadow-2xl">
+                <DialogContent className="max-w-4xl p-0 overflow-hidden bg-black border-none rounded-none md:rounded-2xl shadow-2xl">
                     {selectedVideo && (
                         <div className="aspect-video w-full bg-black flex items-center justify-center">
                             {selectedVideo.type === 'youtube' ? (
@@ -1257,7 +1305,7 @@ const CustomerDashboard = () => {
 
             {/* Programme Detail Modal */}
             <Dialog open={!!selectedProgram} onOpenChange={() => setSelectedProgram(null)}>
-                <DialogContent className="max-w-lg rounded-[28px] border-none shadow-2xl p-0 overflow-hidden">
+                <DialogContent className="max-w-lg rounded-2xl border-none shadow-2xl p-0 overflow-hidden">
                     {selectedProgram && (
                         <>
                             {/* Top banner */}
@@ -1266,7 +1314,7 @@ const CustomerDashboard = () => {
                                 <div className="flex items-center gap-4 relative z-10">
                                     <span className="text-5xl">{CAT_EMOJI[selectedProgram.category] || '📋'}</span>
                                     <div>
-                                        <h2 className="text-xl font-black leading-tight">{selectedProgram.title}</h2>
+                                        <h2 className="text-xl font-semibold leading-tight">{selectedProgram.title}</h2>
                                         <div className="flex items-center gap-2 mt-2 flex-wrap">
                                             <span className="bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">{selectedProgram.category}</span>
                                             <span className="bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{selectedProgram.difficulty}</span>
@@ -1314,7 +1362,7 @@ const CustomerDashboard = () => {
                                 <div className="flex items-center justify-between bg-gray-50 rounded-2xl p-4 border border-gray-100">
                                     <div>
                                         <p className="text-[10px] text-gray-400 font-bold uppercase">Pricing</p>
-                                        <p className="text-lg font-black text-gray-900">
+                                        <p className="text-lg font-semibold text-gray-900">
                                             {selectedProgram.price > 0 ? `₹${selectedProgram.price.toLocaleString()}` : 'Free'}
                                             {selectedProgram.pricingType === 'subscription' && <span className="text-xs text-gray-400 font-normal">/mo</span>}
                                         </p>

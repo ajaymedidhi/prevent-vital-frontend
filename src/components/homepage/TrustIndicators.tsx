@@ -1,82 +1,47 @@
-import { Users, Heart, ShieldCheck, GraduationCap } from 'lucide-react';
+import { Heart, ShieldCheck, GraduationCap, Users } from 'lucide-react';
 
-interface TrustIndicator {
-    icon: string;
-    value: string;
-    label: string;
-}
+const indicators = [
+  { icon: Heart,         value: '95%',       label: 'Health Improvement',  color: 'text-rose-600',   bg: 'bg-rose-50',    ring: 'ring-rose-100',    glow: 'shadow-glow-red'   },
+  { icon: ShieldCheck,   value: 'ISO 27001',  label: 'Certified Security',  color: 'text-primary',    bg: 'bg-primary/6',  ring: 'ring-primary/15',  glow: 'shadow-glow-brand' },
+  { icon: GraduationCap, value: '200+',       label: 'Medical Experts',     color: 'text-accent',     bg: 'bg-accent/8',   ring: 'ring-accent/15',   glow: 'shadow-glow-teal'  },
+  { icon: Users,         value: '10,000+',    label: 'Patients Served',     color: 'text-blue-600',   bg: 'bg-blue-50',    ring: 'ring-blue-100',    glow: ''                  },
+];
 
-const TrustIndicators = () => {
-    const indicators: TrustIndicator[] = [
-        {
-            icon: 'HeartIcon',
-            value: '95%',
-            label: 'Health Improvement'
-        },
-        {
-            icon: 'ShieldCheckIcon',
-            value: 'ISO 27001',
-            label: 'Certified Security'
-        },
-        {
-            icon: 'AcademicCapIcon',
-            value: '200+',
-            label: 'Medical Experts'
-        }
-    ];
+const TrustIndicators = () => (
+  <section className="py-14 md:py-20 bg-background relative z-30">
+    {/* Subtle top divider gradient */}
+    <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
-    const IconMap: Record<string, any> = {
-        HeartIcon: Heart,
-        ShieldCheckIcon: ShieldCheck,
-        AcademicCapIcon: GraduationCap,
-    };
+    <div className="container-wide">
+      {/* Section label */}
+      <p className="text-center text-[11px] font-bold text-muted-foreground uppercase tracking-[0.18em] mb-10">
+        Trusted by India's leading healthcare institutions
+      </p>
 
-    return (
-        <section className="py-20 bg-background relative z-30 -mt-10">
-            <div className="container mx-auto px-6 md:px-16">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                    {indicators.map((indicator, index) => {
-                        const IconComponent = IconMap[indicator.icon];
-                        // Define specific gradient border colors for each card to match the variety in ClinicalCredibility
-                        const gradients = [
-                            'from-pink-500/20 via-purple-500/20 to-indigo-500/20',
-                            'from-purple-500/20 via-indigo-500/20 to-blue-500/20',
-                            'from-indigo-500/20 via-blue-500/20 to-teal-500/20',
-                            'from-blue-500/20 via-teal-500/20 to-emerald-500/20'
-                        ];
-                        const iconGradients = [
-                            'from-pink-50 to-purple-50 ring-purple-100 text-purple-600',
-                            'from-purple-50 to-indigo-50 ring-indigo-100 text-indigo-600',
-                            'from-indigo-50 to-blue-50 ring-blue-100 text-blue-600',
-                            'from-blue-50 to-teal-50 ring-teal-100 text-teal-600'
-                        ];
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        {indicators.map(({ icon: Icon, value, label, color, bg, ring }) => (
+          <div
+            key={label}
+            className="group bg-card border border-border rounded-2xl p-6 hover:-translate-y-1.5 transition-all duration-300 text-center relative overflow-hidden"
+            style={{ boxShadow: 'var(--shadow-sm)' }}
+          >
+            {/* Subtle top accent line */}
+            <div className={`absolute top-0 inset-x-0 h-0.5 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${bg}`} />
 
-                        return (
-                            <div
-                                key={index}
-                                className="relative bg-card rounded-2xl p-6 shadow-xl border border-white/10 overflow-hidden group hover:-translate-y-1 transition-all duration-300"
-                            >
-                                {/* Gradient Border Overlay */}
-                                <div className={`absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-br ${gradients[index % gradients.length]} -z-10`} />
-
-                                <div className="flex flex-col items-center text-center relative z-10">
-                                    <div className={`w-14 h-14 bg-gradient-to-br ${iconGradients[index % iconGradients.length]} rounded-2xl flex items-center justify-center mb-4 ring-1`}>
-                                        <IconComponent size={24} strokeWidth={2.5} />
-                                    </div>
-                                    <div className="text-2xl lg:text-4xl font-bold text-foreground mb-1 tracking-tight">
-                                        {indicator.value}
-                                    </div>
-                                    <div className="text-xs lg:text-sm font-medium text-muted-foreground tracking-wide uppercase">
-                                        {indicator.label}
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
+            <div className={`w-13 h-13 w-[52px] h-[52px] ${bg} ${ring} ring-1 ${color} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
+              <Icon size={24} strokeWidth={2} />
             </div>
-        </section>
-    );
-};
+            <div className="text-2xl lg:text-3xl font-bold text-foreground mb-1.5 tracking-tight">
+              {value}
+            </div>
+            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              {label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
 
 export default TrustIndicators;

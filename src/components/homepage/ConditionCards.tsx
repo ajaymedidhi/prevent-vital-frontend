@@ -9,7 +9,8 @@ interface Condition {
     image: string;
     alt: string;
     riskFactors: string[];
-    preventionRate: string;
+    accentClass: string;
+    iconBg: string;
 }
 
 const ConditionCards = () => {
@@ -22,7 +23,8 @@ const ConditionCards = () => {
             image: "https://images.unsplash.com/photo-1685660375327-47bcca398780",
             alt: 'Blood glucose meter',
             riskFactors: ['Family History', 'Obesity', 'Sedentary Lifestyle'],
-            preventionRate: ''
+            accentClass: 'group-hover:border-blue-200',
+            iconBg: 'bg-blue-50 text-blue-600',
         },
         {
             id: 'hypertension',
@@ -32,7 +34,8 @@ const ConditionCards = () => {
             image: "https://images.unsplash.com/photo-1623658045230-605cb00c80d6",
             alt: 'Digital blood pressure monitor',
             riskFactors: ['High Sodium', 'Stress', 'Age'],
-            preventionRate: ''
+            accentClass: 'group-hover:border-rose-200',
+            iconBg: 'bg-rose-50 text-rose-600',
         },
         {
             id: 'cardiac',
@@ -42,7 +45,8 @@ const ConditionCards = () => {
             image: "https://img.rocket.new/generatedImages/rocket_gen_img_19c8b52ae-1765801567685.png",
             alt: 'Cardiologist examining ECG',
             riskFactors: ['Cholesterol', 'Smoking', 'Inactivity'],
-            preventionRate: ''
+            accentClass: 'group-hover:border-amber-200',
+            iconBg: 'bg-amber-50 text-amber-600',
         },
         {
             id: 'respiratory',
@@ -52,7 +56,8 @@ const ConditionCards = () => {
             image: "https://img.rocket.new/generatedImages/rocket_gen_img_11b83cbcc-1764755888108.png",
             alt: 'Person practicing deep breathing',
             riskFactors: ['Pollution', 'Allergies', 'Smoking'],
-            preventionRate: ''
+            accentClass: 'group-hover:border-sky-200',
+            iconBg: 'bg-sky-50 text-sky-600',
         },
         {
             id: 'mental',
@@ -62,7 +67,8 @@ const ConditionCards = () => {
             image: "https://img.rocket.new/generatedImages/rocket_gen_img_11552d387-1764832853014.png",
             alt: 'Peaceful woman meditating',
             riskFactors: ['Stress', 'Sleep Issues', 'Isolation'],
-            preventionRate: ''
+            accentClass: 'group-hover:border-purple-200',
+            iconBg: 'bg-purple-50 text-purple-600',
         },
         {
             id: 'weight',
@@ -72,8 +78,9 @@ const ConditionCards = () => {
             image: "https://img.rocket.new/generatedImages/rocket_gen_img_1bb8da715-1764844202208.png",
             alt: 'Healthy lifestyle concept',
             riskFactors: ['Poor Diet', 'Inactivity', 'Metabolism'],
-            preventionRate: ''
-        }
+            accentClass: 'group-hover:border-emerald-200',
+            iconBg: 'bg-emerald-50 text-emerald-600',
+        },
     ];
 
     const IconMap: Record<string, any> = {
@@ -89,9 +96,11 @@ const ConditionCards = () => {
         <section className="py-24 bg-section-alt/30">
             <div className="container mx-auto px-6 md:px-16">
                 <div className="text-center mb-16">
-                    <span className="text-primary font-bold tracking-widest uppercase text-xs mb-4 block">Targeted Programs</span>
-                    <h2 id="preventive-health-conditions" className="text-3xl lg:text-4xl font-bold text-foreground mb-4 tracking-tight pb-1">
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600">
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-primary/6 border border-primary/15 rounded-full mb-5">
+                        <span className="text-xs font-bold text-primary uppercase tracking-widest">Targeted Programs</span>
+                    </div>
+                    <h2 id="preventive-health-conditions" className="text-3xl lg:text-4xl font-bold text-foreground mb-4 tracking-tight">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-800 to-wellness-600">
                             Condition-Specific Prevention
                         </span>
                     </h2>
@@ -100,59 +109,55 @@ const ConditionCards = () => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {conditions.map((condition) => {
                         const IconComponent = IconMap[condition.icon];
                         return (
                             <div
                                 key={condition.id}
-                                className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-lg hover:border-primary/30 transition-all duration-300 hover:-translate-y-1"
+                                className={`group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300 hover:-translate-y-1 ${condition.accentClass}`}
+                                style={{ boxShadow: 'var(--shadow-xs)' }}
                             >
-                                <div className="relative h-52 overflow-hidden">
-                                    {/* Image Overlay */}
-                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors z-10" />
-
+                                <div className="relative h-48 overflow-hidden">
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent z-10 group-hover:from-black/30 transition-all duration-300" />
                                     <img
                                         src={condition.image}
                                         alt={condition.alt}
                                         loading="lazy"
-                                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                     />
-
                                     <div className="absolute bottom-4 left-4 z-20">
-                                        <div className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-md">
-                                            <IconComponent size={20} className="text-primary" />
+                                        <div className={`w-10 h-10 ${condition.iconBg} backdrop-blur-sm rounded-xl flex items-center justify-center shadow-md border border-white/30`}>
+                                            <IconComponent size={20} />
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="p-6">
-                                    <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                                    <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-200">
                                         {condition.title}
                                     </h3>
-                                    <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+                                    <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
                                         {condition.description}
                                     </p>
 
-                                    <div className="mb-6">
-                                        <div className="flex flex-wrap gap-2">
-                                            {condition.riskFactors.map((factor, index) => (
-                                                <span
-                                                    key={index}
-                                                    className="text-[10px] uppercase font-bold tracking-wider px-2 py-1 bg-secondary text-secondary-foreground rounded border border-border"
-                                                >
-                                                    {factor}
-                                                </span>
-                                            ))}
-                                        </div>
+                                    <div className="flex flex-wrap gap-1.5 mb-5">
+                                        {condition.riskFactors.map((factor) => (
+                                            <span
+                                                key={factor}
+                                                className="text-[10px] font-semibold px-2 py-1 bg-muted text-muted-foreground rounded-md border border-border/60 uppercase tracking-wide"
+                                            >
+                                                {factor}
+                                            </span>
+                                        ))}
                                     </div>
 
                                     <Link
                                         to="/disease-prevention-programs"
-                                        className="inline-flex items-center text-sm font-bold text-primary hover:text-primary/80 transition-colors group/link"
+                                        className="inline-flex items-center text-sm font-bold text-primary hover:gap-2 gap-1.5 transition-all duration-200"
                                     >
-                                        View Program Details
-                                        <ArrowRight size={16} className="ml-2 transform group-hover/link:translate-x-1 transition-transform" />
+                                        View Program
+                                        <ArrowRight size={15} />
                                     </Link>
                                 </div>
                             </div>
@@ -160,13 +165,14 @@ const ConditionCards = () => {
                     })}
                 </div>
 
-                <div className="text-center mt-16">
+                <div className="text-center mt-12">
                     <Link
                         to="/disease-prevention-programs"
-                        className="inline-flex items-center px-8 py-4 bg-background border border-border text-foreground font-semibold rounded-lg hover:border-primary hover:text-primary transition-all duration-300 hover:shadow-md"
+                        className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-primary-foreground font-semibold rounded-xl hover:opacity-90 hover:-translate-y-px transition-all duration-200"
+                        style={{ boxShadow: 'var(--shadow-md)' }}
                     >
-                        Explore Complete Catalog
-                        <ArrowRight size={20} className="ml-2" />
+                        Explore All Programs
+                        <ArrowRight size={18} />
                     </Link>
                 </div>
             </div>

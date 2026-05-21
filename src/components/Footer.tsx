@@ -1,159 +1,152 @@
 
 import { Link } from 'react-router-dom';
-import { Share, MessageSquare, Briefcase, Camera, ShieldCheck, Lock } from 'lucide-react';
+import { ShieldCheck, Lock, ArrowRight, Linkedin, Twitter, Instagram, Facebook } from 'lucide-react';
+
+const footerLinks = {
+  platform: [
+    { label: 'AI Health Assessment',    href: '/ai-health-assessment' },
+    { label: 'Prevention Programs',     href: '/disease-prevention-programs' },
+    { label: 'Therapeutic Programs',    href: '/therapeutic-programs-center' },
+    { label: 'Medical Portal',          href: '/medical-professional-portal' },
+  ],
+  company: [
+    { label: 'About Us',            href: '/about-us' },
+    { label: 'Our Team',            href: '/team' },
+    { label: 'Partnership Portal',  href: '/partnership-portal' },
+    { label: 'Contact Us',          href: '/contact' },
+  ],
+  resources: [
+    { label: 'Health Library',   href: '/' },
+    { label: 'Success Stories',  href: '/' },
+    { label: 'Blog',             href: '/' },
+    { label: 'FAQs',             href: '/' },
+  ],
+  legal: [
+    { label: 'Privacy Policy',      href: '/privacy-policy' },
+    { label: 'Terms of Service',    href: '/terms-and-conditions' },
+    { label: 'HIPAA Compliance',    href: '/' },
+    { label: 'Cookie Policy',       href: '/' },
+  ],
+};
+
+const socialLinks = [
+  { name: 'LinkedIn',   icon: Linkedin,  href: '#' },
+  { name: 'Twitter',    icon: Twitter,   href: '#' },
+  { name: 'Instagram',  icon: Instagram, href: '#' },
+  { name: 'Facebook',   icon: Facebook,  href: '#' },
+];
+
+const certBadges = [
+  { icon: ShieldCheck, label: 'ISO 27001 Certified' },
+  { icon: Lock,        label: 'HIPAA Compliant' },
+];
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
-  const footerLinks = {
-    platform: [
-      { label: 'AI Health Assessment', href: '/ai-health-assessment' },
-      { label: 'Prevention Programs', href: '/disease-prevention-programs' },
-      { label: 'Therapeutic Programs', href: '/therapeutic-programs-center' }, // Corrected path stub probably
-      { label: 'Medical Portal', href: '/medical-professional-portal' }
-    ],
-    company: [
-      { label: 'About Us', href: '/about-us' },
-      { label: 'Our Team', href: '/team' },
-      { label: 'Partnership Portal', href: '/partnership-portal' },
-      { label: 'Contact Us', href: '/contact' },
-      // { label: 'Research & Publications', href: '/' }, // Commented out until page exists or replaced
-      // { label: 'Careers', href: '/' } // Commented out until page exists
-    ],
-    resources: [
-      { label: 'Health Library', href: '/' },
-      { label: 'Success Stories', href: '/' },
-      { label: 'Blog', href: '/' },
-      { label: 'FAQs', href: '/' }
-    ],
-    legal: [
-      { label: 'Privacy Policy', href: '/privacy-policy' },
-      { label: 'Terms of Service', href: '/terms-and-conditions' },
-      { label: 'HIPAA Compliance', href: '/' },
-      { label: 'Cookie Policy', href: '/' }
-    ]
-  };
-
-  const socialLinks = [
-    { name: 'Facebook', icon: Share, href: '#' },
-    { name: 'Twitter', icon: MessageSquare, href: '#' },
-    { name: 'LinkedIn', icon: Briefcase, href: '#' },
-    { name: 'Instagram', icon: Camera, href: '#' }
-  ];
-
   return (
-    <footer className="bg-gradient-to-br from-slate-900 to-slate-800 text-white">
-      <div className="container mx-auto px-4 py-12 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
-          <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center space-x-2 mb-4">
-              <div className="flex items-center justify-center w-10 h-10">
-                <img src="/images/logo-new.png" alt="Prevent Vital" className="w-full h-full object-contain" />
-              </div>
-              <span className="text-xl font-bold tracking-tight">PreventVital</span>
+    <footer className="bg-[hsl(213_55%_14%)] text-white">
+
+      {/* ── CTA Banner ── */}
+      <div className="border-b border-white/8">
+        <div className="container-wide py-10 md:py-12">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="max-w-lg">
+              <h3 className="text-xl md:text-2xl font-semibold text-white tracking-tight mb-1">
+                Ready to take control of your health?
+              </h3>
+              <p className="text-sm text-white/55 leading-relaxed">
+                Start your free AI health assessment in under 5 minutes.
+              </p>
+            </div>
+            <Link
+              to="/ai-health-assessment"
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold text-white border border-white/15 hover:bg-white/10 transition-all duration-200 shrink-0"
+            >
+              Start Free Assessment
+              <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
             </Link>
-            <p className="text-sm text-white/70 mb-4 max-w-xs">
-              Pioneering AI-powered preventive healthcare, combining cutting-edge technology with ancient wellness wisdom.
+          </div>
+        </div>
+      </div>
+
+      {/* ── Main Footer ── */}
+      <div className="container-wide py-12 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 md:gap-10 mb-12">
+
+          {/* Brand column */}
+          <div className="lg:col-span-2 space-y-5">
+            <Link to="/" className="flex items-center gap-2.5 group">
+              <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center border border-white/15">
+                <img src="/images/logo-new.png" alt="PreventVital" className="w-6 h-6 object-contain" />
+              </div>
+              <span className="text-lg font-semibold tracking-tight text-white group-hover:text-white/90 transition-colors">
+                PreventVital
+              </span>
+            </Link>
+
+            <p className="text-sm text-white/55 leading-relaxed max-w-xs">
+              India's first AI-powered preventive medicine platform — combining cutting-edge technology with holistic wellness wisdom.
             </p>
-            <div className="flex items-center space-x-3">
-              {socialLinks.map((social) => (
+
+            {/* Social links */}
+            <div className="flex items-center gap-2">
+              {socialLinks.map(({ name, icon: Icon, href }) => (
                 <a
-                  key={social.name}
-                  href={social.href}
-                  className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-colors"
-                  aria-label={social.name}
+                  key={name}
+                  href={href}
+                  aria-label={name}
+                  className="w-9 h-9 rounded-lg bg-white/8 hover:bg-white/16 border border-white/10 hover:border-white/20 flex items-center justify-center transition-all duration-200"
                 >
-                  <social.icon size={20} className="text-white" />
+                  <Icon size={15} className="text-white/70" />
                 </a>
               ))}
             </div>
           </div>
 
-          <div>
-            <h3 className="text-sm font-semibold mb-4 text-white">Platform</h3>
-            <ul className="space-y-2">
-              {footerLinks.platform.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    to={link.href}
-                    className="text-sm text-white/70 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold mb-4 text-white">Company</h3>
-            <ul className="space-y-2">
-              {footerLinks.company.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    to={link.href}
-                    className="text-sm text-white/70 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold mb-4 text-white">Resources</h3>
-            <ul className="space-y-2">
-              {footerLinks.resources.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    to={link.href}
-                    className="text-sm text-white/70 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold mb-4 text-white">Legal</h3>
-            <ul className="space-y-2">
-              {footerLinks.legal.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    to={link.href}
-                    className="text-sm text-white/70 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Link columns */}
+          {[
+            { heading: 'Platform',   links: footerLinks.platform  },
+            { heading: 'Company',    links: footerLinks.company   },
+            { heading: 'Resources',  links: footerLinks.resources },
+            { heading: 'Legal',      links: footerLinks.legal     },
+          ].map(({ heading, links }) => (
+            <div key={heading}>
+              <h4 className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">
+                {heading}
+              </h4>
+              <ul className="space-y-2.5">
+                {links.map(({ label, href }) => (
+                  <li key={label}>
+                    <Link
+                      to={href}
+                      className="text-sm text-white/60 hover:text-white transition-colors duration-150"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        <div className="border-t border-white/10 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-sm text-white/60">
-              © {currentYear} PreventVital. All rights reserved.
-            </p>
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
-                <ShieldCheck size={16} className="text-emerald-500" />
-                <span className="text-xs text-white/60">ISO 27001 Certified</span>
+        {/* ── Bottom bar ── */}
+        <div className="border-t border-white/8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-white/35 order-2 sm:order-1">
+            © {currentYear} PreventVital Technologies Pvt. Ltd. All rights reserved.
+          </p>
+
+          <div className="flex items-center gap-4 order-1 sm:order-2">
+            {certBadges.map(({ icon: Icon, label }) => (
+              <div key={label} className="flex items-center gap-1.5">
+                <Icon size={13} className="text-emerald-400 flex-shrink-0" />
+                <span className="text-xs text-white/45 font-medium">{label}</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Lock size={16} className="text-emerald-500" />
-                <span className="text-xs text-white/60">HIPAA Compliant</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
     </footer>
   );
 };
-
-

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Icon from '@/components/ui/AppIcon';
@@ -12,7 +11,9 @@ interface HeaderProps {
 
 const Header = ({ className = '' }: HeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [view, setView] = useState<'consumer' | 'business'>('consumer');
+
   const cartItems = useSelector((state: RootState) => state.shop.cart);
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
@@ -21,7 +22,12 @@ const Header = ({ className = '' }: HeaderProps) => {
 
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
-  // Sync view state with current route for better UX on refresh
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 12);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   useEffect(() => {
     const path = location.pathname;
     if (['/medical-professional-portal', '/partnership-portal', '/team'].some(p => path.includes(p))) {
@@ -31,152 +37,167 @@ const Header = ({ className = '' }: HeaderProps) => {
     }
   }, [location.pathname]);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
 
   const handleLogout = () => {
     dispatch(logout());
     navigate('/');
-    setIsMobileMenuOpen(false);
   };
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+  const isActive = (path: string) => location.pathname === path;
 
-  const isActive = (path: string) => {
-    return location.pathname === path ? 'bg-cyan-50 text-cyan-700' : 'text-gray-600 hover:text-cyan-600';
-  };
+  const navLinkClass = (path: string) =>
+    `px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+      isActive(path)
+        ? 'text-primary bg-primary/8 font-semibold'
+        : 'text-foreground/70 hover:text-foreground hover:bg-muted'
+    }`;
+
+  const consumerLinks = [
+    { to: '/homepage',                   label: 'Home' },
+    { to: '/disease-prevention-programs', label: 'Programs' },
+    { to: '/ai-health-assessment',        label: 'AI Assessment' },
+    { to: '/shop',                        label: 'Shop' },
+  ];
+
+  const businessLinks = [
+    { to: '/medical-professional-portal', label: 'Mentorship' },
+    { to: '/partnership-portal',          label: 'Partnership' },
+    { to: '/team',                        label: 'Team' },
+    { to: '/contact',                     label: 'Contact' },
+  ];
+
+  const activeLinks = view === 'consumer' ? consumerLinks : businessLinks;
 
   return (
-    <div className={`fixed top-0 left-0 right-0 z-50 flex flex-col transition-all duration-300 ${className}`}>
+    <div className={`fixed top-0 left-0 right-0 z-50 flex flex-col ${className}`}>
 
-      {/* Top Banner */}
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2.5 px-4 text-center text-xs sm:text-sm font-medium relative z-50">
-        <div className="container mx-auto">
-          <span>Transform your health with AI-powered prevention. </span>
-          {isAuthenticated ? (
-            <Link to="/account/assessment" className="hover:underline hover:text-blue-100 ml-1 inline-flex items-center">
-              Start Free Assessment <span className="ml-1">→</span>
-            </Link>
-          ) : (
-            <Link to="/login?redirect=account/assessment" className="hover:underline hover:text-blue-100 ml-1 inline-flex items-center">
-              Start Free Assessment <span className="ml-1">→</span>
-            </Link>
-          )}
-        </div>
+      {/* ── Announcement Banner ── */}
+      <div className="bg-primary text-primary-foreground py-2 px-4 text-center text-xs font-medium relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20 pointer-events-none"
+          style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, white 0%, transparent 60%)' }} />
+        <span className="relative">Transform your health with AI-powered prevention.{' '}</span>
+        <Link
+          to={isAuthenticated ? '/account/assessment' : '/login?redirect=account/assessment'}
+          className="relative underline underline-offset-2 hover:opacity-80 transition-opacity font-semibold"
+        >
+          Start Free Assessment →
+        </Link>
       </div>
 
-      <header className="bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="w-full">
-          <div className="flex items-center justify-between h-20 md:h-24 px-4 lg:px-8">
+      {/* ── Main Header ── */}
+      <header
+        className={`transition-all duration-300 ${
+          isScrolled
+            ? 'bg-white/95 backdrop-blur-xl border-b border-border shadow-sm'
+            : 'bg-white/90 backdrop-blur-md border-b border-border/50'
+        }`}
+      >
+        <div className="container-wide">
+          <div className="flex items-center justify-between h-16 md:h-[72px]">
 
             {/* Logo */}
-            <Link to="/homepage" className="flex items-center hover:opacity-80 transition-opacity">
-              <div className="flex items-center justify-start h-14 md:h-20 w-auto">
+            <Link to="/homepage" className="flex items-center shrink-0 hover:opacity-90 transition-opacity">
+              <div className="h-10 md:h-12 w-auto">
                 <AppImage
                   src="/images/logo-new.png"
-                  alt="PreventVital.ai logo"
-                  width={300}
-                  height={80}
+                  alt="PreventVital"
+                  width={220}
+                  height={48}
                   className="h-full w-auto object-contain object-left"
                 />
               </div>
             </Link>
 
-            {/* Desktop Navigation - Centered */}
-            <nav className="hidden lg:flex items-center space-x-2">
-              {view === 'consumer' ? (
-                <>
-                  <Link to="/homepage" className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isActive('/homepage')}`}>
-                    Home
-                  </Link>
-                  <Link to="/disease-prevention-programs" className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isActive('/disease-prevention-programs')}`}>
-                    Programs
-                  </Link>
-                  <Link to="/ai-health-assessment" className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isActive('/ai-health-assessment')}`}>
-                    AI Assessment
-                  </Link>
-                  <Link to="/shop" className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isActive('/shop')}`}>
-                    Shop
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link to="/medical-professional-portal" className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isActive('/medical-professional-portal')}`}>
-                    Mentorship
-                  </Link>
-                  <Link to="/partnership-portal" className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isActive('/partnership-portal')}`}>
-                    Partnership
-                  </Link>
-                  <Link to="/team" className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isActive('/team')}`}>
-                    Team
-                  </Link>
-                  <Link to="/contact" className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isActive('/contact')}`}>
-                    Contact Us
-                  </Link>
-                </>
-              )}
+            {/* Desktop Nav — centered */}
+            <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
+              {activeLinks.map(({ to, label }) => (
+                <Link key={to} to={to} className={navLinkClass(to)}>
+                  {label}
+                </Link>
+              ))}
             </nav>
 
-            {/* Right Side Actions */}
-            <div className="hidden lg:flex items-center space-x-6">
+            {/* Right Actions */}
+            <div className="hidden lg:flex items-center gap-3">
 
-              {/* Context Toggle */}
-              <div className="flex items-center bg-gray-100 p-1 rounded-full border border-gray-200">
+              {/* Consumer / Business Toggle */}
+              <div
+                className="flex items-center bg-muted p-0.5 rounded-lg border border-border/60"
+                role="tablist"
+                aria-label="Toggle view"
+              >
                 <button
+                  role="tab"
+                  aria-selected={view === 'consumer'}
                   onClick={() => { setView('consumer'); navigate('/homepage'); }}
-                  className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${view === 'consumer' ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md' : 'text-gray-500 hover:text-gray-900'
-                    }`}
+                  className={`px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all duration-200 ${
+                    view === 'consumer'
+                      ? 'bg-white text-primary shadow-sm border border-border/40'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
                 >
                   Consumer
                 </button>
                 <button
+                  role="tab"
+                  aria-selected={view === 'business'}
                   onClick={() => { setView('business'); navigate('/partnership-portal'); }}
-                  className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${view === 'business' ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md' : 'text-gray-500 hover:text-gray-900'
-                    }`}
+                  className={`px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all duration-200 ${
+                    view === 'business'
+                      ? 'bg-white text-primary shadow-sm border border-border/40'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
                 >
                   Business
                 </button>
               </div>
 
+              {/* Cart */}
               <Link
                 to="/cart"
-                className="relative p-2 text-gray-500 hover:text-primary transition-colors"
-                title="Cart"
+                className="relative p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-all duration-200"
+                aria-label={`Cart (${cartCount} items)`}
               >
-                <Icon name="ShoppingCartIcon" size={20} />
+                <Icon name="ShoppingCartIcon" size={19} />
                 {cartCount > 0 && (
-                  <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full">
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center text-[10px] font-bold text-white bg-destructive rounded-full leading-none">
                     {cartCount}
                   </span>
                 )}
               </Link>
 
+              {/* Auth Buttons */}
               {isAuthenticated ? (
-                <>
+                <div className="flex items-center gap-2">
                   <Link
                     to="/account"
-                    className="px-4 py-2 text-sm font-medium text-primary bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors border border-primary/20"
+                    className="px-4 py-2 text-sm font-semibold text-primary bg-primary/8 hover:bg-primary/12 rounded-lg transition-colors border border-primary/15"
                   >
-                    My Dashboard
+                    Dashboard
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-red-600 transition-colors"
+                    className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-all duration-200"
                   >
                     Logout
                   </button>
-                </>
+                </div>
               ) : (
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center gap-2">
                   <Link
                     to="/login"
-                    className="px-5 py-2.5 text-sm font-semibold text-cyan-600 bg-white border border-cyan-200 hover:bg-cyan-50 rounded-lg transition-colors"
+                    className="px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted rounded-lg transition-colors"
                   >
                     Login
                   </Link>
                   <Link
                     to="/signup"
-                    className="px-5 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-blue-400 to-purple-500 hover:opacity-90 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
+                    className="px-4 py-2 text-sm font-semibold text-primary-foreground rounded-lg transition-all duration-200 hover:opacity-90 hover:-translate-y-px"
+                    style={{ background: 'hsl(var(--primary))', boxShadow: 'var(--shadow-sm)' }}
                   >
                     Get Started
                   </Link>
@@ -184,105 +205,116 @@ const Header = ({ className = '' }: HeaderProps) => {
               )}
             </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={toggleMobileMenu}
-              className="lg:hidden p-2 text-gray-600 hover:text-primary hover:bg-gray-100 rounded-md transition-all"
-              aria-label="Toggle mobile menu"
-            >
-              <Icon name={isMobileMenuOpen ? 'XMarkIcon' : 'Bars3Icon'} size={24} />
-            </button>
-          </div>
-
-          {/* Mobile Menu */}
-          {isMobileMenuOpen && (
-            <div className="lg:hidden border-t border-gray-100 bg-white animate-in slide-in-from-top-5 duration-300 h-[calc(100vh-80px)] overflow-y-auto pb-20">
-              <nav className="px-4 py-6 space-y-6">
-
-                {/* Mobile View Toggle */}
-                <div className="flex items-center bg-gray-100 p-1 rounded-xl mb-6">
-                  <button
-                    onClick={() => { setView('consumer'); navigate('/homepage'); }}
-                    className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${view === 'consumer' ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md' : 'text-gray-500'
-                      }`}
-                  >
-                    Consumer
-                  </button>
-                  <button
-                    onClick={() => { setView('business'); navigate('/partnership-portal'); }}
-                    className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${view === 'business' ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md' : 'text-gray-500'
-                      }`}
-                  >
-                    Business
-                  </button>
-                </div>
-
-                <div className="space-y-2">
-                  {view === 'consumer' ? (
-                    <>
-                      <Link to="/homepage" onClick={() => setIsMobileMenuOpen(false)} className={`block px-4 py-3 rounded-lg text-base font-medium ${isActive('/homepage') === 'bg-cyan-50 text-cyan-700' ? 'bg-cyan-50 text-cyan-700' : 'text-gray-700 hover:bg-gray-50'}`}>
-                        Home
-                      </Link>
-                      <Link to="/disease-prevention-programs" onClick={() => setIsMobileMenuOpen(false)} className={`block px-4 py-3 rounded-lg text-base font-medium ${isActive('/disease-prevention-programs') === 'bg-cyan-50 text-cyan-700' ? 'bg-cyan-50 text-cyan-700' : 'text-gray-700 hover:bg-gray-50'}`}>
-                        Programs
-                      </Link>
-                      <Link to="/ai-health-assessment" onClick={() => setIsMobileMenuOpen(false)} className={`block px-4 py-3 rounded-lg text-base font-medium ${isActive('/ai-health-assessment') === 'bg-cyan-50 text-cyan-700' ? 'bg-cyan-50 text-cyan-700' : 'text-gray-700 hover:bg-gray-50'}`}>
-                        AI Assessment
-                      </Link>
-                      <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className={`block px-4 py-3 rounded-lg text-base font-medium ${isActive('/shop') === 'bg-cyan-50 text-cyan-700' ? 'bg-cyan-50 text-cyan-700' : 'text-gray-700 hover:bg-gray-50'}`}>
-                        Shop
-                      </Link>
-                    </>
-                  ) : (
-                    <>
-                      <Link to="/medical-professional-portal" onClick={() => setIsMobileMenuOpen(false)} className={`block px-4 py-3 rounded-lg text-base font-medium ${isActive('/medical-professional-portal') === 'bg-cyan-50 text-cyan-700' ? 'bg-cyan-50 text-cyan-700' : 'text-gray-700 hover:bg-gray-50'}`}>
-                        Mentorship
-                      </Link>
-                      <Link to="/partnership-portal" onClick={() => setIsMobileMenuOpen(false)} className={`block px-4 py-3 rounded-lg text-base font-medium ${isActive('/partnership-portal') === 'bg-cyan-50 text-cyan-700' ? 'bg-cyan-50 text-cyan-700' : 'text-gray-700 hover:bg-gray-50'}`}>
-                        Partnership
-                      </Link>
-                      <Link to="/team" onClick={() => setIsMobileMenuOpen(false)} className={`block px-4 py-3 rounded-lg text-base font-medium ${isActive('/team') === 'bg-cyan-50 text-cyan-700' ? 'bg-cyan-50 text-cyan-700' : 'text-gray-700 hover:bg-gray-50'}`}>
-                        Team
-                      </Link>
-                      <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className={`block px-4 py-3 rounded-lg text-base font-medium ${isActive('/contact') === 'bg-cyan-50 text-cyan-700' ? 'bg-cyan-50 text-cyan-700' : 'text-gray-700 hover:bg-gray-50'}`}>
-                        Contact Us
-                      </Link>
-                    </>
-                  )}
-                </div>
-
-                <div className="pt-6 border-t border-gray-100 space-y-4">
-                  <Link
-                    to="/cart"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all"
-                  >
-                    <Icon name="ShoppingCartIcon" size={18} className="mr-2" /> Cart ({cartCount})
-                  </Link>
-
-                  {!isAuthenticated && (
-                    <div className="grid grid-cols-2 gap-3">
-                      <Link
-                        to="/login"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="px-4 py-3 text-center text-sm font-semibold text-cyan-600 border border-cyan-200 rounded-lg hover:bg-cyan-50 transition-all"
-                      >
-                        Login
-                      </Link>
-                      <Link
-                        to="/signup"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="px-4 py-3 text-center text-sm font-bold text-white bg-gradient-to-r from-blue-400 to-purple-500 hover:opacity-90 rounded-lg transition-all"
-                      >
-                        Get Started
-                      </Link>
-                    </div>
-                  )}
-                </div>
-              </nav>
+            {/* Mobile: Cart + Menu toggle */}
+            <div className="flex items-center gap-1 lg:hidden">
+              <Link
+                to="/cart"
+                className="relative p-2 text-muted-foreground hover:text-foreground rounded-lg transition-all"
+                aria-label="Cart"
+              >
+                <Icon name="ShoppingCartIcon" size={20} />
+                {cartCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center text-[10px] font-bold text-white bg-destructive rounded-full">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+              <button
+                onClick={() => setIsMobileMenuOpen(prev => !prev)}
+                className="p-2 text-foreground/70 hover:text-foreground hover:bg-muted rounded-lg transition-all"
+                aria-label="Toggle menu"
+                aria-expanded={isMobileMenuOpen}
+              >
+                <Icon name={isMobileMenuOpen ? 'XMarkIcon' : 'Bars3Icon'} size={22} />
+              </button>
             </div>
-          )}
+          </div>
         </div>
+
+        {/* ── Mobile Menu ── */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden border-t border-border bg-background animate-slide-up overflow-y-auto max-h-[calc(100dvh-130px)]">
+            <div className="container-wide py-5 space-y-5">
+
+              {/* View Toggle */}
+              <div className="flex items-center bg-muted p-1 rounded-xl">
+                <button
+                  onClick={() => { setView('consumer'); navigate('/homepage'); }}
+                  className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                    view === 'consumer'
+                      ? 'bg-white text-primary shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  Consumer
+                </button>
+                <button
+                  onClick={() => { setView('business'); navigate('/partnership-portal'); }}
+                  className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                    view === 'business'
+                      ? 'bg-white text-primary shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  Business
+                </button>
+              </div>
+
+              {/* Nav Links */}
+              <nav className="space-y-1" aria-label="Mobile navigation">
+                {activeLinks.map(({ to, label }) => (
+                  <Link
+                    key={to}
+                    to={to}
+                    className={`flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                      isActive(to)
+                        ? 'text-primary bg-primary/8 font-semibold'
+                        : 'text-foreground/80 hover:bg-muted hover:text-foreground'
+                    }`}
+                  >
+                    {label}
+                    {isActive(to) && (
+                      <span className="ml-auto w-1.5 h-1.5 rounded-full bg-primary" />
+                    )}
+                  </Link>
+                ))}
+              </nav>
+
+              {/* Auth */}
+              <div className="pt-2 border-t border-border space-y-2">
+                {isAuthenticated ? (
+                  <>
+                    <Link to="/account" className="btn-primary btn-lg w-full justify-center">
+                      My Dashboard
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full py-3 text-sm font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/5 rounded-xl transition-all"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <div className="grid grid-cols-2 gap-3">
+                    <Link
+                      to="/login"
+                      className="flex items-center justify-center py-3 px-4 text-sm font-semibold text-foreground bg-muted hover:bg-muted/80 rounded-xl transition-all"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className="flex items-center justify-center py-3 px-4 text-sm font-semibold text-primary-foreground rounded-xl transition-all hover:opacity-90"
+                      style={{ background: 'hsl(var(--primary))' }}
+                    >
+                      Get Started
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </header>
     </div>
   );

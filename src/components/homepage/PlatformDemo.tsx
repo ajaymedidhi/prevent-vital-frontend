@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChartBar, Cpu, SlidersHorizontal, ChevronRight, Activity, ArrowRight } from 'lucide-react';
+import { ChartBar, Cpu, SlidersHorizontal, ChevronRight, Activity } from 'lucide-react';
 
 interface DemoFeature {
     id: string;
@@ -76,7 +76,7 @@ const PlatformDemo = () => {
                         <div className="mb-12 md:mb-16">
                             <h2 id="platform-technology" className="text-3xl md:text-5xl font-bold text-foreground mb-4 md:mb-6 leading-tight">
                                 Experience the <br className="hidden md:block" />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600">
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-800 to-wellness-600">
                                     Future of Care
                                 </span>
                             </h2>
@@ -93,18 +93,25 @@ const PlatformDemo = () => {
                                     <button
                                         key={feature.id}
                                         onClick={() => setActiveFeature(index)}
-                                        className={`group w-full text-left p-6 rounded-2xl border transition-all duration-300 relative overflow-hidden ${isActive
-                                            ? 'bg-secondary/50 border-primary shadow-md'
-                                            : 'bg-card border-border hover:border-primary/50 hover:shadow-sm'
+                                        className={`group w-full text-left p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden ${isActive
+                                            ? 'bg-primary/5 border-primary/40'
+                                            : 'bg-card border-border hover:border-primary/30 hover:bg-muted/40'
                                             }`}
+                                        style={isActive ? { boxShadow: 'var(--shadow-sm)' } : {}}
                                     >
-                                        <div className="relative z-10 flex items-start space-x-5">
-                                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-300 ${isActive ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground group-hover:bg-primary/10'
+                                        {/* Active left accent bar */}
+                                        {isActive && (
+                                            <div className="absolute left-0 top-4 bottom-4 w-0.5 bg-primary rounded-r-full" />
+                                        )}
+                                        <div className="relative z-10 flex items-start gap-4">
+                                            <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${isActive
+                                                ? 'bg-primary text-primary-foreground shadow-sm'
+                                                : 'bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary'
                                                 }`}>
-                                                <IconComponent size={24} strokeWidth={isActive ? 2.5 : 2} />
+                                                <IconComponent size={22} strokeWidth={isActive ? 2.5 : 2} />
                                             </div>
-                                            <div className="flex-1">
-                                                <h3 className={`text-lg font-bold mb-1 transition-colors ${isActive ? 'text-foreground' : 'text-muted-foreground'
+                                            <div className="flex-1 min-w-0">
+                                                <h3 className={`text-base font-bold mb-1 transition-colors ${isActive ? 'text-foreground' : 'text-foreground/70 group-hover:text-foreground'
                                                     }`}>
                                                     {feature.title}
                                                 </h3>
@@ -113,8 +120,8 @@ const PlatformDemo = () => {
                                                 </p>
                                             </div>
                                             <ChevronRight
-                                                size={20}
-                                                className={`transition-transform duration-300 ${isActive ? 'text-primary rotate-90' : 'text-muted-foreground group-hover:text-foreground'
+                                                size={18}
+                                                className={`flex-shrink-0 mt-0.5 transition-transform duration-300 ${isActive ? 'text-primary rotate-90' : 'text-muted-foreground/50 group-hover:text-foreground'
                                                     }`}
                                             />
                                         </div>
