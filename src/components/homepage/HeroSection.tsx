@@ -56,9 +56,9 @@ const slides = [
 ];
 
 const statsData = [
-  { value: '10,000+', label: 'Patients Served', icon: Heart },
-  { value: '50+',     label: 'Hospital Partners', icon: Shield },
-  { value: '96%',     label: 'Satisfaction Rate', icon: Activity },
+  { value: '10,000+', label: 'Patients Served',   icon: Heart },
+  { value: '50+',     label: 'Hospital Partners',  icon: Shield },
+  { value: '96%',     label: 'Satisfaction Rate',  icon: Activity },
 ];
 
 const widgetShell = (accentColor: string, children: React.ReactNode) => (
@@ -88,7 +88,6 @@ const PredictionWidget = ({ accentColor }: { accentColor: string }) =>
       </div>
     </div>
 
-    {/* Overall health score ring */}
     <div className="flex items-center gap-4 p-4 bg-gradient-to-br from-slate-50 to-sky-50/40 rounded-2xl mb-3 border border-slate-100/60">
       <div className="relative w-[82px] h-[82px] flex-shrink-0">
         <svg viewBox="0 0 82 82" className="w-full h-full -rotate-90">
@@ -111,13 +110,12 @@ const PredictionWidget = ({ accentColor }: { accentColor: string }) =>
       </div>
     </div>
 
-    {/* Per-condition risk bars */}
     <div className="space-y-2.5 mb-3">
       <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Condition Risk Breakdown</p>
       {[
-        { label: 'Diabetes Risk',   pct: 12, color: '#22c55e', level: 'Low' },
-        { label: 'Cardiac Risk',    pct: 29, color: '#f59e0b', level: 'Moderate' },
-        { label: 'Hypertension',    pct: 18, color: '#22c55e', level: 'Low' },
+        { label: 'Diabetes Risk', pct: 12, color: '#22c55e', level: 'Low' },
+        { label: 'Cardiac Risk',  pct: 29, color: '#f59e0b', level: 'Moderate' },
+        { label: 'Hypertension',  pct: 18, color: '#22c55e', level: 'Low' },
       ].map((r) => (
         <div key={r.label}>
           <div className="flex justify-between mb-1">
@@ -131,7 +129,6 @@ const PredictionWidget = ({ accentColor }: { accentColor: string }) =>
       ))}
     </div>
 
-    {/* Biomarker summary */}
     <div className="p-2.5 rounded-xl flex items-center gap-2.5"
       style={{ backgroundColor: `${accentColor}0E`, border: `1px solid ${accentColor}1C` }}>
       <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -161,7 +158,6 @@ const MonitoringWidget = ({ accentColor }: { accentColor: string }) =>
       </div>
     </div>
 
-    {/* Heart rate + ECG waveform */}
     <div className="p-4 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl mb-3 relative overflow-hidden">
       <div className="flex items-center justify-between mb-3">
         <div>
@@ -176,7 +172,6 @@ const MonitoringWidget = ({ accentColor }: { accentColor: string }) =>
           <p className="text-[10px] font-semibold text-emerald-400">60–100 BPM</p>
         </div>
       </div>
-      {/* ECG sparkline */}
       <svg viewBox="0 0 240 44" className="w-full h-10" preserveAspectRatio="none">
         <path
           d="M0,22 L28,22 L34,22 L38,4 L42,40 L46,12 L50,22 L88,22 L94,22 L98,4 L102,40 L106,12 L110,22 L148,22 L154,22 L158,4 L162,40 L166,12 L170,22 L208,22 L214,22 L218,4 L222,40 L226,12 L230,22 L240,22"
@@ -186,12 +181,11 @@ const MonitoringWidget = ({ accentColor }: { accentColor: string }) =>
       </svg>
     </div>
 
-    {/* Activity tiles */}
     <div className="grid grid-cols-3 gap-2 mb-3">
       {[
-        { label: 'Steps',      value: '8,432', sub: 'today',   pct: 84, color: '#3b82f6' },
-        { label: 'Active Min', value: '47',    sub: 'of 60',   pct: 78, color: accentColor },
-        { label: 'Calories',   value: '312',   sub: 'kcal',    pct: 52, color: '#f59e0b' },
+        { label: 'Steps',      value: '8,432', sub: 'today', pct: 84, color: '#3b82f6' },
+        { label: 'Active Min', value: '47',    sub: 'of 60', pct: 78, color: accentColor },
+        { label: 'Calories',   value: '312',   sub: 'kcal',  pct: 52, color: '#f59e0b' },
       ].map((m) => (
         <div key={m.label} className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-center">
           <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wide mb-1">{m.label}</p>
@@ -204,7 +198,6 @@ const MonitoringWidget = ({ accentColor }: { accentColor: string }) =>
       ))}
     </div>
 
-    {/* Wearable device row */}
     <div className="flex items-center gap-2.5 p-2.5 bg-slate-50 rounded-xl border border-slate-100">
       <div className="w-7 h-7 rounded-lg bg-slate-200 flex items-center justify-center flex-shrink-0">
         <svg className="w-4 h-4 text-slate-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -234,7 +227,6 @@ const TherapyWidget = ({ accentColor }: { accentColor: string }) =>
       </div>
     </div>
 
-    {/* Program + progress */}
     <div className="p-4 bg-gradient-to-br from-slate-50 to-teal-50/30 rounded-2xl mb-3 border border-slate-100/60">
       <div className="flex items-start justify-between mb-2.5">
         <div>
@@ -255,12 +247,11 @@ const TherapyWidget = ({ accentColor }: { accentColor: string }) =>
       </div>
     </div>
 
-    {/* Today's sessions checklist */}
     <div className="mb-3">
       <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Today's Sessions</p>
       <div className="space-y-2">
         {[
-          { title: 'Morning Yoga', duration: '30 min', done: true },
+          { title: 'Morning Yoga',        duration: '30 min', done: true },
           { title: 'Pranayama Breathwork', duration: '20 min', done: false },
         ].map((s) => (
           <div key={s.title}
@@ -288,11 +279,10 @@ const TherapyWidget = ({ accentColor }: { accentColor: string }) =>
       </div>
     </div>
 
-    {/* Weekly outcome tiles */}
     <div className="grid grid-cols-2 gap-2">
       {[
-        { label: 'Stress Level',  value: '↓ 42%', color: accentColor,  bg: `${accentColor}12` },
-        { label: 'Sleep Quality', value: '↑ 28%', color: '#3b82f6',    bg: '#3b82f612' },
+        { label: 'Stress Level',  value: '↓ 42%', color: accentColor, bg: `${accentColor}12` },
+        { label: 'Sleep Quality', value: '↑ 28%', color: '#3b82f6',   bg: '#3b82f612' },
       ].map((r) => (
         <div key={r.label} className="p-3 rounded-xl border border-slate-100 text-center"
           style={{ backgroundColor: r.bg }}>
@@ -317,13 +307,13 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
 
   return (
     <section
-      className={`relative w-full min-h-[700px] lg:min-h-[800px] overflow-hidden bg-background ${className}`}
+      className={`relative w-full overflow-hidden bg-background ${className}`}
+      style={{ minHeight: 'clamp(680px, 85svh, 900px)' }}
       aria-labelledby="hero-heading"
     >
-      {/* ── Background ── */}
+      {/* ── Background layers ── */}
       <div className="absolute inset-0 healthcare-mesh" />
 
-      {/* Subtle grid */}
       <div
         className="absolute inset-0 opacity-[0.025]"
         style={{
@@ -335,7 +325,6 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
         }}
       />
 
-      {/* Radial glow — shifts with slide */}
       <AnimatePresence>
         <motion.div
           key={current}
@@ -350,170 +339,185 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
         />
       </AnimatePresence>
 
-      {/* ── Right-side visual panel (desktop) ── */}
-      <div className="absolute right-0 top-0 bottom-0 w-[47%] hidden lg:flex items-center justify-center pointer-events-none select-none">
-        <div className="relative w-full h-full flex items-center justify-center">
+      {/* ── Two-column grid — both columns anchored to the same container ── */}
+      <div
+        className="relative z-10 container-wide w-full h-full"
+        style={{
+          paddingTop:    'clamp(4.5rem, 9vw, 7.5rem)',
+          paddingBottom: 'clamp(3rem,   6vw, 5rem)',
+          display: 'grid',
+          alignItems: 'center',
+          minHeight: 'inherit',
+        }}
+      >
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_400px] items-center gap-8 lg:gap-12 xl:gap-16">
 
-          {/* Ambient glow behind widget */}
-          <AnimatePresence>
-            <motion.div
-              key={current}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5 }}
-              className="absolute w-[480px] h-[480px] rounded-full blur-[100px] pointer-events-none"
-              style={{ background: `radial-gradient(circle, ${slide.accentColor}22 0%, transparent 70%)` }}
-            />
-          </AnimatePresence>
-
-          {/* Slide-specific dashboard widget */}
-          <AnimatePresence mode="wait">
-            {(() => { const W = WIDGETS[current]; return <W key={`widget-${current}`} accentColor={slide.accentColor} />; })()}
-          </AnimatePresence>
-
-          {/* Floating ambient badges */}
-          <motion.div
-            key={`badge-ai-${current}`}
-            initial={{ opacity: 0, x: 16, y: -8 }}
-            animate={{ opacity: 1, x: 0, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute top-[18%] right-[8%] flex items-center gap-2 bg-white/92 backdrop-blur-md border border-white/70 rounded-xl px-3 py-2 shadow-md"
-          >
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
-            <span className="text-[11px] font-bold text-slate-700">AI Monitoring</span>
-          </motion.div>
-
-          <motion.div
-            key={`badge-doc-${current}`}
-            initial={{ opacity: 0, x: -16, y: 8 }}
-            animate={{ opacity: 1, x: 0, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute bottom-[20%] left-[6%] flex items-center gap-2 bg-white/92 backdrop-blur-md border border-white/70 rounded-xl px-3 py-2 shadow-md"
-          >
-            <Heart size={12} className="text-rose-500 fill-rose-500 flex-shrink-0" />
-            <span className="text-[11px] font-bold text-slate-700">Doctor Verified</span>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* ── Content ── */}
-      <div className="relative z-10 container-wide w-full pt-[112px] pb-16 lg:pt-[120px] lg:pb-20">
-        <div className="max-w-[600px]">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={current}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-6"
-            >
-              {/* Overline badge */}
+          {/* ─── Left: text content ─── */}
+          <div>
+            <AnimatePresence mode="wait">
               <motion.div
-                initial={{ opacity: 0, y: 8 }}
+                key={current}
+                initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05, duration: 0.4 }}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-border rounded-full shadow-xs"
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                className="space-y-6"
               >
-                <Sparkles size={13} className="text-accent" />
-                <span className="text-xs font-semibold text-primary tracking-wide">
-                  {slide.overline}
-                </span>
-              </motion.div>
-
-              {/* Headline */}
-              <motion.h1
-                id="hero-heading"
-                className="text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.1] tracking-tight text-foreground"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1, duration: 0.5 }}
-              >
-                {slide.titleBefore}{' '}
-                <span className="gradient-text-soft">{slide.titleHighlight}</span>
-              </motion.h1>
-
-              {/* Description */}
-              <motion.p
-                className="text-lg text-muted-foreground leading-relaxed max-w-xl"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.18, duration: 0.5 }}
-              >
-                {slide.description}
-              </motion.p>
-
-              {/* CTAs */}
-              <motion.div
-                className="flex flex-col sm:flex-row gap-3 pt-2"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.26, duration: 0.5 }}
-              >
-                <Link
-                  to={slide.ctaLink}
-                  className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold text-primary-foreground transition-all duration-300 hover:opacity-90 hover:-translate-y-px"
-                  style={{
-                    background: 'hsl(var(--primary))',
-                    boxShadow: 'var(--shadow-md)',
-                  }}
+                {/* Overline badge */}
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.05, duration: 0.4 }}
+                  className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-border rounded-full shadow-xs"
                 >
-                  {slide.cta}
-                  <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
-                </Link>
+                  <Sparkles size={13} className="text-accent" />
+                  <span className="text-xs font-semibold text-primary tracking-wide">
+                    {slide.overline}
+                  </span>
+                </motion.div>
 
-                <Link
-                  to={slide.secondaryLink}
-                  className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold text-foreground bg-white border border-border hover:bg-muted transition-all duration-300"
+                {/* Headline */}
+                <motion.h1
+                  id="hero-heading"
+                  className="font-semibold leading-[1.1] tracking-tight text-foreground text-balance"
+                  style={{ fontSize: 'var(--fz-h1)' }}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.5 }}
                 >
-                  {slide.secondaryCta}
-                  <ChevronRight size={15} className="text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
-                </Link>
-              </motion.div>
+                  {slide.titleBefore}{' '}
+                  <span className="gradient-text-soft">{slide.titleHighlight}</span>
+                </motion.h1>
 
-              {/* Slide tabs */}
-              <motion.div
-                className="flex gap-5 pt-4 border-t border-border/50"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.35, duration: 0.4 }}
-              >
-                {slides.map((s, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrent(i)}
-                    className={`relative pb-1.5 text-xs font-semibold tracking-wide transition-all duration-250 ${
-                      current === i ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                    aria-current={current === i ? 'true' : undefined}
+                {/* Description */}
+                <motion.p
+                  className="text-muted-foreground leading-relaxed"
+                  style={{ fontSize: 'var(--fz-lg)', maxWidth: '42ch' }}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.18, duration: 0.5 }}
+                >
+                  {slide.description}
+                </motion.p>
+
+                {/* CTAs */}
+                <motion.div
+                  className="flex flex-col sm:flex-row gap-3 pt-2"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.26, duration: 0.5 }}
+                >
+                  <Link
+                    to={slide.ctaLink}
+                    className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold text-primary-foreground transition-all duration-300 hover:opacity-90 hover:-translate-y-px"
+                    style={{ background: 'hsl(var(--primary))', boxShadow: 'var(--shadow-md)' }}
                   >
-                    <span className="opacity-40 mr-1 text-[10px]">0{i + 1}</span>
-                    {s.tab.toUpperCase()}
-                    {current === i && (
-                      <motion.span
-                        layoutId="heroTab"
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent rounded-full"
-                        transition={{ duration: 0.3 }}
-                      />
-                    )}
-                  </button>
-                ))}
-              </motion.div>
-            </motion.div>
-          </AnimatePresence>
+                    {slide.cta}
+                    <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
 
-          {/* Stats row */}
-          <div className="grid grid-cols-3 gap-4 mt-10 pt-8 border-t border-border/50">
-            {statsData.map(({ value, label }) => (
-              <div key={label} className="space-y-0.5">
-                <p className="text-2xl md:text-3xl font-bold text-foreground leading-none">
-                  {value}
-                </p>
-                <p className="text-xs text-muted-foreground font-medium">{label}</p>
-              </div>
-            ))}
+                  <Link
+                    to={slide.secondaryLink}
+                    className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold text-foreground bg-white border border-border hover:bg-muted transition-all duration-300"
+                  >
+                    {slide.secondaryCta}
+                    <ChevronRight size={15} className="text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                </motion.div>
+
+                {/* Slide tabs */}
+                <motion.div
+                  className="flex gap-5 pt-4 border-t border-border/50"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.35, duration: 0.4 }}
+                >
+                  {slides.map((s, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrent(i)}
+                      className={`relative pb-1.5 text-xs font-semibold tracking-wide transition-all duration-250 ${
+                        current === i ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+                      }`}
+                      aria-current={current === i ? 'true' : undefined}
+                    >
+                      <span className="opacity-40 mr-1 text-[10px]">0{i + 1}</span>
+                      {s.tab.toUpperCase()}
+                      {current === i && (
+                        <motion.span
+                          layoutId="heroTab"
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent rounded-full"
+                          transition={{ duration: 0.3 }}
+                        />
+                      )}
+                    </button>
+                  ))}
+                </motion.div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Stats row */}
+            <div className="grid grid-cols-3 gap-4 mt-10 pt-8 border-t border-border/50">
+              {statsData.map(({ value, label }) => (
+                <div key={label} className="space-y-0.5">
+                  <p className="font-bold text-foreground leading-none" style={{ fontSize: 'var(--fz-3xl)' }}>
+                    {value}
+                  </p>
+                  <p className="text-xs text-muted-foreground font-medium">{label}</p>
+                </div>
+              ))}
+            </div>
           </div>
+
+          {/* ─── Right: widget — hidden on mobile, in-flow on desktop ─── */}
+          <div className="hidden lg:flex items-center justify-center">
+            {/* Wrapper provides the relative context for the ambient glow + floating badges */}
+            <div className="relative flex items-center justify-center">
+
+              {/* Ambient glow behind widget */}
+              <AnimatePresence>
+                <motion.div
+                  key={current}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1.5 }}
+                  className="absolute w-[420px] h-[420px] rounded-full blur-[80px] pointer-events-none -z-10"
+                  style={{ background: `radial-gradient(circle, ${slide.accentColor}22 0%, transparent 70%)` }}
+                />
+              </AnimatePresence>
+
+              {/* Slide-specific dashboard widget */}
+              <AnimatePresence mode="wait">
+                {(() => { const W = WIDGETS[current]; return <W key={`widget-${current}`} accentColor={slide.accentColor} />; })()}
+              </AnimatePresence>
+
+              {/* Floating badge — top right of widget */}
+              <motion.div
+                key={`badge-ai-${current}`}
+                initial={{ opacity: 0, x: 16, y: -8 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute -top-5 -right-10 flex items-center gap-2 bg-white/92 backdrop-blur-md border border-white/70 rounded-xl px-3 py-2 shadow-md pointer-events-none"
+              >
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
+                <span className="text-[11px] font-bold text-slate-700">AI Monitoring</span>
+              </motion.div>
+
+              {/* Floating badge — bottom left of widget */}
+              <motion.div
+                key={`badge-doc-${current}`}
+                initial={{ opacity: 0, x: -16, y: 8 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                transition={{ delay: 0.7, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute -bottom-5 -left-10 flex items-center gap-2 bg-white/92 backdrop-blur-md border border-white/70 rounded-xl px-3 py-2 shadow-md pointer-events-none"
+              >
+                <Heart size={12} className="text-rose-500 fill-rose-500 flex-shrink-0" />
+                <span className="text-[11px] font-bold text-slate-700">Doctor Verified</span>
+              </motion.div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>

@@ -11,10 +11,35 @@ export default {
   ],
   prefix: "",
   theme: {
+    /* Extend default Tailwind screens with an ultrawide breakpoint */
+    screens: {
+      sm:   "640px",
+      md:   "768px",
+      lg:   "1024px",
+      xl:   "1280px",
+      "2xl": "1536px",
+      "3xl": "1920px",   /* Ultrawide / 4K monitors */
+    },
     container: {
       center: true,
-      padding: "1.5rem",
-      screens: { "2xl": "1280px" },
+      /* Fluid padding via CSS custom property; fallback for Tailwind's JIT */
+      padding: {
+        DEFAULT: "1rem",
+        sm: "1.25rem",
+        md: "1.5rem",
+        lg: "1.75rem",
+        xl: "2rem",
+        "2xl": "2rem",
+        "3xl": "2.5rem",
+      },
+      screens: {
+        sm:   "640px",
+        md:   "768px",
+        lg:   "1024px",
+        xl:   "1280px",
+        "2xl": "1440px",   /* Standard laptop/desktop max */
+        "3xl": "1600px",   /* Ultrawide comfortable reading width */
+      },
     },
     extend: {
       fontFamily: {
@@ -138,7 +163,18 @@ export default {
       spacing: {
         "18": "4.5rem",
         "22": "5.5rem",
-        "sidebar": "256px",
+        "sidebar": "16rem",    /* 256px → rem-based for zoom consistency */
+        /* Fluid spacing tokens backed by CSS vars (use as p-fluid-4 etc.) */
+        "fluid-1":  "var(--fluid-1)",
+        "fluid-2":  "var(--fluid-2)",
+        "fluid-3":  "var(--fluid-3)",
+        "fluid-4":  "var(--fluid-4)",
+        "fluid-6":  "var(--fluid-6)",
+        "fluid-8":  "var(--fluid-8)",
+        "fluid-12": "var(--fluid-12)",
+        "fluid-16": "var(--fluid-16)",
+        "fluid-20": "var(--fluid-20)",
+        "fluid-24": "var(--fluid-24)",
       },
 
       keyframes: {

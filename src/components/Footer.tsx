@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Lock, ArrowRight, Linkedin, Twitter, Instagram, Facebook } from 'lucide-react';
+import { ShieldCheck, Lock, Linkedin, Twitter, Instagram, Facebook } from 'lucide-react';
 
 const footerLinks = {
   platform: [
@@ -46,29 +46,6 @@ export const Footer = () => {
 
   return (
     <footer className="bg-[hsl(213_55%_14%)] text-white">
-
-      {/* ── CTA Banner ── */}
-      <div className="border-b border-white/8">
-        <div className="container-wide py-10 md:py-12">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="max-w-lg">
-              <h3 className="text-xl md:text-2xl font-semibold text-white tracking-tight mb-1">
-                Ready to take control of your health?
-              </h3>
-              <p className="text-sm text-white/55 leading-relaxed">
-                Start your free AI health assessment in under 5 minutes.
-              </p>
-            </div>
-            <Link
-              to="/ai-health-assessment"
-              className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold text-white border border-white/15 hover:bg-white/10 transition-all duration-200 shrink-0"
-            >
-              Start Free Assessment
-              <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
-            </Link>
-          </div>
-        </div>
-      </div>
 
       {/* ── Main Footer ── */}
       <div className="container-wide py-12 md:py-16">
