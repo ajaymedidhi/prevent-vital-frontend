@@ -64,7 +64,7 @@ const AboutUs = () => {
                     }
                 })}</script>
             </Helmet>
-            <main className="flex-grow pt-20">
+            <main className="flex-grow">
                 {/* Hero Section */}
                 <section className="section-padding bg-primary text-primary-foreground">
                     <div className="container text-center max-w-4xl">

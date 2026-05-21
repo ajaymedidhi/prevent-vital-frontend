@@ -243,7 +243,7 @@ export default function MedicalPortalInteractive() {
     return (
         <div className="min-h-screen bg-slate-50/50">
             {/* Hero Section */}
-            <section className="pt-28 pb-12 px-4 bg-white border-b border-slate-100">
+            <section className="pt-10 lg:pt-14 pb-12 px-4 bg-white border-b border-slate-100">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12 animate-fade-in-up">
                         <div className="inline-flex items-center space-x-2 px-3 py-1 bg-blue-50 rounded-full mb-6 border border-blue-100/50">

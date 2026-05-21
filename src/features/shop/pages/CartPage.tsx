@@ -32,7 +32,7 @@ const CartPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50/50 pt-24 pb-12">
+        <div className="min-h-screen bg-gray-50/50 pt-10 lg:pt-14 pb-12">
             <div className="container mx-auto px-4 max-w-6xl">
                 <h1 className="text-3xl font-extrabold text-gray-900 mb-8 flex items-center gap-3">
                     Your Cart <span className="text-lg font-medium text-gray-500 bg-gray-200 px-3 py-1 rounded-full">{cart.length} items</span>

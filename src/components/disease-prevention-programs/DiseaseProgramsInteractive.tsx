@@ -89,7 +89,7 @@ export default function DiseaseProgramsInteractive() {
     return (
         <div className="min-h-screen bg-white font-sans">
             {/* HER HERO SECTION */}
-            <section className="relative pt-32 pb-20 overflow-hidden">
+            <section className="relative pt-10 lg:pt-14 pb-16 overflow-hidden">
                 {/* Background Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 via-purple-50/30 to-white pointer-events-none" />
 

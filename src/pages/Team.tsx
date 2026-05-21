@@ -42,7 +42,7 @@ const Team = () => {
 
             <div className="min-h-screen bg-gray-50/50">
                 {/* Hero Section */}
-                <div className="bg-[#020817] text-white pt-32 pb-24 px-4 relative overflow-hidden">
+                <div className="bg-[#020817] text-white pt-10 lg:pt-14 pb-16 lg:pb-20 px-4 relative overflow-hidden">
                     <div className="absolute inset-0 opacity-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
                     <div className="container mx-auto max-w-4xl text-center relative z-10">
                         <span className="text-indigo-400 font-bold tracking-wider uppercase text-xs mb-4 block">Leadership</span>

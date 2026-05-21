@@ -57,7 +57,7 @@ const WellnessPhilosophy = () => {
             <meta name="twitter:image" content="https://preventvital.com/og-wellness.jpg" />
         </Helmet>
         <div className="min-h-screen flex flex-col">
-            <main className="flex-grow pt-20">
+            <main className="flex-grow">
                 {/* Hero Section */}
                 <section className="section-padding bg-section-alt">
                     <div className="container text-center max-w-4xl">

@@ -20,7 +20,7 @@ const PrivacyPolicy = () => {
             </Helmet>
             <main className="flex-grow">
                 {/* Colorful Hero Section */}
-                <section className="pt-16 md:pt-24 pb-16 md:pb-24 bg-gradient-to-br from-primary/10 via-accent/10 to-background border-b border-primary/10 relative overflow-hidden">
+                <section className="pt-10 md:pt-14 pb-12 md:pb-16 bg-gradient-to-br from-primary/10 via-accent/10 to-background border-b border-primary/10 relative overflow-hidden">
                     {/* Decorative Background Elements */}
                     <div className="absolute top-0 left-0 w-72 h-72 bg-primary/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
                     <div className="absolute bottom-0 right-0 w-80 h-80 bg-accent/10 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>

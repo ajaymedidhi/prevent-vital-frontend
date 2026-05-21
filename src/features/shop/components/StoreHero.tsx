@@ -3,7 +3,7 @@ import { Truck, ShieldCheck, Award } from 'lucide-react';
 
 const StoreHero = () => {
     return (
-        <div className="w-full bg-gradient-to-b from-blue-50/50 to-white pt-20 pb-12">
+        <div className="w-full bg-gradient-to-b from-blue-50/50 to-white pt-10 lg:pt-14 pb-12">
             <div className="container mx-auto px-4 text-center">
                 <div className="inline-block mb-4">
                     <span className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-xs font-semibold uppercase tracking-wider">

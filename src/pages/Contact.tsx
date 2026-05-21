@@ -74,7 +74,7 @@ export default function Contact() {
 
             <div className="min-h-screen bg-white">
                 {/* Minimal Hero */}
-                <div className="bg-[#020817] text-white pt-32 pb-20 px-4">
+                <div className="bg-[#020817] text-white pt-10 lg:pt-14 pb-16 px-4">
                     <div className="container mx-auto max-w-4xl text-center">
                         <span className="text-indigo-400 font-bold tracking-wider uppercase text-xs mb-4 block">Get Support</span>
                         <h1 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight text-white">

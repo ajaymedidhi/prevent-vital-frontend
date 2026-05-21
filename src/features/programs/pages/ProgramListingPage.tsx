@@ -35,7 +35,7 @@ export default function ProgramListingPage() {
 
             <div className="min-h-screen bg-background pb-20">
                 {/* Hero Section */}
-                <div className="bg-primary/5 border-b border-primary/10 pt-24 pb-12">
+                <div className="bg-primary/5 border-b border-primary/10 pt-10 lg:pt-14 pb-12">
                     <div className="container mx-auto px-4 text-center">
                         <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent">
                             Discover Health Programs

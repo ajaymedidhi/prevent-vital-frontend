@@ -9,7 +9,7 @@ const OrderSuccessPage = () => {
     const invoiceUrl = searchParams.get('invoice');
 
     return (
-        <div className="container mx-auto py-20 px-4 text-center max-w-2xl bg-black">
+        <div className="container mx-auto pt-10 lg:pt-14 pb-16 px-4 text-center max-w-2xl bg-black">
             <div className="flex justify-center mb-6">
                 <CheckCircle className="text-green-500 w-20 h-20" />
             </div>
