@@ -1,52 +1,205 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <!-- SEO Meta Tags -->
-  <title>PreventVital | Empowering Corporate Health & Disease Prevention</title>
-  <meta name="description" content="PreventVital offers comprehensive corporate wellness programs, predictive health analytics, and disease prevention strategies to optimize employee wellbeing and company performance." />
-  <meta name="keywords" content="preventive health, corporate wellness, disease prevention, health analytics, employee wellbeing, health programs" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="msapplication-TileColor" content="#2563eb" />
+
+  <!-- Primary SEO Meta Tags -->
+  <title>PreventVital | India's AI-Powered Preventive Healthcare Platform</title>
+  <meta name="description" content="PreventVital is India's leading AI-powered preventive healthcare platform. Get personalized health risk assessments, disease prevention programs, corporate wellness solutions, and AI health analytics. Prevent diabetes, cardiac issues & more." />
+  <meta name="keywords" content="preventvital, preventive healthcare India, AI health assessment, disease prevention programs, corporate wellness, health analytics platform, health risk assessment, preventive medicine, wellness tracking, diabetes prevention, cardiac health, PreventVital AI, preventvital.com" />
   <meta name="author" content="PreventVital" />
-  <meta name="robots" content="index, follow" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
   <link rel="canonical" href="https://preventvital.com/" />
 
+  <!-- Geo targeting -->
+  <meta name="geo.region" content="IN" />
+  <meta name="geo.country" content="India" />
+  <meta name="language" content="English" />
+
   <!-- Open Graph / Facebook -->
+  <meta property="og:site_name" content="PreventVital" />
   <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_IN" />
   <meta property="og:url" content="https://preventvital.com/" />
-  <meta property="og:title" content="PreventVital | Empowering Corporate Health & Disease Prevention" />
-  <meta property="og:description" content="PreventVital offers comprehensive corporate wellness programs, predictive health analytics, and disease prevention strategies to optimize employee wellbeing and company performance." />
+  <meta property="og:title" content="PreventVital | India's AI-Powered Preventive Healthcare Platform" />
+  <meta property="og:description" content="India's leading AI-powered preventive healthcare platform. Personalized health risk assessments, disease prevention programs, and corporate wellness solutions powered by AI." />
   <meta property="og:image" content="https://preventvital.com/og-image.jpg" />
+  <meta property="og:image:alt" content="PreventVital - AI-Powered Preventive Healthcare Platform" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://preventvital.com/" />
-  <meta property="twitter:title" content="PreventVital | Empowering Corporate Health & Disease Prevention" />
-  <meta property="twitter:description" content="PreventVital offers comprehensive corporate wellness programs, predictive health analytics, and disease prevention strategies to optimize employee wellbeing and company performance." />
-  <meta property="twitter:image" content="https://preventvital.com/twitter-image.jpg" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@preventvital" />
+  <meta name="twitter:creator" content="@preventvital" />
+  <meta name="twitter:url" content="https://preventvital.com/" />
+  <meta name="twitter:title" content="PreventVital | India's AI-Powered Preventive Healthcare Platform" />
+  <meta name="twitter:description" content="AI-powered preventive healthcare: personalized risk assessments, disease prevention programs, and corporate wellness. Join India's health revolution." />
+  <meta name="twitter:image" content="https://preventvital.com/og-image.jpg" />
+  <meta name="twitter:image:alt" content="PreventVital - AI Preventive Healthcare" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap"
-    rel="stylesheet">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+
+  <!-- Razorpay -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-  <!-- Structured Data (JSON-LD) for Organization -->
+  <!-- Structured Data: @graph with multiple schema types -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "MedicalOrganization",
-    "name": "PreventVital",
-    "url": "https://preventvital.com/",
-    "logo": "https://preventvital.com/vite.svg",
-    "description": "PreventVital offers comprehensive corporate wellness programs, predictive health analytics, and disease prevention strategies.",
-    "sameAs": [
-      "https://www.linkedin.com/company/preventvital",
-      "https://twitter.com/preventvital"
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://preventvital.com/#organization",
+        "name": "PreventVital",
+        "alternateName": ["Prevent Vital", "PreventVital AI", "PreventVital Healthcare"],
+        "url": "https://preventvital.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://preventvital.com/logo.png",
+          "width": 200,
+          "height": 60
+        },
+        "description": "PreventVital is India's leading AI-powered preventive healthcare platform offering personalized health risk assessments, disease prevention programs, and corporate wellness solutions.",
+        "foundingDate": "2024",
+        "foundingLocation": {
+          "@type": "Place",
+          "addressCountry": "IN",
+          "addressLocality": "India"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "India"
+        },
+        "knowsAbout": [
+          "Preventive Healthcare",
+          "AI Health Analytics",
+          "Disease Prevention",
+          "Corporate Wellness",
+          "Health Risk Assessment",
+          "Diabetes Prevention",
+          "Cardiac Health",
+          "Mental Wellness"
+        ],
+        "sameAs": [
+          "https://www.linkedin.com/company/preventvital",
+          "https://twitter.com/preventvital",
+          "https://www.instagram.com/preventvital",
+          "https://gruentzig.ai"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "support@preventvital.com",
+          "availableLanguage": ["English", "Hindi"]
+        }
+      },
+      {
+        "@type": "MedicalOrganization",
+        "@id": "https://preventvital.com/#medical-org",
+        "name": "PreventVital",
+        "url": "https://preventvital.com/",
+        "description": "AI-powered preventive healthcare platform providing evidence-based health programs, predictive analytics, and disease prevention strategies for individuals and corporates in India.",
+        "medicalSpecialty": [
+          "Preventive Medicine",
+          "Cardiology",
+          "Endocrinology",
+          "Mental Health"
+        ],
+        "parentOrganization": {
+          "@id": "https://preventvital.com/#organization"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://preventvital.com/#app",
+        "name": "PreventVital",
+        "applicationCategory": "HealthApplication",
+        "applicationSubCategory": "Preventive Healthcare",
+        "operatingSystem": "Web, iOS, Android",
+        "url": "https://preventvital.com/",
+        "description": "AI-powered preventive healthcare app for health risk assessment, disease prevention programs, and personalized wellness plans.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "INR",
+          "availability": "https://schema.org/InStock"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "reviewCount": "500",
+          "bestRating": "5"
+        },
+        "featureList": [
+          "AI Health Risk Assessment",
+          "CVITAL Score",
+          "Disease Prevention Programs",
+          "Corporate Wellness Dashboard",
+          "Wearable Device Integration",
+          "Telemedicine Support",
+          "Personalized Wellness Plans"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://preventvital.com/#website",
+        "url": "https://preventvital.com/",
+        "name": "PreventVital",
+        "description": "India's AI-powered preventive healthcare platform",
+        "publisher": {
+          "@id": "https://preventvital.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://preventvital.com/shop?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        },
+        "inLanguage": "en-IN"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://preventvital.com/#webpage",
+        "url": "https://preventvital.com/",
+        "name": "PreventVital | India's AI-Powered Preventive Healthcare Platform",
+        "description": "PreventVital is India's leading AI-powered preventive healthcare platform. Get personalized health risk assessments, disease prevention programs, and corporate wellness solutions.",
+        "isPartOf": {
+          "@id": "https://preventvital.com/#website"
+        },
+        "about": {
+          "@id": "https://preventvital.com/#organization"
+        },
+        "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://preventvital.com/"
+            }
+          ]
+        },
+        "inLanguage": "en-IN"
+      }
     ]
   }
   </script>

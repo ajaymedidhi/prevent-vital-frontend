@@ -6,8 +6,17 @@ const TermsAndConditions = () => {
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Helmet>
-                <title>Terms & Conditions | PreventVital</title>
-                <meta name="description" content="Read PreventVital's Terms & Conditions to understand the legal agreements and operational guidelines for using our platform." />
+                <title>Terms & Conditions | User Agreement - PreventVital</title>
+                <meta name="description" content="PreventVital's Terms & Conditions: the legal agreements governing your use of our AI-powered preventive healthcare platform, health programs, and wellness services." />
+                <meta name="keywords" content="preventvital terms and conditions, healthcare platform terms, user agreement health app, wellness platform legal" />
+                <link rel="canonical" href="https://preventvital.com/terms-and-conditions" />
+                <meta name="robots" content="index, follow" />
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="PreventVital" />
+                <meta property="og:url" content="https://preventvital.com/terms-and-conditions" />
+                <meta property="og:title" content="Terms & Conditions | PreventVital" />
+                <meta property="og:description" content="Legal agreements governing your use of PreventVital's AI preventive healthcare platform and wellness services." />
+                <meta property="og:image" content="https://preventvital.com/og-image.jpg" />
             </Helmet>
             <main className="flex-grow">
                 {/* Colorful Hero Section */}

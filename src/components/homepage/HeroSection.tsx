@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Activity, Heart, Shield, Brain, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -61,43 +61,44 @@ const statsData = [
   { value: '96%',     label: 'Satisfaction Rate', icon: Activity },
 ];
 
-/* Health Dashboard Mock Widget */
-const HealthDashboard = ({ accentColor }: { accentColor: string }) => (
+const widgetShell = (accentColor: string, children: React.ReactNode) => (
   <motion.div
     initial={{ opacity: 0, y: 20, scale: 0.96 }}
     animate={{ opacity: 1, y: 0, scale: 1 }}
     exit={{ opacity: 0, y: -12, scale: 0.97 }}
     transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-    className="relative bg-white/96 backdrop-blur-2xl border border-white/80 rounded-3xl p-5 w-[272px]"
+    className="relative bg-white/96 backdrop-blur-2xl border border-white/80 rounded-3xl p-6 w-[320px]"
     style={{ boxShadow: `0 24px 64px -12px ${accentColor}28, 0 8px 32px -4px rgba(15,30,60,0.12)` }}
   >
-    {/* Header */}
+    {children}
+  </motion.div>
+);
+
+/* ─── Slide 01: AI Risk Prediction ─── */
+const PredictionWidget = ({ accentColor }: { accentColor: string }) =>
+  widgetShell(accentColor, <>
     <div className="flex items-center justify-between mb-4">
       <div>
         <p className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.12em] mb-0.5">PreventVital AI</p>
-        <p className="text-sm font-bold text-slate-800">Health Overview</p>
+        <p className="text-sm font-bold text-slate-800">Risk Prediction</p>
       </div>
       <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 rounded-full border border-emerald-100">
         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-        <span className="text-[10px] font-bold text-emerald-700">Live</span>
+        <span className="text-[10px] font-bold text-emerald-700">Active</span>
       </div>
     </div>
 
-    {/* Health Score Ring */}
-    <div className="flex items-center gap-4 p-3.5 bg-gradient-to-br from-slate-50 to-sky-50/40 rounded-2xl mb-3 border border-slate-100/60">
-      <div className="relative w-[68px] h-[68px] flex-shrink-0">
-        <svg viewBox="0 0 68 68" className="w-full h-full -rotate-90">
-          <circle cx="34" cy="34" r="28" fill="none" stroke="#e8eef4" strokeWidth="5" />
-          <circle
-            cx="34" cy="34" r="28" fill="none"
-            stroke={accentColor} strokeWidth="5"
-            strokeDasharray={`${0.85 * 2 * Math.PI * 28} ${2 * Math.PI * 28}`}
-            strokeLinecap="round"
-          />
+    {/* Overall health score ring */}
+    <div className="flex items-center gap-4 p-4 bg-gradient-to-br from-slate-50 to-sky-50/40 rounded-2xl mb-3 border border-slate-100/60">
+      <div className="relative w-[82px] h-[82px] flex-shrink-0">
+        <svg viewBox="0 0 82 82" className="w-full h-full -rotate-90">
+          <circle cx="41" cy="41" r="34" fill="none" stroke="#e8eef4" strokeWidth="6" />
+          <circle cx="41" cy="41" r="34" fill="none" stroke={accentColor} strokeWidth="6"
+            strokeDasharray={`${0.85 * 2 * Math.PI * 34} ${2 * Math.PI * 34}`} strokeLinecap="round" />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-lg font-bold text-slate-800 leading-none">85</span>
-          <span className="text-[8px] font-semibold text-slate-400">/ 100</span>
+          <span className="text-xl font-bold text-slate-800 leading-none">85</span>
+          <span className="text-[9px] font-semibold text-slate-400">/ 100</span>
         </div>
       </div>
       <div>
@@ -110,45 +111,199 @@ const HealthDashboard = ({ accentColor }: { accentColor: string }) => (
       </div>
     </div>
 
-    {/* Vitals 2×2 Grid */}
-    <div className="grid grid-cols-2 gap-1.5 mb-3">
+    {/* Per-condition risk bars */}
+    <div className="space-y-2.5 mb-3">
+      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Condition Risk Breakdown</p>
       {[
-        { label: 'Heart Rate',     value: '72 BPM',  dot: '#ef4444' },
-        { label: 'Blood Pressure', value: '118/76',  dot: '#0d9488' },
-        { label: 'SpO₂',           value: '98%',     dot: '#3b82f6' },
-        { label: 'Glucose',        value: 'Normal',  dot: '#22c55e' },
-      ].map((v) => (
-        <div key={v.label} className="p-2.5 bg-white rounded-xl border border-slate-100">
-          <div className="flex items-center gap-1.5 mb-1">
-            <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: v.dot }} />
-            <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider truncate">{v.label}</span>
+        { label: 'Diabetes Risk',   pct: 12, color: '#22c55e', level: 'Low' },
+        { label: 'Cardiac Risk',    pct: 29, color: '#f59e0b', level: 'Moderate' },
+        { label: 'Hypertension',    pct: 18, color: '#22c55e', level: 'Low' },
+      ].map((r) => (
+        <div key={r.label}>
+          <div className="flex justify-between mb-1">
+            <span className="text-[10px] font-semibold text-slate-600">{r.label}</span>
+            <span className="text-[10px] font-bold" style={{ color: r.color }}>{r.level} · {r.pct}%</span>
           </div>
-          <span className="text-xs font-bold text-slate-700">{v.value}</span>
+          <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-full rounded-full transition-all" style={{ width: `${r.pct}%`, backgroundColor: r.color }} />
+          </div>
         </div>
       ))}
     </div>
 
-    {/* AI Risk Assessment */}
-    <div
-      className="p-3 rounded-xl"
-      style={{ backgroundColor: `${accentColor}0E`, border: `1px solid ${accentColor}1C` }}
-    >
-      <div className="flex items-center justify-between mb-1.5">
-        <span className="text-[9px] font-bold text-slate-600 uppercase tracking-widest">AI Risk Score</span>
-        <span
-          className="text-[9px] font-bold px-2 py-0.5 rounded-full text-white"
-          style={{ backgroundColor: accentColor }}
-        >
-          Low Risk
+    {/* Biomarker summary */}
+    <div className="p-2.5 rounded-xl flex items-center gap-2.5"
+      style={{ backgroundColor: `${accentColor}0E`, border: `1px solid ${accentColor}1C` }}>
+      <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
+        style={{ backgroundColor: `${accentColor}22` }}>
+        <svg className="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none">
+          <circle cx="7" cy="7" r="6" stroke={accentColor} strokeWidth="1.5" opacity="0.4" />
+          <path d="M7 4v3l2 1.5" stroke={accentColor} strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      </div>
+      <p className="text-[10px] font-semibold text-slate-700 leading-snug">
+        AI analysed <span className="font-bold" style={{ color: accentColor }}>14 biomarkers</span> · Overall risk is low
+      </p>
+    </div>
+  </>);
+
+/* ─── Slide 02: Real-Time Monitoring ─── */
+const MonitoringWidget = ({ accentColor }: { accentColor: string }) =>
+  widgetShell(accentColor, <>
+    <div className="flex items-center justify-between mb-4">
+      <div>
+        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.12em] mb-0.5">Wearable Sync</p>
+        <p className="text-sm font-bold text-slate-800">Real-Time Monitoring</p>
+      </div>
+      <div className="flex items-center gap-1.5 px-2.5 py-1 bg-red-50 rounded-full border border-red-100">
+        <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+        <span className="text-[10px] font-bold text-red-600">Recording</span>
+      </div>
+    </div>
+
+    {/* Heart rate + ECG waveform */}
+    <div className="p-4 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl mb-3 relative overflow-hidden">
+      <div className="flex items-center justify-between mb-3">
+        <div>
+          <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-0.5">Heart Rate</p>
+          <div className="flex items-end gap-1">
+            <span className="text-3xl font-bold text-white leading-none">72</span>
+            <span className="text-sm text-slate-400 mb-0.5">BPM</span>
+          </div>
+        </div>
+        <div className="text-right">
+          <p className="text-[9px] text-slate-400">Normal range</p>
+          <p className="text-[10px] font-semibold text-emerald-400">60–100 BPM</p>
+        </div>
+      </div>
+      {/* ECG sparkline */}
+      <svg viewBox="0 0 240 44" className="w-full h-10" preserveAspectRatio="none">
+        <path
+          d="M0,22 L28,22 L34,22 L38,4 L42,40 L46,12 L50,22 L88,22 L94,22 L98,4 L102,40 L106,12 L110,22 L148,22 L154,22 L158,4 L162,40 L166,12 L170,22 L208,22 L214,22 L218,4 L222,40 L226,12 L230,22 L240,22"
+          fill="none" stroke={accentColor} strokeWidth="2"
+          strokeLinecap="round" strokeLinejoin="round"
+        />
+      </svg>
+    </div>
+
+    {/* Activity tiles */}
+    <div className="grid grid-cols-3 gap-2 mb-3">
+      {[
+        { label: 'Steps',      value: '8,432', sub: 'today',   pct: 84, color: '#3b82f6' },
+        { label: 'Active Min', value: '47',    sub: 'of 60',   pct: 78, color: accentColor },
+        { label: 'Calories',   value: '312',   sub: 'kcal',    pct: 52, color: '#f59e0b' },
+      ].map((m) => (
+        <div key={m.label} className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-center">
+          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wide mb-1">{m.label}</p>
+          <p className="text-base font-bold text-slate-800 leading-none">{m.value}</p>
+          <p className="text-[9px] text-slate-400 mt-0.5">{m.sub}</p>
+          <div className="h-1.5 bg-slate-200 rounded-full mt-2 overflow-hidden">
+            <div className="h-full rounded-full" style={{ width: `${m.pct}%`, backgroundColor: m.color }} />
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Wearable device row */}
+    <div className="flex items-center gap-2.5 p-2.5 bg-slate-50 rounded-xl border border-slate-100">
+      <div className="w-7 h-7 rounded-lg bg-slate-200 flex items-center justify-center flex-shrink-0">
+        <svg className="w-4 h-4 text-slate-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="6" y="2" width="12" height="20" rx="3" />
+          <path d="M12 18h.01" strokeWidth="2.5" strokeLinecap="round" />
+        </svg>
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-[10px] font-bold text-slate-700 truncate">Samsung Galaxy Watch</p>
+        <p className="text-[9px] text-slate-400">Connected · Battery 84%</p>
+      </div>
+      <div className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
+    </div>
+  </>);
+
+/* ─── Slide 03: Therapy & Wellness Program ─── */
+const TherapyWidget = ({ accentColor }: { accentColor: string }) =>
+  widgetShell(accentColor, <>
+    <div className="flex items-center justify-between mb-4">
+      <div>
+        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.12em] mb-0.5">Wellness Program</p>
+        <p className="text-sm font-bold text-slate-800">Your Therapy Plan</p>
+      </div>
+      <div className="flex items-center gap-1 px-2.5 py-1 bg-amber-50 rounded-full border border-amber-100">
+        <span className="text-[11px]">🔥</span>
+        <span className="text-[10px] font-bold text-amber-700">12-Day Streak</span>
+      </div>
+    </div>
+
+    {/* Program + progress */}
+    <div className="p-4 bg-gradient-to-br from-slate-50 to-teal-50/30 rounded-2xl mb-3 border border-slate-100/60">
+      <div className="flex items-start justify-between mb-2.5">
+        <div>
+          <p className="text-sm font-bold text-slate-800">Diabetes Prevention</p>
+          <p className="text-[11px] text-slate-500">Yoga & Breathwork · 8 Weeks</p>
+        </div>
+        <span className="text-[10px] font-bold text-white px-2.5 py-1 rounded-full flex-shrink-0"
+          style={{ backgroundColor: accentColor }}>
+          Week 3
         </span>
       </div>
-      <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-        <div className="h-full rounded-full" style={{ width: '18%', backgroundColor: accentColor }} />
+      <div className="flex items-center gap-2 mt-3">
+        <div className="flex-1 h-2.5 bg-slate-200 rounded-full overflow-hidden">
+          <div className="h-full rounded-full"
+            style={{ width: '38%', background: `linear-gradient(to right, ${accentColor}, ${accentColor}bb)` }} />
+        </div>
+        <span className="text-[11px] font-bold text-slate-600 flex-shrink-0">38%</span>
       </div>
-      <p className="text-[8px] text-slate-400 mt-1.5">18% probability · Updated just now</p>
     </div>
-  </motion.div>
-);
+
+    {/* Today's sessions checklist */}
+    <div className="mb-3">
+      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Today's Sessions</p>
+      <div className="space-y-2">
+        {[
+          { title: 'Morning Yoga', duration: '30 min', done: true },
+          { title: 'Pranayama Breathwork', duration: '20 min', done: false },
+        ].map((s) => (
+          <div key={s.title}
+            className={`flex items-center gap-3 p-3 rounded-xl border ${
+              s.done ? 'bg-emerald-50 border-emerald-100' : 'bg-white border-slate-100'
+            }`}>
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
+              s.done ? 'bg-emerald-500' : 'border-2 border-slate-200 bg-white'
+            }`}>
+              {s.done && (
+                <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 12 12" fill="none"
+                  stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M2 6l3 3 5-5" />
+                </svg>
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className={`text-xs font-bold truncate ${s.done ? 'text-emerald-800' : 'text-slate-700'}`}>
+                {s.title}
+              </p>
+              <p className="text-[10px] text-slate-400">{s.duration}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Weekly outcome tiles */}
+    <div className="grid grid-cols-2 gap-2">
+      {[
+        { label: 'Stress Level',  value: '↓ 42%', color: accentColor,  bg: `${accentColor}12` },
+        { label: 'Sleep Quality', value: '↑ 28%', color: '#3b82f6',    bg: '#3b82f612' },
+      ].map((r) => (
+        <div key={r.label} className="p-3 rounded-xl border border-slate-100 text-center"
+          style={{ backgroundColor: r.bg }}>
+          <p className="text-[9px] font-semibold text-slate-500 uppercase tracking-wide mb-1">{r.label}</p>
+          <p className="text-base font-bold" style={{ color: r.color }}>{r.value}</p>
+        </div>
+      ))}
+    </div>
+  </>);
+
+const WIDGETS = [PredictionWidget, MonitoringWidget, TherapyWidget];
 
 const HeroSection = ({ className = '' }: HeroSectionProps) => {
   const [current, setCurrent] = useState(0);
@@ -162,7 +317,7 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
 
   return (
     <section
-      className={`relative w-full min-h-[700px] lg:min-h-[780px] overflow-hidden bg-background flex items-center ${className}`}
+      className={`relative w-full min-h-[700px] lg:min-h-[800px] overflow-hidden bg-background ${className}`}
       aria-labelledby="hero-heading"
     >
       {/* ── Background ── */}
@@ -196,7 +351,7 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
       </AnimatePresence>
 
       {/* ── Right-side visual panel (desktop) ── */}
-      <div className="absolute right-0 top-0 bottom-0 w-[42%] hidden lg:flex items-center justify-center pointer-events-none select-none">
+      <div className="absolute right-0 top-0 bottom-0 w-[47%] hidden lg:flex items-center justify-center pointer-events-none select-none">
         <div className="relative w-full h-full flex items-center justify-center">
 
           {/* Ambient glow behind widget */}
@@ -207,14 +362,14 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1.5 }}
-              className="absolute w-[380px] h-[380px] rounded-full blur-[90px] pointer-events-none"
+              className="absolute w-[480px] h-[480px] rounded-full blur-[100px] pointer-events-none"
               style={{ background: `radial-gradient(circle, ${slide.accentColor}22 0%, transparent 70%)` }}
             />
           </AnimatePresence>
 
-          {/* Health Dashboard Widget */}
+          {/* Slide-specific dashboard widget */}
           <AnimatePresence mode="wait">
-            <HealthDashboard key={`dashboard-${current}`} accentColor={slide.accentColor} />
+            {(() => { const W = WIDGETS[current]; return <W key={`widget-${current}`} accentColor={slide.accentColor} />; })()}
           </AnimatePresence>
 
           {/* Floating ambient badges */}
@@ -243,7 +398,7 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
       </div>
 
       {/* ── Content ── */}
-      <div className="relative z-10 container-wide w-full pt-24 md:pt-28 pb-16 lg:pt-32">
+      <div className="relative z-10 container-wide w-full pt-[112px] pb-16 lg:pt-[120px] lg:pb-20">
         <div className="max-w-[600px]">
           <AnimatePresence mode="wait">
             <motion.div

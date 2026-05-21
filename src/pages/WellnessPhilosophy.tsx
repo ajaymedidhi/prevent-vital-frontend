@@ -1,4 +1,5 @@
 import { Flower2, Wind, Brain, Apple, Smile } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 const components = [
     {
@@ -30,6 +31,31 @@ const components = [
 
 const WellnessPhilosophy = () => {
     return (
+        <>
+        <Helmet>
+            <title>Wellness Philosophy | Holistic Health Rooted in Science - PreventVital</title>
+            <meta
+                name="description"
+                content="Explore PreventVital's wellness philosophy: integrating yoga therapy, meditation, breathwork (pranayama), nutrition, and mental health support with evidence-based medicine for complete holistic health."
+            />
+            <meta
+                name="keywords"
+                content="holistic wellness philosophy, yoga therapy, meditation for wellness, breathwork health, preventive wellness India, holistic health approach, traditional medicine modern science"
+            />
+            <link rel="canonical" href="https://preventvital.com/wellness-philosophy" />
+            <meta property="og:type" content="website" />
+            <meta property="og:site_name" content="PreventVital" />
+            <meta property="og:url" content="https://preventvital.com/wellness-philosophy" />
+            <meta property="og:title" content="Wellness Philosophy | Holistic Health Rooted in Science - PreventVital" />
+            <meta property="og:description" content="PreventVital integrates yoga, meditation, breathwork, nutrition, and mental health support with modern medicine for complete holistic health." />
+            <meta property="og:image" content="https://preventvital.com/og-wellness.jpg" />
+            <meta property="og:locale" content="en_IN" />
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:site" content="@preventvital" />
+            <meta name="twitter:title" content="Wellness Philosophy | Holistic Health Rooted in Science - PreventVital" />
+            <meta name="twitter:description" content="Integrating yoga, meditation, breathwork, nutrition, and mental health support with modern medicine." />
+            <meta name="twitter:image" content="https://preventvital.com/og-wellness.jpg" />
+        </Helmet>
         <div className="min-h-screen flex flex-col">
             <main className="flex-grow pt-20">
                 {/* Hero Section */}
@@ -64,6 +90,7 @@ const WellnessPhilosophy = () => {
                 </section>
             </main>
         </div>
+        </>
     );
 };
 

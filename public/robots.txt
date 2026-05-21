@@ -1,4 +1,58 @@
+# PreventVital - robots.txt
+# https://preventvital.com
+
+# Allow all compliant crawlers
 User-agent: *
 Allow: /
 
+# Block admin & authenticated-only routes from indexing
+Disallow: /super-admin/
+Disallow: /admin/
+Disallow: /creator/
+Disallow: /corporate/
+Disallow: /account/
+Disallow: /login
+Disallow: /signup
+Disallow: /cart
+Disallow: /checkout
+Disallow: /order-confirmation/
+Disallow: /api/
+
+# Block query-string URLs that create duplicate content
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+Disallow: /*?*page=
+Disallow: /*?*redirect=
+
+# Block dev/test artifacts
+Disallow: /*.json$
+Disallow: /*.xml$
+
+# Allow critical assets crawlers need
+Allow: /og-image.jpg
+Allow: /favicon.svg
+Allow: /logo.png
+Allow: /sitemap.xml
+
+# Googlebot-specific rules
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Bingbot-specific rules
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Sitemaps
 Sitemap: https://preventvital.com/sitemap.xml

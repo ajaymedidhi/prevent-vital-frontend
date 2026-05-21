@@ -6,8 +6,17 @@ const PrivacyPolicy = () => {
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Helmet>
-                <title>Privacy Policy | PreventVital</title>
-                <meta name="description" content="Read PreventVital's Privacy Policy to understand how we collect, use, share, and protect your personal and health information." />
+                <title>Privacy Policy | How We Protect Your Health Data - PreventVital</title>
+                <meta name="description" content="PreventVital's Privacy Policy: learn how we collect, use, and protect your personal and health data. HIPAA-equivalent security, ABDM compliant, ISO 27001 certified data practices." />
+                <meta name="keywords" content="preventvital privacy policy, health data protection, HIPAA healthcare privacy, medical data security, health information protection" />
+                <link rel="canonical" href="https://preventvital.com/privacy-policy" />
+                <meta name="robots" content="index, follow" />
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="PreventVital" />
+                <meta property="og:url" content="https://preventvital.com/privacy-policy" />
+                <meta property="og:title" content="Privacy Policy | PreventVital" />
+                <meta property="og:description" content="How PreventVital collects, uses, and protects your personal and health data. HIPAA-equivalent, ABDM compliant." />
+                <meta property="og:image" content="https://preventvital.com/og-image.jpg" />
             </Helmet>
             <main className="flex-grow">
                 {/* Colorful Hero Section */}

@@ -22,8 +22,22 @@ const Team = () => {
     return (
         <>
             <Helmet>
-                <title>Our Team | Prevent Vital</title>
-                <meta name="description" content="Meet the medical visionaries and technology experts behind Prevent Vital AI." />
+                <title>Our Team | Medical Visionaries & Tech Experts - PreventVital</title>
+                <meta name="description" content="Meet the clinician-entrepreneurs and technology experts behind PreventVital AI. A team of doctors, data scientists, and wellness experts building India's preventive healthcare future." />
+                <meta name="keywords" content="preventvital team, healthcare founders India, AI health experts, medical professionals team, health tech leadership" />
+                <link rel="canonical" href="https://preventvital.com/team" />
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="PreventVital" />
+                <meta property="og:url" content="https://preventvital.com/team" />
+                <meta property="og:title" content="Our Team | Medical Visionaries & Tech Experts - PreventVital" />
+                <meta property="og:description" content="Clinician-entrepreneurs and technology experts building India's preventive healthcare future." />
+                <meta property="og:image" content="https://preventvital.com/og-team.jpg" />
+                <meta property="og:locale" content="en_IN" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content="@preventvital" />
+                <meta name="twitter:title" content="Our Team | PreventVital Medical & Tech Experts" />
+                <meta name="twitter:description" content="Clinician-entrepreneurs and technology experts building India's preventive healthcare future." />
+                <meta name="twitter:image" content="https://preventvital.com/og-team.jpg" />
             </Helmet>
 
             <div className="min-h-screen bg-gray-50/50">

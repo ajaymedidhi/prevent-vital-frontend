@@ -33,8 +33,36 @@ const AboutUs = () => {
     return (
         <div className="min-h-screen flex flex-col">
             <Helmet>
-                <title>About Us | PreventVital</title>
-                <meta name="description" content="Learn about PreventVital's mission to democratize preventive medicine in India through AI-powered technology and holistic wellness." />
+                <title>About Us | Building India's AI Preventive Healthcare Future - PreventVital</title>
+                <meta name="description" content="Learn about PreventVital's mission to democratize preventive medicine in India. AI-powered technology, clinician-led programs, and holistic wellness approach to transform healthcare." />
+                <meta name="keywords" content="about preventvital, preventive healthcare mission India, AI healthcare company, health tech startup India, preventive medicine platform" />
+                <link rel="canonical" href="https://preventvital.com/about-us" />
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="PreventVital" />
+                <meta property="og:url" content="https://preventvital.com/about-us" />
+                <meta property="og:title" content="About PreventVital | Building India's AI Preventive Healthcare Future" />
+                <meta property="og:description" content="PreventVital's mission: democratizing preventive medicine through AI-powered technology and holistic wellness in India." />
+                <meta property="og:image" content="https://preventvital.com/og-about.jpg" />
+                <meta property="og:locale" content="en_IN" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content="@preventvital" />
+                <meta name="twitter:title" content="About PreventVital | India's AI Preventive Healthcare" />
+                <meta name="twitter:description" content="Democratizing preventive medicine through AI-powered technology and holistic wellness." />
+                <meta name="twitter:image" content="https://preventvital.com/og-about.jpg" />
+                <script type="application/ld+json">{JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "AboutPage",
+                    "name": "About PreventVital",
+                    "description": "PreventVital's mission to democratize preventive medicine in India through AI-powered technology",
+                    "url": "https://preventvital.com/about-us",
+                    "isPartOf": { "@type": "WebSite", "url": "https://preventvital.com/" },
+                    "about": {
+                        "@type": "Organization",
+                        "name": "PreventVital",
+                        "url": "https://preventvital.com/",
+                        "description": "India's AI-powered preventive healthcare platform"
+                    }
+                })}</script>
             </Helmet>
             <main className="flex-grow pt-20">
                 {/* Hero Section */}

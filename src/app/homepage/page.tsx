@@ -12,11 +12,25 @@ const Index = () => {
     return (
         <>
             <Helmet>
-                <title>PreventVital - AI-Powered Preventive Healthcare</title>
+                <title>PreventVital - India's AI-Powered Preventive Healthcare Platform</title>
                 <meta
                     name="description"
-                    content="Empowering you with AI-driven health predictions and personalized wellness plans. Join the future of preventive healthcare."
+                    content="Empowering you with AI-driven health predictions, personalized wellness plans, and disease prevention programs. India's leading preventive healthcare platform. Get your CVITAL Score today."
                 />
+                <meta name="keywords" content="preventvital, AI health assessment, preventive healthcare India, CVITAL score, health risk assessment, disease prevention, wellness platform, AI wellness" />
+                <link rel="canonical" href="https://preventvital.com/" />
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="PreventVital" />
+                <meta property="og:url" content="https://preventvital.com/" />
+                <meta property="og:title" content="PreventVital - India's AI-Powered Preventive Healthcare Platform" />
+                <meta property="og:description" content="AI-driven health predictions, personalized wellness plans, and disease prevention programs. Get your CVITAL Score today." />
+                <meta property="og:image" content="https://preventvital.com/og-image.jpg" />
+                <meta property="og:locale" content="en_IN" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content="@preventvital" />
+                <meta name="twitter:title" content="PreventVital - India's AI-Powered Preventive Healthcare" />
+                <meta name="twitter:description" content="AI-driven health predictions, personalized wellness plans, and disease prevention programs." />
+                <meta name="twitter:image" content="https://preventvital.com/og-image.jpg" />
             </Helmet>
 
             <main className="min-h-screen bg-background text-foreground">

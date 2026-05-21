@@ -35,8 +35,41 @@ export default function Contact() {
     return (
         <>
             <Helmet>
-                <title>Contact Us | Prevent Vital</title>
-                <meta name="description" content="Get in touch with Prevent Vital. We are here to help you with your preventive health journey." />
+                <title>Contact Us | Get in Touch with PreventVital's Health Team</title>
+                <meta name="description" content="Contact PreventVital for queries about our AI health assessment, disease prevention programs, corporate wellness, or partnerships. Our health team is here to guide your preventive healthcare journey." />
+                <meta name="keywords" content="contact preventvital, preventvital support, healthcare enquiry, wellness program inquiry, corporate health contact" />
+                <link rel="canonical" href="https://preventvital.com/contact" />
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="PreventVital" />
+                <meta property="og:url" content="https://preventvital.com/contact" />
+                <meta property="og:title" content="Contact Us | Get in Touch with PreventVital" />
+                <meta property="og:description" content="Contact PreventVital for queries about AI health assessments, disease prevention programs, or corporate wellness partnerships." />
+                <meta property="og:image" content="https://preventvital.com/og-image.jpg" />
+                <meta property="og:locale" content="en_IN" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content="@preventvital" />
+                <meta name="twitter:title" content="Contact PreventVital | AI Preventive Healthcare" />
+                <meta name="twitter:description" content="Contact our health team for queries about AI health assessments, programs, or partnerships." />
+                <meta name="twitter:image" content="https://preventvital.com/og-image.jpg" />
+                <script type="application/ld+json">{JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "ContactPage",
+                    "name": "Contact PreventVital",
+                    "description": "Contact page for PreventVital's AI-powered preventive healthcare platform",
+                    "url": "https://preventvital.com/contact",
+                    "isPartOf": { "@type": "WebSite", "url": "https://preventvital.com/" },
+                    "mainEntity": {
+                        "@type": "Organization",
+                        "name": "PreventVital",
+                        "url": "https://preventvital.com/",
+                        "contactPoint": {
+                            "@type": "ContactPoint",
+                            "contactType": "customer support",
+                            "email": "support@preventvital.com",
+                            "availableLanguage": ["English", "Hindi"]
+                        }
+                    }
+                })}</script>
             </Helmet>
 
             <div className="min-h-screen bg-white">
