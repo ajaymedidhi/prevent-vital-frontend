@@ -5,11 +5,12 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
     Check, ChevronRight, UploadCloud, Video, FileText,
     Calendar, Clock, DollarSign, AlignLeft, Target,
-    Upload, PlusCircle, Trash2, Loader2, Save, BookOpen, Send
+    Upload, PlusCircle, Trash2, Loader2, Save, BookOpen, Send, Image
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import creatorApi from '../../admin-shared/services/creatorApi';
 import toast from 'react-hot-toast';
+import { VideoUploader, ThumbnailUploader, ResourceUploader } from '../../features/media';
 
 const STEPS = ['Program Details', 'Content Upload', 'Live Sessions', 'Review & Submit'];
 
@@ -28,7 +29,15 @@ const ProgramBuilder = () => {
     const [price, setPrice] = useState('0');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
-    const [modules, setModules] = useState<{ title: string, content: string, type: string, duration?: string }[]>([]);
+    const [modules, setModules] = useState<{
+        title: string;
+        content: string;
+        type: string;
+        duration?: string;
+        videoMediaId?: string;
+        thumbnailMediaId?: string;
+        resources?: string[];
+    }[]>([]);
     const [sessions, setSessions] = useState<{ title: string, duration: string, date: string }[]>([]);
 
     useEffect(() => {
@@ -66,7 +75,11 @@ const ProgramBuilder = () => {
     }, [editId]);
 
     const addModule = () => {
-        setModules([...modules, { title: '', content: '', type: 'video', duration: '10' }]);
+        setModules([...modules, { title: '', content: '', type: 'video', duration: '10', resources: [] }]);
+    };
+
+    const setModuleField = (idx: number, fields: Partial<(typeof modules)[0]>) => {
+        setModules(prev => prev.map((m, i) => i === idx ? { ...m, ...fields } : m));
     };
 
     const removeModule = (idx: number) => {
@@ -112,7 +125,10 @@ const ProgramBuilder = () => {
                     content: m.content,
                     contentType: m.type,
                     duration: parseInt(m.duration || '0'),
-                    order: i
+                    order: i,
+                    ...(m.videoMediaId && { videoMediaId: m.videoMediaId }),
+                    ...(m.thumbnailMediaId && { thumbnailMediaId: m.thumbnailMediaId }),
+                    ...(m.resources?.length && { resources: m.resources })
                 })),
                 sessions: sessions.map(s => ({
                     title: s.title,
@@ -277,7 +293,7 @@ const ProgramBuilder = () => {
                                                             value={mod.type} onChange={e => updateModule(idx, 'type', e.target.value)}>
                                                             <option value="video">Video</option>
                                                             <option value="article">Article</option>
-                                                            <option value="pdf">PDF Resource</option>
+                                                            <option value="resource">PDF / Resource</option>
                                                         </select>
                                                     </div>
                                                     <div className="w-full md:w-32">
@@ -287,20 +303,69 @@ const ProgramBuilder = () => {
                                                     </div>
                                                 </div>
 
-                                                <div className="relative">
-                                                    {mod.type === 'video' ? (
-                                                        <>
-                                                            <Video size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400" />
-                                                            <input className="w-full border-2 border-gray-50 rounded-xl pl-10 pr-4 py-3 outline-none focus:border-blue-200 text-sm bg-gray-50/30 font-medium"
-                                                                placeholder="Paste direct link (Vimeo, YouTube, AWS S3)..."
-                                                                value={mod.content} onChange={e => updateModule(idx, 'content', e.target.value)} />
-                                                        </>
-                                                    ) : (
-                                                        <textarea className="w-full border-2 border-gray-50 rounded-2xl p-4 outline-none focus:border-blue-200 text-sm bg-gray-50/30 font-medium min-h-[100px] resize-none"
-                                                            placeholder="Enter content or paste document link..."
-                                                            value={mod.content} onChange={e => updateModule(idx, 'content', e.target.value)} />
-                                                    )}
-                                                </div>
+                                                {/* ── Content area: GCS uploaders or text editor ── */}
+                                                {mod.type === 'video' && (
+                                                    <div className="space-y-3">
+                                                        <VideoUploader
+                                                            programId={editId || undefined}
+                                                            moduleIndex={idx}
+                                                            onUploadComplete={(mediaId) => setModuleField(idx, { videoMediaId: mediaId })}
+                                                            onRemove={() => setModuleField(idx, { videoMediaId: undefined })}
+                                                            label="Upload Module Video"
+                                                        />
+                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                            <div>
+                                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1.5 flex items-center gap-1.5">
+                                                                    <Image size={11} /> Module Thumbnail
+                                                                </label>
+                                                                <ThumbnailUploader
+                                                                    programId={editId || undefined}
+                                                                    onUploadComplete={(mediaId) => setModuleField(idx, { thumbnailMediaId: mediaId })}
+                                                                    onRemove={() => setModuleField(idx, { thumbnailMediaId: undefined })}
+                                                                    label="Add Thumbnail"
+                                                                    compact
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1.5">Notes / Description</label>
+                                                                <textarea
+                                                                    className="w-full border-2 border-gray-100 rounded-xl p-3 outline-none focus:border-blue-200 text-sm bg-gray-50/30 font-medium resize-none h-28"
+                                                                    placeholder="Optional notes for this module..."
+                                                                    value={mod.content}
+                                                                    onChange={e => updateModule(idx, 'content', e.target.value)}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {mod.type === 'article' && (
+                                                    <textarea
+                                                        className="w-full border-2 border-gray-100 rounded-2xl p-4 outline-none focus:border-blue-200 text-sm bg-gray-50/30 font-medium min-h-[140px] resize-none"
+                                                        placeholder="Write the article content for this module…"
+                                                        value={mod.content}
+                                                        onChange={e => updateModule(idx, 'content', e.target.value)}
+                                                    />
+                                                )}
+
+                                                {mod.type === 'resource' && (
+                                                    <div className="space-y-3">
+                                                        <ResourceUploader
+                                                            programId={editId || undefined}
+                                                            onUploadComplete={(mediaId) =>
+                                                                setModuleField(idx, { resources: [...(mod.resources || []), mediaId] })
+                                                            }
+                                                            onRemove={() => setModuleField(idx, { resources: [] })}
+                                                            label="Upload PDF / Resource"
+                                                        />
+                                                        <textarea
+                                                            className="w-full border-2 border-gray-100 rounded-xl p-3 outline-none focus:border-blue-200 text-sm bg-gray-50/30 font-medium resize-none h-20"
+                                                            placeholder="Description of this resource…"
+                                                            value={mod.content}
+                                                            onChange={e => updateModule(idx, 'content', e.target.value)}
+                                                        />
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
