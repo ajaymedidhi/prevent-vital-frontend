@@ -7,7 +7,7 @@ import {
     HeartPulse, PlayCircle, ShieldCheck, ChevronRight, Activity,
     TrendingUp, Home, ShoppingBag, Settings, Star, Zap,
     LogOut, User, Bell, Search, Plus, Play, Info, Lock,
-    Clock, BookOpen, Crown, Loader2, Filter
+    Clock, BookOpen, Crown, Loader2, Filter, X, Video
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
@@ -43,6 +43,9 @@ const CustomerDashboard = () => {
     const [activeProgram, setActiveProgram] = useState<any>(null);
     const [activeSession, setActiveSession] = useState(0);
     const [completedSessions, setCompletedSessions] = useState<number[]>([]);
+    const [fullProgramData, setFullProgramData] = useState<any>(null);
+    const [programDetailLoading, setProgramDetailLoading] = useState(false);
+    const [playingModule, setPlayingModule] = useState<any>(null);
 
     const userPlan = (user as any)?.subscription?.plan || 'free';
 
@@ -134,6 +137,19 @@ const CustomerDashboard = () => {
         };
         fetchProfile();
     }, [dispatch]);
+
+    // Fetch full program detail (with real modules + video signed URLs) when player opens
+    useEffect(() => {
+        if (!activeProgram?._id) { setFullProgramData(null); return; }
+        const token = sessionStorage.getItem('token');
+        setProgramDetailLoading(true);
+        axios.get(`/api/programs/${activeProgram._id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
+            .then(res => setFullProgramData(res.data?.data?.program || null))
+            .catch(() => setFullProgramData(null))
+            .finally(() => setProgramDetailLoading(false));
+    }, [activeProgram?._id]);
 
     // Fetch programmes and assessment history from API
     useEffect(() => {
@@ -956,24 +972,26 @@ const CustomerDashboard = () => {
     );
 
     // ── Programme Execution View ──────────────────────────────────────
-    const generateSessions = (count: number) => {
-        return Array.from({ length: count }, (_, i) => ({
-            id: i,
-            title: `Session ${i + 1}`,
-            subtitle: i === 0 ? 'Getting Started' : i < 3 ? 'Foundation Building' : i < count - 2 ? 'Deep Practice' : 'Mastery & Review',
-            modules: [
-                { type: 'video', title: 'Introduction & Overview', duration: '8 min', icon: '🎬', content: 'Video content will be available when cloud integration is complete. This module covers key concepts and theory.' },
-                { type: 'exercise', title: 'Guided Practice', duration: '15 min', icon: '🏃', content: 'Follow along with the guided exercises. Track your vitals before and after for best results.' },
-                { type: 'quiz', title: 'Knowledge Check', duration: '5 min', icon: '✅', content: 'Test your understanding with a quick assessment. Score 80% or higher to unlock the next session.' },
-            ]
-        }));
-    };
-
     const renderProgramPlayer = () => {
         if (!activeProgram) return null;
-        const sessions = generateSessions(activeProgram.totalSessions || 8);
+
+        // Real modules from API (with signed videoUrl), grouped into pseudo-sessions
+        const realModules: any[] = fullProgramData?.modules || [];
+        const totalSessions = activeProgram.totalSessions || Math.max(realModules.length, 1);
+
+        // Group modules into sessions (one module per session)
+        const sessions = Array.from({ length: totalSessions }, (_, i) => {
+            const mod = realModules[i];
+            return {
+                id: i,
+                title: mod?.title || `Session ${i + 1}`,
+                subtitle: mod ? (mod.contentType === 'article' ? 'Article' : `${mod.duration ?? 0} min · Video`) : '—',
+                module: mod || null
+            };
+        });
+
         const current = sessions[activeSession] || sessions[0];
-        const progress = Math.round(((completedSessions.length) / sessions.length) * 100);
+        const progress = Math.round((completedSessions.length / sessions.length) * 100);
 
         return (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-24">
@@ -1066,44 +1084,52 @@ const CustomerDashboard = () => {
                                     </span>
                                 </div>
 
-                                {/* Modules */}
-                                <div className="space-y-3">
-                                    {current.modules.map((module, mi) => (
-                                        <div key={mi} className="group bg-gray-50 hover:bg-white rounded-2xl p-4 border border-gray-100 hover:border-blue-200 hover:shadow-sm transition-all cursor-pointer">
-                                            <div className="flex items-start gap-3">
-                                                <span className="text-2xl flex-shrink-0 mt-0.5">{module.icon}</span>
-                                                <div className="flex-1">
-                                                    <div className="flex items-center justify-between">
-                                                        <h4 className="text-sm font-bold text-gray-900">{module.title}</h4>
+                                {/* Module */}
+                                {programDetailLoading ? (
+                                    <div className="flex items-center justify-center py-10">
+                                        <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+                                    </div>
+                                ) : current.module ? (
+                                    <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100">
+                                        <div className="flex items-start gap-3">
+                                            <span className="text-2xl flex-shrink-0 mt-0.5">
+                                                {current.module.contentType === 'article' ? '📄' : '🎬'}
+                                            </span>
+                                            <div className="flex-1">
+                                                <div className="flex items-center justify-between">
+                                                    <h4 className="text-sm font-bold text-gray-900">{current.module.title}</h4>
+                                                    {current.module.duration && (
                                                         <span className="text-[10px] text-gray-400 font-bold flex items-center gap-1">
-                                                            <Clock className="w-3 h-3" /> {module.duration}
+                                                            <Clock className="w-3 h-3" /> {current.module.duration} min
                                                         </span>
-                                                    </div>
-                                                    <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">{module.content}</p>
-
-                                                    {/* Placeholder Action */}
-                                                    <div className="mt-3 flex items-center gap-2">
-                                                        {module.type === 'video' && (
-                                                            <div className="flex items-center gap-2 bg-blue-50 text-blue-600 text-[10px] font-bold px-3 py-1.5 rounded-lg">
-                                                                <Play className="w-3 h-3" /> Video Coming Soon
-                                                            </div>
-                                                        )}
-                                                        {module.type === 'exercise' && (
-                                                            <div className="flex items-center gap-2 bg-amber-50 text-amber-600 text-[10px] font-bold px-3 py-1.5 rounded-lg">
-                                                                <Activity className="w-3 h-3" /> Interactive Exercise
-                                                            </div>
-                                                        )}
-                                                        {module.type === 'quiz' && (
-                                                            <div className="flex items-center gap-2 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-3 py-1.5 rounded-lg">
-                                                                <ShieldCheck className="w-3 h-3" /> Assessment Ready
-                                                            </div>
-                                                        )}
-                                                    </div>
+                                                    )}
+                                                </div>
+                                                {current.module.content && (
+                                                    <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">{current.module.content}</p>
+                                                )}
+                                                <div className="mt-3 flex items-center gap-2">
+                                                    {current.module.videoUrl ? (
+                                                        <button
+                                                            onClick={() => setPlayingModule(current.module)}
+                                                            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold px-4 py-2 rounded-xl transition-colors"
+                                                        >
+                                                            <Play className="w-3.5 h-3.5 fill-white" /> Watch Video
+                                                        </button>
+                                                    ) : (
+                                                        <div className="flex items-center gap-2 bg-gray-100 text-gray-500 text-[10px] font-bold px-3 py-1.5 rounded-lg">
+                                                            <BookOpen className="w-3 h-3" />
+                                                            {current.module.contentType === 'article' ? 'Article' : 'Video Processing...'}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
-                                    ))}
-                                </div>
+                                    </div>
+                                ) : (
+                                    <div className="py-8 text-center text-gray-400 text-sm border border-dashed rounded-2xl">
+                                        No content available for this session yet.
+                                    </div>
+                                )}
                             </CardContent>
                         </Card>
 
@@ -1238,6 +1264,47 @@ const CustomerDashboard = () => {
                     </>
                 )}
             </div>
+
+            {/* Video Player Modal */}
+            {playingModule && (
+                <div
+                    className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+                    onClick={() => setPlayingModule(null)}
+                >
+                    <div className="relative w-full max-w-4xl" onClick={e => e.stopPropagation()}>
+                        <button
+                            onClick={() => setPlayingModule(null)}
+                            className="absolute -top-10 right-0 text-white/70 hover:text-white flex items-center gap-2 text-sm font-medium"
+                        >
+                            <X size={18} /> Close
+                        </button>
+                        <div className="bg-black rounded-2xl overflow-hidden shadow-2xl">
+                            {playingModule.videoUrl ? (
+                                <video
+                                    src={playingModule.videoUrl}
+                                    controls
+                                    autoPlay
+                                    className="w-full max-h-[70vh] bg-black"
+                                    controlsList="nodownload"
+                                >
+                                    Your browser does not support video playback.
+                                </video>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center h-64 text-white/50 gap-3">
+                                    <Video size={40} />
+                                    <p className="text-sm">Video is being processed. Please try again shortly.</p>
+                                </div>
+                            )}
+                            <div className="p-4 bg-gray-900">
+                                <h3 className="font-bold text-white text-sm">{playingModule.title}</h3>
+                                {playingModule.content && (
+                                    <p className="text-gray-400 text-xs mt-1 line-clamp-2">{playingModule.content}</p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Vitals Input Modal */}
             <Dialog open={isVitalsModalOpen} onOpenChange={setIsVitalsModalOpen}>

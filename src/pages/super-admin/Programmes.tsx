@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     BookOpen, Clock, Star, Users, ChevronRight, Search, Plus, Loader2,
     MoreVertical, Edit2, Trash2, Eye, CheckCircle2, Archive, FileText,
-    ChevronLeft, Filter, BarChart3, Zap
+    ChevronLeft, Filter, BarChart3, Zap, Image as ImageIcon, X as XIcon,
+    UploadCloud
 } from 'lucide-react';
 import { Modal } from '../../admin-shared/components/ui';
 import superAdminApi from '../../admin-shared/services/superAdminApi';
+import { ThumbnailUploader } from '../../features/media';
 import toast from 'react-hot-toast';
 
 // ── Constants ──────────────────────────────────────────────────────
@@ -57,11 +60,13 @@ const emptyForm = {
     status: 'draft', targetAudience: 'all', tags: '',
     accessiblePlans: ['free', 'premium', 'pro', 'family'] as string[],
     b2bAccessiblePlans: ['trial', 'standard', 'growth', 'enterprise'] as string[],
-    enrollmentRequired: false
+    enrollmentRequired: false,
+    coverImageMediaId: '' as string,
 };
 
 // ── Main Component ─────────────────────────────────────────────────
 const Programmes = () => {
+    const navigate = useNavigate();
     const [programmes, setProgrammes] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
@@ -79,6 +84,9 @@ const Programmes = () => {
 
     // Active dropdown (for 3-dot menu)
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
+
+    // Cover image preview (separate from formData — not sent raw to API)
+    const [coverImagePreview, setCoverImagePreview] = useState<string | null>(null);
 
     // ── Fetch ───────────────────────────────────────────────────────
     const fetchProgrammes = useCallback(async () => {
@@ -122,11 +130,13 @@ const Programmes = () => {
         }
         setSaving(true);
         try {
-            const payload = { ...formData, tags: formData.tags ? formData.tags.split(',').map(t => t.trim()) : [] };
+            const payload: any = { ...formData, tags: formData.tags ? formData.tags.split(',').map((t: string) => t.trim()) : [] };
+            if (!payload.coverImageMediaId) delete payload.coverImageMediaId;
             await superAdminApi.post('/programmes', payload);
             toast.success('Programme created!');
             setIsCreating(false);
             setFormData(emptyForm);
+            setCoverImagePreview(null);
             fetchProgrammes();
         } catch (err: any) {
             toast.error(err.response?.data?.message || 'Failed to create programme.');
@@ -137,11 +147,13 @@ const Programmes = () => {
         if (!selectedProg) return;
         setSaving(true);
         try {
-            const payload = { ...formData, tags: formData.tags ? formData.tags.split(',').map(t => t.trim()) : [] };
+            const payload: any = { ...formData, tags: formData.tags ? formData.tags.split(',').map((t: string) => t.trim()) : [] };
+            if (!payload.coverImageMediaId) delete payload.coverImageMediaId;
             await superAdminApi.patch(`/programmes/${selectedProg._id}`, payload);
             toast.success('Programme updated!');
             setIsEditing(false);
             setSelectedProg(null);
+            setCoverImagePreview(null);
             fetchProgrammes();
         } catch (err: any) {
             toast.error(err.response?.data?.message || 'Failed to update programme.');
@@ -182,8 +194,10 @@ const Programmes = () => {
             tags: (prog.tags || []).join(', '),
             accessiblePlans: prog.accessiblePlans || ['free', 'premium', 'pro', 'family'],
             b2bAccessiblePlans: prog.b2bAccessiblePlans || ['trial', 'standard', 'growth', 'enterprise'],
-            enrollmentRequired: prog.enrollmentRequired || false
+            enrollmentRequired: prog.enrollmentRequired || false,
+            coverImageMediaId: prog.coverImageMediaId?._id || prog.coverImageMediaId || '',
         });
+        setCoverImagePreview(prog.coverImageMediaId?.signedUrl || null);
         setIsEditing(true);
         setActiveMenu(null);
     };
@@ -197,6 +211,41 @@ const Programmes = () => {
     // ── Form Fields (shared between Create & Edit) ──────────────────
     const renderForm = () => (
         <div className="space-y-5">
+            {/* Cover Image */}
+            <div>
+                <div className="flex items-center gap-2 mb-3">
+                    <ImageIcon size={14} className="text-blue-600" />
+                    <p className="text-xs font-bold text-gray-700 uppercase tracking-wide">
+                        Cover Image <span className="text-gray-400 font-normal normal-case">(optional)</span>
+                    </p>
+                </div>
+                {coverImagePreview ? (
+                    <div className="relative rounded-xl overflow-hidden border border-gray-200" style={{ height: 120 }}>
+                        <img src={coverImagePreview} alt="Cover preview" className="w-full h-full object-cover" />
+                        <button
+                            onClick={() => { setFormData(p => ({ ...p, coverImageMediaId: '' })); setCoverImagePreview(null); }}
+                            className="absolute top-2 right-2 w-6 h-6 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-red-500 shadow text-sm font-bold">
+                            <XIcon size={13} />
+                        </button>
+                        <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-white/60 to-transparent" />
+                    </div>
+                ) : (
+                    <ThumbnailUploader
+                        onUploadComplete={(mediaId, signedUrl) => {
+                            setFormData(p => ({ ...p, coverImageMediaId: mediaId }));
+                            setCoverImagePreview(signedUrl || null);
+                        }}
+                        onRemove={() => {
+                            setFormData(p => ({ ...p, coverImageMediaId: '' }));
+                            setCoverImagePreview(null);
+                        }}
+                        label="Upload Cover Image"
+                    />
+                )}
+            </div>
+
+            <hr className="border-gray-100" />
+
             {/* Section 1: Basics */}
             <div>
                 <div className="flex items-center gap-2 mb-3">
@@ -399,10 +448,16 @@ const Programmes = () => {
                     <h1 className="text-2xl font-bold text-gray-900">Programme Catalogue</h1>
                     <p className="text-sm text-gray-500 mt-1">Create, manage and provision wellness programmes across all organisations and users.</p>
                 </div>
-                <button onClick={() => { setFormData(emptyForm); setIsCreating(true); }}
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-colors">
-                    <Plus size={16} /> Create Programme
-                </button>
+                <div className="flex items-center gap-2">
+                    <button onClick={() => { setFormData(emptyForm); setCoverImagePreview(null); setIsCreating(true); }}
+                        className="flex items-center gap-2 border border-gray-200 hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors">
+                        <Plus size={15} /> Quick Create
+                    </button>
+                    <button onClick={() => navigate('/super-admin/programmes/new')}
+                        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-colors">
+                        <UploadCloud size={15} /> Build with Media
+                    </button>
+                </div>
             </div>
 
             {/* KPI Cards */}
@@ -454,15 +509,23 @@ const Programmes = () => {
                 <div className="text-center py-20 space-y-3">
                     <BookOpen size={40} className="mx-auto text-gray-300" />
                     <p className="text-sm text-gray-400">No programmes found matching your criteria.</p>
-                    <button onClick={() => { setFormData(emptyForm); setIsCreating(true); }}
+                    <button onClick={() => navigate('/super-admin/programmes/new')}
                         className="text-sm text-blue-600 font-semibold hover:underline">Create your first programme →</button>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                     {paged.map(prog => (
                         <div key={prog._id} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden group hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative">
-                            {/* Category colour bar */}
-                            <div className="h-1.5 w-full" style={{ background: CAT_COLOR(prog.category) }} />
+                            {/* Cover image or category colour bar */}
+                            {prog.coverImageMediaId?.signedUrl ? (
+                                <div className="h-24 overflow-hidden relative">
+                                    <img src={prog.coverImageMediaId.signedUrl} alt={prog.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-transparent to-transparent" />
+                                    <div className="absolute inset-x-0 bottom-0 h-3 w-full" style={{ background: CAT_COLOR(prog.category) + '40' }} />
+                                </div>
+                            ) : (
+                                <div className="h-1.5 w-full" style={{ background: CAT_COLOR(prog.category) }} />
+                            )}
 
                             <div className="p-5">
                                 {/* Header Row */}
@@ -494,9 +557,9 @@ const Programmes = () => {
                                                     className="w-full px-3.5 py-2 text-left text-[12px] font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2">
                                                     <Eye size={13} /> View Details
                                                 </button>
-                                                <button onClick={() => openEdit(prog)}
+                                                <button onClick={() => navigate(`/super-admin/programmes/new?edit=${prog._id}`)}
                                                     className="w-full px-3.5 py-2 text-left text-[12px] font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2">
-                                                    <Edit2 size={13} /> Edit Programme
+                                                    <Edit2 size={13} /> Edit with Builder
                                                 </button>
                                                 <hr className="my-1 border-gray-100" />
                                                 {prog.status !== 'published' && (
@@ -590,9 +653,9 @@ const Programmes = () => {
             )}
 
             {/* ── Create Modal ───────────────────────────────────────── */}
-            <Modal open={isCreating} onClose={() => setIsCreating(false)} title="Create New Programme" maxWidth="max-w-2xl"
+            <Modal open={isCreating} onClose={() => { setIsCreating(false); setCoverImagePreview(null); }} title="Create New Programme" maxWidth="max-w-2xl"
                 footer={<>
-                    <button className="btn-secondary btn" onClick={() => setIsCreating(false)} disabled={saving}>Cancel</button>
+                    <button className="btn-secondary btn" onClick={() => { setIsCreating(false); setCoverImagePreview(null); }} disabled={saving}>Cancel</button>
                     <button className="btn-primary btn gap-2" onClick={handleCreate} disabled={saving}>
                         {saving ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />}
                         {saving ? 'Creating…' : 'Create Programme'}
@@ -602,9 +665,9 @@ const Programmes = () => {
             </Modal>
 
             {/* ── Edit Modal ─────────────────────────────────────────── */}
-            <Modal open={isEditing} onClose={() => { setIsEditing(false); setSelectedProg(null); }} title={`Edit: ${selectedProg?.title || ''}`} maxWidth="max-w-2xl"
+            <Modal open={isEditing} onClose={() => { setIsEditing(false); setSelectedProg(null); setCoverImagePreview(null); }} title={`Edit: ${selectedProg?.title || ''}`} maxWidth="max-w-2xl"
                 footer={<>
-                    <button className="btn-secondary btn" onClick={() => setIsEditing(false)} disabled={saving}>Cancel</button>
+                    <button className="btn-secondary btn" onClick={() => { setIsEditing(false); setCoverImagePreview(null); }} disabled={saving}>Cancel</button>
                     <button className="btn-primary btn gap-2" onClick={handleUpdate} disabled={saving}>
                         {saving ? <Loader2 size={14} className="animate-spin" /> : <Edit2 size={14} />}
                         {saving ? 'Saving…' : 'Save Changes'}
@@ -618,12 +681,19 @@ const Programmes = () => {
                 title={selectedProg?.title || 'Programme Details'} maxWidth="max-w-xl"
                 footer={<>
                     <button className="btn-secondary btn" onClick={() => { setIsViewing(false); setSelectedProg(null); }}>Close</button>
-                    <button className="btn-primary btn gap-2" onClick={() => { setIsViewing(false); openEdit(selectedProg); }}>
-                        <Edit2 size={14} /> Edit Programme
+                    <button className="btn-primary btn gap-2" onClick={() => { setIsViewing(false); navigate(`/super-admin/programmes/new?edit=${selectedProg?._id}`); }}>
+                        <Edit2 size={14} /> Edit with Builder
                     </button>
                 </>}>
                 {selectedProg && (
                     <div className="space-y-5">
+                        {/* Cover image (if available) */}
+                        {selectedProg.coverImageMediaId?.signedUrl && (
+                            <div className="rounded-xl overflow-hidden border border-gray-100" style={{ height: 140 }}>
+                                <img src={selectedProg.coverImageMediaId.signedUrl} alt={selectedProg.title} className="w-full h-full object-cover" />
+                            </div>
+                        )}
+
                         {/* Top banner */}
                         <div className="flex items-center gap-4 p-4 rounded-xl" style={{ background: CAT_COLOR(selectedProg.category) + '12', border: `1px solid ${CAT_COLOR(selectedProg.category)}30` }}>
                             <div className="text-5xl">{CAT_EMOJI[selectedProg.category] || '📋'}</div>
@@ -677,6 +747,17 @@ const Programmes = () => {
                                 <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wide mb-0.5">Created</p>
                                 <p className="text-sm text-gray-700">{new Date(selectedProg.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
                             </div>
+                            {selectedProg.creator && (
+                                <div>
+                                    <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wide mb-0.5">Creator</p>
+                                    <p className="text-sm text-gray-700">
+                                        {selectedProg.creator?.profile?.firstName
+                                            ? `${selectedProg.creator.profile.firstName} ${selectedProg.creator.profile.lastName || ''}`.trim()
+                                            : selectedProg.creator?.email || 'Unknown'}
+                                    </p>
+                                    <p className="text-[10px] text-gray-400 capitalize">{selectedProg.creator?.role?.replace(/_/g, ' ')}</p>
+                                </div>
+                            )}
                             {(selectedProg.tags || []).length > 0 && (
                                 <div>
                                     <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wide mb-0.5">Tags</p>

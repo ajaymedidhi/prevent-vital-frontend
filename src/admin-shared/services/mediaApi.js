@@ -57,31 +57,42 @@ export const getProgramMedia = (programId) =>
 export const deleteMedia = (mediaId) =>
     axios.delete(`${BASE}/${mediaId}`, { headers: authHeader() });
 
+// ── Proxy video upload (browser → backend → GCS, no bucket CORS required) ────
+// onProgress: (percent: number) => void  — tracks the browser→backend leg (0-90%)
+export const uploadVideoProxy = (file, { programId } = {}, onProgress, signal) => {
+    const form = new FormData();
+    form.append('file', file);
+    if (programId) form.append('programId', programId);
+
+    const controller = signal ? undefined : new AbortController();
+    return axios.post(`${BASE}/upload-video`, form, {
+        headers: { ...authHeader() },
+        onUploadProgress: (e) => {
+            if (e.total && onProgress) {
+                onProgress(Math.round((e.loaded / e.total) * 90));
+            }
+        },
+        signal: signal ?? controller?.signal,
+        timeout: 60 * 60 * 1000  // 1 hour for large video files
+    });
+};
+
 // ── Upload a file to a GCS resumable session URI via XHR (progress tracking) ──
-// Returns a Promise that resolves when GCS responds 2xx.
+// Kept for future use once bucket CORS is configured.
 export const uploadToGCS = (file, uploadUrl, onProgress, signal) =>
     new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-
         xhr.upload.onprogress = (e) => {
-            if (e.lengthComputable && onProgress) {
-                onProgress(Math.round((e.loaded / e.total) * 95));
-            }
+            if (e.lengthComputable && onProgress) onProgress(Math.round((e.loaded / e.total) * 95));
         };
         xhr.onload = () => {
-            if (xhr.status >= 200 && xhr.status < 400) {
-                resolve();
-            } else {
-                reject(new Error(`GCS upload failed: ${xhr.status} ${xhr.statusText}`));
-            }
+            xhr.status >= 200 && xhr.status < 400
+                ? resolve()
+                : reject(new Error(`GCS upload failed: ${xhr.status} ${xhr.statusText}`));
         };
         xhr.onerror = () => reject(new Error('Network error during upload to storage.'));
         xhr.onabort = () => reject(new Error('CANCELLED'));
-
-        if (signal) {
-            signal.addEventListener('abort', () => xhr.abort());
-        }
-
+        if (signal) signal.addEventListener('abort', () => xhr.abort());
         xhr.open('PUT', uploadUrl);
         xhr.setRequestHeader('Content-Type', file.type);
         xhr.send(file);

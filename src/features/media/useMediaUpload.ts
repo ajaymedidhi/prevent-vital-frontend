@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
+// @ts-ignore — JS service file, types inferred at call sites
 import * as mediaApi from '../../admin-shared/services/mediaApi';
 
 export type MediaType = 'video' | 'image' | 'resource';
@@ -41,7 +42,7 @@ export const useMediaUpload = ({ type, programId, onSuccess, onError }: UseMedia
         setMedia(null);
     }, [cancel]);
 
-    // ── Video: request resumable URL → PUT to GCS → confirm ──────────────────
+    // ── Video: proxy through backend → GCS (no bucket CORS required) ────────
     const uploadVideo = useCallback(
         async (file: File) => {
             setStatus('uploading');
@@ -51,19 +52,10 @@ export const useMediaUpload = ({ type, programId, onSuccess, onError }: UseMedia
             abortCtrl.current = new AbortController();
 
             try {
-                const { data: initRes } = await mediaApi.requestUploadUrl({
-                    programId,
-                    type: 'video',
-                    fileName: file.name,
-                    mimeType: file.type,
-                    size: file.size
-                });
-                const { mediaId, uploadUrl } = initRes.data;
-
-                // Upload raw bytes directly to GCS (progress tracked via XHR)
-                await mediaApi.uploadToGCS(
+                // Browser → Backend (90% of progress bar), Backend → GCS (silent)
+                const { data: res } = await mediaApi.uploadVideoProxy(
                     file,
-                    uploadUrl,
+                    { programId },
                     setProgress,
                     abortCtrl.current.signal
                 );
@@ -71,9 +63,7 @@ export const useMediaUpload = ({ type, programId, onSuccess, onError }: UseMedia
                 setProgress(97);
                 setStatus('processing');
 
-                const { data: confirmRes } = await mediaApi.confirmUpload(mediaId);
-                const m = confirmRes.data.media;
-
+                const m = res.data.media;
                 const uploaded: UploadedMedia = {
                     mediaId: m._id,
                     fileName: m.fileName,
@@ -88,7 +78,7 @@ export const useMediaUpload = ({ type, programId, onSuccess, onError }: UseMedia
                 setMedia(uploaded);
                 onSuccess?.(uploaded);
             } catch (err: any) {
-                if (err.message === 'CANCELLED') return;
+                if (err.code === 'ERR_CANCELED') return;
                 const msg = err.response?.data?.message ?? err.message ?? 'Upload failed.';
                 setError(msg);
                 setStatus('error');

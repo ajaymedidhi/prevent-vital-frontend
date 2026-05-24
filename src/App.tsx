@@ -69,6 +69,7 @@ import TenantsPage from './pages/super-admin/Tenants';
 import MedicalPrograms from './pages/super-admin/MedicalPrograms';
 import AuditLogs from './pages/super-admin/AuditLogs';
 import Programmes from './pages/super-admin/Programmes';
+import ProgrammeBuilder from './pages/super-admin/ProgrammeBuilder';
 import Campaigns from './pages/super-admin/Campaigns';
 import Analytics from './pages/super-admin/Analytics';
 import Billing from './pages/super-admin/Billing';
@@ -162,6 +163,7 @@ const App = () => (
                             <Route path="approvals" element={<Approvals />} />
                             <Route path="audit-logs" element={<AuditLogs />} />
                             <Route path="programmes" element={<Programmes />} />
+                            <Route path="programmes/new" element={<ProgrammeBuilder />} />
                             <Route path="campaigns" element={<Campaigns />} />
                             <Route path="analytics" element={<Analytics />} />
                             <Route path="billing" element={<Billing />} />

@@ -1,14 +1,65 @@
 import { useParams, Link } from 'react-router-dom';
+import { useState, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { programService } from '../programService';
-import { Loader2, AlertTriangle, CheckCircle2, Lock, Play, Clock, BarChart, Calendar } from 'lucide-react';
+import { Loader2, AlertTriangle, CheckCircle2, Lock, Play, Clock, BarChart, Calendar, X, Video, FileText, Volume2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 
+interface Module {
+    title: string;
+    content?: string;
+    videoUrl?: string;
+    contentType?: string;
+    duration?: number;
+    mediaMeta?: { fileName: string; size: number; mimeType: string; duration?: number };
+}
+
+// ── Inline video player modal ────────────────────────────────────────────────
+function VideoPlayer({ module: mod, onClose }: { module: Module; onClose: () => void }) {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    return (
+        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4" onClick={onClose}>
+            <div className="relative w-full max-w-4xl" onClick={e => e.stopPropagation()}>
+                <button
+                    onClick={onClose}
+                    className="absolute -top-10 right-0 text-white/70 hover:text-white flex items-center gap-2 text-sm font-medium"
+                >
+                    <X size={18} /> Close
+                </button>
+                <div className="bg-black rounded-2xl overflow-hidden shadow-2xl">
+                    {mod.videoUrl ? (
+                        <video
+                            ref={videoRef}
+                            src={mod.videoUrl}
+                            controls
+                            autoPlay
+                            className="w-full max-h-[70vh] bg-black"
+                            controlsList="nodownload"
+                        >
+                            Your browser does not support video playback.
+                        </video>
+                    ) : (
+                        <div className="flex flex-col items-center justify-center h-64 text-white/50 gap-3">
+                            <Video size={40} />
+                            <p className="text-sm">Video is being processed. Please try again shortly.</p>
+                        </div>
+                    )}
+                    <div className="p-4 bg-gray-900">
+                        <h3 className="font-bold text-white text-sm">{mod.title}</h3>
+                        {mod.content && <p className="text-gray-400 text-xs mt-1 line-clamp-2">{mod.content}</p>}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function ProgramDetailPage() {
     const { id } = useParams<{ id: string }>();
+    const [activeModule, setActiveModule] = useState<Module | null>(null);
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ['program', id],
@@ -23,6 +74,9 @@ export default function ProgramDetailPage() {
 
     return (
         <>
+            {activeModule && (
+                <VideoPlayer module={activeModule} onClose={() => setActiveModule(null)} />
+            )}
             <Helmet>
                 <title>{program.title} - PreventVital</title>
                 <meta name="description" content={program.description.slice(0, 160)} />
@@ -96,28 +150,48 @@ export default function ProgramDetailPage() {
                                         Curriculum details coming soon.
                                     </div>
                                 ) : (
-                                    program.modules?.map((module, idx) => (
-                                        <div key={idx} className="flex items-center justify-between p-4 bg-card border rounded-lg hover:border-primary/50 transition-colors group">
-                                            <div className="flex items-center gap-4">
-                                                <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold shrink-0">
-                                                    {idx + 1}
+                                    program.modules?.map((mod: Module, idx: number) => {
+                                        const hasVideo = !!mod.videoUrl;
+                                        const isArticle = mod.contentType === 'article';
+                                        const typeLabel = isArticle ? 'Article' : `${mod.duration ?? 0} mins · Video`;
+                                        const TypeIcon = isArticle ? FileText : Video;
+
+                                        return (
+                                            <div
+                                                key={idx}
+                                                onClick={() => hasVideo && setActiveModule(mod)}
+                                                className={`flex items-center justify-between p-4 bg-card border rounded-xl transition-all group
+                                                    ${hasVideo ? 'hover:border-primary/60 hover:shadow-md hover:shadow-primary/5 cursor-pointer' : 'opacity-70'}`}
+                                            >
+                                                <div className="flex items-center gap-4">
+                                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shrink-0
+                                                        ${hasVideo ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                                                        {hasVideo
+                                                            ? <Play size={16} className="fill-current ml-0.5" />
+                                                            : idx + 1
+                                                        }
+                                                    </div>
+                                                    <div>
+                                                        <h4 className={`font-medium transition-colors ${hasVideo ? 'group-hover:text-primary' : ''}`}>
+                                                            {mod.title || `Module ${idx + 1}`}
+                                                        </h4>
+                                                        <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                                                            <TypeIcon size={11} />
+                                                            {typeLabel}
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <h4 className="font-medium group-hover:text-primary transition-colors">
-                                                        {module.title}
-                                                    </h4>
-                                                    <p className="text-xs text-muted-foreground">{module.duration} mins • Video Session</p>
-                                                </div>
+                                                {hasVideo ? (
+                                                    <span className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full mr-1
+                                                                     group-hover:bg-primary group-hover:text-white transition-colors">
+                                                        Watch
+                                                    </span>
+                                                ) : (
+                                                    <Lock size={15} className="text-muted-foreground/40 mr-3" />
+                                                )}
                                             </div>
-                                            {idx === 0 ? (
-                                                <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80 hover:bg-primary/10">
-                                                    <Play size={16} className="mr-2 fill-current" /> Preview
-                                                </Button>
-                                            ) : (
-                                                <Lock size={16} className="text-muted-foreground/50 mr-4" />
-                                            )}
-                                        </div>
-                                    ))
+                                        );
+                                    })
                                 )}
                             </div>
                         </section>
