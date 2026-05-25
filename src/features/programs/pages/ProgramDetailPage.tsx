@@ -3,15 +3,16 @@ import { useState, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { programService } from '../programService';
-import { Loader2, AlertTriangle, CheckCircle2, Lock, Play, Clock, BarChart, Calendar, X, Video, FileText, Volume2 } from 'lucide-react';
+import { Loader2, AlertTriangle, CheckCircle2, Lock, Play, Clock, BarChart, Calendar, X, Video, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+import * as mediaApi from '@/admin-shared/services/mediaApi';
 
 interface Module {
     title: string;
     content?: string;
     videoUrl?: string;
+    videoMediaId?: string;
     contentType?: string;
     duration?: number;
     mediaMeta?: { fileName: string; size: number; mimeType: string; duration?: number };
@@ -60,6 +61,42 @@ function VideoPlayer({ module: mod, onClose }: { module: Module; onClose: () => 
 export default function ProgramDetailPage() {
     const { id } = useParams<{ id: string }>();
     const [activeModule, setActiveModule] = useState<Module | null>(null);
+    const [loadingModuleIdx, setLoadingModuleIdx] = useState<number | null>(null);
+    const [moduleError, setModuleError] = useState<string | null>(null);
+
+    const getStreamUrl = (mediaId: string) => {
+        const token = sessionStorage.getItem('token') || localStorage.getItem('token') || '';
+        const base = (import.meta.env.VITE_API_URL || '') + '/api/media';
+        return `${base}/${mediaId}/stream?token=${encodeURIComponent(token)}`;
+    };
+
+    const openModule = async (mod: Module, idx: number) => {
+        // If we already have the video URL, open immediately
+        if (mod.videoUrl) {
+            setActiveModule(mod);
+            return;
+        }
+        if (!mod.videoMediaId) return;
+
+        setLoadingModuleIdx(idx);
+        setModuleError(null);
+        let resolvedUrl: string | undefined;
+        try {
+            // Try signed URL first (best for performance, works on Cloud Run with IAM)
+            const { data } = await mediaApi.getSignedUrl(mod.videoMediaId);
+            resolvedUrl = data?.data?.signedUrl;
+        } catch {
+            // signed URL failed — fall through to stream proxy
+        }
+
+        // Fallback: backend stream proxy (works without GCS signing credentials)
+        if (!resolvedUrl) {
+            resolvedUrl = getStreamUrl(mod.videoMediaId);
+        }
+
+        setLoadingModuleIdx(null);
+        setActiveModule({ ...mod, videoUrl: resolvedUrl });
+    };
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ['program', id],
@@ -144,6 +181,12 @@ export default function ProgramDetailPage() {
 
                         <section>
                             <h2 className="text-2xl font-bold mb-6">Session Curriculum</h2>
+                            {moduleError && (
+                                <div className="mb-3 px-4 py-2 bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl flex items-center gap-2">
+                                    <AlertTriangle size={14} />
+                                    {moduleError}
+                                </div>
+                            )}
                             <div className="space-y-3">
                                 {program.modules?.length === 0 ? (
                                     <div className="p-8 text-center border border-dashed rounded-xl text-muted-foreground">
@@ -151,7 +194,8 @@ export default function ProgramDetailPage() {
                                     </div>
                                 ) : (
                                     program.modules?.map((mod: Module, idx: number) => {
-                                        const hasVideo = !!mod.videoUrl;
+                                        const hasVideo = !!mod.videoUrl || !!mod.videoMediaId;
+                                        const isLoading = loadingModuleIdx === idx;
                                         const isArticle = mod.contentType === 'article';
                                         const typeLabel = isArticle ? 'Article' : `${mod.duration ?? 0} mins · Video`;
                                         const TypeIcon = isArticle ? FileText : Video;
@@ -159,16 +203,20 @@ export default function ProgramDetailPage() {
                                         return (
                                             <div
                                                 key={idx}
-                                                onClick={() => hasVideo && setActiveModule(mod)}
+                                                onClick={() => !isLoading && hasVideo && openModule(mod, idx)}
                                                 className={`flex items-center justify-between p-4 bg-card border rounded-xl transition-all group
-                                                    ${hasVideo ? 'hover:border-primary/60 hover:shadow-md hover:shadow-primary/5 cursor-pointer' : 'opacity-70'}`}
+                                                    ${hasVideo && !isLoading ? 'hover:border-primary/60 hover:shadow-md hover:shadow-primary/5 cursor-pointer' : ''}
+                                                    ${!hasVideo ? 'opacity-70' : ''}
+                                                    ${isLoading ? 'opacity-80 cursor-wait' : ''}`}
                                             >
                                                 <div className="flex items-center gap-4">
                                                     <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shrink-0
                                                         ${hasVideo ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
-                                                        {hasVideo
-                                                            ? <Play size={16} className="fill-current ml-0.5" />
-                                                            : idx + 1
+                                                        {isLoading
+                                                            ? <Loader2 size={16} className="animate-spin" />
+                                                            : hasVideo
+                                                                ? <Play size={16} className="fill-current ml-0.5" />
+                                                                : idx + 1
                                                         }
                                                     </div>
                                                     <div>
@@ -181,7 +229,11 @@ export default function ProgramDetailPage() {
                                                         </p>
                                                     </div>
                                                 </div>
-                                                {hasVideo ? (
+                                                {isLoading ? (
+                                                    <span className="text-xs font-semibold text-primary/60 bg-primary/5 px-3 py-1 rounded-full mr-1">
+                                                        Loading…
+                                                    </span>
+                                                ) : hasVideo ? (
                                                     <span className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full mr-1
                                                                      group-hover:bg-primary group-hover:text-white transition-colors">
                                                         Watch

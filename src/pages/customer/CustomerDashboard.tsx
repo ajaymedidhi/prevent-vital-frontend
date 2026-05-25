@@ -46,6 +46,29 @@ const CustomerDashboard = () => {
     const [fullProgramData, setFullProgramData] = useState<any>(null);
     const [programDetailLoading, setProgramDetailLoading] = useState(false);
     const [playingModule, setPlayingModule] = useState<any>(null);
+    const [loadingVideoUrl, setLoadingVideoUrl] = useState(false);
+
+    const getStreamUrl = (mediaId: string) => {
+        const token = sessionStorage.getItem('token') || localStorage.getItem('token') || '';
+        return `/api/media/${mediaId}/stream?token=${encodeURIComponent(token)}`;
+    };
+
+    const openVideo = async (mod: any) => {
+        if (mod.videoUrl) { setPlayingModule(mod); return; }
+        if (!mod.videoMediaId) return;
+        setLoadingVideoUrl(true);
+        let resolvedUrl: string | undefined;
+        try {
+            const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+            const res = await axios.get(`/api/media/${mod.videoMediaId}/signed-url`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            resolvedUrl = res.data?.data?.signedUrl;
+        } catch { /* fall through to stream proxy */ }
+        if (!resolvedUrl) resolvedUrl = getStreamUrl(mod.videoMediaId);
+        setLoadingVideoUrl(false);
+        setPlayingModule({ ...mod, videoUrl: resolvedUrl });
+    };
 
     const userPlan = (user as any)?.subscription?.plan || 'free';
 
@@ -1108,17 +1131,22 @@ const CustomerDashboard = () => {
                                                     <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">{current.module.content}</p>
                                                 )}
                                                 <div className="mt-3 flex items-center gap-2">
-                                                    {current.module.videoUrl ? (
+                                                    {(current.module.videoUrl || current.module.videoMediaId) && current.module.contentType !== 'article' ? (
                                                         <button
-                                                            onClick={() => setPlayingModule(current.module)}
-                                                            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold px-4 py-2 rounded-xl transition-colors"
+                                                            onClick={() => openVideo(current.module)}
+                                                            disabled={loadingVideoUrl}
+                                                            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-[11px] font-bold px-4 py-2 rounded-xl transition-colors"
                                                         >
-                                                            <Play className="w-3.5 h-3.5 fill-white" /> Watch Video
+                                                            {loadingVideoUrl
+                                                                ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                                                : <Play className="w-3.5 h-3.5 fill-white" />
+                                                            }
+                                                            {loadingVideoUrl ? 'Loading…' : 'Watch Video'}
                                                         </button>
                                                     ) : (
                                                         <div className="flex items-center gap-2 bg-gray-100 text-gray-500 text-[10px] font-bold px-3 py-1.5 rounded-lg">
                                                             <BookOpen className="w-3 h-3" />
-                                                            {current.module.contentType === 'article' ? 'Article' : 'Video Processing...'}
+                                                            {current.module.contentType === 'article' ? 'Article' : 'No content yet'}
                                                         </div>
                                                     )}
                                                 </div>
@@ -1291,8 +1319,8 @@ const CustomerDashboard = () => {
                                 </video>
                             ) : (
                                 <div className="flex flex-col items-center justify-center h-64 text-white/50 gap-3">
-                                    <Video size={40} />
-                                    <p className="text-sm">Video is being processed. Please try again shortly.</p>
+                                    <Loader2 size={32} className="animate-spin" />
+                                    <p className="text-sm">Loading video…</p>
                                 </div>
                             )}
                             <div className="p-4 bg-gray-900">
