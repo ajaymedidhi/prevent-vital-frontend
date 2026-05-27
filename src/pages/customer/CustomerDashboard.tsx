@@ -161,9 +161,11 @@ const CustomerDashboard = () => {
         fetchProfile();
     }, [dispatch]);
 
-    // Fetch full program detail (with real modules + video signed URLs) when player opens
+    // Fetch full program detail when player opens; reset session index on program change
     useEffect(() => {
-        if (!activeProgram?._id) { setFullProgramData(null); return; }
+        setActiveSession(0);
+        setFullProgramData(null);
+        if (!activeProgram?._id) return;
         const token = sessionStorage.getItem('token');
         setProgramDetailLoading(true);
         axios.get(`/api/programs/${activeProgram._id}`, {
@@ -998,23 +1000,44 @@ const CustomerDashboard = () => {
     const renderProgramPlayer = () => {
         if (!activeProgram) return null;
 
-        // Real modules from API (with signed videoUrl), grouped into pseudo-sessions
-        const realModules: any[] = fullProgramData?.modules || [];
-        const totalSessions = activeProgram.totalSessions || Math.max(realModules.length, 1);
+        // Show full-screen loader while fetching or waiting for data
+        if (programDetailLoading || !fullProgramData) {
+            return (
+                <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+                    <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
+                    <p className="text-sm text-gray-400 font-medium">Loading program…</p>
+                </div>
+            );
+        }
 
-        // Group modules into sessions (one module per session)
-        const sessions = Array.from({ length: totalSessions }, (_, i) => {
-            const mod = realModules[i];
-            return {
-                id: i,
-                title: mod?.title || `Session ${i + 1}`,
-                subtitle: mod ? (mod.contentType === 'article' ? 'Article' : `${mod.duration ?? 0} min · Video`) : '—',
-                module: mod || null
-            };
-        });
+        // Only show sessions that have real module data
+        const realModules: any[] = fullProgramData.modules || [];
+        const sessions = realModules.map((mod, i) => ({
+            id: i,
+            title: mod.title || `Session ${i + 1}`,
+            subtitle: mod.contentType === 'article' ? 'Article' : `${mod.duration ?? 0} min · Video`,
+            module: mod
+        }));
 
-        const current = sessions[activeSession] || sessions[0];
-        const progress = Math.round((completedSessions.length / sessions.length) * 100);
+        const current = sessions[Math.min(activeSession, Math.max(sessions.length - 1, 0))] || sessions[0];
+        const totalSessionCount = activeProgram.totalSessions || sessions.length || 1;
+        const progress = Math.round((completedSessions.length / totalSessionCount) * 100);
+
+        // No modules yet — show a clean empty state
+        if (sessions.length === 0) {
+            return (
+                <div className="space-y-6 animate-in fade-in duration-500 pb-24">
+                    <button onClick={() => setActiveProgram(null)} className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 text-xs font-bold transition-colors">
+                        <ChevronRight className="w-3.5 h-3.5 rotate-180" /> Back to Programs
+                    </button>
+                    <div className="flex flex-col items-center justify-center py-24 gap-4 border border-dashed rounded-2xl">
+                        <span className="text-5xl">{CAT_EMOJI[activeProgram.category] || '📋'}</span>
+                        <h2 className="text-xl font-semibold text-gray-800">{activeProgram.title}</h2>
+                        <p className="text-sm text-gray-400">No sessions have been published for this program yet.</p>
+                    </div>
+                </div>
+            );
+        }
 
         return (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-24">
@@ -1043,7 +1066,7 @@ const CustomerDashboard = () => {
                                 <div className="h-full bg-gradient-to-r from-emerald-400 to-green-300 rounded-full transition-all duration-700 ease-out"
                                     style={{ width: `${progress}%` }}></div>
                             </div>
-                            <p className="text-[10px] text-blue-200 mt-1.5">{completedSessions.length} of {sessions.length} sessions completed</p>
+                            <p className="text-[10px] text-blue-200 mt-1.5">{completedSessions.length} of {totalSessionCount} sessions completed</p>
                         </div>
                     </div>
                 </div>
@@ -1053,6 +1076,11 @@ const CustomerDashboard = () => {
                     <div className="lg:col-span-1">
                         <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">Sessions</h3>
                         <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1 no-scrollbar">
+                            {sessions.length === 0 && (
+                                <div className="py-8 text-center text-gray-400 text-xs border border-dashed rounded-2xl">
+                                    No sessions published yet.
+                                </div>
+                            )}
                             {sessions.map((session, idx) => {
                                 const isCompleted = completedSessions.includes(idx);
                                 const isCurrent = idx === activeSession;

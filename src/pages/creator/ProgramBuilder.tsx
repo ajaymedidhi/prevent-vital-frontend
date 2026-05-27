@@ -29,6 +29,9 @@ const ProgramBuilder = () => {
     const [price, setPrice] = useState('0');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
+    const [difficulty, setDifficulty] = useState('');
+    const [durationWeeks, setDurationWeeks] = useState('');
+    const [totalSessions, setTotalSessions] = useState('');
     const [modules, setModules] = useState<{
         title: string;
         content: string;
@@ -52,6 +55,9 @@ const ProgramBuilder = () => {
                         setPrice(prog.price?.toString() || '0');
                         setDescription(prog.description || '');
                         setCategory(prog.category || '');
+                        setDifficulty(prog.difficulty || '');
+                        setDurationWeeks(prog.durationWeeks?.toString() || '');
+                        setTotalSessions(prog.totalSessions?.toString() || '');
                         setModules(prog.modules?.map((m: any) => ({
                             title: m.title,
                             content: m.content,
@@ -112,6 +118,11 @@ const ProgramBuilder = () => {
             toast.error('Please fill in program title and category.');
             return;
         }
+        if (!difficulty || !durationWeeks || !totalSessions) {
+            setCurrentStep(0);
+            toast.error('Please fill in difficulty, duration (weeks), and total sessions.');
+            return;
+        }
 
         setLoading(true);
         try {
@@ -120,6 +131,9 @@ const ProgramBuilder = () => {
                 price: parseFloat(price),
                 description,
                 category,
+                difficulty,
+                durationWeeks: parseInt(durationWeeks),
+                totalSessions: parseInt(totalSessions),
                 modules: modules.map((m, i) => ({
                     title: m.title,
                     content: m.content,
@@ -223,10 +237,19 @@ const ProgramBuilder = () => {
                                     <select className="w-full border-2 border-gray-100 rounded-2xl px-5 py-4 outline-none focus:border-pink-500 bg-gray-50/30 focus:bg-white transition-all font-bold text-gray-700"
                                         value={category} onChange={e => setCategory(e.target.value)}>
                                         <option value="">Select Category</option>
-                                        <option value="fitness">Fitness & Movement</option>
-                                        <option value="nutrition">Nutrition & Diet</option>
-                                        <option value="mental_wellness">Mental Wellness</option>
-                                        <option value="chronic_care">Chronic Disease Management</option>
+                                        <option value="fitness">Fitness</option>
+                                        <option value="nutrition">Nutrition</option>
+                                        <option value="mental">Mental Wellness</option>
+                                        <option value="stress">Stress</option>
+                                        <option value="sleep">Sleep</option>
+                                        <option value="hypertension">Hypertension</option>
+                                        <option value="diabetes">Diabetes</option>
+                                        <option value="cardiac">Cardiac</option>
+                                        <option value="metabolic">Metabolic</option>
+                                        <option value="cardiovascular">Cardiovascular</option>
+                                        <option value="respiratory">Respiratory</option>
+                                        <option value="musculoskeletal">Musculoskeletal</option>
+                                        <option value="preventive">Preventive</option>
                                     </select>
                                 </div>
                                 <div>
@@ -234,6 +257,31 @@ const ProgramBuilder = () => {
                                     <input type="number" className="w-full border-2 border-gray-100 rounded-2xl px-5 py-4 outline-none focus:border-pink-500 bg-gray-50/30 focus:bg-white transition-all font-bold"
                                         placeholder="0.00"
                                         value={price} onChange={e => setPrice(e.target.value)} required />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Difficulty</label>
+                                    <select className="w-full border-2 border-gray-100 rounded-2xl px-5 py-4 outline-none focus:border-pink-500 bg-gray-50/30 focus:bg-white transition-all font-bold text-gray-700"
+                                        value={difficulty} onChange={e => setDifficulty(e.target.value)}>
+                                        <option value="">Select Level</option>
+                                        <option value="Beginner">Beginner</option>
+                                        <option value="Intermediate">Intermediate</option>
+                                        <option value="Advanced">Advanced</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-2"><Clock size={14} /> Duration (Weeks)</label>
+                                    <input type="number" min="1" className="w-full border-2 border-gray-100 rounded-2xl px-5 py-4 outline-none focus:border-pink-500 bg-gray-50/30 focus:bg-white transition-all font-bold"
+                                        placeholder="e.g. 12"
+                                        value={durationWeeks} onChange={e => setDurationWeeks(e.target.value)} />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-2"><BookOpen size={14} /> Total Sessions</label>
+                                    <input type="number" min="1" className="w-full border-2 border-gray-100 rounded-2xl px-5 py-4 outline-none focus:border-pink-500 bg-gray-50/30 focus:bg-white transition-all font-bold"
+                                        placeholder="e.g. 24"
+                                        value={totalSessions} onChange={e => setTotalSessions(e.target.value)} />
                                 </div>
                             </div>
 
@@ -443,9 +491,12 @@ const ProgramBuilder = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
                             {[
                                 { label: 'Title', value: title || 'Untitled Program', icon: <FileText size={16} />, color: 'blue' },
+                                { label: 'Difficulty', value: difficulty || 'Not set', icon: <Target size={16} />, color: 'pink' },
+                                { label: 'Duration', value: durationWeeks ? `${durationWeeks} Weeks` : 'Not set', icon: <Clock size={16} />, color: 'purple' },
+                                { label: 'Total Sessions', value: totalSessions || 'Not set', icon: <BookOpen size={16} />, color: 'green' },
                                 { label: 'Modules', value: `${modules.length} Chapters`, icon: <BookOpen size={16} />, color: 'pink' },
                                 { label: 'Live Sessions', value: `${sessions.length} Scheduled`, icon: <Calendar size={16} />, color: 'purple' },
-                                { label: 'Enrollment Fee', value: `₹${parseFloat(price).toLocaleString()}`, icon: <DollarSign size={16} />, color: 'amber' }
+                                { label: 'Enrollment Fee', value: `₹${parseFloat(price || '0').toLocaleString()}`, icon: <DollarSign size={16} />, color: 'amber' }
                             ].map((item, i) => (
                                 <div key={i} className="bg-white p-5 rounded-3xl border border-gray-100 flex items-center gap-4 shadow-sm">
                                     <div className={`w-10 h-10 rounded-2xl bg-${item.color}-50 text-${item.color}-600 flex items-center justify-center shrink-0`}>{item.icon}</div>
