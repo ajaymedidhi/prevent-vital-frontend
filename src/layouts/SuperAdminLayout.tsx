@@ -7,7 +7,7 @@ import { PERMISSIONS } from '../config/rbacConfig';
 import {
     LayoutDashboard, Users, BookOpen, Megaphone, BarChart3,
     CreditCard, Settings, Shield, HeadphonesIcon, LogOut, Zap,
-    ChevronDown, User, Key, Menu, Bell, Search, X, ClipboardCheck
+    ChevronDown, User, Key, Menu, Bell, Search, X, ClipboardCheck, Heart
 } from 'lucide-react';
 import { Avatar } from '../admin-shared/components/ui';
 
@@ -15,6 +15,7 @@ const NAV_MAIN = [
     { path: '/super-admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/super-admin/users', label: 'Staff', icon: Users, badge: '347' },
     { path: '/super-admin/approvals', label: 'Approvals', icon: ClipboardCheck },
+    { path: '/super-admin/assessments', label: 'Assessments', icon: Heart },
     { path: '/super-admin/programmes', label: 'Programmes', icon: BookOpen },
     { path: '/super-admin/campaigns', label: 'Campaigns', icon: Megaphone },
     { path: '/super-admin/analytics', label: 'Analytics', icon: BarChart3 },

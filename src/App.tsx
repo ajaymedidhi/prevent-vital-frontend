@@ -87,6 +87,9 @@ import RiskCalculator from './pages/admin/RiskCalculator';
 import AdminReports from './pages/admin/Reports';
 import AdminSettings from './pages/admin/Settings';
 import AdminSupport from './pages/admin/Support';
+import ProductManagement from './pages/admin/ProductManagement';
+import InventoryManagement from './pages/admin/InventoryManagement';
+import LocationManagement from './pages/admin/LocationManagement';
 import { Outlet } from "react-router-dom";
 
 import CustomerDashboard from './pages/customer/CustomerDashboard';
@@ -156,6 +159,7 @@ const App = () => (
                         }>
                             <Route index element={<Navigate to="dashboard" replace />} />
                             <Route path="dashboard" element={<SuperAdminDashboard />} />
+                            <Route path="assessments" element={<SuperAdminDashboard defaultTab="assessments" />} />
                             <Route path="config" element={<GlobalConfig />} />
                             <Route path="tenants" element={<TenantsPage />} />
                             <Route path="start-program" element={<MedicalPrograms />} />
@@ -182,7 +186,10 @@ const App = () => (
                             <Route index element={<Navigate to="dashboard" replace />} />
                             <Route path="dashboard" element={<AdminDashboard />} />
                             <Route path="users" element={<AdminUsers />} />
+                            <Route path="products" element={<ProductManagement />} />
+                            <Route path="inventory" element={<InventoryManagement />} />
                             <Route path="orders" element={<AdminOrders />} />
+                            <Route path="locations" element={<LocationManagement />} />
                             <Route path="alerts" element={<AdminAlerts />} />
                             <Route path="risk-calculator" element={<RiskCalculator />} />
                             <Route path="reports" element={<AdminReports />} />

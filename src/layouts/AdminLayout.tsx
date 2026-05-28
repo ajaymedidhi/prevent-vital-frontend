@@ -4,13 +4,17 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../store';
 import {
     LayoutDashboard, Users, ShoppingCart, Calculator, AlertCircle,
-    FileText, Settings, HeadphonesIcon, LogOut, ChevronDown, User, Key, Menu, Bell, Search, X
+    FileText, Settings, HeadphonesIcon, LogOut, ChevronDown, User, Key, Menu, Bell, Search, X,
+    Package, Layers, Globe
 } from 'lucide-react';
 
 const NAV_OVERVIEW = [
     { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/admin/users', label: 'User Management', icon: Users },
+    { path: '/admin/products', label: 'Product Catalog', icon: Package },
+    { path: '/admin/inventory', label: 'Inventory Control', icon: Layers },
     { path: '/admin/orders', label: 'Order Management', icon: ShoppingCart },
+    { path: '/admin/locations', label: 'Delivery Locations', icon: Globe },
     { path: '/admin/risk-calculator', label: 'Risk Calculator', icon: Calculator },
     { path: '/admin/alerts', label: 'Critical Alerts', icon: AlertCircle, badge: '!' },
 ];

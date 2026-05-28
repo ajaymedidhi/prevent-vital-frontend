@@ -197,7 +197,7 @@ const CustomerDashboard = () => {
                     setCompletedSessions((user as any)?.completedSessions || []);
                 }
 
-                // Fetch Assessment History when on 'home' tab
+                // Fetch Assessment History and Products when on 'home' tab
                 if (activeTab === 'home') {
                     try {
                         const assessRes = await axios.get('/api/vitals/assessments', {
@@ -206,6 +206,12 @@ const CustomerDashboard = () => {
                         setAssessmentHistory(assessRes.data?.data?.assessments || []);
                     } catch (err) {
                         console.error('Failed to fetch assessment history:', err);
+                    }
+                    try {
+                        const prodRes = await axios.get('/api/shop/products');
+                        setProducts(prodRes.data?.data?.products?.slice(0, 3) || []);
+                    } catch (err) {
+                        console.error('Failed to fetch products:', err);
                     }
                 }
 
@@ -312,10 +318,7 @@ const CustomerDashboard = () => {
 
 
 
-    const products = [
-        { id: 1, name: 'Premium Heart Kit', price: '₹4,999', image: 'https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80' },
-        { id: 2, name: 'VITA Supplements', price: '₹1,299', image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80' },
-    ];
+    const [products, setProducts] = useState<any[]>([]);
 
     const renderHome = () => (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -649,24 +652,28 @@ const CustomerDashboard = () => {
                             <div className="p-3 bg-amber-50 text-amber-600 rounded-2xl">
                                 <ShoppingBag className="w-6 h-6" />
                             </div>
-                            <Button variant="ghost" size="sm" className="text-blue-600 font-bold text-xs hover:bg-blue-50">
+                            <Button variant="ghost" size="sm" onClick={() => navigate('/products')} className="text-blue-600 font-bold text-xs hover:bg-blue-50">
                                 View All <ChevronRight className="w-3 h-3 ml-1" />
                             </Button>
                         </div>
                         <h3 className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-4">Premium Products</h3>
                         <div className="space-y-3">
-                            {products.map(product => (
-                                <div key={product.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
-                                    <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                                        <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                            {products.length === 0 ? (
+                                <p className="text-xs text-gray-400 text-center py-4">No products available.</p>
+                            ) : (
+                                products.map(product => (
+                                    <div key={product._id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                                        <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
+                                            <img src={product.image || product.thumbnail || '/placeholder.png'} alt={product.name} className="w-full h-full object-cover" />
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="text-sm font-bold text-gray-900">{product.name}</p>
+                                            <p className="text-xs text-gray-500">₹{product.price}</p>
+                                        </div>
+                                        <Button size="sm" onClick={() => navigate('/products/' + (product.slug || product._id))} className="bg-blue-600 rounded-lg text-xs font-bold">Buy</Button>
                                     </div>
-                                    <div className="flex-1">
-                                        <p className="text-sm font-bold text-gray-900">{product.name}</p>
-                                        <p className="text-xs text-gray-500">{product.price}</p>
-                                    </div>
-                                    <Button size="sm" className="bg-blue-600 rounded-lg text-xs font-bold">Buy</Button>
-                                </div>
-                            ))}
+                                ))
+                            )}
                         </div>
                     </CardContent>
                 </Card>

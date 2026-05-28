@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE = (import.meta.env.VITE_API_URL || '') + '/api/media';
+const BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '') + '/api/media';
 
 const token = () =>
     sessionStorage.getItem('token') || localStorage.getItem('token');

@@ -2,11 +2,30 @@
 // SuperAdmin.jsx
 // ══════════════════════════════════════════════════════════════════════════════
 import { useState, useEffect, useCallback } from 'react'
-import { Zap, Plus, Building2, Users, CreditCard, TrendingUp, Search, Edit2, Eye, Power, ChevronDown } from 'lucide-react'
+import { Zap, Plus, Building2, Users, CreditCard, TrendingUp, Search, Edit2, Eye, Power, ChevronDown, Activity, Heart, AlertTriangle } from 'lucide-react'
+import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, Radar, PolarGrid, PolarAngleAxis, AreaChart, Area } from 'recharts'
 import { Badge, Modal, SectionHeader, PlanBadge, Avatar, SearchInput } from '../../admin-shared/components/ui'
 import { useAuthStore, useUIStore } from '../../admin-shared/store'
 import superAdminApi from '../../admin-shared/services/superAdminApi'
 import { useSelector } from 'react-redux'
+
+
+
+const ChartTooltip = ({ active, payload, label }) => {
+  if (!active || !payload?.length) return null
+  return (
+    <div className="bg-slate-900 rounded-xl px-3 py-2.5 border border-slate-700 shadow-xl">
+      <p className="text-xs font-semibold text-slate-300 mb-1.5">{label}</p>
+      {payload.map(p => (
+        <div key={p.dataKey} className="flex items-center gap-2 text-xs">
+          <div className="w-2 h-2 rounded-full" style={{ background: p.color }} />
+          <span className="text-slate-400">{p.name}:</span>
+          <span className="text-white font-semibold">{p.value}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
 
 function CreateOrgModal({ open, onClose, onSuccess }) {
   const { toast } = useUIStore()
@@ -82,23 +101,48 @@ export default function SuperAdminPage() {
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [createOpen, setCreateOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState('platform') // 'platform', 'b2b', 'b2c'
+  const [activeTab, setActiveTab] = useState('platform') // 'platform', 'b2b', 'b2c', 'assessments'
   const { toast } = useUIStore()
 
   const [orgs, setOrgs] = useState([])
   const [stats, setStats] = useState(null)
   const [b2cStats, setB2cStats] = useState(null)
+  const [assessmentStats, setAssessmentStats] = useState({
+    total: 0,
+    avgScore: 0,
+    highRiskPrevalence: 0,
+    takenThisMonth: 0,
+    cvitalTiers: [],
+    ascvdTiers: [],
+    trend: [],
+    domainAvg: [],
+    orgStats: []
+  })
 
   const fetchData = useCallback(async () => {
     try {
-      const [tenantsRes, statsRes, b2cRes] = await Promise.all([
+      const [tenantsRes, statsRes, b2cRes, assessRes] = await Promise.all([
         superAdminApi.get('/tenants'),
         superAdminApi.get('/stats'),
-        superAdminApi.get('/b2c-stats')
+        superAdminApi.get('/b2c-stats'),
+        superAdminApi.get('/assessments/stats').catch(() => null)
       ])
       setOrgs(tenantsRes.data?.tenants || [])
       setStats(statsRes.data || null)
       setB2cStats(b2cRes.data || null)
+      if (assessRes?.data?.data) {
+        setAssessmentStats({
+          total: assessRes.data.data.total || 0,
+          avgScore: assessRes.data.data.avgScore || 0,
+          highRiskPrevalence: assessRes.data.data.highRiskPrevalence || 0,
+          takenThisMonth: assessRes.data.data.takenThisMonth || 0,
+          cvitalTiers: assessRes.data.data.cvitalTiers || [],
+          ascvdTiers: assessRes.data.data.ascvdTiers || [],
+          trend: assessRes.data.data.trend || [],
+          domainAvg: assessRes.data.data.domainAvg || [],
+          orgStats: assessRes.data.data.orgStats || []
+        })
+      }
     } catch (err) {
       toast('Failed to load dashboard data', 'error')
     }
@@ -121,6 +165,11 @@ export default function SuperAdminPage() {
   const filtered = orgs.filter(o => {
     if (search && !o.name?.toLowerCase().includes(search.toLowerCase())) return false
     if (statusFilter !== 'all' && o.status !== statusFilter) return false
+    return true
+  })
+
+  const filteredAssessments = (assessmentStats.orgStats || []).filter(o => {
+    if (search && !o.display.toLowerCase().includes(search.toLowerCase())) return false
     return true
   })
 
@@ -156,6 +205,11 @@ export default function SuperAdminPage() {
           onClick={() => setActiveTab('b2c')}
           className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === 'b2c' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
           B2C Consumers
+        </button>
+        <button
+          onClick={() => setActiveTab('assessments')}
+          className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === 'assessments' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
+          Assessments
         </button>
       </div>
 
@@ -293,7 +347,216 @@ export default function SuperAdminPage() {
         </div>
       )}
 
+      {activeTab === 'assessments' && (() => {
+        const displayCvitalTiers = assessmentStats.cvitalTiers && assessmentStats.cvitalTiers.length > 0 ? assessmentStats.cvitalTiers : [
+          { name: 'Excellent', range: '80–100', value: 0, pct: 0, color: '#10b981' },
+          { name: 'Good', range: '60–79', value: 0, pct: 0, color: '#3b82f6' },
+          { name: 'Moderate', range: '40–59', value: 0, pct: 0, color: '#f59e0b' },
+          { name: 'High Risk', range: '<40', value: 0, pct: 0, color: '#ef4444' }
+        ]
+        const displayAscvdTiers = assessmentStats.ascvdTiers && assessmentStats.ascvdTiers.length > 0 ? assessmentStats.ascvdTiers : [
+          { name: 'Low', range: '<7.5%', value: 0, pct: 0, color: '#10b981' },
+          { name: 'Borderline', range: '7.5–10%', value: 0, pct: 0, color: '#3b82f6' },
+          { name: 'Intermediate', range: '10–20%', value: 0, pct: 0, color: '#f59e0b' },
+          { name: 'High', range: '>20%', value: 0, pct: 0, color: '#ef4444' }
+        ]
+        const displayTrend = assessmentStats.trend && assessmentStats.trend.length > 0 ? assessmentStats.trend : []
+        const displayDomainAvg = assessmentStats.domainAvg && assessmentStats.domainAvg.length > 0 ? assessmentStats.domainAvg : []
+
+        return (
+          <div className="space-y-6 animate-fade-in">
+            {/* Assessment stats */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                { label: 'Total Assessments', value: assessmentStats.total.toLocaleString(), icon: <Activity size={20} />, trend: assessmentStats.total > 0 ? '+100%' : '0%', color: 'text-blue-600', bg: 'bg-blue-50' },
+                { label: 'Avg CVITAL Score', value: `${assessmentStats.avgScore}/100`, icon: <Heart size={20} />, trend: assessmentStats.avgScore >= 80 ? 'Excellent' : assessmentStats.avgScore >= 60 ? 'Good' : assessmentStats.avgScore >= 40 ? 'Moderate' : 'High Risk', color: 'text-emerald-600', bg: 'bg-emerald-50' },
+                { label: 'High Risk Prevalence', value: `${assessmentStats.highRiskPrevalence}%`, icon: <AlertTriangle size={20} />, trend: assessmentStats.highRiskPrevalence > 20 ? 'Target needed' : 'Good Control', color: 'text-rose-600', bg: 'bg-rose-50' },
+                { label: 'Taken This Month', value: assessmentStats.takenThisMonth.toLocaleString(), icon: <TrendingUp size={20} />, trend: 'Live', color: 'text-amber-600', bg: 'bg-amber-50' },
+              ].map(s => (
+                <div key={s.label} className={`card p-5 border border-slate-100 flex flex-col justify-between`}>
+                  <div className="flex justify-between items-start mb-2">
+                    <div className={`p-2 rounded-lg ${s.bg} ${s.color}`}>{s.icon}</div>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${s.bg} ${s.color}`}>{s.trend}</span>
+                  </div>
+                  <div>
+                    <div className={`font-display text-2xl font-bold text-slate-800`}>{s.value}</div>
+                    <div className="text-xs text-slate-500 mt-1">{s.label}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Charts Row 1 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              {/* CVITAL Tier Distribution */}
+              <div className="card p-5">
+                <h3 className="font-semibold text-slate-800 text-sm mb-1">CVITAL Score Distribution</h3>
+                <p className="text-xs text-slate-400 mb-4">Breakdown of platform-wide cardiovascular wellness tiers</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                  <ResponsiveContainer width="100%" height={160}>
+                    <PieChart>
+                      <Pie data={displayCvitalTiers} cx="50%" cy="50%" innerRadius={45} outerRadius={65} paddingAngle={3} dataKey="value" strokeWidth={0}>
+                        {displayCvitalTiers.map((entry, idx) => (
+                          <Cell key={`cell-${idx}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip formatter={(v) => [v, 'Users']} contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '11px' }} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="space-y-2">
+                    {displayCvitalTiers.map(tier => (
+                      <div key={tier.name} className="flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-2.5 h-2.5 rounded-full" style={{ background: tier.color }} />
+                          <span className="text-slate-600 font-medium">{tier.name} <span className="text-[10px] text-slate-400">({tier.range})</span></span>
+                        </div>
+                        <span className="font-bold text-slate-800">{tier.value} ({tier.pct}%)</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* ASCVD 10-Yr Risk Tiers */}
+              <div className="card p-5">
+                <h3 className="font-semibold text-slate-800 text-sm mb-1">ASCVD 10-Year Risk Breakdown</h3>
+                <p className="text-xs text-slate-400 mb-4">Atherosclerotic Cardiovascular Disease (ASCVD) clinical risk tiers</p>
+                <ResponsiveContainer width="100%" height={160}>
+                  <BarChart data={displayAscvdTiers} layout="vertical" margin={{ top: 0, right: 10, left: 10, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" horizontal={false} vertical={true} />
+                    <XAxis type="number" tick={{ fontSize: 9, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+                    <YAxis dataKey="name" type="category" tick={{ fontSize: 10, fill: '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} width={75} />
+                    <Tooltip formatter={(v) => [v, 'Users']} contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '11px' }} />
+                    <Bar dataKey="value" radius={[0, 4, 4, 0]} maxBarSize={16}>
+                      {displayAscvdTiers.map((entry, idx) => (
+                        <Cell key={`cell-${idx}`} fill={entry.color} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Charts Row 2 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              {/* Assessment Completion Trend */}
+              <div className="card p-5">
+                <h3 className="font-semibold text-slate-800 text-sm mb-1">Assessment Completion Trend</h3>
+                <p className="text-xs text-slate-400 mb-4">Total completed risk assessments over the last 6 months</p>
+                <ResponsiveContainer width="100%" height={180}>
+                  <AreaChart data={displayTrend} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="assessTrendGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2}/>
+                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                    <XAxis dataKey="m" tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+                    <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+                    <Tooltip formatter={(v) => [v, 'Completed']} contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '11px' }} />
+                    <Area type="monotone" dataKey="count" name="Assessments" stroke="#3b82f6" strokeWidth={2} fill="url(#assessTrendGrad)" dot={{ r: 3, strokeWidth: 1.5, stroke: '#3b82f6', fill: '#fff' }} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Wellness Domain Average */}
+              <div className="card p-5">
+                <h3 className="font-semibold text-slate-800 text-sm mb-1">Wellness Domain Performance</h3>
+                <p className="text-xs text-slate-400 mb-4">Platform-wide average score across standard cardiovascular health domains</p>
+                <ResponsiveContainer width="100%" height={180}>
+                  <RadarChart cx="50%" cy="50%" outerRadius="70%" data={displayDomainAvg}>
+                    <PolarGrid stroke="#e2e8f0" />
+                    <PolarAngleAxis dataKey="subject" tick={{ fontSize: 9, fill: '#64748b', fontWeight: 600 }} />
+                    <Radar name="Platform Average" dataKey="score" stroke="#8b5cf6" fill="#8b5cf6" fillOpacity={0.12} strokeWidth={2} />
+                    <Tooltip formatter={(v) => [v, 'Average Score']} contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '11px' }} />
+                  </RadarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Org Assessment Table */}
+            <div className="card overflow-hidden">
+              <div className="p-5 border-b border-slate-100 flex items-center justify-between flex-wrap gap-3">
+                <div>
+                  <h3 className="font-semibold text-slate-800 text-sm">Organisation Wellness Distribution</h3>
+                  <p className="text-xs text-slate-400 mt-0.5">Cardiovascular health metrics grouped by tenant organisation</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <SearchInput value={search} onChange={setSearch} placeholder="Search organisations..." className="w-56" />
+                  <span className="text-xs text-slate-400">{filteredAssessments.length} listed</span>
+                </div>
+              </div>
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Organisation</th>
+                    <th>Total Assessments</th>
+                    <th>Avg CVITAL Score</th>
+                    <th>High Risk Prevalence</th>
+                    <th>Last Activity</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredAssessments.map(o => (
+                    <tr key={o.id}>
+                      <td>
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style={{background:o.colour}}>
+                            {o.display[0]}
+                          </div>
+                          <div className="font-semibold text-slate-800 text-sm">{o.display}</div>
+                        </div>
+                      </td>
+                      <td className="text-sm font-medium text-slate-700">
+                        {o.total > 0 ? o.total.toLocaleString() : <span className="text-slate-400">0</span>}
+                      </td>
+                      <td>
+                        {o.avgScore ? (
+                          <div className="flex items-center gap-2">
+                            <span className={`w-2 h-2 rounded-full ${o.avgScore >= 70 ? 'bg-emerald-500' : o.avgScore >= 60 ? 'bg-blue-500' : 'bg-amber-500'}`} />
+                            <span className="text-sm font-semibold text-slate-800">{o.avgScore.toFixed(1)}/100</span>
+                          </div>
+                        ) : (
+                          <span className="text-xs text-slate-400 italic">No assessments yet</span>
+                        )}
+                      </td>
+                      <td>
+                        {o.highRiskPct !== null ? (
+                          <div className="flex items-center gap-2">
+                            <div className="h-1.5 w-20 bg-slate-100 rounded-full overflow-hidden">
+                              <div className={`h-full rounded-full ${o.highRiskPct > 25 ? 'bg-rose-500' : o.highRiskPct > 15 ? 'bg-amber-500' : 'bg-emerald-500'}`} style={{width:`${o.highRiskPct}%`}}/>
+                            </div>
+                            <span className={`text-xs font-bold ${o.highRiskPct > 25 ? 'text-rose-600' : o.highRiskPct > 15 ? 'text-amber-600' : 'text-emerald-600'}`}>{o.highRiskPct}%</span>
+                          </div>
+                        ) : (
+                          <span className="text-xs text-slate-400">—</span>
+                        )}
+                      </td>
+                      <td className="text-xs text-slate-500">{o.lastAt}</td>
+                      <td>
+                        <div className="flex gap-2">
+                          <button onClick={() => toast(`Generating Report for ${o.display}`,'success')} className="btn btn-sm btn-ghost text-blue-600 text-xs px-2.5 py-1" disabled={o.total === 0}>
+                            Export Report
+                          </button>
+                          {o.highRiskPct > 20 && (
+                            <button onClick={() => toast(`Targeting Cardiac Campaign to ${o.display} employees`,'success')} className="btn btn-sm btn-ghost text-amber-600 text-xs font-semibold px-2.5 py-1">
+                              Target Campaign
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )
+      })()}
+
       <CreateOrgModal open={createOpen} onClose={() => setCreateOpen(false)} onSuccess={fetchData} />
-    </div >
+    </div>
   )
 }

@@ -15,7 +15,6 @@ const PLAN_METADATA: Record<string, { label: string; color: string; icon: any }>
     standard: { label: 'Standard', color: 'blue', icon: Shield },
     growth: { label: 'Growth', color: 'indigo', icon: Zap },
     enterprise: { label: 'Enterprise', color: 'purple', icon: Crown },
-    premium: { label: 'Premium', color: 'purple', icon: Crown },
     // B2C
     free: { label: 'Free', color: 'gray', icon: Star },
     premium: { label: 'Premium', color: 'slate', icon: Shield },

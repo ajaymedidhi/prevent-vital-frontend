@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const creatorApi = axios.create({
-    baseURL: (import.meta.env.VITE_API_URL || '') + '/api/creator',
+    baseURL: (import.meta.env.VITE_API_URL || '').replace(/\/$/, '') + '/api/creator',
     headers: { 'Content-Type': 'application/json' },
     timeout: 15000,
 })

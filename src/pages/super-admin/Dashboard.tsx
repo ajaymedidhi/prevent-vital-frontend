@@ -4,9 +4,9 @@ import {
     Users, Activity, DollarSign, AlertCircle,
     RefreshCw, Brain, AlertTriangle, TrendingDown,
     Building2, Eye, Edit2, Zap, Plus, ChevronLeft, ChevronRight, Ban, CheckCircle2, X,
-    History, Award, BookOpen, ArrowRight
+    History, Award, BookOpen, ArrowRight, Heart, TrendingUp
 } from 'lucide-react';
-import { AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, RadarChart, Radar, PolarGrid, PolarAngleAxis } from 'recharts';
 import { Modal } from '../../admin-shared/components/ui';
 import toast from 'react-hot-toast';
 
@@ -21,7 +21,24 @@ const mockTopOrgs = [
     { name: 'TataM', seats: 190, engagement: 78 },
 ];
 
-const SuperAdminDashboard = () => {
+
+const ChartTooltip = ({ active, payload, label }: any) => {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="bg-slate-900 rounded-xl px-3 py-2.5 border border-slate-700 shadow-xl">
+      <p className="text-xs font-semibold text-slate-300 mb-1.5">{label}</p>
+      {payload.map((p: any) => (
+        <div key={p.dataKey} className="flex items-center gap-2 text-xs">
+          <div className="w-2 h-2 rounded-full" style={{ background: p.color }} />
+          <span className="text-slate-400">{p.name}:</span>
+          <span className="text-white font-semibold">{p.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const SuperAdminDashboard = ({ defaultTab }: { defaultTab?: string }) => {
     const [stats, setStats] = useState<any>({
         users: { total: 0, growth: 0, active: 0 },
         revenue: { month: 0, arr: 0, growth: 0 },
@@ -32,7 +49,14 @@ const SuperAdminDashboard = () => {
         activeUsers: 0, activeSessions: 0, vitalsPerMinute: 0, apiResponseTime: 0, systemHealth: 0, databaseConnections: 0
     });
     const [autoRefresh, setAutoRefresh] = useState(true);
-    const [activeTab, setActiveTab] = useState('platform'); // 'platform', 'b2b', 'b2c'
+    const [activeTab, setActiveTab] = useState(defaultTab || 'platform'); // 'platform', 'b2b', 'b2c', 'assessments'
+
+    useEffect(() => {
+        if (defaultTab) {
+            setActiveTab(defaultTab);
+        }
+    }, [defaultTab]);
+
     const [orgs, setOrgs] = useState<any[]>([]);
     const [isCreatingOrg, setIsCreatingOrg] = useState(false);
     const [newOrgData, setNewOrgData] = useState({
@@ -57,12 +81,32 @@ const SuperAdminDashboard = () => {
     const [orgPage, setOrgPage] = useState(1);
     const ORG_PAGE_SIZE = 6;
     const [viewingOrg, setViewingOrg] = useState<any>(null);
+    const [assessSearch, setAssessSearch] = useState('');
+
+    const [assessmentStats, setAssessmentStats] = useState<any>({
+        total: 0,
+        avgScore: 0,
+        highRiskPrevalence: 0,
+        takenThisMonth: 0,
+        cvitalTiers: [],
+        ascvdTiers: [],
+        trend: [],
+        domainAvg: [],
+        orgStats: []
+    });
+
+    const filteredAssessments = useMemo(() => {
+        return (assessmentStats.orgStats || []).filter(o => {
+            if (assessSearch && !o.display.toLowerCase().includes(assessSearch.toLowerCase())) return false;
+            return true;
+        });
+    }, [assessSearch, assessmentStats.orgStats]);
 
     const fetchDashboardData = async () => {
         try {
             const authHeader = { Authorization: `Bearer ${sessionStorage.getItem('token')}` };
 
-            const [statsRes, analyticsRes, tenantsRes, b2cRes, b2cUsersRes, alertsRes, predictionsRes, healthRes] = await Promise.all([
+            const [statsRes, analyticsRes, tenantsRes, b2cRes, b2cUsersRes, alertsRes, predictionsRes, healthRes, assessRes] = await Promise.all([
                 axios.get('/api/admin/stats', { headers: authHeader }).catch(() => null),
                 axios.get('/api/super-admin/analytics', { headers: authHeader }).catch(() => null),
                 axios.get('/api/super-admin/tenants', { headers: authHeader }).catch(() => null),
@@ -70,7 +114,8 @@ const SuperAdminDashboard = () => {
                 axios.get('/api/super-admin/users?role=customer', { headers: authHeader }).catch(() => null),
                 axios.get('/api/super-admin/alerts', { headers: authHeader }).catch(() => null),
                 axios.get('/api/super-admin/predictions', { headers: authHeader }).catch(() => null),
-                axios.get('/api/super-admin/system-health', { headers: authHeader }).catch(() => null)
+                axios.get('/api/super-admin/system-health', { headers: authHeader }).catch(() => null),
+                axios.get('/api/super-admin/assessments/stats', { headers: authHeader }).catch(() => null)
             ]);
 
             const statsData = statsRes?.data?.data;
@@ -81,6 +126,7 @@ const SuperAdminDashboard = () => {
             const alertsPayload = alertsRes?.data?.data;
             const predictionsPayload = predictionsRes?.data?.data;
             const healthPayload = healthRes?.data?.data;
+            const assessPayload = assessRes?.data?.data;
 
             if (statsData) {
                 setStats({
@@ -122,6 +168,20 @@ const SuperAdminDashboard = () => {
             setB2cStats(b2cPayload || null);
             if (Array.isArray(alertsPayload)) setAlerts(alertsPayload);
             if (Array.isArray(predictionsPayload)) setPredictions(predictionsPayload);
+
+            if (assessPayload) {
+                setAssessmentStats({
+                    total: assessPayload.total || 0,
+                    avgScore: assessPayload.avgScore || 0,
+                    highRiskPrevalence: assessPayload.highRiskPrevalence || 0,
+                    takenThisMonth: assessPayload.takenThisMonth || 0,
+                    cvitalTiers: assessPayload.cvitalTiers || [],
+                    ascvdTiers: assessPayload.ascvdTiers || [],
+                    trend: assessPayload.trend || [],
+                    domainAvg: assessPayload.domainAvg || [],
+                    orgStats: assessPayload.orgStats || []
+                });
+            }
 
             if (healthPayload) {
                 setRealtimeMetrics({
@@ -182,6 +242,11 @@ const SuperAdminDashboard = () => {
                     onClick={() => setActiveTab('b2c')}
                     className={`px-4 py-1.5 rounded-lg text-[12px] font-bold transition-all ${activeTab === 'b2c' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>
                     B2C Consumers
+                </button>
+                <button
+                    onClick={() => setActiveTab('assessments')}
+                    className={`px-4 py-1.5 rounded-lg text-[12px] font-bold transition-all ${activeTab === 'assessments' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>
+                    Assessments
                 </button>
             </div>
 
@@ -877,6 +942,266 @@ const SuperAdminDashboard = () => {
                     </div>
                 </div>
             )}
+
+            {activeTab === 'assessments' && (() => {
+                const displayCvitalTiers = assessmentStats.cvitalTiers && assessmentStats.cvitalTiers.length > 0 ? assessmentStats.cvitalTiers : [
+                    { name: 'Excellent', range: '80–100', value: 0, pct: 0, color: '#10b981' },
+                    { name: 'Good', range: '60–79', value: 0, pct: 0, color: '#3b82f6' },
+                    { name: 'Moderate', range: '40–59', value: 0, pct: 0, color: '#f59e0b' },
+                    { name: 'High Risk', range: '<40', value: 0, pct: 0, color: '#ef4444' }
+                ];
+                const displayAscvdTiers = assessmentStats.ascvdTiers && assessmentStats.ascvdTiers.length > 0 ? assessmentStats.ascvdTiers : [
+                    { name: 'Low', range: '<7.5%', value: 0, pct: 0, color: '#10b981' },
+                    { name: 'Borderline', range: '7.5–10%', value: 0, pct: 0, color: '#3b82f6' },
+                    { name: 'Intermediate', range: '10–20%', value: 0, pct: 0, color: '#f59e0b' },
+                    { name: 'High', range: '>', value: 0, pct: 0, color: '#ef4444' }
+                ];
+                const displayTrend = assessmentStats.trend && assessmentStats.trend.length > 0 ? assessmentStats.trend : [];
+                const displayDomainAvg = assessmentStats.domainAvg && assessmentStats.domainAvg.length > 0 ? assessmentStats.domainAvg : [];
+
+                return (
+                    <div className="space-y-6 animate-fade-in">
+                        {/* Assessment stats */}
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                <div className="flex justify-between mb-4">
+                                    <div className="p-3 bg-blue-100 text-blue-600 rounded-full"><Activity className="w-6 h-6" /></div>
+                                    <span className="text-green-600 font-bold text-sm bg-green-50 px-2 py-1 rounded-full">
+                                        {assessmentStats.total > 0 ? '+100%' : '0%'}
+                                    </span>
+                                </div>
+                                <h3 className="text-gray-500 text-sm font-medium">Total Assessments</h3>
+                                <div className="mt-1">
+                                    <p className="text-3xl font-bold text-gray-900">{assessmentStats.total.toLocaleString()}</p>
+                                    <p className="text-xs text-gray-400 mt-1">Platform-wide taken</p>
+                                </div>
+                            </div>
+
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                <div className="flex justify-between mb-4">
+                                    <div className="p-3 bg-green-100 text-green-600 rounded-full"><Heart className="w-6 h-6" /></div>
+                                    <span className="text-green-600 font-bold text-sm bg-green-50 px-2 py-1 rounded-full">
+                                        {assessmentStats.avgScore >= 80 ? 'Excellent' : assessmentStats.avgScore >= 60 ? 'Good' : assessmentStats.avgScore >= 40 ? 'Moderate' : 'High Risk'}
+                                    </span>
+                                </div>
+                                <h3 className="text-gray-500 text-sm font-medium">Avg CVITAL Score</h3>
+                                <div className="mt-1">
+                                    <p className="text-3xl font-bold text-gray-900">{assessmentStats.avgScore}/100</p>
+                                    <p className="text-xs text-gray-400 mt-1">Platform-wide average</p>
+                                </div>
+                            </div>
+
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                <div className="flex justify-between mb-4">
+                                    <div className="p-3 bg-red-100 text-red-600 rounded-full"><AlertTriangle className="w-6 h-6" /></div>
+                                    <span className={`font-bold text-sm px-2 py-1 rounded-full ${assessmentStats.highRiskPrevalence > 20 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'}`}>
+                                        {assessmentStats.highRiskPrevalence > 20 ? 'Target Needed' : 'Good Control'}
+                                    </span>
+                                </div>
+                                <h3 className="text-gray-500 text-sm font-medium">High Risk Prevalence</h3>
+                                <div className="mt-1">
+                                    <p className="text-3xl font-bold text-gray-900">{assessmentStats.highRiskPrevalence}%</p>
+                                    <p className="text-xs text-gray-400 mt-1">Requires intervention</p>
+                                </div>
+                            </div>
+
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                <div className="flex justify-between mb-4">
+                                    <div className="p-3 bg-amber-100 text-amber-600 rounded-full"><TrendingUp className="w-6 h-6" /></div>
+                                    <span className="text-green-600 font-bold text-sm bg-green-50 px-2 py-1 rounded-full">Live</span>
+                                </div>
+                                <h3 className="text-gray-500 text-sm font-medium">Taken This Month</h3>
+                                <div className="mt-1">
+                                    <p className="text-3xl font-bold text-gray-900">{assessmentStats.takenThisMonth.toLocaleString()}</p>
+                                    <p className="text-xs text-gray-400 mt-1">Completed in current month</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Charts Row 1 */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            {/* CVITAL Tier Distribution */}
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                                <h3 className="font-bold text-gray-800 mb-1">CVITAL Score Distribution</h3>
+                                <p className="text-xs text-gray-400 mb-4">Breakdown of platform-wide cardiovascular wellness tiers</p>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                                    <div className="h-44">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <PieChart>
+                                                <Pie data={displayCvitalTiers} cx="50%" cy="50%" innerRadius={45} outerRadius={65} paddingAngle={3} dataKey="value" strokeWidth={0}>
+                                                    {displayCvitalTiers.map((entry, idx) => (
+                                                        <Cell key={`cell-${idx}`} fill={entry.color} />
+                                                    ))}
+                                                </Pie>
+                                                <Tooltip formatter={(v) => [v, 'Users']} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                                            </PieChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                    <div className="space-y-2">
+                                        {displayCvitalTiers.map(tier => (
+                                            <div key={tier.name} className="flex items-center justify-between text-xs">
+                                                <div className="flex items-center gap-1.5">
+                                                    <div className="w-2.5 h-2.5 rounded-full" style={{ background: tier.color }} />
+                                                    <span className="text-slate-600 font-semibold">{tier.name} <span className="text-[10px] text-slate-400">({tier.range})</span></span>
+                                                </div>
+                                                <span className="font-bold text-slate-800">{tier.value} ({tier.pct}%)</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* ASCVD 10-Yr Risk Tiers */}
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                                <h3 className="font-bold text-gray-800 mb-1">ASCVD 10-Year Risk Breakdown</h3>
+                                <p className="text-xs text-gray-400 mb-4">Atherosclerotic Cardiovascular Disease (ASCVD) clinical risk tiers</p>
+                                <div className="h-44">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart data={displayAscvdTiers} layout="vertical" margin={{ top: 0, right: 10, left: 10, bottom: 0 }}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" horizontal={false} vertical={true} />
+                                            <XAxis type="number" tick={{ fontSize: 9, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+                                            <YAxis dataKey="name" type="category" tick={{ fontSize: 10, fill: '#475569', fontWeight: 600 }} axisLine={false} tickLine={false} width={75} />
+                                            <Tooltip formatter={(v) => [v, 'Users']} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                                            <Bar dataKey="value" radius={[0, 4, 4, 0]} maxBarSize={16}>
+                                                {displayAscvdTiers.map((entry, idx) => (
+                                                    <Cell key={`cell-${idx}`} fill={entry.color} />
+                                                ))}
+                                            </Bar>
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Charts Row 2 */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            {/* Assessment Completion Trend */}
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                                <h3 className="font-bold text-gray-800 mb-1">Assessment Completion Trend</h3>
+                                <p className="text-xs text-gray-400 mb-4">Total completed risk assessments over the last 6 months</p>
+                                <div className="h-48">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <AreaChart data={displayTrend} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                                            <defs>
+                                                <linearGradient id="assessTrendGrad" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2}/>
+                                                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                                                </linearGradient>
+                                            </defs>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+                                            <XAxis dataKey="m" tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+                                            <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+                                            <Tooltip formatter={(v) => [v, 'Completed']} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                                            <Area type="monotone" dataKey="count" name="Assessments" stroke="#3b82f6" strokeWidth={2} fill="url(#assessTrendGrad)" dot={{ r: 3, strokeWidth: 1.5, stroke: '#3b82f6', fill: '#fff' }} />
+                                        </AreaChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+
+                            {/* Wellness Domain Average */}
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                                <h3 className="font-bold text-gray-800 mb-1">Wellness Domain Performance</h3>
+                                <p className="text-xs text-gray-400 mb-4">Platform-wide average score across standard cardiovascular health domains</p>
+                                <div className="h-48">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <RadarChart cx="50%" cy="50%" outerRadius="70%" data={displayDomainAvg}>
+                                            <PolarGrid stroke="#e2e8f0" />
+                                            <PolarAngleAxis dataKey="subject" tick={{ fontSize: 9, fill: '#64748b', fontWeight: 600 }} />
+                                            <Radar name="Platform Average" dataKey="score" stroke="#8b5cf6" fill="#8b5cf6" fillOpacity={0.12} strokeWidth={2} />
+                                            <Tooltip formatter={(v) => [v, 'Average Score']} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                                        </RadarChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Org Assessment Table */}
+                        <div className="bg-white rounded-[18px] border border-gray-100 shadow-sm overflow-hidden">
+                            <div className="p-4 border-b border-gray-100 flex gap-3 items-center justify-between flex-wrap">
+                                <div>
+                                    <h3 className="font-bold text-gray-900 text-sm">Organisation Wellness Distribution</h3>
+                                    <p className="text-xs text-gray-500 mt-0.5">Cardiovascular health metrics grouped by tenant organisation</p>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <input
+                                        className="px-3 py-2 border border-gray-200 rounded-xl text-[13px] outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all text-gray-800 w-56"
+                                        placeholder="Search organisations..."
+                                        value={assessSearch}
+                                        onChange={e => setAssessSearch(e.target.value)}
+                                    />
+                                    <span className="text-xs text-gray-400">{filteredAssessments.length} listed</span>
+                                </div>
+                            </div>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr>
+                                            <th className="py-2.5 px-3.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">Organisation</th>
+                                            <th className="py-2.5 px-3.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">Total Assessments</th>
+                                            <th className="py-2.5 px-3.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">Avg CVITAL Score</th>
+                                            <th className="py-2.5 px-3.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">High Risk Prevalence</th>
+                                            <th className="py-2.5 px-3.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">Last Activity</th>
+                                            <th className="py-2.5 px-3.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {filteredAssessments.map(o => (
+                                            <tr key={o.id} className="hover:bg-gray-50/50 transition-colors">
+                                                <td className="py-3.5 px-3.5 border-b border-gray-50">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-7 h-7 rounded-lg shrink-0 flex items-center justify-center text-white text-[10px] font-extrabold" style={{ background: o.colour }}>
+                                                            {o.display ? o.display[0] : '?'}
+                                                        </div>
+                                                        <span className="font-bold text-[12px] text-gray-900">{o.display}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="py-3.5 px-3.5 border-b border-gray-50 text-[12px] font-semibold text-gray-700">
+                                                    {o.total > 0 ? o.total.toLocaleString() : <span className="text-gray-400">0</span>}
+                                                </td>
+                                                <td className="py-3.5 px-3.5 border-b border-gray-50">
+                                                    {o.avgScore ? (
+                                                        <div className="flex items-center gap-2">
+                                                            <span className={`w-2 h-2 rounded-full ${o.avgScore >= 70 ? 'bg-emerald-500' : o.avgScore >= 60 ? 'bg-blue-500' : 'bg-amber-500'}`} />
+                                                            <span className="text-sm font-semibold text-gray-800">{o.avgScore.toFixed(1)}/100</span>
+                                                        </div>
+                                                    ) : (
+                                                        <span className="text-xs text-gray-400 italic">No assessments yet</span>
+                                                    )}
+                                                </td>
+                                                <td className="py-3.5 px-3.5 border-b border-gray-50">
+                                                    {o.highRiskPct !== null && o.total > 0 ? (
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="h-1.5 w-20 bg-gray-100 rounded-full overflow-hidden">
+                                                                <div className={`h-full rounded-full ${o.highRiskPct > 25 ? 'bg-rose-500' : o.highRiskPct > 15 ? 'bg-amber-500' : 'bg-emerald-500'}`} style={{ width: `${o.highRiskPct}%` }} />
+                                                            </div>
+                                                            <span className={`text-xs font-bold ${o.highRiskPct > 25 ? 'text-rose-600' : o.highRiskPct > 15 ? 'text-amber-600' : 'text-emerald-600'}`}>{o.highRiskPct}%</span>
+                                                        </div>
+                                                    ) : (
+                                                        <span className="text-xs text-gray-400">—</span>
+                                                    )}
+                                                </td>
+                                                <td className="py-3.5 px-3.5 border-b border-gray-50 text-xs text-gray-500">{o.lastAt}</td>
+                                                <td className="py-3.5 px-3.5 border-b border-gray-50">
+                                                    <div className="flex gap-2">
+                                                        <button onClick={() => toast.success(`Generating Report for ${o.display}...`)} className="px-2 py-1 rounded-md border border-gray-200 bg-white text-[11px] font-semibold text-blue-600 hover:bg-blue-50 transition-colors" disabled={o.total === 0}>
+                                                            Export Report
+                                                        </button>
+                                                        {o.highRiskPct !== null && o.highRiskPct > 20 && (
+                                                            <button onClick={() => toast.success(`Targeting Cardiac Programme Campaign to ${o.display} employees...`)} className="px-2 py-1 rounded-md border border-amber-200 bg-amber-50 text-[11px] font-semibold text-amber-700 hover:bg-amber-100 transition-colors">
+                                                                Target Campaign
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                );
+            })()}
 
             <Modal open={isCreatingOrg} onClose={() => { setIsCreatingOrg(false); setNewOrgData({ name: '', companyDomain: '', adminFirstName: '', adminLastName: '', adminEmail: '', adminPhone: '', industry: '', plan: 'trial', seats: 50 }); }} title="Provision New Organisation" maxWidth="max-w-2xl"
                 footer={<>
