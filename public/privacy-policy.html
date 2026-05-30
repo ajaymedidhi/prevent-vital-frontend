@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - PreventVital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1E293B;
+            --accent: #51A6CB;
+            --background: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #334155;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.7;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3A8AB5 0%, #51A6CB 50%, #9035A0 100%);
+            color: white;
+            padding: 80px 24px;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.03em;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        main {
+            max-width: 800px;
+            margin: -40px auto 80px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.04);
+            border: 1px solid var(--border-color);
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 600px) {
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .meta-item span {
+            display: block;
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .meta-val {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .notice-box {
+            background-color: rgba(81, 166, 203, 0.08);
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            border-radius: 0 16px 16px 0;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-top: 40px;
+            margin-bottom: 16px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            color: var(--primary);
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+
+        li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+        }
+
+        li::before {
+            content: "•";
+            color: var(--accent);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Privacy Policy</h1>
+        <p>Learn how PreventVital collects, stores, and protects your personal and health data.</p>
+    </header>
+
+    <main>
+        <div class="card">
+            <div class="meta-grid">
+                <div class="meta-item">
+                    <span class="meta-label">Version</span>
+                    <span class="meta-val">1.0</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Effective Date</span>
+                    <span class="meta-val">March 1, 2026</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Company</span>
+                    <span class="meta-val">gruentzig.ai Private Limited</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Support Email</span>
+                    <span class="meta-val"><a href="mailto:info@preventvital.com">info@preventvital.com</a></span>
+                </div>
+            </div>
+
+            <div class="notice-box">
+                Important Notice: This Privacy Policy describes our practices regarding the collection, use, storage, and protection of your personal and health metrics. By signing up or using our services, you consent to these practices.
+            </div>
+
+            <h2>1. Information We Collect</h2>
+            <p>We collect personal, medical, and application data to provide a comprehensive, preventative wellness experience:</p>
+            
+            <h3>1.1 Authentication & Profile Data</h3>
+            <ul>
+                <li><strong>Authentication:</strong> Encrypted passwords (via bcrypt) and JWT tokens.</li>
+                <li><strong>Profile Details:</strong> Name, age, biological sex, phone number, email address, and country.</li>
+            </ul>
+
+            <h3>1.2 Health, Vitals & Program Data</h3>
+            <ul>
+                <li><strong>Manual Entry:</strong> Blood pressure, blood glucose, cholesterol, weight, and BMI logs.</li>
+                <li><strong>Integrations:</strong> Heart rate, step count, and sleep telemetry from Apple HealthKit and Google Fit.</li>
+                <li><strong>Programs:</strong> Active wellness enrollment history, progress tracking, and exercise adherence log.</li>
+            </ul>
+
+            <h3>1.3 Conversational AI & Telemetry</h3>
+            <ul>
+                <li><strong>VITA AI:</strong> Conversation histories with our chatbot assistant (processed using Google Gemini API).</li>
+                <li><strong>Analytics & Logs:</strong> Performance telemetry, screen durations, crash reporting, and device specs.</li>
+            </ul>
+
+            <h2>2. Google Cloud Platform (GCP) Storage</h2>
+            <p>Your health and personal data are stored securely on Google Cloud Platform:</p>
+            <ul>
+                <li>All stateless application servers are containerized and deployed on <strong>Google Cloud Run</strong> with strict IAM policies.</li>
+                <li>Health data and credentials are kept in a secure database cluster managed via MongoDB Atlas, hosted in the GCP India (Mumbai) region.</li>
+                <li>Media assets and static documents are served via encrypted, private Google Cloud Storage buckets.</li>
+                <li>Data is encrypted in transit using TLS 1.3 and at rest using AES-256 standards.</li>
+            </ul>
+
+            <h2>3. How We Use Data</h2>
+            <p>Your data is used solely to calculate your CVITAL Score™, provide VITA AI health feedback, generate warning alerts for abnormal vitals, and coordinate your enrolled programs. We will never sell your health metrics or share them with unauthorized advertisers.</p>
+
+            <h2>4. Your Rights</h2>
+            <p>You have the right to request a machine-readable export of all your data, ask to correct inaccuracies, or permanently delete your account (which purges all associated records from our cloud database within 30 days). Contact us at <a href="mailto:info@preventvital.com">info@preventvital.com</a> to exercise these rights.</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 gruentzig.ai Private Limited. All rights reserved.</p>
+        <p>Hyderabad, India</p>
+    </footer>
+</body>
+</html>

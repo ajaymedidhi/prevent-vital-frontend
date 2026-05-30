@@ -33,7 +33,7 @@ const PrivacyPolicy = () => {
                             Privacy Policy
                         </h1>
                         <p className="text-lg md:text-xl text-primary/70 leading-relaxed text-balance max-w-2xl mx-auto font-medium">
-                            How PreventalVital (gruentzig.ai Private Limited) collects, uses, shares, and protects your personal and health information.
+                            How PreventVital (gruentzig.ai Private Limited) collects, uses, shares, and protects your personal and health information.
                         </p>
                     </div>
                 </section>
@@ -68,7 +68,7 @@ const PrivacyPolicy = () => {
 
                             <div className="bg-gradient-to-r from-primary/10 to-primary/5 border-l-4 border-primary p-6 rounded-r-2xl shadow-sm">
                                 <p className="text-primary font-medium my-0 text-lg leading-relaxed">
-                                    <strong className="font-bold text-primary">Important Notice:</strong> This Privacy Policy describes how PreventalVital Health Technologies collects, uses, shares, and protects your personal and health information when you use our mobile application, web platform, and associated services. By using PreventalVital, you consent to the practices described in this policy. Please read this carefully.
+                                    <strong className="font-bold text-primary">Important Notice:</strong> This Privacy Policy describes how PreventVital Health Technologies collects, uses, shares, and protects your personal and health information when you use our mobile application, web platform, and associated services. By using PreventVital, you consent to the practices described in this policy. Please read this carefully.
                                 </p>
                             </div>
 
@@ -83,14 +83,13 @@ const PrivacyPolicy = () => {
                                     <div className="bg-white border border-border p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
                                         <h3 className="text-xl font-bold text-primary mb-4 flex items-center gap-2">
                                             <span className="w-2 h-2 rounded-full bg-accent"></span>
-                                            1.1 Personal Identification Information
+                                            1.1 Account, Authentication & Profile Data
                                         </h3>
                                         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none pl-0 m-0">
-                                            <li className="flex items-start gap-2"><span className="text-accent mt-1">•</span> Full name, date of birth, age, and biological sex</li>
-                                            <li className="flex items-start gap-2"><span className="text-accent mt-1">•</span> Email address and mobile phone number</li>
-                                            <li className="flex items-start gap-2"><span className="text-accent mt-1">•</span> Account credentials (encrypted passwords)</li>
-                                            <li className="flex items-start gap-2"><span className="text-accent mt-1">•</span> Profile photograph (optional)</li>
-                                            <li className="flex items-start gap-2"><span className="text-accent mt-1">•</span> Country and region of residence</li>
+                                            <li className="flex items-start gap-2"><span className="text-accent mt-1">•</span> <strong>Authentication Data:</strong> Login credentials, JWT security tokens, bcrypt password hashes.</li>
+                                            <li className="flex items-start gap-2"><span className="text-accent mt-1">•</span> <strong>Profile Information:</strong> Full name, email, phone number, age, biological sex, country.</li>
+                                            <li className="flex items-start gap-2"><span className="text-accent mt-1">•</span> <strong>Program Participation:</strong> Active/completed wellness programs, goals, progress statistics.</li>
+                                            <li className="flex items-start gap-2"><span className="text-accent mt-1">•</span> <strong>App Analytics:</strong> Device hardware, screen dimensions, performance metrics, crash logs.</li>
                                         </ul>
                                     </div>
 
@@ -216,7 +215,7 @@ const PrivacyPolicy = () => {
                                 </div>
                                 <p className="mb-6">We implement industry-standard security measures to protect your health data:</p>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                                     <div className="flex items-center gap-3 bg-white border border-border p-4 rounded-xl shadow-sm">
                                         <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent shrink-0"><Lock className="w-5 h-5" /></div>
                                         <div><strong className="block text-primary">Encryption in transit & rest</strong><span className="text-sm">TLS 1.3 & AES-256 for MongoDB</span></div>
@@ -224,6 +223,10 @@ const PrivacyPolicy = () => {
                                     <div className="flex items-center gap-3 bg-white border border-border p-4 rounded-xl shadow-sm">
                                         <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent shrink-0"><Shield className="w-5 h-5" /></div>
                                         <div><strong className="block text-primary">Authentication & Access</strong><span className="text-sm">JWT tokens, bcrypt hashes, RBAC</span></div>
+                                    </div>
+                                    <div className="flex items-center gap-3 bg-white border border-border p-4 rounded-xl shadow-sm">
+                                        <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent shrink-0"><Globe className="w-5 h-5" /></div>
+                                        <div><strong className="block text-primary">Google Cloud (GCP) Storage</strong><span className="text-sm">Hosted on Cloud Run, private storage buckets, MongoDB Atlas in GCP India region.</span></div>
                                     </div>
                                 </div>
 
