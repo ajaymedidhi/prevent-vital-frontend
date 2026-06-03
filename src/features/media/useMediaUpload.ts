@@ -42,7 +42,7 @@ export const useMediaUpload = ({ type, programId, onSuccess, onError }: UseMedia
         setMedia(null);
     }, [cancel]);
 
-    // ── Video: proxy through backend → GCS (no bucket CORS required) ────────
+    // ── Video: direct GCS resumable upload (bypasses backend limits) ────────
     const uploadVideo = useCallback(
         async (file: File) => {
             setStatus('uploading');
@@ -52,10 +52,21 @@ export const useMediaUpload = ({ type, programId, onSuccess, onError }: UseMedia
             abortCtrl.current = new AbortController();
 
             try {
-                // Browser → Backend (90% of progress bar), Backend → GCS (silent)
-                const { data: res } = await mediaApi.uploadVideoProxy(
+                // 1. Request resumable upload session details from backend
+                const { data: res } = await mediaApi.requestUploadUrl({
+                    programId,
+                    type: 'video',
+                    fileName: file.name,
+                    mimeType: file.type,
+                    size: file.size
+                });
+
+                const { mediaId, uploadUrl } = res.data;
+
+                // 2. Stream upload directly to GCS
+                await mediaApi.uploadToGCS(
                     file,
-                    { programId },
+                    uploadUrl,
                     setProgress,
                     abortCtrl.current.signal
                 );
@@ -63,7 +74,10 @@ export const useMediaUpload = ({ type, programId, onSuccess, onError }: UseMedia
                 setProgress(97);
                 setStatus('processing');
 
-                const m = res.data.media;
+                // 3. Inform backend of completed upload
+                const { data: confirmRes } = await mediaApi.confirmUpload(mediaId);
+                const m = confirmRes.data.media;
+
                 const uploaded: UploadedMedia = {
                     mediaId: m._id,
                     fileName: m.fileName,
@@ -78,7 +92,7 @@ export const useMediaUpload = ({ type, programId, onSuccess, onError }: UseMedia
                 setMedia(uploaded);
                 onSuccess?.(uploaded);
             } catch (err: any) {
-                if (err.code === 'ERR_CANCELED') return;
+                if (err.code === 'ERR_CANCELED' || err.message === 'CANCELLED') return;
                 const msg = err.response?.data?.message ?? err.message ?? 'Upload failed.';
                 setError(msg);
                 setStatus('error');
