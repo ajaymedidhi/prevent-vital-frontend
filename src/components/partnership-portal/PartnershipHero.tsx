@@ -82,6 +82,9 @@ const PartnershipHero = ({ className = '' }: PartnershipHeroProps) => {
                 </motion.div>
 
                 {/* Stats row — matches homepage hero pattern */}
+                {/*
+                // Temporarily hidden as per client request.
+                // Metrics will be updated and re-enabled once official numbers are finalized.
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-14 pt-10 border-t border-border/50 max-w-2xl mx-auto lg:max-w-none">
                     {[
                         { value: '500+', label: 'Healthcare Partners' },
@@ -97,6 +100,7 @@ const PartnershipHero = ({ className = '' }: PartnershipHeroProps) => {
                         </div>
                     ))}
                 </div>
+                */}
             </div>
         </section>
     );

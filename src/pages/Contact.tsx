@@ -65,7 +65,7 @@ export default function Contact() {
                         "contactPoint": {
                             "@type": "ContactPoint",
                             "contactType": "customer support",
-                            "email": "support@preventvital.com",
+                            "email": "socialmedia@preventvital.com",
                             "availableLanguage": ["English", "Hindi"]
                         }
                     }
@@ -98,8 +98,8 @@ export default function Contact() {
                                 <div>
                                     <h3 className="font-bold text-gray-900 mb-1">Email Support</h3>
                                     <p className="text-sm text-gray-500 mb-2">Typically replies in 2 hours</p>
-                                    <a href="mailto:support@preventvital.com" className="text-sm font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group">
-                                        support@preventvital.com <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                                    <a href="mailto:socialmedia@preventvital.com" className="text-sm font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group">
+                                        socialmedia@preventvital.com <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                                     </a>
                                 </div>
                             </div>

@@ -111,7 +111,7 @@ export const Footer = () => {
         {/* ── Bottom bar ── */}
         <div className="border-t border-white/8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-white/35 order-2 sm:order-1">
-            © {currentYear} PreventVital Technologies Pvt. Ltd. All rights reserved.
+            © {currentYear} PreventVital, a unit of GruentzigAI Private Limited. All rights reserved.
           </p>
 
           <div className="flex items-center gap-4 order-1 sm:order-2">

@@ -119,6 +119,9 @@ const Team = () => {
                 </div>
 
                 {/* Impact Stats */}
+                {/*
+                // Temporarily hidden as per client request.
+                // Metrics will be updated and re-enabled once official numbers are finalized.
                 <section className="py-20 bg-white">
                     <div className="container mx-auto px-4">
                         <div className="text-center mb-16">
@@ -138,6 +141,7 @@ const Team = () => {
                         </div>
                     </div>
                 </section>
+                */}
 
                 {/* Advisory Board (Simplified) */}
                 <section className="py-20 bg-gray-50 border-t border-gray-200">

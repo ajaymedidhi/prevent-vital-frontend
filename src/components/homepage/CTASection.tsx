@@ -78,6 +78,9 @@ const CTASection = () => {
         </div>
 
         {/* Stats strip */}
+        {/*
+        // Temporarily hidden as per client request.
+        // Metrics will be updated and re-enabled once official numbers are finalized.
         <div className="mt-16 pt-10 border-t border-white/10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto">
             {stats.map(({ value, label, icon: Icon }) => (
@@ -91,6 +94,7 @@ const CTASection = () => {
             ))}
           </div>
         </div>
+        */}
       </div>
     </section>
   );

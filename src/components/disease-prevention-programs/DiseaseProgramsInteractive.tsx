@@ -165,6 +165,9 @@ export default function DiseaseProgramsInteractive() {
                     </motion.div>
 
                     {/* Stats — same pattern as homepage hero */}
+                    {/*
+                    // Temporarily hidden as per client request.
+                    // Metrics will be updated and re-enabled once official numbers are finalized.
                     <div className="grid grid-cols-3 gap-4 mt-12 pt-10 border-t border-border/50 max-w-lg mx-auto">
                         {stats.map(({ value, label }) => (
                             <div key={label} className="space-y-0.5">
@@ -175,6 +178,7 @@ export default function DiseaseProgramsInteractive() {
                             </div>
                         ))}
                     </div>
+                    */}
                 </div>
             </section>
 

@@ -58,7 +58,7 @@ const PrivacyPolicy = () => {
                                     <div className="flex flex-col"><span className="text-muted-foreground mb-1 text-xs uppercase tracking-wider font-semibold">Effective Date</span><span className="font-bold text-foreground text-base text-primary/80">March 1, 2026</span></div>
                                     <div className="flex flex-col"><span className="text-muted-foreground mb-1 text-xs uppercase tracking-wider font-semibold">Company</span><span className="font-bold text-foreground text-base">gruentzig.ai Pvt Ltd</span></div>
                                     <div className="flex flex-col"><span className="text-muted-foreground mb-1 text-xs uppercase tracking-wider font-semibold">Location</span><span className="font-bold text-foreground text-base">Hyderabad, India</span></div>
-                                    <div className="flex flex-col"><span className="text-muted-foreground mb-1 text-xs uppercase tracking-wider font-semibold">Contact</span><a href="mailto:info@preventvital.com" className="font-bold text-accent hover:text-primary transition-colors text-base">info@preventvital.com</a></div>
+                                    <div className="flex flex-col"><span className="text-muted-foreground mb-1 text-xs uppercase tracking-wider font-semibold">Contact</span><a href="mailto:socialmedia@preventvital.com" className="font-bold text-accent hover:text-primary transition-colors text-base">socialmedia@preventvital.com</a></div>
                                     <div className="flex flex-col"><span className="text-muted-foreground mb-1 text-xs uppercase tracking-wider font-semibold">Website</span><a href="https://www.gruentzig.ai" target="_blank" rel="noopener noreferrer" className="font-bold text-accent hover:text-primary transition-colors text-base">www.gruentzig.ai</a></div>
                                 </div>
                             </div>
@@ -255,7 +255,7 @@ const PrivacyPolicy = () => {
                                     <li className="bg-black/20 p-4 rounded-xl backdrop-blur-sm"><strong>Withdraw Consent:</strong> Revoke wearable data permissions at any time directly in Settings.</li>
                                 </ul>
                                 <div className="mt-8 pt-6 border-t border-white/20 text-center">
-                                    <p className="m-0 font-medium font-lg">To exercise your rights, contact us at: <a href="mailto:info@preventvital.com" className="text-accent hover:text-white underline transition-colors">info@preventvital.com</a></p>
+                                    <p className="m-0 font-medium font-lg">To exercise your rights, contact us at: <a href="mailto:socialmedia@preventvital.com" className="text-accent hover:text-white underline transition-colors">socialmedia@preventvital.com</a></p>
                                 </div>
                             </section>
 

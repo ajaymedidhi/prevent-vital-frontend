@@ -203,11 +203,15 @@ export default function MedicalPortalInteractive() {
                     </motion.div>
 
                     {/* Stats grid */}
+                    {/*
+                    // Temporarily hidden as per client request.
+                    // Metrics will be updated and re-enabled once official numbers are finalized.
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                         {stats.map((stat, index) => (
                             <StatsCard key={index} {...stat} />
                         ))}
                     </div>
+                    */}
                 </div>
             </section>
 

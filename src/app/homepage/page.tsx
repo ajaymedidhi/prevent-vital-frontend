@@ -35,10 +35,18 @@ const Index = () => {
 
             <main className="min-h-screen bg-background text-foreground">
                 <HeroSection />
+                {/*
+                // Temporarily hidden as per client request.
+                // Metrics will be updated and re-enabled once official numbers are finalized.
                 <TrustIndicators />
+                */}
                 <PlatformDemo />
                 <ConditionCards />
+                {/*
+                // Temporarily hidden as per client request.
+                // Metrics will be updated and re-enabled once official numbers are finalized.
                 <ClinicalCredibility />
+                */}
                 <TestimonialSection />
                 <CTASection />
             </main>

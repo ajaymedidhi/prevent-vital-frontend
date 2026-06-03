@@ -457,6 +457,9 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
             </AnimatePresence>
 
             {/* Stats row */}
+            {/*
+            // Temporarily hidden as per client request.
+            // Metrics will be updated and re-enabled once official numbers are finalized.
             <div className="grid grid-cols-3 gap-4 mt-10 pt-8 border-t border-border/50">
               {statsData.map(({ value, label }) => (
                 <div key={label} className="space-y-0.5">
@@ -466,6 +469,35 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
                   <p className="text-xs text-muted-foreground font-medium">{label}</p>
                 </div>
               ))}
+            </div>
+            */}
+
+            {/* Platform security & compliance badges */}
+            <div className="mt-10 pt-8 border-t border-border/50">
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4">
+                Platform Security & Trust
+              </p>
+              <div className="flex flex-wrap gap-x-6 gap-y-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
+                    <Shield size={16} />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-foreground leading-tight">ISO 27001 Certified</p>
+                    <p className="text-[10px] text-muted-foreground mt-0.5">Enterprise-grade data security</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
+                    <Heart size={16} />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-foreground leading-tight">Doctor Approved</p>
+                    <p className="text-[10px] text-muted-foreground mt-0.5">Clinical-grade health recommendations</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
