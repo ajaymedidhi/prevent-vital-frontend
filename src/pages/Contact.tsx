@@ -111,8 +111,8 @@ export default function Contact() {
                                 <div>
                                     <h3 className="font-bold text-gray-900 mb-1">Phone</h3>
                                     <p className="text-sm text-gray-500 mb-2">Mon-Fri from 9am to 6pm IST</p>
-                                    <a href="tel:+919581271590" className="text-sm font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group">
-                                        +91 958 127 1590 <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                                    <a href="tel:+918106323011" className="text-sm font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group">
+                                        +91 8106323011 <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                                     </a>
                                 </div>
                             </div>
