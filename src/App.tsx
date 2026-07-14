@@ -60,6 +60,9 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 // New Auth & Admin Pages
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import VerifyEmail from './pages/VerifyEmail';
 import ProtectedRoute from './components/ProtectedRoute';
 import SuperAdminDashboard from './pages/super-admin/Dashboard';
 import GlobalConfig from './pages/super-admin/GlobalConfig';
@@ -150,6 +153,9 @@ const App = () => (
                         {/* AUTH */}
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
+                        <Route path="/reset-password" element={<ResetPassword />} />
+                        <Route path="/verify-email" element={<VerifyEmail />} />
 
                         {/* SUPER ADMIN ROUTE GROUP */}
                         <Route path="/super-admin" element={

@@ -53,12 +53,15 @@ const CheckoutPage = () => {
         if (!validateForm()) return;
         setLoading(true);
         try {
-            const { data: orderData } = await axios.post('/api/shop/create-order', { amount: total * 100 }, {
+            const { data: createRes } = await axios.post('/api/payments/orders', {
+                purchaseType: 'product',
+                items: cart.map((item: any) => ({ productId: item._id, quantity: item.quantity })),
+                shippingAddress
+            }, {
                 headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
             });
 
-            const orderInfo      = orderData.order || orderData.data?.razorpayOrder;
-            const razorpayOrderId = orderInfo?.id;
+            const { internalOrderId, razorpayOrderId, amount, currency, keyId, prefill } = createRes.data;
 
             if (!razorpayOrderId) {
                 alert("Order creation failed. Please try again.");
@@ -66,61 +69,62 @@ const CheckoutPage = () => {
                 return;
             }
 
-            const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_placeholder";
+            const verifyAndFinish = async (payload: {
+                razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string;
+            }) => {
+                const verifyRes = await axios.post('/api/payments/verify', { internalOrderId, ...payload }, {
+                    headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
+                });
+
+                if (verifyRes.data.data?.status === 'paid') {
+                    dispatch(clearCart());
+                    navigate(`/order-confirmation/${internalOrderId}`);
+                } else {
+                    alert('Payment verification failed');
+                }
+            };
 
             if (keyId === 'rzp_test_placeholder' || keyId === '') {
-                const verifyRes = await axios.post('/api/shop/verify-payment', {
-                    razorpay_order_id:  razorpayOrderId,
+                await verifyAndFinish({
+                    razorpay_order_id:   razorpayOrderId,
                     razorpay_payment_id: `pay_mock_${Date.now()}`,
-                    razorpay_signature: 'bypass',
-                    items: cart.map((item: any) => ({ product: item._id, name: item.name, quantity: item.quantity, price: item.price })),
-                    totalAmount: total,
-                    shippingAddress
-                }, { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } });
-
-                if (verifyRes.data.status === 'success') {
-                    dispatch(clearCart());
-                    navigate(`/order-confirmation/${verifyRes.data.order._id}?invoice=${encodeURIComponent(verifyRes.data.invoiceUrl)}`);
-                    return;
-                }
+                    razorpay_signature:  'bypass'
+                });
+                setLoading(false);
+                return;
             }
 
             const options = {
                 key: keyId,
-                amount: orderInfo.amount,
-                currency: "INR",
+                amount,
+                currency,
                 name: "PreventVital",
                 description: "Medical Device Purchase",
                 order_id: razorpayOrderId,
                 handler: async (response: any) => {
                     try {
-                        const verifyRes = await axios.post('/api/shop/verify-payment', {
+                        await verifyAndFinish({
                             razorpay_order_id:   response.razorpay_order_id,
                             razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_signature:  response.razorpay_signature,
-                            items: cart.map((item: any) => ({ product: item._id, name: item.name, quantity: item.quantity, price: item.price })),
-                            totalAmount: total,
-                            shippingAddress
-                        }, { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } });
-
-                        if (verifyRes.data.status === 'success') {
-                            dispatch(clearCart());
-                            navigate(`/order-confirmation/${verifyRes.data.order._id}?invoice=${encodeURIComponent(verifyRes.data.invoiceUrl)}`);
-                        }
+                            razorpay_signature:  response.razorpay_signature
+                        });
                     } catch {
                         alert("Payment verification failed");
+                    } finally {
+                        setLoading(false);
                     }
                 },
-                prefill: { name: user?.name, email: user?.email, contact: user?.phone },
+                modal: { ondismiss: () => setLoading(false) },
+                prefill: prefill ?? { name: user?.name, email: user?.email, contact: user?.phone },
                 theme: { color: 'hsl(var(--primary))' }
             };
 
             // @ts-ignore
             const rzp1 = new window.Razorpay(options);
             rzp1.open();
-        } catch (err) {
+        } catch (err: any) {
             console.error("Payment initiation failed", err);
-        } finally {
+            alert(err.response?.data?.message || "Payment initiation failed. Please try again.");
             setLoading(false);
         }
     };
