@@ -1,5 +1,6 @@
 
 import { Clock, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 
 interface ProgramCardProps {
@@ -9,7 +10,6 @@ interface ProgramCardProps {
     alt: string;
     therapies: string[];
     duration: string;
-    onClick: () => void;
 }
 
 export default function ProgramCard({
@@ -19,7 +19,6 @@ export default function ProgramCard({
     alt,
     therapies,
     duration,
-    onClick
 }: ProgramCardProps) {
     return (
         <Card className="group overflow-hidden border border-border shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full bg-card rounded-2xl">
@@ -61,14 +60,14 @@ export default function ProgramCard({
             </CardContent>
 
             <CardFooter className="p-4 pt-0 mt-auto">
-                <button
-                    onClick={onClick}
+                <Link
+                    to="/ai-health-assessment"
                     className="group/btn w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-primary-foreground transition-all duration-300 hover:opacity-90 hover:-translate-y-px"
                     style={{ background: 'hsl(var(--primary))', boxShadow: 'var(--shadow-sm)' }}
                 >
                     Explore Program
                     <ArrowRight size={16} className="group-hover/btn:translate-x-0.5 transition-transform" />
-                </button>
+                </Link>
             </CardFooter>
         </Card>
     );

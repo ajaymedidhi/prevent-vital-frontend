@@ -46,7 +46,7 @@ const Team = () => {
                     <div className="absolute inset-0 opacity-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
                     <div className="container mx-auto max-w-4xl text-center relative z-10">
                         <span className="text-indigo-400 font-bold tracking-wider uppercase text-xs mb-4 block">Leadership</span>
-                        <h1 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight text-white">
+                        <h1 className="font-extrabold mb-6 leading-tight text-white" style={{ fontSize: 'var(--fz-h1-sm)' }}>
                             Visionaries driving <span className="text-indigo-400">future health.</span>
                         </h1>
                         <p className="text-lg text-gray-300 max-w-2xl mx-auto">

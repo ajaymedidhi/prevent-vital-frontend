@@ -35,7 +35,7 @@ const CartPage = () => {
     return (
         <div className="min-h-screen bg-background">
             <div className="container-wide section-padding-sm">
-                <h1 className="font-bold text-foreground mb-8 flex items-center gap-3" style={{ fontSize: 'var(--fz-h1)' }}>
+                <h1 className="font-bold text-foreground mb-8 flex items-center gap-3" style={{ fontSize: 'var(--fz-3xl)' }}>
                     Your Cart
                     <span className="text-sm font-medium text-muted-foreground bg-muted px-3 py-1 rounded-full">
                         {cart.length} item{cart.length !== 1 ? 's' : ''}

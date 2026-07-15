@@ -10,7 +10,7 @@ const PartnershipHero = ({ className = '' }: PartnershipHeroProps) => {
     return (
         <section
             className={`relative w-full overflow-hidden ${className}`}
-            style={{ paddingTop: 'clamp(3rem, 2rem + 4vw, 6rem)', paddingBottom: 'clamp(3rem, 2rem + 4vw, 6rem)' }}
+            style={{ paddingTop: 'clamp(2.5rem, 1.8rem + 2.5vw, 4rem)', paddingBottom: 'clamp(2rem, 1.5rem + 2vw, 3rem)' }}
             aria-labelledby="partnership-heading"
         >
             {/* Same bg layers as homepage hero */}
@@ -35,7 +35,7 @@ const PartnershipHero = ({ className = '' }: PartnershipHeroProps) => {
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                    className="space-y-6 max-w-4xl mx-auto"
+                    className="space-y-4 max-w-4xl mx-auto"
                 >
                     {/* Overline badge — matches homepage style */}
                     <div className="flex justify-center">
@@ -50,8 +50,8 @@ const PartnershipHero = ({ className = '' }: PartnershipHeroProps) => {
                     {/* Headline */}
                     <h1
                         id="partnership-heading"
-                        className="font-semibold leading-[1.1] tracking-tight text-foreground text-balance mx-auto"
-                        style={{ fontSize: 'var(--fz-h1)' }}
+                        className="font-semibold leading-[1.15] tracking-tight text-foreground text-balance mx-auto"
+                        style={{ fontSize: 'var(--fz-h1-sm)' }}
                     >
                         Build the Future of{' '}
                         <span className="gradient-text-soft">Preventive Healthcare</span>{' '}
@@ -61,7 +61,7 @@ const PartnershipHero = ({ className = '' }: PartnershipHeroProps) => {
                     {/* Description */}
                     <p
                         className="text-muted-foreground leading-relaxed mx-auto"
-                        style={{ fontSize: 'var(--fz-lg)', maxWidth: '52ch' }}
+                        style={{ fontSize: 'var(--fz-base)', maxWidth: '52ch' }}
                     >
                         Join India's pioneering integrated wellness-technology platform. Partner with PreventVital to transform healthcare delivery through AI-powered prevention.
                     </p>

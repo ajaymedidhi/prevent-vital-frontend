@@ -37,7 +37,7 @@ export default function ProgramListingPage() {
                 {/* Hero Section */}
                 <div className="bg-primary/5 border-b border-primary/10 pt-10 lg:pt-14 pb-12">
                     <div className="container mx-auto px-4 text-center">
-                        <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent">
+                        <h1 className="font-bold mb-4 bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent" style={{ fontSize: 'var(--fz-h1-sm)' }}>
                             Discover Health Programs
                         </h1>
                         <p className="text-muted-foreground max-w-2xl mx-auto mb-8 text-lg">

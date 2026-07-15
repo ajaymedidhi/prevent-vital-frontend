@@ -29,7 +29,7 @@ const TermsAndConditions = () => {
                         <div className="inline-flex items-center justify-center p-4 bg-white/60 backdrop-blur-md rounded-2xl mb-8 shadow-sm text-primary border border-white/40">
                             <Scale className="w-10 h-10" />
                         </div>
-                        <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 text-balance text-primary tracking-tight">
+                        <h1 className="font-bold mb-6 text-balance text-primary tracking-tight" style={{ fontSize: 'var(--fz-h1-sm)' }}>
                             Terms & Conditions
                         </h1>
                         <p className="text-lg md:text-xl text-primary/70 leading-relaxed text-balance max-w-2xl mx-auto font-medium">

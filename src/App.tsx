@@ -56,6 +56,8 @@ import Contact from "./pages/Contact";
 import WellnessPhilosophy from "./pages/WellnessPhilosophy";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import HipaaCompliance from "./pages/HipaaCompliance";
+import CookiePolicy from "./pages/CookiePolicy";
 
 // New Auth & Admin Pages
 import Login from './pages/Login';
@@ -148,6 +150,8 @@ const App = () => (
                             <Route path="/wellness-philosophy" element={<WellnessPhilosophy />} />
                             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                            <Route path="/hipaa-compliance" element={<HipaaCompliance />} />
+                            <Route path="/cookie-policy" element={<CookiePolicy />} />
                         </Route>
 
                         {/* AUTH */}

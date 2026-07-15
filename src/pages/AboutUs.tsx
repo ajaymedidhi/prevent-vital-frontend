@@ -90,7 +90,7 @@ const AboutUs = () => {
                 {/* ── HERO ── */}
                 <section
                     className="relative w-full overflow-hidden"
-                    style={{ paddingTop: 'clamp(3rem, 2rem + 4vw, 6rem)', paddingBottom: 'clamp(3rem, 2rem + 4vw, 6rem)' }}
+                    style={{ paddingTop: 'clamp(2.5rem, 1.8rem + 2.5vw, 4rem)', paddingBottom: 'clamp(2rem, 1.5rem + 2vw, 3rem)' }}
                     aria-labelledby="about-heading"
                 >
                     <div className="absolute inset-0 healthcare-mesh" />
@@ -114,7 +114,7 @@ const AboutUs = () => {
                             initial={{ opacity: 0, y: 24 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                            className="space-y-6"
+                            className="space-y-4"
                         >
                             <div className="flex justify-center">
                                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-border rounded-full shadow-xs">
@@ -125,8 +125,8 @@ const AboutUs = () => {
 
                             <h1
                                 id="about-heading"
-                                className="font-semibold leading-[1.1] tracking-tight text-foreground text-balance mx-auto"
-                                style={{ fontSize: 'var(--fz-h1)', maxWidth: '22ch' }}
+                                className="font-semibold leading-[1.15] tracking-tight text-foreground text-balance mx-auto"
+                                style={{ fontSize: 'var(--fz-h1-sm)', maxWidth: '22ch' }}
                             >
                                 Building the Future of{' '}
                                 <span className="gradient-text-soft">Preventive Healthcare</span>{' '}
@@ -135,7 +135,7 @@ const AboutUs = () => {
 
                             <p
                                 className="text-muted-foreground leading-relaxed mx-auto"
-                                style={{ fontSize: 'var(--fz-lg)', maxWidth: '50ch' }}
+                                style={{ fontSize: 'var(--fz-base)', maxWidth: '50ch' }}
                             >
                                 Democratizing preventive medicine through AI-powered technology and holistic wellness — so every Indian can prevent disease before it begins.
                             </p>
@@ -269,7 +269,7 @@ const AboutUs = () => {
                                     <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${value.iconStyle} group-hover:scale-110 transition-transform duration-300`}>
                                         <value.icon size={20} />
                                     </div>
-                                    <h3 className="font-bold text-foreground mb-2">{value.title}</h3>
+                                    <h3 className="text-lg font-bold text-foreground mb-2">{value.title}</h3>
                                     <p className="text-muted-foreground text-sm leading-relaxed">{value.description}</p>
                                 </div>
                             ))}

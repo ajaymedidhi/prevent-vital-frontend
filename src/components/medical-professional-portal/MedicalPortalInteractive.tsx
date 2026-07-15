@@ -152,7 +152,7 @@ export default function MedicalPortalInteractive() {
             {/* ── HERO ── */}
             <section
                 className="relative w-full overflow-hidden border-b border-border"
-                style={{ paddingTop: 'clamp(3rem, 2rem + 4vw, 6rem)', paddingBottom: 'clamp(2rem, 1.5rem + 3vw, 4rem)' }}
+                style={{ paddingTop: 'clamp(2.5rem, 1.8rem + 2.5vw, 4rem)', paddingBottom: 'clamp(2rem, 1.5rem + 2vw, 3rem)' }}
                 aria-labelledby="medical-portal-heading"
             >
                 <div className="absolute inset-0 healthcare-mesh" />
@@ -176,7 +176,7 @@ export default function MedicalPortalInteractive() {
                         initial={{ opacity: 0, y: 24 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-center space-y-6 mb-12"
+                        className="text-center space-y-4 mb-10"
                     >
                         <div className="flex justify-center">
                             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-border rounded-full shadow-xs">
@@ -187,8 +187,8 @@ export default function MedicalPortalInteractive() {
 
                         <h1
                             id="medical-portal-heading"
-                            className="font-semibold leading-[1.1] tracking-tight text-foreground text-balance mx-auto"
-                            style={{ fontSize: 'var(--fz-h1)', maxWidth: '20ch' }}
+                            className="font-semibold leading-[1.15] tracking-tight text-foreground text-balance mx-auto"
+                            style={{ fontSize: 'var(--fz-h1-sm)', maxWidth: '20ch' }}
                         >
                             Empower Your Practice with{' '}
                             <span className="gradient-text-soft">AI-Driven Patient Care</span>
@@ -196,7 +196,7 @@ export default function MedicalPortalInteractive() {
 
                         <p
                             className="text-muted-foreground leading-relaxed mx-auto"
-                            style={{ fontSize: 'var(--fz-lg)', maxWidth: '52ch' }}
+                            style={{ fontSize: 'var(--fz-base)', maxWidth: '52ch' }}
                         >
                             Comprehensive patient management tools, clinical decision support, and telemedicine integration designed for modern healthcare professionals.
                         </p>

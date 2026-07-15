@@ -146,7 +146,7 @@ const CheckoutPage = () => {
 
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-8">
-                    <h1 className="font-extrabold text-foreground" style={{ fontSize: 'var(--fz-h1)' }}>Secure Checkout</h1>
+                    <h1 className="font-extrabold text-foreground" style={{ fontSize: 'var(--fz-3xl)' }}>Secure Checkout</h1>
                     <div className="flex items-center gap-2 text-xs text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
                         <Lock size={12} />
                         <span className="font-semibold">256-bit SSL Encrypted</span>

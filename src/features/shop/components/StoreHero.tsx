@@ -10,7 +10,7 @@ const features = [
 const StoreHero = () => (
     <section
         className="relative w-full overflow-hidden"
-        style={{ paddingTop: 'clamp(3rem, 2rem + 4vw, 6rem)', paddingBottom: 'clamp(2.5rem, 1.5rem + 3vw, 5rem)' }}
+        style={{ paddingTop: 'clamp(2.5rem, 1.8rem + 2.5vw, 4rem)', paddingBottom: 'clamp(2rem, 1.5rem + 2vw, 3rem)' }}
     >
         {/* Same bg layers as every other hero */}
         <div className="absolute inset-0 healthcare-mesh" />
@@ -34,7 +34,7 @@ const StoreHero = () => (
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                className="space-y-5"
+                className="space-y-4"
             >
                 <div className="flex justify-center">
                     <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-border rounded-full shadow-xs">
@@ -44,8 +44,8 @@ const StoreHero = () => (
                 </div>
 
                 <h1
-                    className="font-semibold leading-[1.1] tracking-tight text-foreground text-balance mx-auto"
-                    style={{ fontSize: 'var(--fz-h1)', maxWidth: '20ch' }}
+                    className="font-semibold leading-[1.15] tracking-tight text-foreground text-balance mx-auto"
+                    style={{ fontSize: 'var(--fz-h1-sm)', maxWidth: '20ch' }}
                 >
                     Premium Health Tech{' '}
                     <span className="gradient-text-soft">For a Better You</span>
@@ -53,14 +53,14 @@ const StoreHero = () => (
 
                 <p
                     className="text-muted-foreground leading-relaxed mx-auto"
-                    style={{ fontSize: 'var(--fz-lg)', maxWidth: '50ch' }}
+                    style={{ fontSize: 'var(--fz-base)', maxWidth: '50ch' }}
                 >
                     Discover clinical-grade wearables, advanced supplements, and home testing kits curated by medical experts.
                 </p>
             </motion.div>
 
             {/* Features bar */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto mt-12 pt-10 border-t border-border/50">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto mt-8 pt-6 border-t border-border/50">
                 {features.map(({ icon: Icon, title, desc }) => (
                     <div key={title} className="flex items-center justify-center gap-3">
                         <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">

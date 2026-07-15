@@ -77,7 +77,7 @@ export default function Contact() {
                 <div className="bg-[#020817] text-white pt-10 lg:pt-14 pb-16 px-4">
                     <div className="container mx-auto max-w-4xl text-center">
                         <span className="text-indigo-400 font-bold tracking-wider uppercase text-xs mb-4 block">Get Support</span>
-                        <h1 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight text-white">
+                        <h1 className="font-extrabold mb-6 leading-tight text-white" style={{ fontSize: 'var(--fz-h1-sm)' }}>
                             How can we <span className="text-indigo-400">help you?</span>
                         </h1>
                         <p className="text-lg text-gray-300 max-w-2xl mx-auto">
@@ -96,7 +96,7 @@ export default function Contact() {
                                     <Mail className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-gray-900 mb-1">Email Support</h3>
+                                    <h3 className="text-lg font-bold text-gray-900 mb-1">Email Support</h3>
                                     <p className="text-sm text-gray-500 mb-2">Typically replies in 2 hours</p>
                                     <a href="mailto:socialmedia@preventvital.com" className="text-sm font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group">
                                         socialmedia@preventvital.com <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
@@ -109,7 +109,7 @@ export default function Contact() {
                                     <Phone className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-gray-900 mb-1">Phone</h3>
+                                    <h3 className="text-lg font-bold text-gray-900 mb-1">Phone</h3>
                                     <p className="text-sm text-gray-500 mb-2">Mon-Fri from 9am to 6pm IST</p>
                                     <a href="tel:+918106323011" className="text-sm font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group">
                                         +91 8106323011 <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
@@ -122,7 +122,7 @@ export default function Contact() {
                                     <MapPin className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-gray-900 mb-1">Office</h3>
+                                    <h3 className="text-lg font-bold text-gray-900 mb-1">Office</h3>
                                     <p className="text-sm text-gray-500">
                                         Hyderabad, Telangana<br />
                                         India

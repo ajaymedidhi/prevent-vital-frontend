@@ -135,7 +135,7 @@ export default function ProgramDetailPage() {
                                     {program.difficulty}
                                 </Badge>
                             </div>
-                            <h1 className="text-3xl md:text-5xl font-bold mb-4 text-foreground/90 max-w-3xl leading-tight">
+                            <h1 className="font-bold mb-4 text-foreground/90 max-w-3xl leading-tight" style={{ fontSize: 'var(--fz-h1-sm)' }}>
                                 {program.title}
                             </h1>
                             <div className="flex flex-wrap items-center gap-6 text-muted-foreground/90 font-medium">

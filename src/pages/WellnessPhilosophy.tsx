@@ -61,7 +61,7 @@ const WellnessPhilosophy = () => {
                 {/* Hero Section */}
                 <section className="section-padding bg-section-alt">
                     <div className="container text-center max-w-4xl">
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-balance">
+                        <h1 className="font-bold mb-6 text-balance" style={{ fontSize: 'var(--fz-h1-sm)' }}>
                             Holistic Wellness, Rooted in Science & Tradition
                         </h1>
                         <p className="text-lg md:text-xl text-muted-foreground leading-relaxed text-balance">

@@ -96,7 +96,7 @@ export default function DiseaseProgramsInteractive() {
             {/* ── HERO ── */}
             <section
                 className="relative w-full overflow-hidden"
-                style={{ paddingTop: 'clamp(3rem, 2rem + 4vw, 6rem)', paddingBottom: 'clamp(3rem, 2rem + 4vw, 6rem)' }}
+                style={{ paddingTop: 'clamp(2.5rem, 1.8rem + 2.5vw, 4rem)', paddingBottom: 'clamp(2rem, 1.5rem + 2vw, 3rem)' }}
                 aria-labelledby="programs-heading"
             >
                 {/* Same background layers as homepage hero */}
@@ -121,7 +121,7 @@ export default function DiseaseProgramsInteractive() {
                         initial={{ opacity: 0, y: 24 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                        className="space-y-6"
+                        className="space-y-4"
                     >
                         {/* Overline — matches homepage badge style */}
                         <div className="flex justify-center">
@@ -133,33 +133,32 @@ export default function DiseaseProgramsInteractive() {
                             </div>
                         </div>
 
-                        {/* Headline — same size as homepage hero h1 */}
+                        {/* Headline — compact page-hero size; this page's job is to get people into a program, not to re-sell the brand */}
                         <h1
                             id="programs-heading"
-                            className="font-semibold leading-[1.1] tracking-tight text-foreground text-balance mx-auto"
-                            style={{ fontSize: 'var(--fz-h1)', maxWidth: '18ch' }}
+                            className="font-semibold leading-[1.15] tracking-tight text-foreground text-balance mx-auto"
+                            style={{ fontSize: 'var(--fz-h1-sm)', maxWidth: '20ch' }}
                         >
-                            Transform Your Health with{' '}
-                            <span className="gradient-text-soft">Holistic Wellness</span>
+                            Find the Right{' '}
+                            <span className="gradient-text-soft">Program for You</span>
                         </h1>
 
                         {/* Description */}
                         <p
                             className="text-muted-foreground leading-relaxed mx-auto"
-                            style={{ fontSize: 'var(--fz-lg)', maxWidth: '52ch' }}
+                            style={{ fontSize: 'var(--fz-base)', maxWidth: '48ch' }}
                         >
-                            Experience personalized therapeutic programs combining yoga, meditation, breathwork, and physiotherapy—all enhanced by AI-powered insights.
+                            Personalized therapeutic programs combining yoga, meditation, breathwork, and physiotherapy—all enhanced by AI-powered insights.
                         </p>
 
-                        {/* CTA buttons */}
-                        <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                        {/* CTA — secondary, low-emphasis link since the primary action is picking a program below */}
+                        <div className="pt-1">
                             <Link
                                 to="/ai-health-assessment"
-                                className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold text-primary-foreground transition-all duration-300 hover:opacity-90 hover:-translate-y-px"
-                                style={{ background: 'hsl(var(--primary))', boxShadow: 'var(--shadow-md)' }}
+                                className="group inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-primary hover:opacity-80 transition-opacity"
                             >
-                                Start Free Assessment
-                                <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                                Not sure where to start? Take the free assessment
+                                <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
                             </Link>
                         </div>
                     </motion.div>
@@ -186,7 +185,7 @@ export default function DiseaseProgramsInteractive() {
             <section className="section-padding bg-background">
                 <div className="container-wide">
                     <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
-                        <h2 className="text-fluid-4xl font-bold text-foreground tracking-tight">
+                        <h2 className="text-fluid-2xl font-bold text-foreground tracking-tight">
                             Explore Programs
                         </h2>
 
@@ -223,10 +222,7 @@ export default function DiseaseProgramsInteractive() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5 }}
                             >
-                                <ProgramCard
-                                    {...program}
-                                    onClick={() => {}}
-                                />
+                                <ProgramCard {...program} />
                             </motion.div>
                         ))}
                     </div>

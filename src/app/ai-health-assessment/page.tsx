@@ -44,7 +44,7 @@ const AiHealthAssessmentPage = () => {
                 ) : (
                     <section
                         className="relative w-full overflow-hidden"
-                        style={{ paddingTop: 'clamp(3rem, 2rem + 4vw, 6rem)', paddingBottom: 'clamp(3rem, 2rem + 4vw, 6rem)' }}
+                        style={{ paddingTop: 'clamp(2.5rem, 1.8rem + 2.5vw, 4rem)', paddingBottom: 'clamp(2.5rem, 1.8rem + 2.5vw, 4rem)' }}
                     >
                         <div className="absolute inset-0 healthcare-mesh" />
                         <div
@@ -63,7 +63,7 @@ const AiHealthAssessmentPage = () => {
                         />
 
                         <div className="container-wide relative z-10 text-center">
-                            <div className="space-y-6 mb-10">
+                            <div className="space-y-4 mb-8">
                                 <div className="flex justify-center">
                                     <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-border rounded-full shadow-xs">
                                         <Sparkles size={13} className="text-accent" />
@@ -72,8 +72,8 @@ const AiHealthAssessmentPage = () => {
                                 </div>
 
                                 <h1
-                                    className="font-semibold leading-[1.1] tracking-tight text-foreground text-balance mx-auto"
-                                    style={{ fontSize: 'var(--fz-h1)', maxWidth: '18ch' }}
+                                    className="font-semibold leading-[1.15] tracking-tight text-foreground text-balance mx-auto"
+                                    style={{ fontSize: 'var(--fz-h1-sm)', maxWidth: '18ch' }}
                                 >
                                     Get Your{' '}
                                     <span className="gradient-text-soft">CVITAL™ Score</span>
@@ -81,7 +81,7 @@ const AiHealthAssessmentPage = () => {
 
                                 <p
                                     className="text-muted-foreground leading-relaxed mx-auto"
-                                    style={{ fontSize: 'var(--fz-lg)', maxWidth: '48ch' }}
+                                    style={{ fontSize: 'var(--fz-base)', maxWidth: '48ch' }}
                                 >
                                     Discover your personal health score and receive tailored recommendations through our advanced predictive analytics engine.
                                 </p>

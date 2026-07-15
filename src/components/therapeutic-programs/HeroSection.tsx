@@ -21,7 +21,7 @@ export default function HeroSection({ className = '' }: HeroSectionProps) {
                             <span className="text-sm font-medium text-purple-700 dark:text-purple-300">Ancient Wisdom Meets AI Innovation</span>
                         </div>
 
-                        <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-tight">
+                        <h1 className="font-bold text-foreground leading-tight" style={{ fontSize: 'var(--fz-h1-sm)' }}>
                             Transform Your Health with{' '}
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
                                 Holistic Wellness

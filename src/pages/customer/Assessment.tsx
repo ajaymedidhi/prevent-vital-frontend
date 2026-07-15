@@ -448,7 +448,7 @@ export default function Assessment() {
                             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 mb-2">
                                 <HeartPulse className="w-8 h-8 text-primary" />
                             </div>
-                            <h1 className="font-bold text-foreground tracking-tight" style={{ fontSize: 'var(--fz-h1)' }}>
+                            <h1 className="font-bold text-foreground tracking-tight" style={{ fontSize: 'var(--fz-h1-sm)' }}>
                                 Your CVITAL™ Score
                             </h1>
                             <p className="text-muted-foreground max-w-lg mx-auto leading-relaxed" style={{ fontSize: 'var(--fz-lg)' }}>

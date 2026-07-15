@@ -113,4 +113,18 @@
     <priority>0.50</priority>
   </url>
 
+  <url>
+    <loc>https://preventvital.com/hipaa-compliance</loc>
+    <lastmod>2026-07-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.50</priority>
+  </url>
+
+  <url>
+    <loc>https://preventvital.com/cookie-policy</loc>
+    <lastmod>2026-07-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.50</priority>
+  </url>
+
 </urlset>

@@ -21,7 +21,7 @@ const PrivacyPolicy = () => {
                         <div className="inline-flex items-center justify-center p-4 bg-white/60 backdrop-blur-md rounded-2xl mb-8 shadow-sm text-accent border border-white/40">
                             <Shield className="w-10 h-10" />
                         </div>
-                        <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 text-balance tracking-tight text-primary">
+                        <h1 className="font-bold mb-6 text-balance tracking-tight text-primary" style={{ fontSize: 'var(--fz-h1-sm)' }}>
                             Privacy Policy
                         </h1>
                         <p className="text-lg md:text-xl text-primary/70 leading-relaxed text-balance max-w-2xl mx-auto font-medium">

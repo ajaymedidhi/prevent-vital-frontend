@@ -132,7 +132,7 @@ const ProductDetailPage = () => {
                                 </div>
                             </div>
 
-                            <h1 className="font-extrabold text-foreground leading-tight" style={{ fontSize: 'var(--fz-h1)' }}>
+                            <h1 className="font-extrabold text-foreground leading-tight" style={{ fontSize: 'var(--fz-h1-sm)' }}>
                                 {product.name}
                             </h1>
 

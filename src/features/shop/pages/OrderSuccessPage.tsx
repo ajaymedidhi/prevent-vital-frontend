@@ -16,7 +16,7 @@ const OrderSuccessPage = () => {
                     </div>
                 </div>
 
-                <h1 className="font-extrabold text-foreground mb-4" style={{ fontSize: 'var(--fz-h1)' }}>
+                <h1 className="font-extrabold text-foreground mb-4" style={{ fontSize: 'var(--fz-h1-sm)' }}>
                     Order Confirmed!
                 </h1>
 
