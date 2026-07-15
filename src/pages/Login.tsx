@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import { setCredentials } from '../store';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -62,6 +63,32 @@ const Login = () => {
 
   React.useEffect(() => { preWarmBackend(); }, []);
 
+  const applyAuthResponse = (data: any) => {
+    const { token }  = data;
+    const { user }   = data.data;
+
+    if (!token || !user) throw new Error('Invalid response from server');
+
+    dispatch(setCredentials({ user, token }));
+
+    const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
+    if (redirectUrl) { navigate(`/${redirectUrl}`); return; }
+
+    const roleRoutes: Record<string, string> = {
+      super_admin:    '/super-admin/dashboard',
+      content_creator: '/creator/dashboard',
+      admin:          '/admin/dashboard',
+      customer:       '/account',
+    };
+
+    if (user.role === 'corporate_admin') {
+      const id = user.corporateId || user.tenantId;
+      navigate(id ? `/corporate/${id}/dashboard` : '/');
+    } else {
+      navigate(roleRoutes[user.role] ?? '/');
+    }
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -71,33 +98,32 @@ const Login = () => {
         password: password.trim(),
       });
 
-      const { token }  = response.data;
-      const { user }   = response.data.data;
-
-      if (!token || !user) throw new Error('Invalid response from server');
-
-      dispatch(setCredentials({ user, token }));
-
-      const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
-      if (redirectUrl) { navigate(`/${redirectUrl}`); return; }
-
-      const roleRoutes: Record<string, string> = {
-        super_admin:    '/super-admin/dashboard',
-        content_creator: '/creator/dashboard',
-        admin:          '/admin/dashboard',
-        customer:       '/account',
-      };
-
-      if (user.role === 'corporate_admin') {
-        const id = user.corporateId || user.tenantId;
-        navigate(id ? `/corporate/${id}/dashboard` : '/');
-      } else {
-        navigate(roleRoutes[user.role] ?? '/');
-      }
+      applyAuthResponse(response.data);
     } catch (error: any) {
       toast({
         title:       'Login failed',
         description: error.response?.data?.message ?? 'Please check your credentials and try again.',
+        variant:     'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse: CredentialResponse) => {
+    setIsLoading(true);
+    try {
+      if (!credentialResponse.credential) throw new Error('No credential returned from Google');
+
+      const response = await axios.post('/api/auth/google', {
+        idToken: credentialResponse.credential,
+      });
+
+      applyAuthResponse(response.data);
+    } catch (error: any) {
+      toast({
+        title:       'Google sign-in failed',
+        description: error.response?.data?.message ?? 'Please try again.',
         variant:     'destructive',
       });
     } finally {
@@ -263,6 +289,31 @@ const Login = () => {
               )}
             </Button>
           </form>
+
+          {/* Divider */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-border" />
+            </div>
+            <div className="relative flex justify-center">
+              <span className="bg-background px-3 text-xs text-muted-foreground">
+                Or continue with
+              </span>
+            </div>
+          </div>
+
+          {/* Google Sign In */}
+          <div className="flex justify-center">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => toast({
+                title:       'Google sign-in failed',
+                description: 'Please try again.',
+                variant:     'destructive',
+              })}
+              width="330"
+            />
+          </div>
 
           {/* Divider */}
           <div className="relative">

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Outlet, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../store';
+import { performLogout } from '../store';
 import { Layout, Clock, CreditCard, Building2, ShoppingBag, LogOut, Heart, User, Video, ShieldCheck, Package } from 'lucide-react';
 import { RootState } from '../store';
 
@@ -19,8 +19,8 @@ const CustomerLayout = () => {
         setSidebarOpen(false);
     }, [location.pathname]);
 
-    const handleLogout = () => {
-        dispatch(logout());
+    const handleLogout = async () => {
+        await performLogout(dispatch);
         navigate('/login');
     };
 

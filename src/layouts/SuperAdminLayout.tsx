@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logout } from '../store';
+import { performLogout } from '../store';
 import PermissionGuard from '../components/PermissionGuard';
 import { PERMISSIONS } from '../config/rbacConfig';
 import {
@@ -66,8 +66,8 @@ const SuperAdminLayout = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const handleLogout = () => {
-        dispatch(logout());
+    const handleLogout = async () => {
+        await performLogout(dispatch);
         navigate('/login');
     };
 

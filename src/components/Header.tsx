@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Icon from '@/components/ui/AppIcon';
 import AppImage from '@/components/ui/AppImage';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, logout } from '@/store';
+import { RootState, performLogout } from '@/store';
 
 interface HeaderProps {
   className?: string;
@@ -42,8 +42,8 @@ const Header = ({ className = '' }: HeaderProps) => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    await performLogout(dispatch);
     navigate('/');
   };
 

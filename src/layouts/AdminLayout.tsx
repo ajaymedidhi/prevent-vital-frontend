@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logout } from '../store';
+import { performLogout } from '../store';
 import {
     LayoutDashboard, Users, ShoppingCart, Calculator, AlertCircle,
     FileText, Settings, HeadphonesIcon, LogOut, ChevronDown, User, Key, Menu, Bell, Search, X,
@@ -54,8 +54,8 @@ const AdminLayout = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const handleLogout = () => {
-        dispatch(logout());
+    const handleLogout = async () => {
+        await performLogout(dispatch);
         navigate('/login');
     };
 

@@ -1,4 +1,5 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 import { AuthState, User } from '../types/auth';
 
 const initialState: AuthState = {
@@ -48,6 +49,18 @@ const authSlice = createSlice({
 });
 
 export const { setCredentials, logout } = authSlice.actions;
+
+// Invalidates the session server-side (best-effort) before clearing local auth
+// state — plain dispatch(logout()) only ever cleared the client, leaving the
+// JWT/session valid server-side until it expired on its own.
+export const performLogout = async (dispatch: AppDispatch) => {
+    try {
+        await axios.post('/api/auth/logout');
+    } catch {
+        // Best-effort — always clear local state even if the server call fails.
+    }
+    dispatch(logout());
+};
 
 import shopReducer from './shopSlice';
 

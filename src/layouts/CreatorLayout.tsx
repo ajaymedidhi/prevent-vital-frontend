@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logout } from '../store';
+import { performLogout } from '../store';
 import {
     LayoutDashboard,
     Video,
@@ -60,8 +60,8 @@ const CreatorLayout = () => {
         setSidebarOpen(false);
     }, [location.pathname]);
 
-    const handleLogout = () => {
-        dispatch(logout());
+    const handleLogout = async () => {
+        await performLogout(dispatch);
         navigate('/login');
     };
 
