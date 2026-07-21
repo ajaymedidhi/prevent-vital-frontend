@@ -16,6 +16,7 @@ import CustomerOrders from './Orders';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { getCvitalTierConfig } from '@/config/cvitalTierConfig';
 
 const CustomerDashboard = () => {
     const { user } = useSelector((state: RootState) => state.auth);
@@ -320,6 +321,9 @@ const CustomerDashboard = () => {
 
     const [products, setProducts] = useState<any[]>([]);
 
+    const cvitalScore = (user as any)?.healthProfile?.cvitalScore || 0;
+    const cvitalCfg = getCvitalTierConfig(cvitalScore);
+
     const renderHome = () => (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Welcome Banner */}
@@ -359,6 +363,44 @@ const CustomerDashboard = () => {
 
             {/* Metric Row - Super Admin Style */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {/* CVITAL Score */}
+                <Card className="rounded-xl border-gray-100 shadow-sm hover:shadow-md transition-all bg-white relative overflow-hidden">
+                    <CardContent className="p-6">
+                        <div className="flex justify-between items-start mb-6">
+                            <div className="p-3 bg-red-50 text-red-500 rounded-2xl">
+                                <HeartPulse className="w-6 h-6" />
+                            </div>
+                            <span
+                                className="text-[10px] font-bold px-2 py-1 rounded-lg uppercase tracking-wider"
+                                style={{ color: cvitalCfg.accent, backgroundColor: cvitalCfg.color + '22' }}
+                            >
+                                {cvitalScore > 0 ? cvitalCfg.label : 'Not Set'}
+                            </span>
+                        </div>
+                        <h3 className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">CVITAL Score</h3>
+
+                        {cvitalScore > 0 ? (
+                            <div className="flex flex-col">
+                                <div className="flex items-baseline gap-2 mb-4">
+                                    <span className="text-4xl font-semibold text-gray-900">{cvitalScore}</span>
+                                    <span className="text-xs font-bold text-gray-400">/ 100</span>
+                                </div>
+                                <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                    <div
+                                        className="h-full rounded-full transition-all duration-1000"
+                                        style={{ width: `${cvitalScore}%`, backgroundColor: cvitalCfg.color }}
+                                    ></div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center py-4 text-center">
+                                <p className="text-xs text-gray-400 mb-4">Complete your assessment to see your CVITAL score.</p>
+                                <Button size="sm" onClick={() => navigate('/ai-health-assessment')} className="bg-red-500 hover:bg-red-600 rounded-lg text-xs font-bold">Start Now</Button>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+
                 {/* Live Vitals */}
                 <Card className="rounded-xl border-gray-100 shadow-sm hover:shadow-md transition-all overflow-hidden bg-white">
                     <CardContent className="p-6">

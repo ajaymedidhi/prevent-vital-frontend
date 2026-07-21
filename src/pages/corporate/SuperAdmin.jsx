@@ -349,10 +349,10 @@ export default function SuperAdminPage() {
 
       {activeTab === 'assessments' && (() => {
         const displayCvitalTiers = assessmentStats.cvitalTiers && assessmentStats.cvitalTiers.length > 0 ? assessmentStats.cvitalTiers : [
-          { name: 'Excellent', range: '80–100', value: 0, pct: 0, color: '#10b981' },
-          { name: 'Good', range: '60–79', value: 0, pct: 0, color: '#3b82f6' },
-          { name: 'Moderate', range: '40–59', value: 0, pct: 0, color: '#f59e0b' },
-          { name: 'High Risk', range: '<40', value: 0, pct: 0, color: '#ef4444' }
+          { name: 'Excellent', range: '90–100', value: 0, pct: 0, color: '#10d98a' },
+          { name: 'Good', range: '80–89', value: 0, pct: 0, color: '#4ade80' },
+          { name: 'Moderate Risk', range: '60–79', value: 0, pct: 0, color: '#f5c842' },
+          { name: 'High Risk', range: '<60', value: 0, pct: 0, color: '#f04f4f' }
         ]
         const displayAscvdTiers = assessmentStats.ascvdTiers && assessmentStats.ascvdTiers.length > 0 ? assessmentStats.ascvdTiers : [
           { name: 'Low', range: '<7.5%', value: 0, pct: 0, color: '#10b981' },
@@ -369,7 +369,7 @@ export default function SuperAdminPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[
                 { label: 'Total Assessments', value: assessmentStats.total.toLocaleString(), icon: <Activity size={20} />, trend: assessmentStats.total > 0 ? '+100%' : '0%', color: 'text-blue-600', bg: 'bg-blue-50' },
-                { label: 'Avg CVITAL Score', value: `${assessmentStats.avgScore}/100`, icon: <Heart size={20} />, trend: assessmentStats.avgScore >= 80 ? 'Excellent' : assessmentStats.avgScore >= 60 ? 'Good' : assessmentStats.avgScore >= 40 ? 'Moderate' : 'High Risk', color: 'text-emerald-600', bg: 'bg-emerald-50' },
+                { label: 'Avg CVITAL Score', value: `${assessmentStats.avgScore}/100`, icon: <Heart size={20} />, trend: assessmentStats.avgScore >= 90 ? 'Excellent' : assessmentStats.avgScore >= 80 ? 'Good' : assessmentStats.avgScore >= 60 ? 'Moderate Risk' : 'High Risk', color: 'text-emerald-600', bg: 'bg-emerald-50' },
                 { label: 'High Risk Prevalence', value: `${assessmentStats.highRiskPrevalence}%`, icon: <AlertTriangle size={20} />, trend: assessmentStats.highRiskPrevalence > 20 ? 'Target needed' : 'Good Control', color: 'text-rose-600', bg: 'bg-rose-50' },
                 { label: 'Taken This Month', value: assessmentStats.takenThisMonth.toLocaleString(), icon: <TrendingUp size={20} />, trend: 'Live', color: 'text-amber-600', bg: 'bg-amber-50' },
               ].map(s => (
@@ -515,7 +515,7 @@ export default function SuperAdminPage() {
                       <td>
                         {o.avgScore ? (
                           <div className="flex items-center gap-2">
-                            <span className={`w-2 h-2 rounded-full ${o.avgScore >= 70 ? 'bg-emerald-500' : o.avgScore >= 60 ? 'bg-blue-500' : 'bg-amber-500'}`} />
+                            <span className={`w-2 h-2 rounded-full ${o.avgScore >= 80 ? 'bg-emerald-500' : o.avgScore >= 60 ? 'bg-blue-500' : 'bg-amber-500'}`} />
                             <span className="text-sm font-semibold text-slate-800">{o.avgScore.toFixed(1)}/100</span>
                           </div>
                         ) : (

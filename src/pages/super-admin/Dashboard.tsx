@@ -945,10 +945,10 @@ const SuperAdminDashboard = ({ defaultTab }: { defaultTab?: string }) => {
 
             {activeTab === 'assessments' && (() => {
                 const displayCvitalTiers = assessmentStats.cvitalTiers && assessmentStats.cvitalTiers.length > 0 ? assessmentStats.cvitalTiers : [
-                    { name: 'Excellent', range: '80–100', value: 0, pct: 0, color: '#10b981' },
-                    { name: 'Good', range: '60–79', value: 0, pct: 0, color: '#3b82f6' },
-                    { name: 'Moderate', range: '40–59', value: 0, pct: 0, color: '#f59e0b' },
-                    { name: 'High Risk', range: '<40', value: 0, pct: 0, color: '#ef4444' }
+                    { name: 'Excellent', range: '90–100', value: 0, pct: 0, color: '#10d98a' },
+                    { name: 'Good', range: '80–89', value: 0, pct: 0, color: '#4ade80' },
+                    { name: 'Moderate Risk', range: '60–79', value: 0, pct: 0, color: '#f5c842' },
+                    { name: 'High Risk', range: '<60', value: 0, pct: 0, color: '#f04f4f' }
                 ];
                 const displayAscvdTiers = assessmentStats.ascvdTiers && assessmentStats.ascvdTiers.length > 0 ? assessmentStats.ascvdTiers : [
                     { name: 'Low', range: '<7.5%', value: 0, pct: 0, color: '#10b981' },
@@ -981,7 +981,7 @@ const SuperAdminDashboard = ({ defaultTab }: { defaultTab?: string }) => {
                                 <div className="flex justify-between mb-4">
                                     <div className="p-3 bg-green-100 text-green-600 rounded-full"><Heart className="w-6 h-6" /></div>
                                     <span className="text-green-600 font-bold text-sm bg-green-50 px-2 py-1 rounded-full">
-                                        {assessmentStats.avgScore >= 80 ? 'Excellent' : assessmentStats.avgScore >= 60 ? 'Good' : assessmentStats.avgScore >= 40 ? 'Moderate' : 'High Risk'}
+                                        {assessmentStats.avgScore >= 90 ? 'Excellent' : assessmentStats.avgScore >= 80 ? 'Good' : assessmentStats.avgScore >= 60 ? 'Moderate Risk' : 'High Risk'}
                                     </span>
                                 </div>
                                 <h3 className="text-gray-500 text-sm font-medium">Avg CVITAL Score</h3>
