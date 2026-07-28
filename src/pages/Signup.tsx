@@ -139,8 +139,12 @@ const Signup = () => {
             transition={{ delay: 0.15, duration: 0.6 }}
             className="space-y-2"
           >
-            <h2 className="text-2xl font-semibold text-white tracking-tight">
+            {/* Temporarily hidden as per client request. Metrics will be updated and re-enabled once official numbers are finalized. */}
+            {/* <h2 className="text-2xl font-semibold text-white tracking-tight">
               Join 10,000+ people taking control of their health
+            </h2> */}
+            <h2 className="text-2xl font-semibold text-white tracking-tight">
+              Take control of your health
             </h2>
             <p className="text-sm text-white/60 leading-relaxed">
               India's first AI-powered preventive medicine platform

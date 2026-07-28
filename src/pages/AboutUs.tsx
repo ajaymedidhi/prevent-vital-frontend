@@ -36,12 +36,12 @@ const values = [
     },
 ];
 
-const stats = [
-    { value: '10,000+', label: 'Patients Served' },
-    { value: '50+',     label: 'Hospital Partners' },
-    { value: '6,000+',  label: 'Patients by Founder' },
-    { value: '96%',     label: 'Satisfaction Rate' },
-];
+// const stats = [
+//     { value: '10,000+', label: 'Patients Served' },
+//     { value: '50+',     label: 'Hospital Partners' },
+//     { value: '6,000+',  label: 'Patients by Founder' },
+//     { value: '96%',     label: 'Satisfaction Rate' },
+// ];
 
 const storyPoints = [
     'Chronic diseases silently progressing and detected too late — even in top hospitals.',
@@ -142,7 +142,7 @@ const AboutUs = () => {
                         </motion.div>
 
                         {/* Stats row */}
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-14 pt-10 border-t border-border/50">
+                        {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-14 pt-10 border-t border-border/50">
                             {stats.map(({ value, label }) => (
                                 <div key={label} className="space-y-0.5">
                                     <p className="font-bold text-foreground leading-none" style={{ fontSize: 'var(--fz-3xl)' }}>
@@ -151,7 +151,7 @@ const AboutUs = () => {
                                     <p className="text-xs text-muted-foreground font-medium">{label}</p>
                                 </div>
                             ))}
-                        </div>
+                        </div> */}
                     </div>
                 </section>
 

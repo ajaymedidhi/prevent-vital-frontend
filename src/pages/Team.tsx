@@ -1,14 +1,14 @@
 import { Helmet } from "react-helmet-async";
 import { Award, ShieldCheck, Users, Building2, MapPin, IndianRupee, Activity, ArrowRight } from "lucide-react";
 
-const stats = [
-    { label: "Patients", value: "10,000+", icon: Users },
-    { label: "Therapy Sessions", value: "500,000+", icon: Activity },
-    { label: "Hospital Partners", value: "50+", icon: Building2 },
-    { label: "States Present", value: "15", icon: MapPin },
-    { label: "Healthcare Costs Saved", value: "₹450 Cr", icon: IndianRupee },
-    { label: "Patient Satisfaction", value: "4.8/5", icon: Award },
-];
+// const stats = [
+//     { label: "Patients", value: "10,000+", icon: Users },
+//     { label: "Therapy Sessions", value: "500,000+", icon: Activity },
+//     { label: "Hospital Partners", value: "50+", icon: Building2 },
+//     { label: "States Present", value: "15", icon: MapPin },
+//     { label: "Healthcare Costs Saved", value: "₹450 Cr", icon: IndianRupee },
+//     { label: "Patient Satisfaction", value: "4.8/5", icon: Award },
+// ];
 
 const badges = [
     "ABDM Compliant",

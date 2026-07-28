@@ -51,6 +51,7 @@ import PartnershipPortalPage from "./app/partnership-portal/page";
 import TherapeuticProgramsPage from "./app/therapeutic-programs/page";
 import NotFound from "./app/not-found";
 import AboutUs from "./pages/AboutUs";
+import ProgramDetail from "./pages/ProgramDetail";
 import Team from "./pages/Team";
 import Contact from "./pages/Contact";
 import WellnessPhilosophy from "./pages/WellnessPhilosophy";
@@ -138,6 +139,7 @@ const App = () => (
                             {/* Program Routes moved to Customer Dashboard */}
                             {/* Legacy Routes - Redirect or keep for SEO temporarily? */}
                             <Route path="/disease-prevention-programs" element={<DiseasePreventionProgramsPage />} />
+                            <Route path="/disease-prevention-programs/:id" element={<ProgramDetail />} />
                             <Route path="/ai-health-assessment" element={<AiHealthAssessmentPage />} />
                             <Route path="/medical-professional-portal" element={<MedicalProfessionalPortalPage />} />
                             <Route path="/partnership-portal" element={<PartnershipPortalPage />} />

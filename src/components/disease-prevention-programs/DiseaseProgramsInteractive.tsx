@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Activity, Heart, Shield } from 'lucide-react';
 import ProgramCard from './ProgramCard';
 import { motion } from 'framer-motion';
+import { conditionPrograms } from '@/constants/conditionPrograms';
 
 interface Program {
     id: string;
@@ -14,52 +15,25 @@ interface Program {
     therapies: string[];
     duration: string;
     category: 'prevention' | 'therapy';
+    outcomeFocus?: string;
 }
 
 export default function DiseaseProgramsInteractive() {
     const [activeTab, setActiveTab] = useState<'prevention' | 'therapy'>('prevention');
 
     const programs: Program[] = [
-        {
-            id: 'diabetes',
-            title: 'Diabetes Prevention & Management',
-            description: 'Comprehensive program combining AI-powered glucose monitoring with yoga, meditation, and personalized nutrition plans.',
-            image: "https://img.rocket.new/generatedImages/rocket_gen_img_1c7fc6a7f-1764743297281.png",
-            alt: 'Diabetes prevention',
-            therapies: ['Yoga', 'Meditation', 'Nutrition', 'Breathwork'],
-            duration: '12 weeks',
-            category: 'prevention'
-        },
-        {
-            id: 'hypertension',
-            title: 'Hypertension Control Program',
-            description: 'Integrated approach to blood pressure management through stress reduction techniques and cardiovascular exercises.',
-            image: "https://img.rocket.new/generatedImages/rocket_gen_img_18fdc3d89-1765186858638.png",
-            alt: 'Hypertension control',
-            therapies: ['Meditation', 'Breathwork', 'Physiotherapy', 'Yoga'],
-            duration: '10 weeks',
-            category: 'prevention'
-        },
-        {
-            id: 'weight',
-            title: 'Weight Management Program',
-            description: 'Holistic weight management combining metabolic optimization with mindful eating and personalized exercise.',
-            image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-            alt: 'Weight management',
-            therapies: ['Yoga', 'Nutrition', 'Physiotherapy'],
-            duration: '16 weeks',
-            category: 'prevention'
-        },
-        {
-            id: 'stress',
-            title: 'Stress & Anxiety Relief',
-            description: 'Evidence-based program for mental wellness using meditation, breathwork, and cognitive techniques.',
-            image: "https://img.rocket.new/generatedImages/rocket_gen_img_1b56c2cc1-1764999507242.png",
-            alt: 'Stress relief',
-            therapies: ['Meditation', 'Breathwork', 'Yoga'],
-            duration: '8 weeks',
-            category: 'prevention'
-        },
+        // Kept in sync with the homepage condition cards — see src/constants/conditionPrograms.ts
+        ...conditionPrograms.map((condition): Program => ({
+            id: condition.id,
+            title: condition.title,
+            description: condition.description,
+            image: condition.image,
+            alt: condition.alt,
+            therapies: condition.includes,
+            duration: condition.duration,
+            category: 'prevention',
+            outcomeFocus: condition.outcomeFocus,
+        })),
         {
             id: 'yoga-therapy',
             title: 'Advanced Yoga Therapy',

@@ -4,22 +4,31 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 
 interface ProgramCardProps {
+    id: string;
     title: string;
     description: string;
     image: string;
     alt: string;
     therapies: string[];
     duration: string;
+    outcomeFocus?: string;
+    category: 'prevention' | 'therapy';
 }
 
 export default function ProgramCard({
+    id,
     title,
     description,
     image,
     alt,
     therapies,
     duration,
+    outcomeFocus,
+    category,
 }: ProgramCardProps) {
+    // Only the six condition-specific "prevention" programs have a detail page;
+    // therapy sessions (yoga, physio) still route straight to the assessment.
+    const ctaLink = category === 'prevention' ? `/disease-prevention-programs/${id}` : '/ai-health-assessment';
     return (
         <Card className="group overflow-hidden border border-border shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full bg-card rounded-2xl">
             {/* Image */}
@@ -42,10 +51,16 @@ export default function ProgramCard({
             </CardHeader>
 
             <CardContent className="p-6 pt-2 flex-grow">
-                <div className="flex items-center gap-2 mb-4 text-sm font-medium text-muted-foreground">
+                <div className="flex items-center gap-2 mb-3 text-sm font-medium text-muted-foreground">
                     <Clock size={15} />
                     <span>{duration}</span>
                 </div>
+
+                {outcomeFocus && (
+                    <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+                        {outcomeFocus}
+                    </p>
+                )}
 
                 <div className="flex flex-wrap gap-2">
                     {therapies.map((therapy, index) => (
@@ -61,7 +76,7 @@ export default function ProgramCard({
 
             <CardFooter className="p-4 pt-0 mt-auto">
                 <Link
-                    to="/ai-health-assessment"
+                    to={ctaLink}
                     className="group/btn w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-primary-foreground transition-all duration-300 hover:opacity-90 hover:-translate-y-px"
                     style={{ background: 'hsl(var(--primary))', boxShadow: 'var(--shadow-sm)' }}
                 >
