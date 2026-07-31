@@ -3,52 +3,75 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Activity, Heart, Shield, Brain, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const APP_STORE_URL = 'https://apps.apple.com/in/app/prevent-vital/id6781125644';
+const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.preventvital.app';
+
+const AppleLogo = () => (
+  <svg viewBox="0 0 24 24" width="28" height="28" fill="#ffffff" aria-hidden="true">
+    <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.415-3.13c.837-1.012 1.4-2.42 1.245-3.766-1.207.052-2.662.805-3.532 1.817-.78.887-1.454 2.32-1.273 3.622 1.297.104 2.622-.66 3.56-1.673z" />
+  </svg>
+);
+
+const GooglePlayLogo = () => (
+  <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+    <path fill="#4285F4" d="M3.609 1.814L13.792 12 3.61 22.186a1.996 1.996 0 0 1-.61-1.442V3.256c0-.554.225-1.055.609-1.442z" />
+    <path fill="#34A853" d="M14.499 12.707l2.302 2.302-10.937 6.333 8.635-8.635z" />
+    <path fill="#FBBC04" d="M17.698 9.509l2.807 1.626c.71.41 1.109.902 1.109 1.492s-.399 1.082-1.109 1.492l-2.807 1.626L15.401 12l2.297-2.29z" />
+    <path fill="#EA4335" d="M6.363 1.658L17.298 8l-2.302 2.302L6.363 1.658z" />
+  </svg>
+);
+
+const appBadges = [
+  { name: 'App Store', href: APP_STORE_URL, Logo: AppleLogo, eyebrow: 'DOWNLOAD ON THE', title: 'App Store' },
+  { name: 'Google Play', href: PLAY_STORE_URL, Logo: GooglePlayLogo, eyebrow: 'GET IT ON', title: 'Google Play' },
+];
+
 interface HeroSectionProps {
   className?: string;
 }
 
 const slides = [
   {
-    overline: 'AI-Powered Prevention',
-    titleBefore: 'Prevention is Better',
-    titleHighlight: 'Than Cure',
+    overline: 'Your health, in plain language',
+    titleBefore: 'Know Your Risk',
+    titleHighlight: 'Before It Knows You',
     description:
-      'Transform your health journey with predictive analytics that identify risks before they become problems.',
-    cta: 'Start Free Assessment',
+      "Most heart and metabolic conditions give warning signs for years before anyone notices. We help you see yours early — and know exactly what to do about it.",
+    cta: 'Get My Free Score',
     ctaLink: '/ai-health-assessment',
-    secondaryCta: 'View Programs',
+    secondaryCta: 'See How It Works',
     secondaryLink: '/disease-prevention-programs',
-    tab: 'Prediction',
+    tab: 'Your Score',
     icon: Shield,
     color: 'from-brand-800 to-brand-700',
     accentColor: '#0d9488',
   },
   {
-    overline: 'Continuous Monitoring',
-    titleBefore: 'Your Health,',
-    titleHighlight: 'Predicted & Protected',
+    overline: 'Always quietly watching out for you',
+    titleBefore: "You're Never",
+    titleHighlight: 'Doing This Alone',
     description:
-      'Real-time health tracking integrated with wearable devices, providing 24/7 insights into your wellness metrics.',
-    cta: 'Explore Platform',
+      'Connect a wearable you already own and let your everyday numbers — heart rate, steps, sleep — turn into gentle, timely nudges instead of after-the-fact regret.',
+    cta: 'Connect My Device',
     ctaLink: '/disease-prevention-programs',
     secondaryCta: 'Learn More',
     secondaryLink: '/ai-health-assessment',
-    tab: 'Monitoring',
+    tab: 'Everyday Care',
     icon: Activity,
     color: 'from-brand-900 to-brand-800',
     accentColor: '#0891b2',
   },
   {
-    overline: 'Holistic Wellness',
-    titleBefore: 'Ancient Wisdom Meets',
-    titleHighlight: 'AI Innovation',
+    overline: 'Care that feels like care',
+    titleBefore: 'Yoga, Breath, and',
+    titleHighlight: 'a Little Help from AI',
     description:
-      'Combine traditional yoga, meditation, and breathwork with modern AI-driven personalized health recommendations.',
-    cta: 'Discover Therapies',
+      "Pair time-tested practices — yoga, pranayama, mindful movement — with a plan that's actually built around your body, not a generic routine.",
+    cta: 'Explore Wellness Programs',
     ctaLink: '/disease-prevention-programs',
     secondaryCta: 'See Therapies',
     secondaryLink: '/disease-prevention-programs',
-    tab: 'Therapy',
+    tab: 'Whole-Person Care',
     icon: Brain,
     color: 'from-[#134e4a] to-brand-800',
     accentColor: '#14b8a6',
@@ -308,7 +331,6 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
   return (
     <section
       className={`relative w-full overflow-hidden bg-background ${className}`}
-      style={{ minHeight: 'clamp(620px, 80svh, 860px)' }}
       aria-labelledby="hero-heading"
     >
       {/* ── Background layers ── */}
@@ -344,13 +366,12 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
         className="relative z-10 container-wide w-full h-full"
         style={{
           paddingTop:    'clamp(2.5rem, 2rem + 3vw, 5rem)',
-          paddingBottom: 'clamp(3rem, 2rem + 4vw, 6rem)',
+          paddingBottom: 'clamp(2rem, 1.5rem + 2vw, 3.5rem)',
           display: 'grid',
           alignItems: 'center',
-          minHeight: 'inherit',
         }}
       >
-        <div className="grid lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_400px] items-center gap-8 lg:gap-12 xl:gap-16">
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_400px] items-start gap-8 lg:gap-12 xl:gap-16">
 
           {/* ─── Left: text content ─── */}
           <div>
@@ -472,31 +493,29 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
             </div>
             */}
 
-            {/* Platform security & compliance badges */}
+            {/* Available on App Store / Google Play */}
             <div className="mt-10 pt-8 border-t border-border/50">
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4">
-                Platform Security & Trust
+              <p className="text-[10px] font-bold text-primary uppercase tracking-[0.15em] mb-3">
+                Available On
               </p>
-              <div className="flex flex-wrap gap-x-6 gap-y-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
-                    <Shield size={16} />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-foreground leading-tight">ISO 27001 Certified</p>
-                    <p className="text-[10px] text-muted-foreground mt-0.5">Enterprise-grade data security</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
-                    <Heart size={16} />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-foreground leading-tight">Doctor Approved</p>
-                    <p className="text-[10px] text-muted-foreground mt-0.5">Clinical-grade health recommendations</p>
-                  </div>
-                </div>
+              <div className="flex items-center gap-3">
+                {appBadges.map(({ name, href, Logo, eyebrow, title }) => (
+                  <a
+                    key={name}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={name}
+                    className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-[#12172a] hover:bg-[#1a2036] hover:-translate-y-px transition-all duration-200"
+                    style={{ boxShadow: 'var(--shadow-md)' }}
+                  >
+                    <Logo />
+                    <span className="text-left leading-none">
+                      <span className="block text-[10px] font-semibold text-white/60 tracking-wide mb-1">{eyebrow}</span>
+                      <span className="block text-lg font-bold text-white">{title}</span>
+                    </span>
+                  </a>
+                ))}
               </div>
             </div>
           </div>

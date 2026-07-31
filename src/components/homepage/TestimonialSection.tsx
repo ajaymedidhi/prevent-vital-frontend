@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
-import { Star, Check, ChevronLeft, ChevronRight, TrendingUp, Clock } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Star, ChevronLeft, ChevronRight, TrendingUp, Clock } from 'lucide-react';
 
 interface Testimonial {
     id: string;
@@ -11,9 +12,11 @@ interface Testimonial {
     improvement: string;
     duration: string;
     rating: number;
-    avatarColor: string;
+    photo: string;
 }
 
+// Illustrative testimonials for design purposes — replace with real, consented
+// customer stories and photos before this section goes live.
 const testimonials: Testimonial[] = [
     {
         id: '1',
@@ -24,7 +27,7 @@ const testimonials: Testimonial[] = [
         improvement: '87% Risk Reduction',
         duration: '6 Months',
         rating: 5,
-        avatarColor: 'from-brand-800 to-wellness-600',
+        photo: 'https://images.unsplash.com/photo-1531339413195-cc6c17163974?auto=format&fit=crop&w=200&h=200&q=80',
     },
     {
         id: '2',
@@ -35,7 +38,7 @@ const testimonials: Testimonial[] = [
         improvement: 'Medication-Free',
         duration: '8 Months',
         rating: 5,
-        avatarColor: 'from-brand-700 to-wellness-500',
+        photo: 'https://images.unsplash.com/photo-1749189516333-168cfd97de0b?auto=format&fit=crop&w=200&h=200&q=80',
     },
     {
         id: '3',
@@ -46,7 +49,7 @@ const testimonials: Testimonial[] = [
         improvement: '18 kg Weight Loss',
         duration: '10 Months',
         rating: 5,
-        avatarColor: 'from-wellness-700 to-brand-700',
+        photo: 'https://images.unsplash.com/photo-1757744705465-ea08b0ddc38a?auto=format&fit=crop&w=200&h=200&q=80',
     },
 ];
 
@@ -73,11 +76,11 @@ const TestimonialSection = () => {
                         <span className="text-xs font-bold text-accent uppercase tracking-widest">Success Stories</span>
                     </div>
                     <h2 className="text-fluid-4xl font-semibold text-foreground leading-tight tracking-tight mb-3">
-                        Life-Changing{' '}
-                        <span className="gradient-text-soft">Transformations</span>
+                        Real People,{' '}
+                        <span className="gradient-text-soft">Real Turnarounds</span>
                     </h2>
                     <p className="text-base text-muted-foreground max-w-xl mx-auto">
-                        Join thousands who have rewritten their health stories with AI-driven preventive care.
+                        Behind every score is a person who decided today was the day to start. Here's what that looked like for a few of them.
                     </p>
                 </div>
 
@@ -94,68 +97,78 @@ const TestimonialSection = () => {
                         {/* Large quotation mark */}
                         <div className="absolute top-6 right-8 text-[120px] font-serif leading-none text-primary/6 select-none pointer-events-none">"</div>
 
-                        <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start">
-                            {/* Avatar column */}
-                            <div className="flex-shrink-0 flex flex-col items-center gap-3">
-                                <div className="relative">
-                                    <div
-                                        className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${t.avatarColor} flex items-center justify-center text-2xl font-bold text-white shadow-md`}
-                                    >
-                                        {t.name.charAt(0)}
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={t.id}
+                                initial={{ opacity: 0, y: 12 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -8 }}
+                                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                                className="relative z-10 flex flex-col md:flex-row gap-8 items-start"
+                            >
+                                {/* Avatar column */}
+                                <div className="flex-shrink-0 flex flex-col items-center gap-3">
+                                    <div className="relative">
+                                        <img
+                                            src={t.photo}
+                                            alt={t.name}
+                                            loading="lazy"
+                                            className="w-20 h-20 rounded-2xl object-cover shadow-md"
+                                        />
+                                        <div className="absolute -bottom-2 -right-2 w-7 h-7 bg-accent rounded-full flex items-center justify-center shadow-md border-2 border-white">
+                                            <Star size={11} className="text-white fill-white" />
+                                        </div>
                                     </div>
-                                    <div className="absolute -bottom-2 -right-2 w-7 h-7 bg-accent rounded-full flex items-center justify-center shadow-md border-2 border-white">
-                                        <Check size={12} className="text-white" strokeWidth={3} />
-                                    </div>
-                                </div>
-                                <div className="text-center">
-                                    <p className="text-sm font-bold text-foreground">{t.name}</p>
-                                    <p className="text-xs text-muted-foreground">Age {t.age}</p>
-                                </div>
-                            </div>
-
-                            {/* Content column */}
-                            <div className="flex-1 space-y-5">
-                                {/* Condition + stars */}
-                                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                                    <span className="inline-flex px-2.5 py-1 rounded-full bg-primary/8 text-primary text-[11px] font-bold uppercase tracking-wide">
-                                        {t.condition}
-                                    </span>
-                                    <div className="flex items-center gap-0.5">
-                                        {[...Array(t.rating)].map((_, i) => (
-                                            <Star key={i} size={14} className="text-amber-400 fill-amber-400" />
-                                        ))}
+                                    <div className="text-center">
+                                        <p className="text-sm font-bold text-foreground">{t.name}</p>
+                                        <p className="text-xs text-muted-foreground">Age {t.age}</p>
                                     </div>
                                 </div>
 
-                                {/* Quote */}
-                                <blockquote className="text-lg md:text-xl font-medium text-foreground leading-relaxed">
-                                    "{t.quote}"
-                                </blockquote>
-
-                                {/* Result metrics */}
-                                <div className="flex gap-6 pt-4 border-t border-border/60">
-                                    <div className="flex items-center gap-2.5">
-                                        <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                                            <TrendingUp size={15} className="text-accent" />
-                                        </div>
-                                        <div>
-                                            <p className="text-[10px] font-bold text-muted-foreground/70 uppercase tracking-wider">Result</p>
-                                            <p className="text-sm font-bold text-accent">{t.improvement}</p>
+                                {/* Content column */}
+                                <div className="flex-1 space-y-5">
+                                    {/* Condition + stars */}
+                                    <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                                        <span className="inline-flex px-2.5 py-1 rounded-full bg-primary/8 text-primary text-[11px] font-bold uppercase tracking-wide">
+                                            {t.condition}
+                                        </span>
+                                        <div className="flex items-center gap-0.5">
+                                            {[...Array(t.rating)].map((_, i) => (
+                                                <Star key={i} size={14} className="text-amber-400 fill-amber-400" />
+                                            ))}
                                         </div>
                                     </div>
-                                    <div className="w-px bg-border" />
-                                    <div className="flex items-center gap-2.5">
-                                        <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center">
-                                            <Clock size={15} className="text-primary" />
+
+                                    {/* Quote */}
+                                    <blockquote className="text-lg md:text-xl font-medium text-foreground leading-relaxed">
+                                        "{t.quote}"
+                                    </blockquote>
+
+                                    {/* Result metrics */}
+                                    <div className="flex gap-6 pt-4 border-t border-border/60">
+                                        <div className="flex items-center gap-2.5">
+                                            <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
+                                                <TrendingUp size={15} className="text-accent" />
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-bold text-muted-foreground/70 uppercase tracking-wider">Result</p>
+                                                <p className="text-sm font-bold text-accent">{t.improvement}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="text-[10px] font-bold text-muted-foreground/70 uppercase tracking-wider">Timeframe</p>
-                                            <p className="text-sm font-bold text-foreground">{t.duration}</p>
+                                        <div className="w-px bg-border" />
+                                        <div className="flex items-center gap-2.5">
+                                            <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center">
+                                                <Clock size={15} className="text-primary" />
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-bold text-muted-foreground/70 uppercase tracking-wider">Timeframe</p>
+                                                <p className="text-sm font-bold text-foreground">{t.duration}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </motion.div>
+                        </AnimatePresence>
                     </div>
 
                     {/* Navigation controls */}

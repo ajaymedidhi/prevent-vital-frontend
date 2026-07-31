@@ -37,7 +37,7 @@ const CTASection = () => {
           {/* Overline */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 border border-white/15 rounded-full backdrop-blur-sm">
             <Shield size={13} className="text-emerald-300" />
-            <span className="text-xs font-semibold text-white/80 tracking-wide">Start Your Prevention Journey</span>
+            <span className="text-xs font-semibold text-white/80 tracking-wide">Today Is a Fine Day to Start</span>
           </div>
 
           {/* Headline */}
@@ -45,15 +45,12 @@ const CTASection = () => {
             id="cta-heading"
             className="text-fluid-4xl font-semibold text-white leading-[1.15] tracking-tight"
           >
-            Take Control of Your{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-emerald-200">
-              Health Future Today
-            </span>
+            Your Future Self <span className="text-white/40">Will Thank You for This</span>
           </h2>
 
           {/* Subtext */}
           <p className="text-fluid-lg text-white/65 max-w-xl mx-auto leading-relaxed">
-            Join thousands of users who have transformed their health with AI-powered preventive care.
+            Five minutes today for a clearer picture of your health tomorrow. No commitment, no judgment — just a starting point.
           </p>
 
           {/* CTA Buttons */}
@@ -63,7 +60,7 @@ const CTASection = () => {
               className="group inline-flex items-center gap-2.5 px-8 py-4 rounded-xl text-sm font-semibold bg-white text-primary hover:bg-white/95 transition-all duration-200 hover:-translate-y-px"
               style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.15)' }}
             >
-              Start Free Assessment
+              Get My Free Assessment
               <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
             </Link>
 

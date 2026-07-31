@@ -14,6 +14,12 @@ export interface ProgramFaq {
     answer: string;
 }
 
+export interface ProgramInstructor {
+    name: string;
+    title: string;
+    photo: string;
+}
+
 export interface ConditionProgram {
     id: string;
     title: string;
@@ -29,6 +35,9 @@ export interface ConditionProgram {
     faqs: ProgramFaq[];
     image: string;
     alt: string;
+    /** Illustrative program lead shown on the marketing cards — placeholder
+     * bio/photo for design purposes; swap for a real staff profile before launch. */
+    instructor?: ProgramInstructor;
 }
 
 export const conditionPrograms: ConditionProgram[] = [
@@ -60,6 +69,11 @@ export const conditionPrograms: ConditionProgram[] = [
         ],
         image: 'https://images.unsplash.com/photo-1685660375327-47bcca398780',
         alt: 'Blood glucose meter with test strips on wooden table showing diabetes monitoring equipment',
+        instructor: {
+            name: 'Ananya Iyer',
+            title: 'Certified Diabetes Educator',
+            photo: 'https://images.unsplash.com/photo-1767607740661-05e668190cdc?auto=format&fit=crop&w=200&h=200&q=80',
+        },
     },
     {
         id: 'hypertension',
@@ -89,6 +103,11 @@ export const conditionPrograms: ConditionProgram[] = [
         ],
         image: 'https://images.unsplash.com/photo-1623658045230-605cb00c80d6',
         alt: 'Digital blood pressure monitor displaying readings with stethoscope on medical examination table',
+        instructor: {
+            name: 'Dr. Sanjay Mehta',
+            title: 'Cardiologist',
+            photo: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=200&h=200&q=80',
+        },
     },
     {
         id: 'cardiac',
@@ -116,8 +135,13 @@ export const conditionPrograms: ConditionProgram[] = [
             { question: 'Do I need an ECG device at home?', answer: 'No — ECG integration uses data from a connected wearable or your latest clinical reports where available; it isn’t required to begin the program.' },
             { question: 'How is this different from the Diabetes or Weight programs?', answer: 'This program is built specifically around your ASCVD risk factors — cholesterol, smoking, inactivity — using the same clinical framework as your CVITAL cardiovascular risk score.' },
         ],
-        image: 'https://img.rocket.new/generatedImages/rocket_gen_img_19c8b52ae-1765801567685.png',
-        alt: 'Cardiologist examining ECG heart rhythm chart with medical equipment in modern clinic',
+        image: 'https://images.unsplash.com/photo-1612531386530-97286d97c2d2?auto=format&fit=crop&w=900&q=80',
+        alt: 'Cardiologist with a stethoscope, arms crossed, ready for a patient consultation',
+        instructor: {
+            name: 'Dr. Ritu Malhotra',
+            title: 'Interventional Cardiologist',
+            photo: 'https://images.unsplash.com/photo-1659353888906-adb3e0041693?auto=format&fit=crop&w=200&h=200&q=80',
+        },
     },
     {
         id: 'respiratory',
@@ -145,8 +169,13 @@ export const conditionPrograms: ConditionProgram[] = [
             { question: 'Do I need to already know yoga or pranayama?', answer: 'No prior experience is needed — the program starts with fundamentals and builds up.' },
             { question: 'Can I do this if I have a diagnosed lung condition?', answer: 'Check with your doctor first — the program can complement treatment for many conditions, but your doctor knows your specific case best.' },
         ],
-        image: 'https://img.rocket.new/generatedImages/rocket_gen_img_11b83cbcc-1764755888108.png',
-        alt: 'Person practicing deep breathing exercises outdoors in fresh mountain air with clear blue sky',
+        image: 'https://images.unsplash.com/photo-1665214057620-27d1d10f6203?auto=format&fit=crop&w=900&q=80',
+        alt: 'Person practicing an advanced yoga pose to build strength and lung capacity',
+        instructor: {
+            name: 'Kavita Desai',
+            title: 'Pranayama & Breathwork Coach',
+            photo: 'https://images.unsplash.com/photo-1496813146940-1601b02f81a4?auto=format&fit=crop&w=200&h=200&q=80',
+        },
     },
     {
         id: 'mental',
@@ -174,8 +203,13 @@ export const conditionPrograms: ConditionProgram[] = [
             { question: 'How does the mood tracking work?', answer: 'You’ll do brief daily check-ins that feed into your progress view, helping you see patterns in stress and mood over time.' },
             { question: 'Can I join if I’m already in therapy?', answer: 'Yes — many participants use this program alongside therapy or counselling as a daily practice between sessions.' },
         ],
-        image: 'https://img.rocket.new/generatedImages/rocket_gen_img_11552d387-1764832853014.png',
-        alt: 'Peaceful woman meditating in lotus position with eyes closed in tranquil indoor setting',
+        image: 'https://images.unsplash.com/photo-1667890785988-8da12fd0989b?auto=format&fit=crop&w=900&q=80',
+        alt: 'Woman sitting cross-legged in quiet meditation',
+        instructor: {
+            name: 'Anjali Rao',
+            title: 'Mindfulness Coach',
+            photo: 'https://images.unsplash.com/photo-1463335361701-e90f4c5045d0?auto=format&fit=crop&w=200&h=200&q=80',
+        },
     },
     {
         id: 'weight',
@@ -203,7 +237,12 @@ export const conditionPrograms: ConditionProgram[] = [
             { question: 'How much weight will I lose?', answer: 'This varies by person and isn’t something we can promise — the program focuses on sustainable metabolic and behavioral change rather than a fixed target.' },
             { question: 'Can I combine this with a specific diet I already follow?', answer: 'Yes — nutrition guidance is personalized around your preferences and any dietary requirements you already have.' },
         ],
-        image: 'https://img.rocket.new/generatedImages/rocket_gen_img_1bb8da715-1764844202208.png',
-        alt: 'Athletic person jogging on outdoor trail wearing fitness tracker with healthy lifestyle concept',
+        image: 'https://images.unsplash.com/photo-1599447292180-45fd84092ef0?auto=format&fit=crop&w=900&q=80',
+        alt: 'Woman practicing a strength-focused yoga pose as part of a fitness routine',
+        instructor: {
+            name: 'Karan Bhatt',
+            title: 'Fitness & Nutrition Coach',
+            photo: 'https://images.unsplash.com/photo-1774437678715-fb40846dc252?auto=format&fit=crop&w=200&h=200&q=80',
+        },
     },
 ];

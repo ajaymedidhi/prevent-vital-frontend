@@ -17,11 +17,11 @@ const PlatformDemo = () => {
     const features: DemoFeature[] = [
         {
             id: 'monitoring',
-            title: 'Real-Time Health Monitoring',
-            description: 'Continuous tracking of vital signs with instant alerts for anomalies',
+            title: 'Your Vitals, Watching Over You',
+            description: 'Wear the device you already have, and let it quietly flag anything worth a second look',
             icon: 'ChartBarIcon',
-            image: "https://img.rocket.new/generatedImages/rocket_gen_img_151995676-1764659090665.png",
-            alt: 'Digital health dashboard displaying real-time heart rate',
+            image: "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?auto=format&fit=crop&w=1200&q=80",
+            alt: 'Fitness wearable band tracking heart rate and activity in real time',
             metrics: [
                 { label: 'Heart Rate', value: '72 BPM' },
                 { label: 'Blood Pressure', value: '120/80' },
@@ -30,11 +30,11 @@ const PlatformDemo = () => {
         },
         {
             id: 'prediction',
-            title: 'AI Risk Prediction',
-            description: 'Machine learning algorithms analyze patterns to predict health risks',
+            title: 'Clinical Insight, Not Guesswork',
+            description: 'Your data is read against the same ACC/AHA risk models doctors use — reviewed, not just automated',
             icon: 'CpuChipIcon',
-            image: "https://img.rocket.new/generatedImages/rocket_gen_img_1add7ce1f-1764660531679.png",
-            alt: 'Futuristic AI interface showing predictive health analytics',
+            image: "https://images.unsplash.com/photo-1730597842283-943c7986ee2c?auto=format&fit=crop&w=1200&q=80",
+            alt: 'Clinician in scrubs reviewing a patient risk assessment',
             metrics: [
                 { label: 'Diabetes Risk', value: 'Low (12%)' },
                 { label: 'Cardiac Risk', value: 'Moderate' },
@@ -43,8 +43,8 @@ const PlatformDemo = () => {
         },
         {
             id: 'therapy',
-            title: 'Personalized Therapy Plans',
-            description: 'Customized yoga, meditation, and exercise routines based on your health data',
+            title: 'A Plan Built Around You',
+            description: 'Yoga, meditation, and movement routines that adapt to your body, your schedule, and your progress',
             icon: 'AdjustmentsHorizontalIcon',
             image: "https://images.unsplash.com/photo-1702561474109-17616a842a5d",
             alt: 'Woman performing yoga pose on mat',
@@ -63,7 +63,7 @@ const PlatformDemo = () => {
     };
 
     return (
-        <section className="section-padding bg-background overflow-hidden">
+        <section className="section-padding bg-section-alt/30 overflow-hidden">
             <div className="container-wide">
                 <div className="flex flex-col lg:flex-row gap-16 items-center">
                     {/* Content Side */}
@@ -75,13 +75,13 @@ const PlatformDemo = () => {
 
                         <div className="mb-fluid-12">
                             <h2 id="platform-technology" className="text-fluid-4xl font-bold text-foreground mb-4 leading-tight">
-                                Experience the <br className="hidden md:block" />
+                                Care That Notices <br className="hidden md:block" />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-800 to-wellness-600">
-                                    Future of Care
+                                    Things Early
                                 </span>
                             </h2>
                             <p className="text-fluid-xl text-muted-foreground leading-relaxed">
-                                Our AI-powered platform transforms raw health data into actionable, life-saving insights with clinical precision.
+                                We turn everyday numbers — your heart rate, your sleep, your last check-up — into something you can actually act on, with real clinical grounding behind every recommendation.
                             </p>
                         </div>
 
