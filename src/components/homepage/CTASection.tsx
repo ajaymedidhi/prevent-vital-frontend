@@ -32,32 +32,32 @@ const CTASection = () => {
         style={{ width: 'clamp(14rem, 28vw, 28rem)', height: 'clamp(14rem, 28vw, 28rem)' }} />
 
       <div className="container-wide relative z-10">
-        <div className="max-w-3xl mx-auto text-center space-y-8">
+        <div className="max-w-3xl mx-auto text-center space-y-4 md:space-y-8">
 
           {/* Overline */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 border border-white/15 rounded-full backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-1.5 bg-white/10 border border-white/15 rounded-full backdrop-blur-sm">
             <Shield size={13} className="text-emerald-300" />
-            <span className="text-xs font-semibold text-white/80 tracking-wide">Today Is a Fine Day to Start</span>
+            <span className="text-[11px] md:text-xs font-semibold text-white/80 tracking-wide">Today Is a Fine Day to Start</span>
           </div>
 
           {/* Headline */}
           <h2
             id="cta-heading"
-            className="text-fluid-4xl font-semibold text-white leading-[1.15] tracking-tight"
+            className="text-2xl md:text-[length:var(--fz-4xl)] font-semibold text-white leading-[1.15] tracking-tight"
           >
             Your Future Self <span className="text-white/40">Will Thank You for This</span>
           </h2>
 
           {/* Subtext */}
-          <p className="text-fluid-lg text-white/65 max-w-xl mx-auto leading-relaxed">
+          <p className="text-sm md:text-[length:var(--fz-lg)] text-white/65 max-w-xl mx-auto leading-relaxed line-clamp-2 md:line-clamp-none">
             Five minutes today for a clearer picture of your health tomorrow. No commitment, no judgment — just a starting point.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center pt-1 md:pt-2">
             <Link
               to="/ai-health-assessment"
-              className="group inline-flex items-center gap-2.5 px-8 py-4 rounded-xl text-sm font-semibold bg-white text-primary hover:bg-white/95 transition-all duration-200 hover:-translate-y-px"
+              className="group inline-flex items-center gap-2.5 px-6 py-3 md:px-8 md:py-4 rounded-xl text-xs md:text-sm font-semibold bg-white text-primary hover:bg-white/95 transition-all duration-200 hover:-translate-y-px"
               style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.15)' }}
             >
               Get My Free Assessment
@@ -66,7 +66,7 @@ const CTASection = () => {
 
             <Link
               to="/medical-professional-portal"
-              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl text-sm font-semibold text-white border border-white/20 hover:bg-white/10 hover:border-white/30 backdrop-blur-sm transition-all duration-200"
+              className="inline-flex items-center gap-2.5 px-6 py-3 md:px-8 md:py-4 rounded-xl text-xs md:text-sm font-semibold text-white border border-white/20 hover:bg-white/10 hover:border-white/30 backdrop-blur-sm transition-all duration-200"
             >
               <Users size={16} />
               For Healthcare Providers

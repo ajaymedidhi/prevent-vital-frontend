@@ -1,7 +1,4 @@
-
-import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Star, ChevronLeft, ChevronRight, TrendingUp, Clock } from 'lucide-react';
+import { Quote } from 'lucide-react';
 
 interface Testimonial {
     id: string;
@@ -11,55 +8,68 @@ interface Testimonial {
     quote: string;
     improvement: string;
     duration: string;
-    rating: number;
-    photo: string;
 }
 
 // Illustrative testimonials for design purposes — replace with real, consented
-// customer stories and photos before this section goes live.
+// customer stories before this section goes live.
 const testimonials: Testimonial[] = [
     {
         id: '1',
-        name: 'Rajesh Kumar',
+        name: 'Rajesh',
         age: 52,
         condition: 'Type 2 Diabetes Prevention',
-        quote: 'PreventVital helped me prevent diabetes through personalized lifestyle changes. The AI predictions were accurate, and the yoga therapy programs transformed my health. My HbA1c dropped from 6.2 to 5.4 in just 6 months.',
+        quote: 'PreventVital helped me prevent diabetes through personalized lifestyle changes. The AI predictions were accurate, and the yoga therapy programs transformed my health.',
         improvement: '87% Risk Reduction',
-        duration: '6 Months',
-        rating: 5,
-        photo: 'https://images.unsplash.com/photo-1531339413195-cc6c17163974?auto=format&fit=crop&w=200&h=200&q=80',
+        duration: '6 months',
     },
     {
         id: '2',
-        name: 'Priya Sharma',
+        name: 'Priya',
         age: 45,
         condition: 'Hypertension Management',
-        quote: 'The continuous blood pressure monitoring and stress reduction programs have been life-changing. I no longer need medication, and my blood pressure is consistently normal. The meditation sessions are incredibly effective.',
+        quote: 'The continuous blood pressure monitoring and stress reduction programs have been life-changing. I no longer need medication, and my blood pressure is consistently normal.',
         improvement: 'Medication-Free',
-        duration: '8 Months',
-        rating: 5,
-        photo: 'https://images.unsplash.com/photo-1749189516333-168cfd97de0b?auto=format&fit=crop&w=200&h=200&q=80',
+        duration: '8 months',
     },
     {
         id: '3',
-        name: 'Amit Patel',
+        name: 'Amit',
         age: 38,
         condition: 'Weight Management',
-        quote: "Lost 18 kg in 10 months with PreventVital's holistic approach. The combination of AI-driven nutrition plans, exercise tracking, and behavioral therapy made weight loss sustainable. I feel healthier and more energetic than ever.",
-        improvement: '18 kg Weight Loss',
-        duration: '10 Months',
-        rating: 5,
-        photo: 'https://images.unsplash.com/photo-1757744705465-ea08b0ddc38a?auto=format&fit=crop&w=200&h=200&q=80',
+        quote: "Lost 18 kg with PreventVital's holistic approach. The combination of AI-driven nutrition plans, exercise tracking, and behavioral therapy made weight loss sustainable.",
+        improvement: '18 kg Lost',
+        duration: '10 months',
+    },
+    {
+        id: '4',
+        name: 'Sanjay',
+        age: 49,
+        condition: 'Cholesterol & ASCVD Risk',
+        quote: "Seeing my actual 10-year cardiac risk number, not just a cholesterol reading, was the wake-up call I needed. It's dropped from high to moderate and I finally understand why it matters.",
+        improvement: 'ASCVD Risk Halved',
+        duration: '1 year',
+    },
+    {
+        id: '5',
+        name: 'Divya',
+        age: 34,
+        condition: 'Stress & Sleep',
+        quote: 'Family history of heart disease made me anxious to even check my numbers. CVITAL turned that anxiety into a plan — daily breathwork and a score I actually watch improve.',
+        improvement: '28% Better Sleep',
+        duration: '4 months',
+    },
+    {
+        id: '6',
+        name: 'Karan',
+        age: 41,
+        condition: 'Corporate Wellness Check',
+        quote: "My company's wellness benefit got me to take the assessment. Found out my vascular age was 8 years ahead of my real age — that alone changed how I eat and move every day.",
+        improvement: 'Vascular Age −6 yrs',
+        duration: '9 months',
     },
 ];
 
 const TestimonialSection = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const t = testimonials[currentIndex];
-
-    const handlePrevious = () => setCurrentIndex((p) => (p === 0 ? testimonials.length - 1 : p - 1));
-    const handleNext = () => setCurrentIndex((p) => (p === testimonials.length - 1 ? 0 : p + 1));
-
     return (
         <section className="section-padding bg-section-alt/40 relative overflow-hidden">
             {/* Background pattern */}
@@ -70,142 +80,57 @@ const TestimonialSection = () => {
 
             <div className="container-wide relative z-10">
                 {/* Section header */}
-                <div className="text-center mb-14">
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-accent/8 border border-accent/15 rounded-full mb-5">
-                        <Star size={13} className="text-accent fill-accent" />
-                        <span className="text-xs font-bold text-accent uppercase tracking-widest">Success Stories</span>
+                <div className="text-center mb-7 md:mb-14">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 md:px-3.5 md:py-1.5 bg-accent/8 border border-accent/15 rounded-full mb-3 md:mb-5">
+                        <Quote size={13} className="text-accent" />
+                        <span className="text-[11px] md:text-xs font-bold text-accent uppercase tracking-widest">Real Stories</span>
                     </div>
-                    <h2 className="text-fluid-4xl font-semibold text-foreground leading-tight tracking-tight mb-3">
+                    <h2 className="text-2xl md:text-[length:var(--fz-4xl)] font-semibold text-foreground leading-tight tracking-tight mb-2 md:mb-3">
                         Real People,{' '}
                         <span className="gradient-text-soft">Real Turnarounds</span>
                     </h2>
-                    <p className="text-base text-muted-foreground max-w-xl mx-auto">
+                    <p className="text-xs md:text-base text-muted-foreground max-w-xl mx-auto line-clamp-2 md:line-clamp-none">
                         Behind every score is a person who decided today was the day to start. Here's what that looked like for a few of them.
                     </p>
                 </div>
 
-                {/* Main testimonial card */}
-                <div className="max-w-4xl mx-auto">
-                    <div
-                        className="bg-white rounded-3xl p-8 md:p-10 border border-border/60 relative overflow-hidden"
-                        style={{ boxShadow: 'var(--shadow-lg)' }}
-                    >
-                        {/* Decorative gradient corner */}
-                        <div className="absolute top-0 right-0 w-48 h-48 rounded-full blur-[60px] opacity-[0.07] bg-primary pointer-events-none" />
-                        <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full blur-[50px] opacity-[0.06] bg-accent pointer-events-none" />
+            </div>
 
-                        {/* Large quotation mark */}
-                        <div className="absolute top-6 right-8 text-[120px] font-serif leading-none text-primary/6 select-none pointer-events-none">"</div>
+            {/* Testimonial marquee — drifts continuously left, pauses on hover */}
+            <div className="relative mt-2">
+                {/* Edge fade masks */}
+                <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-section-alt/40 to-transparent z-10 pointer-events-none" />
+                <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-section-alt/40 to-transparent z-10 pointer-events-none" />
 
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={t.id}
-                                initial={{ opacity: 0, y: 12 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -8 }}
-                                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                                className="relative z-10 flex flex-col md:flex-row gap-8 items-start"
+                <div className="group overflow-hidden">
+                    <div className="flex w-max gap-5 animate-scroll [animation-duration:48s] group-hover:[animation-play-state:paused]">
+                        {[...testimonials, ...testimonials].map((t, i) => (
+                            <div
+                                key={`${t.id}-${i}`}
+                                className="bg-white rounded-2xl p-6 border border-border/60 flex flex-col w-[340px] flex-shrink-0"
+                                style={{ boxShadow: 'var(--shadow-sm)' }}
                             >
-                                {/* Avatar column */}
-                                <div className="flex-shrink-0 flex flex-col items-center gap-3">
-                                    <div className="relative">
-                                        <img
-                                            src={t.photo}
-                                            alt={t.name}
-                                            loading="lazy"
-                                            className="w-20 h-20 rounded-2xl object-cover shadow-md"
-                                        />
-                                        <div className="absolute -bottom-2 -right-2 w-7 h-7 bg-accent rounded-full flex items-center justify-center shadow-md border-2 border-white">
-                                            <Star size={11} className="text-white fill-white" />
-                                        </div>
-                                    </div>
-                                    <div className="text-center">
-                                        <p className="text-sm font-bold text-foreground">{t.name}</p>
-                                        <p className="text-xs text-muted-foreground">Age {t.age}</p>
+                                <Quote size={22} className="text-primary/15 mb-3 flex-shrink-0" fill="currentColor" />
+
+                                <span className="inline-flex self-start px-2.5 py-1 rounded-full bg-primary/8 text-primary text-[10px] font-bold uppercase tracking-wide mb-3">
+                                    {t.condition}
+                                </span>
+
+                                <blockquote className="text-sm text-foreground leading-relaxed flex-1 line-clamp-4 md:line-clamp-none">
+                                    "{t.quote}"
+                                </blockquote>
+
+                                <div className="flex items-center justify-between gap-3 mt-5 pt-4 border-t border-border/60">
+                                    <p className="text-sm font-bold text-foreground">
+                                        {t.name}, {t.age}
+                                    </p>
+                                    <div className="text-right leading-tight">
+                                        <p className="text-xs font-bold text-accent">{t.improvement}</p>
+                                        <p className="text-[10px] text-muted-foreground">in {t.duration}</p>
                                     </div>
                                 </div>
-
-                                {/* Content column */}
-                                <div className="flex-1 space-y-5">
-                                    {/* Condition + stars */}
-                                    <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                                        <span className="inline-flex px-2.5 py-1 rounded-full bg-primary/8 text-primary text-[11px] font-bold uppercase tracking-wide">
-                                            {t.condition}
-                                        </span>
-                                        <div className="flex items-center gap-0.5">
-                                            {[...Array(t.rating)].map((_, i) => (
-                                                <Star key={i} size={14} className="text-amber-400 fill-amber-400" />
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Quote */}
-                                    <blockquote className="text-lg md:text-xl font-medium text-foreground leading-relaxed">
-                                        "{t.quote}"
-                                    </blockquote>
-
-                                    {/* Result metrics */}
-                                    <div className="flex gap-6 pt-4 border-t border-border/60">
-                                        <div className="flex items-center gap-2.5">
-                                            <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                                                <TrendingUp size={15} className="text-accent" />
-                                            </div>
-                                            <div>
-                                                <p className="text-[10px] font-bold text-muted-foreground/70 uppercase tracking-wider">Result</p>
-                                                <p className="text-sm font-bold text-accent">{t.improvement}</p>
-                                            </div>
-                                        </div>
-                                        <div className="w-px bg-border" />
-                                        <div className="flex items-center gap-2.5">
-                                            <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center">
-                                                <Clock size={15} className="text-primary" />
-                                            </div>
-                                            <div>
-                                                <p className="text-[10px] font-bold text-muted-foreground/70 uppercase tracking-wider">Timeframe</p>
-                                                <p className="text-sm font-bold text-foreground">{t.duration}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        </AnimatePresence>
-                    </div>
-
-                    {/* Navigation controls */}
-                    <div className="flex items-center justify-between mt-6 px-1">
-                        {/* Dot indicators */}
-                        <div className="flex items-center gap-2">
-                            {testimonials.map((_, i) => (
-                                <button
-                                    key={i}
-                                    onClick={() => setCurrentIndex(i)}
-                                    className={`rounded-full transition-all duration-300 ${
-                                        i === currentIndex
-                                            ? 'w-6 h-2 bg-primary'
-                                            : 'w-2 h-2 bg-border hover:bg-muted-foreground/40'
-                                    }`}
-                                    aria-label={`Go to testimonial ${i + 1}`}
-                                />
-                            ))}
-                        </div>
-
-                        {/* Chevron buttons */}
-                        <div className="flex items-center gap-2">
-                            <button
-                                onClick={handlePrevious}
-                                className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
-                                aria-label="Previous testimonial"
-                            >
-                                <ChevronLeft size={18} />
-                            </button>
-                            <button
-                                onClick={handleNext}
-                                className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
-                                aria-label="Next testimonial"
-                            >
-                                <ChevronRight size={18} />
-                            </button>
-                        </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

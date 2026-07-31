@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Sparkles, Wind, Salad, CalendarHeart, ArrowRight } from 'lucide-react';
+import { Sparkles, Wind, Salad, CalendarHeart, ArrowRight, MessageCircle } from 'lucide-react';
 import FadeInSection from './FadeInSection';
 
 interface TeamCard {
@@ -58,14 +58,14 @@ const WellnessTeamSection = () => {
     return (
         <section className="section-padding bg-background" aria-labelledby="wellness-team-heading">
             <div className="container-wide">
-                <FadeInSection className="text-center mb-14">
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-primary/6 border border-primary/15 rounded-full mb-5">
-                        <span className="text-xs font-bold text-primary uppercase tracking-widest">Your Wellness Team</span>
+                <FadeInSection className="text-center mb-7 md:mb-14">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 md:px-3.5 md:py-1.5 bg-primary/6 border border-primary/15 rounded-full mb-3 md:mb-5">
+                        <span className="text-[11px] md:text-xs font-bold text-primary uppercase tracking-widest">Your Wellness Team</span>
                     </div>
-                    <h2 id="wellness-team-heading" className="text-fluid-4xl font-bold text-foreground mb-4 tracking-tight">
+                    <h2 id="wellness-team-heading" className="text-2xl md:text-[length:var(--fz-4xl)] font-bold text-foreground mb-2 md:mb-4 tracking-tight">
                         You're Not Doing This <span className="text-foreground/30">With Just an App</span>
                     </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed line-clamp-2 md:line-clamp-none">
                         Behind every score and every program is a mix of real people and a genuinely helpful AI — working together, not instead of each other.
                     </p>
                 </FadeInSection>
@@ -90,13 +90,27 @@ const WellnessTeamSection = () => {
                                             />
                                         </div>
                                     ) : (
+                                        // Mirrors the VITA message-card motif from MeetVita.tsx, rather than
+                                        // a generic icon-in-a-circle like the other three team cards use.
                                         <div
-                                            className="relative h-40 flex items-center justify-center overflow-hidden"
+                                            className="relative h-40 flex items-center justify-center overflow-hidden p-5"
                                             style={{ background: 'var(--gradient-health)' }}
                                         >
                                             <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 1.5px 1.5px, white 1px, transparent 0)', backgroundSize: '20px 20px' }} />
-                                            <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center">
-                                                <Icon size={26} className="text-white" />
+                                            <div
+                                                className="relative bg-white/95 backdrop-blur-md rounded-2xl px-4 py-3 max-w-[85%]"
+                                                style={{ boxShadow: 'var(--shadow-md)' }}
+                                            >
+                                                <div className="flex items-center gap-2 mb-1.5">
+                                                    <div className="w-6 h-6 rounded-full bg-gradient-to-br from-brand-800 to-wellness-600 flex items-center justify-center flex-shrink-0">
+                                                        <MessageCircle size={12} className="text-white" />
+                                                    </div>
+                                                    <p className="text-xs font-bold text-foreground">VITA</p>
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse ml-auto" />
+                                                </div>
+                                                <p className="text-[11px] text-foreground/80 leading-snug">
+                                                    Hi, I'm here whenever you need me.
+                                                </p>
                                             </div>
                                         </div>
                                     )}
@@ -108,9 +122,9 @@ const WellnessTeamSection = () => {
                                                     <Icon size={14} />
                                                 </div>
                                             )}
-                                            <h3 className="text-base font-bold text-foreground">{member.title}</h3>
+                                            <h3 className="text-sm md:text-base font-bold text-foreground">{member.title}</h3>
                                         </div>
-                                        <p className="text-sm text-muted-foreground leading-relaxed mb-5 flex-1">
+                                        <p className="text-xs md:text-sm text-muted-foreground leading-relaxed mb-3 md:mb-5 flex-1 line-clamp-2 md:line-clamp-none">
                                             {member.description}
                                         </p>
                                         <Link

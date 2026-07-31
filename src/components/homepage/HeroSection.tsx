@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, Activity, Heart, Shield, Brain, ChevronRight } from 'lucide-react';
+import { ArrowRight, ChevronRight, Heart, Shield, Activity, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const APP_STORE_URL = 'https://apps.apple.com/in/app/prevent-vital/id6781125644';
 const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.preventvital.app';
 
 const AppleLogo = () => (
-  <svg viewBox="0 0 24 24" width="28" height="28" fill="#ffffff" aria-hidden="true">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff" aria-hidden="true">
     <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.415-3.13c.837-1.012 1.4-2.42 1.245-3.766-1.207.052-2.662.805-3.532 1.817-.78.887-1.454 2.32-1.273 3.622 1.297.104 2.622-.66 3.56-1.673z" />
   </svg>
 );
 
 const GooglePlayLogo = () => (
-  <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
     <path fill="#4285F4" d="M3.609 1.814L13.792 12 3.61 22.186a1.996 1.996 0 0 1-.61-1.442V3.256c0-.554.225-1.055.609-1.442z" />
     <path fill="#34A853" d="M14.499 12.707l2.302 2.302-10.937 6.333 8.635-8.635z" />
     <path fill="#FBBC04" d="M17.698 9.509l2.807 1.626c.71.41 1.109.902 1.109 1.492s-.399 1.082-1.109 1.492l-2.807 1.626L15.401 12l2.297-2.29z" />
@@ -30,6 +30,12 @@ interface HeroSectionProps {
   className?: string;
 }
 
+/**
+ * Background photography is Unsplash placeholder imagery (free-to-use, no
+ * attribution required) chosen to preview the premium/editorial direction.
+ * Swap `image` below for licensed or PreventVital-branded photography before
+ * this ships to production.
+ */
 const slides = [
   {
     overline: 'Your health, in plain language',
@@ -40,11 +46,11 @@ const slides = [
     cta: 'Get My Free Score',
     ctaLink: '/ai-health-assessment',
     secondaryCta: 'See How It Works',
-    secondaryLink: '/disease-prevention-programs',
+    secondaryLink: '/how-it-works',
     tab: 'Your Score',
-    icon: Shield,
-    color: 'from-brand-800 to-brand-700',
-    accentColor: '#0d9488',
+    accentColor: '#2dd4bf',
+    image: 'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?auto=format&fit=crop&w=2069&q=80',
+    imagePosition: 'center 20%',
   },
   {
     overline: 'Always quietly watching out for you',
@@ -57,9 +63,9 @@ const slides = [
     secondaryCta: 'Learn More',
     secondaryLink: '/ai-health-assessment',
     tab: 'Everyday Care',
-    icon: Activity,
-    color: 'from-brand-900 to-brand-800',
-    accentColor: '#0891b2',
+    accentColor: '#38bdf8',
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=2070&q=80',
+    imagePosition: 'center 30%',
   },
   {
     overline: 'Care that feels like care',
@@ -72,251 +78,17 @@ const slides = [
     secondaryCta: 'See Therapies',
     secondaryLink: '/disease-prevention-programs',
     tab: 'Whole-Person Care',
-    icon: Brain,
-    color: 'from-[#134e4a] to-brand-800',
-    accentColor: '#14b8a6',
+    accentColor: '#5eead4',
+    image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=2069&q=80',
+    imagePosition: 'center 35%',
   },
 ];
 
-const statsData = [
-  { value: '10,000+', label: 'Patients Served',   icon: Heart },
-  { value: '50+',     label: 'Hospital Partners',  icon: Shield },
-  { value: '96%',     label: 'Satisfaction Rate',  icon: Activity },
+const trustBadges = [
+  { icon: Heart, label: '10,000+ Patients Served' },
+  { icon: Shield, label: 'ACC/AHA Clinically Grounded' },
+  { icon: Activity, label: '96% Satisfaction Rate' },
 ];
-
-const widgetShell = (accentColor: string, children: React.ReactNode) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20, scale: 0.96 }}
-    animate={{ opacity: 1, y: 0, scale: 1 }}
-    exit={{ opacity: 0, y: -12, scale: 0.97 }}
-    transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-    className="relative bg-white/96 backdrop-blur-2xl border border-white/80 rounded-3xl p-6 w-[320px]"
-    style={{ boxShadow: `0 24px 64px -12px ${accentColor}28, 0 8px 32px -4px rgba(15,30,60,0.12)` }}
-  >
-    {children}
-  </motion.div>
-);
-
-/* ─── Slide 01: AI Risk Prediction ─── */
-const PredictionWidget = ({ accentColor }: { accentColor: string }) =>
-  widgetShell(accentColor, <>
-    <div className="flex items-center justify-between mb-4">
-      <div>
-        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.12em] mb-0.5">PreventVital AI</p>
-        <p className="text-sm font-bold text-slate-800">Risk Prediction</p>
-      </div>
-      <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 rounded-full border border-emerald-100">
-        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-        <span className="text-[10px] font-bold text-emerald-700">Active</span>
-      </div>
-    </div>
-
-    <div className="flex items-center gap-4 p-4 bg-gradient-to-br from-slate-50 to-sky-50/40 rounded-2xl mb-3 border border-slate-100/60">
-      <div className="relative w-[82px] h-[82px] flex-shrink-0">
-        <svg viewBox="0 0 82 82" className="w-full h-full -rotate-90">
-          <circle cx="41" cy="41" r="34" fill="none" stroke="#e8eef4" strokeWidth="6" />
-          <circle cx="41" cy="41" r="34" fill="none" stroke={accentColor} strokeWidth="6"
-            strokeDasharray={`${0.85 * 2 * Math.PI * 34} ${2 * Math.PI * 34}`} strokeLinecap="round" />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-xl font-bold text-slate-800 leading-none">85</span>
-          <span className="text-[9px] font-semibold text-slate-400">/ 100</span>
-        </div>
-      </div>
-      <div>
-        <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Health Score</p>
-        <p className="text-sm font-bold text-slate-800 mt-0.5">Excellent</p>
-        <div className="flex items-center gap-1 mt-1.5">
-          <span className="text-[10px] font-bold text-emerald-500">↑ 4.2%</span>
-          <span className="text-[10px] text-slate-400">this month</span>
-        </div>
-      </div>
-    </div>
-
-    <div className="space-y-2.5 mb-3">
-      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Condition Risk Breakdown</p>
-      {[
-        { label: 'Diabetes Risk', pct: 12, color: '#22c55e', level: 'Low' },
-        { label: 'Cardiac Risk',  pct: 29, color: '#f59e0b', level: 'Moderate' },
-        { label: 'Hypertension',  pct: 18, color: '#22c55e', level: 'Low' },
-      ].map((r) => (
-        <div key={r.label}>
-          <div className="flex justify-between mb-1">
-            <span className="text-[10px] font-semibold text-slate-600">{r.label}</span>
-            <span className="text-[10px] font-bold" style={{ color: r.color }}>{r.level} · {r.pct}%</span>
-          </div>
-          <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-            <div className="h-full rounded-full transition-all" style={{ width: `${r.pct}%`, backgroundColor: r.color }} />
-          </div>
-        </div>
-      ))}
-    </div>
-
-    <div className="p-2.5 rounded-xl flex items-center gap-2.5"
-      style={{ backgroundColor: `${accentColor}0E`, border: `1px solid ${accentColor}1C` }}>
-      <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
-        style={{ backgroundColor: `${accentColor}22` }}>
-        <svg className="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none">
-          <circle cx="7" cy="7" r="6" stroke={accentColor} strokeWidth="1.5" opacity="0.4" />
-          <path d="M7 4v3l2 1.5" stroke={accentColor} strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
-      </div>
-      <p className="text-[10px] font-semibold text-slate-700 leading-snug">
-        AI analysed <span className="font-bold" style={{ color: accentColor }}>14 biomarkers</span> · Overall risk is low
-      </p>
-    </div>
-  </>);
-
-/* ─── Slide 02: Real-Time Monitoring ─── */
-const MonitoringWidget = ({ accentColor }: { accentColor: string }) =>
-  widgetShell(accentColor, <>
-    <div className="flex items-center justify-between mb-4">
-      <div>
-        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.12em] mb-0.5">Wearable Sync</p>
-        <p className="text-sm font-bold text-slate-800">Real-Time Monitoring</p>
-      </div>
-      <div className="flex items-center gap-1.5 px-2.5 py-1 bg-red-50 rounded-full border border-red-100">
-        <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-        <span className="text-[10px] font-bold text-red-600">Recording</span>
-      </div>
-    </div>
-
-    <div className="p-4 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl mb-3 relative overflow-hidden">
-      <div className="flex items-center justify-between mb-3">
-        <div>
-          <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mb-0.5">Heart Rate</p>
-          <div className="flex items-end gap-1">
-            <span className="text-3xl font-bold text-white leading-none">72</span>
-            <span className="text-sm text-slate-400 mb-0.5">BPM</span>
-          </div>
-        </div>
-        <div className="text-right">
-          <p className="text-[9px] text-slate-400">Normal range</p>
-          <p className="text-[10px] font-semibold text-emerald-400">60–100 BPM</p>
-        </div>
-      </div>
-      <svg viewBox="0 0 240 44" className="w-full h-10" preserveAspectRatio="none">
-        <path
-          d="M0,22 L28,22 L34,22 L38,4 L42,40 L46,12 L50,22 L88,22 L94,22 L98,4 L102,40 L106,12 L110,22 L148,22 L154,22 L158,4 L162,40 L166,12 L170,22 L208,22 L214,22 L218,4 L222,40 L226,12 L230,22 L240,22"
-          fill="none" stroke={accentColor} strokeWidth="2"
-          strokeLinecap="round" strokeLinejoin="round"
-        />
-      </svg>
-    </div>
-
-    <div className="grid grid-cols-3 gap-2 mb-3">
-      {[
-        { label: 'Steps',      value: '8,432', sub: 'today', pct: 84, color: '#3b82f6' },
-        { label: 'Active Min', value: '47',    sub: 'of 60', pct: 78, color: accentColor },
-        { label: 'Calories',   value: '312',   sub: 'kcal',  pct: 52, color: '#f59e0b' },
-      ].map((m) => (
-        <div key={m.label} className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-center">
-          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wide mb-1">{m.label}</p>
-          <p className="text-base font-bold text-slate-800 leading-none">{m.value}</p>
-          <p className="text-[9px] text-slate-400 mt-0.5">{m.sub}</p>
-          <div className="h-1.5 bg-slate-200 rounded-full mt-2 overflow-hidden">
-            <div className="h-full rounded-full" style={{ width: `${m.pct}%`, backgroundColor: m.color }} />
-          </div>
-        </div>
-      ))}
-    </div>
-
-    <div className="flex items-center gap-2.5 p-2.5 bg-slate-50 rounded-xl border border-slate-100">
-      <div className="w-7 h-7 rounded-lg bg-slate-200 flex items-center justify-center flex-shrink-0">
-        <svg className="w-4 h-4 text-slate-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="6" y="2" width="12" height="20" rx="3" />
-          <path d="M12 18h.01" strokeWidth="2.5" strokeLinecap="round" />
-        </svg>
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-[10px] font-bold text-slate-700 truncate">Samsung Galaxy Watch</p>
-        <p className="text-[9px] text-slate-400">Connected · Battery 84%</p>
-      </div>
-      <div className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
-    </div>
-  </>);
-
-/* ─── Slide 03: Therapy & Wellness Program ─── */
-const TherapyWidget = ({ accentColor }: { accentColor: string }) =>
-  widgetShell(accentColor, <>
-    <div className="flex items-center justify-between mb-4">
-      <div>
-        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.12em] mb-0.5">Wellness Program</p>
-        <p className="text-sm font-bold text-slate-800">Your Therapy Plan</p>
-      </div>
-      <div className="flex items-center gap-1 px-2.5 py-1 bg-amber-50 rounded-full border border-amber-100">
-        <span className="text-[11px]">🔥</span>
-        <span className="text-[10px] font-bold text-amber-700">12-Day Streak</span>
-      </div>
-    </div>
-
-    <div className="p-4 bg-gradient-to-br from-slate-50 to-teal-50/30 rounded-2xl mb-3 border border-slate-100/60">
-      <div className="flex items-start justify-between mb-2.5">
-        <div>
-          <p className="text-sm font-bold text-slate-800">Diabetes Prevention</p>
-          <p className="text-[11px] text-slate-500">Yoga & Breathwork · 8 Weeks</p>
-        </div>
-        <span className="text-[10px] font-bold text-white px-2.5 py-1 rounded-full flex-shrink-0"
-          style={{ backgroundColor: accentColor }}>
-          Week 3
-        </span>
-      </div>
-      <div className="flex items-center gap-2 mt-3">
-        <div className="flex-1 h-2.5 bg-slate-200 rounded-full overflow-hidden">
-          <div className="h-full rounded-full"
-            style={{ width: '38%', background: `linear-gradient(to right, ${accentColor}, ${accentColor}bb)` }} />
-        </div>
-        <span className="text-[11px] font-bold text-slate-600 flex-shrink-0">38%</span>
-      </div>
-    </div>
-
-    <div className="mb-3">
-      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Today's Sessions</p>
-      <div className="space-y-2">
-        {[
-          { title: 'Morning Yoga',        duration: '30 min', done: true },
-          { title: 'Pranayama Breathwork', duration: '20 min', done: false },
-        ].map((s) => (
-          <div key={s.title}
-            className={`flex items-center gap-3 p-3 rounded-xl border ${
-              s.done ? 'bg-emerald-50 border-emerald-100' : 'bg-white border-slate-100'
-            }`}>
-            <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
-              s.done ? 'bg-emerald-500' : 'border-2 border-slate-200 bg-white'
-            }`}>
-              {s.done && (
-                <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 12 12" fill="none"
-                  stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                  <path d="M2 6l3 3 5-5" />
-                </svg>
-              )}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className={`text-xs font-bold truncate ${s.done ? 'text-emerald-800' : 'text-slate-700'}`}>
-                {s.title}
-              </p>
-              <p className="text-[10px] text-slate-400">{s.duration}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <div className="grid grid-cols-2 gap-2">
-      {[
-        { label: 'Stress Level',  value: '↓ 42%', color: accentColor, bg: `${accentColor}12` },
-        { label: 'Sleep Quality', value: '↑ 28%', color: '#3b82f6',   bg: '#3b82f612' },
-      ].map((r) => (
-        <div key={r.label} className="p-3 rounded-xl border border-slate-100 text-center"
-          style={{ backgroundColor: r.bg }}>
-          <p className="text-[9px] font-semibold text-slate-500 uppercase tracking-wide mb-1">{r.label}</p>
-          <p className="text-base font-bold" style={{ color: r.color }}>{r.value}</p>
-        </div>
-      ))}
-    </div>
-  </>);
-
-const WIDGETS = [PredictionWidget, MonitoringWidget, TherapyWidget];
 
 const HeroSection = ({ className = '' }: HeroSectionProps) => {
   const [current, setCurrent] = useState(0);
@@ -330,51 +102,40 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
 
   return (
     <section
-      className={`relative w-full overflow-hidden bg-background ${className}`}
+      className={`relative w-full overflow-hidden ${className}`}
+      style={{ minHeight: 'clamp(560px, 92vh, 880px)' }}
       aria-labelledby="hero-heading"
     >
-      {/* ── Background layers ── */}
-      <div className="absolute inset-0 healthcare-mesh" />
-
-      <div
-        className="absolute inset-0 opacity-[0.025]"
-        style={{
-          backgroundImage: `
-            linear-gradient(hsl(var(--primary)) 1px, transparent 1px),
-            linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)
-          `,
-          backgroundSize: '60px 60px',
-        }}
-      />
-
+      {/* ── Background photography, crossfaded per slide ── */}
       <AnimatePresence>
         <motion.div
           key={current}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, scale: 1.04 }}
+          animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.2 }}
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: `radial-gradient(ellipse 60% 50% at 70% 40%, ${slide.accentColor}14 0%, transparent 70%)`,
-          }}
-        />
+          transition={{ opacity: { duration: 1.1, ease: 'easeInOut' }, scale: { duration: 7, ease: 'easeOut' } }}
+          className="absolute inset-0"
+        >
+          <img
+            src={slide.image}
+            alt=""
+            className="w-full h-full object-cover"
+            style={{ objectPosition: slide.imagePosition }}
+          />
+        </motion.div>
       </AnimatePresence>
 
-      {/* ── Two-column grid — both columns anchored to the same container ── */}
-      <div
-        className="relative z-10 container-wide w-full h-full"
-        style={{
-          paddingTop:    'clamp(2.5rem, 2rem + 3vw, 5rem)',
-          paddingBottom: 'clamp(2rem, 1.5rem + 2vw, 3.5rem)',
-          display: 'grid',
-          alignItems: 'center',
-        }}
-      >
-        <div className="grid lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_400px] items-start gap-8 lg:gap-12 xl:gap-16">
+      {/* ── Darkening overlays for text legibility ── */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/35" />
+      <div className="absolute inset-0 hidden md:block bg-gradient-to-r from-black/70 via-black/25 to-transparent" />
 
-          {/* ─── Left: text content ─── */}
-          <div>
+      {/* ── Content ── */}
+      <div
+        className="relative z-10 container-wide w-full h-full flex flex-col"
+        style={{ minHeight: 'clamp(560px, 92vh, 880px)' }}
+      >
+        <div className="flex-1 flex items-end md:items-center" style={{ paddingTop: 'clamp(3rem, 2.5rem + 2vw, 4.5rem)' }}>
+          <div className="max-w-2xl">
             <AnimatePresence mode="wait">
               <motion.div
                 key={current}
@@ -382,17 +143,18 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -16 }}
                 transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                className="space-y-6"
+                className="space-y-4 md:space-y-6"
               >
                 {/* Overline badge */}
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.05, duration: 0.4 }}
-                  className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-border rounded-full shadow-xs"
+                  className="inline-flex items-center gap-1.5 md:gap-2 px-2.5 py-1 md:px-3.5 md:py-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full"
                 >
-                  <Sparkles size={13} className="text-accent" />
-                  <span className="text-xs font-semibold text-primary tracking-wide">
+                  <Sparkles size={12} className="text-white md:hidden" />
+                  <Sparkles size={13} className="text-white hidden md:block" />
+                  <span className="text-[11px] md:text-xs font-semibold text-white tracking-wide">
                     {slide.overline}
                   </span>
                 </motion.div>
@@ -400,20 +162,19 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
                 {/* Headline */}
                 <motion.h1
                   id="hero-heading"
-                  className="font-semibold leading-[1.1] tracking-tight text-foreground text-balance"
-                  style={{ fontSize: 'var(--fz-h1)' }}
+                  className="font-semibold leading-[1.15] md:leading-[1.1] tracking-tight text-white text-balance text-[1.75rem] sm:text-[2.25rem] md:text-[length:var(--fz-h1)]"
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1, duration: 0.5 }}
                 >
                   {slide.titleBefore}{' '}
-                  <span className="gradient-text-soft">{slide.titleHighlight}</span>
+                  <span style={{ color: slide.accentColor }}>{slide.titleHighlight}</span>
                 </motion.h1>
 
                 {/* Description */}
                 <motion.p
-                  className="text-muted-foreground leading-relaxed"
-                  style={{ fontSize: 'var(--fz-lg)', maxWidth: '42ch' }}
+                  className="text-white/80 leading-relaxed text-sm md:text-[length:var(--fz-lg)] line-clamp-2 md:line-clamp-none"
+                  style={{ maxWidth: '42ch' }}
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.18, duration: 0.5 }}
@@ -423,15 +184,15 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
 
                 {/* CTAs */}
                 <motion.div
-                  className="flex flex-col sm:flex-row gap-3 pt-2"
+                  className="flex flex-col sm:flex-row gap-2.5 md:gap-3 pt-1 md:pt-2"
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.26, duration: 0.5 }}
                 >
                   <Link
                     to={slide.ctaLink}
-                    className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold text-primary-foreground transition-all duration-300 hover:opacity-90 hover:-translate-y-px"
-                    style={{ background: 'hsl(var(--primary))', boxShadow: 'var(--shadow-md)' }}
+                    className="group inline-flex items-center justify-center gap-2 px-5 py-2.5 md:px-7 md:py-3.5 rounded-xl text-xs md:text-sm font-semibold text-slate-900 bg-white transition-all duration-300 hover:opacity-90 hover:-translate-y-px"
+                    style={{ boxShadow: '0 12px 32px -8px rgba(0,0,0,0.5)' }}
                   >
                     {slide.cta}
                     <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
@@ -439,66 +200,72 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
 
                   <Link
                     to={slide.secondaryLink}
-                    className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold text-foreground bg-white border border-border hover:bg-muted transition-all duration-300"
+                    className="group inline-flex items-center justify-center gap-2 px-5 py-2.5 md:px-7 md:py-3.5 rounded-xl text-xs md:text-sm font-semibold text-white bg-white/10 backdrop-blur-md border border-white/30 hover:bg-white/20 transition-all duration-300"
                   >
                     {slide.secondaryCta}
-                    <ChevronRight size={15} className="text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
+                    <ChevronRight size={15} className="text-white/70 group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 </motion.div>
 
-                {/* Slide tabs */}
+                {/*
+                // Temporarily hidden — unverified stats (patient count, satisfaction
+                // rate). Re-enable once real, confirmed numbers are available.
                 <motion.div
-                  className="flex gap-5 pt-4 border-t border-border/50"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.35, duration: 0.4 }}
+                  className="flex flex-wrap gap-2.5 pt-2"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.32, duration: 0.5 }}
                 >
-                  {slides.map((s, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setCurrent(i)}
-                      className={`relative pb-1.5 text-xs font-semibold tracking-wide transition-all duration-250 ${
-                        current === i ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
-                      }`}
-                      aria-current={current === i ? 'true' : undefined}
+                  {trustBadges.map(({ icon: Icon, label }) => (
+                    <div
+                      key={label}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/8 backdrop-blur-md border border-white/15"
                     >
-                      <span className="opacity-40 mr-1 text-[10px]">0{i + 1}</span>
-                      {s.tab.toUpperCase()}
-                      {current === i && (
-                        <motion.span
-                          layoutId="heroTab"
-                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent rounded-full"
-                          transition={{ duration: 0.3 }}
-                        />
-                      )}
-                    </button>
+                      <Icon size={12} className="text-white/70" />
+                      <span className="text-[11px] font-semibold text-white/85">{label}</span>
+                    </div>
                   ))}
                 </motion.div>
+                */}
               </motion.div>
             </AnimatePresence>
+          </div>
+        </div>
 
-            {/* Stats row */}
-            {/*
-            // Temporarily hidden as per client request.
-            // Metrics will be updated and re-enabled once official numbers are finalized.
-            <div className="grid grid-cols-3 gap-4 mt-10 pt-8 border-t border-border/50">
-              {statsData.map(({ value, label }) => (
-                <div key={label} className="space-y-0.5">
-                  <p className="font-bold text-foreground leading-none" style={{ fontSize: 'var(--fz-3xl)' }}>
-                    {value}
-                  </p>
-                  <p className="text-xs text-muted-foreground font-medium">{label}</p>
-                </div>
+        {/* ── Bottom bar: slide tabs + app store badges ── */}
+        <div className="pb-8 md:pb-10">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 pt-6">
+            {/* Slide tabs */}
+            <div className="hidden md:flex flex-wrap gap-x-5 gap-y-2">
+              {slides.map((s, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrent(i)}
+                  className={`relative pb-1.5 text-xs font-semibold tracking-wide transition-all duration-250 ${
+                    current === i ? 'text-white' : 'text-white/50 hover:text-white/80'
+                  }`}
+                  aria-current={current === i ? 'true' : undefined}
+                >
+                  <span className="opacity-50 mr-1 text-[10px]">0{i + 1}</span>
+                  {s.tab.toUpperCase()}
+                  {current === i && (
+                    <motion.span
+                      layoutId="heroTab"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full"
+                      style={{ backgroundColor: slide.accentColor }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  )}
+                </button>
               ))}
             </div>
-            */}
 
             {/* Available on App Store / Google Play */}
-            <div className="mt-10 pt-8 border-t border-border/50">
-              <p className="text-[10px] font-bold text-primary uppercase tracking-[0.15em] mb-3">
+            <div>
+              <p className="text-[9px] font-bold text-white/60 uppercase tracking-[0.15em] mb-2">
                 Available On
               </p>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 {appBadges.map(({ name, href, Logo, eyebrow, title }) => (
                   <a
                     key={name}
@@ -506,69 +273,18 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={name}
-                    className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-[#12172a] hover:bg-[#1a2036] hover:-translate-y-px transition-all duration-200"
-                    style={{ boxShadow: 'var(--shadow-md)' }}
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 hover:bg-black/55 hover:-translate-y-px transition-all duration-200"
                   >
                     <Logo />
                     <span className="text-left leading-none">
-                      <span className="block text-[10px] font-semibold text-white/60 tracking-wide mb-1">{eyebrow}</span>
-                      <span className="block text-lg font-bold text-white">{title}</span>
+                      <span className="block text-[9px] font-semibold text-white/60 tracking-wide mb-0.5">{eyebrow}</span>
+                      <span className="block text-sm font-bold text-white">{title}</span>
                     </span>
                   </a>
                 ))}
               </div>
             </div>
           </div>
-
-          {/* ─── Right: widget — hidden on mobile, in-flow on desktop ─── */}
-          <div className="hidden lg:flex items-center justify-center">
-            {/* Wrapper provides the relative context for the ambient glow + floating badges */}
-            <div className="relative flex items-center justify-center">
-
-              {/* Ambient glow behind widget */}
-              <AnimatePresence>
-                <motion.div
-                  key={current}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 1.5 }}
-                  className="absolute w-[420px] h-[420px] rounded-full blur-[80px] pointer-events-none -z-10"
-                  style={{ background: `radial-gradient(circle, ${slide.accentColor}22 0%, transparent 70%)` }}
-                />
-              </AnimatePresence>
-
-              {/* Slide-specific dashboard widget */}
-              <AnimatePresence mode="wait">
-                {(() => { const W = WIDGETS[current]; return <W key={`widget-${current}`} accentColor={slide.accentColor} />; })()}
-              </AnimatePresence>
-
-              {/* Floating badge — top right of widget */}
-              <motion.div
-                key={`badge-ai-${current}`}
-                initial={{ opacity: 0, x: 16, y: -8 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute -top-5 -right-10 flex items-center gap-2 bg-white/92 backdrop-blur-md border border-white/70 rounded-xl px-3 py-2 shadow-md pointer-events-none"
-              >
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
-                <span className="text-[11px] font-bold text-slate-700">AI Monitoring</span>
-              </motion.div>
-
-              {/* Floating badge — bottom left of widget */}
-              <motion.div
-                key={`badge-doc-${current}`}
-                initial={{ opacity: 0, x: -16, y: 8 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ delay: 0.7, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute -bottom-5 -left-10 flex items-center gap-2 bg-white/92 backdrop-blur-md border border-white/70 rounded-xl px-3 py-2 shadow-md pointer-events-none"
-              >
-                <Heart size={12} className="text-rose-500 fill-rose-500 flex-shrink-0" />
-                <span className="text-[11px] font-bold text-slate-700">Doctor Verified</span>
-              </motion.div>
-            </div>
-          </div>
-
         </div>
       </div>
     </section>

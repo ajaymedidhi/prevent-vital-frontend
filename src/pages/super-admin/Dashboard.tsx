@@ -984,7 +984,7 @@ const SuperAdminDashboard = ({ defaultTab }: { defaultTab?: string }) => {
                                         {assessmentStats.avgScore >= 90 ? 'Excellent' : assessmentStats.avgScore >= 80 ? 'Good' : assessmentStats.avgScore >= 60 ? 'Moderate Risk' : 'High Risk'}
                                     </span>
                                 </div>
-                                <h3 className="text-gray-500 text-sm font-medium">Avg CVITAL Score</h3>
+                                <h3 className="text-gray-500 text-sm font-medium">Avg VITAL Score</h3>
                                 <div className="mt-1">
                                     <p className="text-3xl font-bold text-gray-900">{assessmentStats.avgScore}/100</p>
                                     <p className="text-xs text-gray-400 mt-1">Platform-wide average</p>
@@ -1020,9 +1020,9 @@ const SuperAdminDashboard = ({ defaultTab }: { defaultTab?: string }) => {
 
                         {/* Charts Row 1 */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            {/* CVITAL Tier Distribution */}
+                            {/* VITAL Tier Distribution */}
                             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                                <h3 className="font-bold text-gray-800 mb-1">CVITAL Score Distribution</h3>
+                                <h3 className="font-bold text-gray-800 mb-1">VITAL Score Distribution</h3>
                                 <p className="text-xs text-gray-400 mb-4">Breakdown of platform-wide cardiovascular wellness tiers</p>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
                                     <div className="h-44">
@@ -1138,7 +1138,7 @@ const SuperAdminDashboard = ({ defaultTab }: { defaultTab?: string }) => {
                                         <tr>
                                             <th className="py-2.5 px-3.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">Organisation</th>
                                             <th className="py-2.5 px-3.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">Total Assessments</th>
-                                            <th className="py-2.5 px-3.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">Avg CVITAL Score</th>
+                                            <th className="py-2.5 px-3.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">Avg VITAL Score</th>
                                             <th className="py-2.5 px-3.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">High Risk Prevalence</th>
                                             <th className="py-2.5 px-3.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">Last Activity</th>
                                             <th className="py-2.5 px-3.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100">Actions</th>

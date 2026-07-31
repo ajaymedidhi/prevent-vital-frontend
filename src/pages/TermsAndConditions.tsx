@@ -112,8 +112,8 @@ const TermsAndConditions = () => {
                                         <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
                                             <HeartPulse className="w-6 h-6" />
                                         </div>
-                                        <h3 className="text-xl font-bold text-primary mb-2">CVITAL Score™ Assessment</h3>
-                                        <p className="text-sm">A proprietary cardiovascular risk scoring system (0–100) calculated across five domains. The CVITAL Score is an informational tool and does not constitute a medical diagnosis.</p>
+                                        <h3 className="text-xl font-bold text-primary mb-2">VITAL Score™ Assessment</h3>
+                                        <p className="text-sm">A proprietary cardiovascular risk scoring system (0–100) calculated across five domains. The VITAL Score is an informational tool and does not constitute a medical diagnosis.</p>
                                     </div>
                                     <div className="bg-white border border-border p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow group">
                                         <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center text-accent mb-4 group-hover:bg-accent group-hover:text-white transition-colors">
@@ -190,7 +190,7 @@ const TermsAndConditions = () => {
                                 <div className="space-y-8">
                                     <div className="bg-white border border-border p-6 rounded-2xl shadow-sm">
                                         <h3 className="text-xl font-bold text-primary mb-3">Intellectual Property Rights</h3>
-                                        <p className="mb-4 text-foreground/80">All content, features, algorithms, and technology (including the CVITAL Score™ algorithm and VITA AI system prompts) are the exclusive property of gruentzig.ai Private Limited.</p>
+                                        <p className="mb-4 text-foreground/80">All content, features, algorithms, and technology (including the VITAL Score™ algorithm and VITA AI system prompts) are the exclusive property of gruentzig.ai Private Limited.</p>
                                         <div className="bg-accent/10 text-accent-foreground p-4 rounded-xl text-sm font-medium border border-accent/20">
                                             You retain ownership of your personal health data, but grant us a limited licence to process it for providing our services.
                                         </div>

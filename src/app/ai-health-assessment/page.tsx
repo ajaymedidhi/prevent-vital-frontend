@@ -11,26 +11,26 @@ const AiHealthAssessmentPage = () => {
     return (
         <>
             <Helmet>
-                <title>AI Health Assessment | CVITAL Score - PreventVital</title>
-                <meta name="description" content="Take PreventVital's AI-powered health assessment to get your personalized CVITAL Score. Understand your cardiovascular, metabolic, and mental wellness profile. Science-backed health risk analysis in minutes." />
-                <meta name="keywords" content="AI health assessment, CVITAL score, health risk assessment India, cardiovascular risk assessment, metabolic health test, online health assessment, preventvital assessment" />
+                <title>AI Health Assessment | VITAL Score - PreventVital</title>
+                <meta name="description" content="Take PreventVital's AI-powered health assessment to get your personalized VITAL Score. Understand your cardiovascular, metabolic, and mental wellness profile. Science-backed health risk analysis in minutes." />
+                <meta name="keywords" content="AI health assessment, VITAL score, health risk assessment India, cardiovascular risk assessment, metabolic health test, online health assessment, preventvital assessment" />
                 <link rel="canonical" href="https://preventvital.com/ai-health-assessment" />
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="PreventVital" />
                 <meta property="og:url" content="https://preventvital.com/ai-health-assessment" />
-                <meta property="og:title" content="AI Health Assessment | Get Your CVITAL Score - PreventVital" />
-                <meta property="og:description" content="AI-powered health assessment: get your personalized CVITAL Score and understand your cardiovascular, metabolic, and mental wellness profile." />
+                <meta property="og:title" content="AI Health Assessment | Get Your VITAL Score - PreventVital" />
+                <meta property="og:description" content="AI-powered health assessment: get your personalized VITAL Score and understand your cardiovascular, metabolic, and mental wellness profile." />
                 <meta property="og:image" content="https://preventvital.com/og-assessment.jpg" />
                 <meta property="og:locale" content="en_IN" />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:site" content="@preventvital" />
-                <meta name="twitter:title" content="AI Health Assessment | CVITAL Score - PreventVital" />
-                <meta name="twitter:description" content="Get your personalized CVITAL Score. AI-powered cardiovascular, metabolic, and mental wellness assessment." />
+                <meta name="twitter:title" content="AI Health Assessment | VITAL Score - PreventVital" />
+                <meta name="twitter:description" content="Get your personalized VITAL Score. AI-powered cardiovascular, metabolic, and mental wellness assessment." />
                 <meta name="twitter:image" content="https://preventvital.com/og-assessment.jpg" />
                 <script type="application/ld+json">{JSON.stringify({
                     "@context": "https://schema.org",
                     "@type": "MedicalTest",
-                    "name": "CVITAL Health Risk Assessment",
+                    "name": "VITAL Health Risk Assessment",
                     "description": "AI-powered comprehensive health risk assessment covering cardiovascular, metabolic, and mental wellness parameters.",
                     "usedToDiagnose": ["Cardiovascular Risk", "Metabolic Health Risk", "Mental Wellness"],
                     "provider": { "@type": "Organization", "name": "PreventVital", "url": "https://preventvital.com/" },
@@ -76,7 +76,7 @@ const AiHealthAssessmentPage = () => {
                                     style={{ fontSize: 'var(--fz-h1-sm)', maxWidth: '18ch' }}
                                 >
                                     Get Your{' '}
-                                    <span className="gradient-text-soft">CVITAL™ Score</span>
+                                    <span className="gradient-text-soft">VITAL™ Score</span>
                                 </h1>
 
                                 <p
@@ -95,7 +95,7 @@ const AiHealthAssessmentPage = () => {
                                 <div>
                                     <h3 className="text-lg font-bold text-foreground mb-2">Authentication Required</h3>
                                     <p className="text-sm text-muted-foreground leading-relaxed">
-                                        Please log in or create an account to take your personalized, medical-grade CVITAL assessment.
+                                        Please log in or create an account to take your personalized, medical-grade VITAL assessment.
                                     </p>
                                 </div>
                                 <div className="flex flex-col gap-3 pt-1">

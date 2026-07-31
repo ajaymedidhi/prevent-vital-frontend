@@ -369,7 +369,7 @@ export default function SuperAdminPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[
                 { label: 'Total Assessments', value: assessmentStats.total.toLocaleString(), icon: <Activity size={20} />, trend: assessmentStats.total > 0 ? '+100%' : '0%', color: 'text-blue-600', bg: 'bg-blue-50' },
-                { label: 'Avg CVITAL Score', value: `${assessmentStats.avgScore}/100`, icon: <Heart size={20} />, trend: assessmentStats.avgScore >= 90 ? 'Excellent' : assessmentStats.avgScore >= 80 ? 'Good' : assessmentStats.avgScore >= 60 ? 'Moderate Risk' : 'High Risk', color: 'text-emerald-600', bg: 'bg-emerald-50' },
+                { label: 'Avg VITAL Score', value: `${assessmentStats.avgScore}/100`, icon: <Heart size={20} />, trend: assessmentStats.avgScore >= 90 ? 'Excellent' : assessmentStats.avgScore >= 80 ? 'Good' : assessmentStats.avgScore >= 60 ? 'Moderate Risk' : 'High Risk', color: 'text-emerald-600', bg: 'bg-emerald-50' },
                 { label: 'High Risk Prevalence', value: `${assessmentStats.highRiskPrevalence}%`, icon: <AlertTriangle size={20} />, trend: assessmentStats.highRiskPrevalence > 20 ? 'Target needed' : 'Good Control', color: 'text-rose-600', bg: 'bg-rose-50' },
                 { label: 'Taken This Month', value: assessmentStats.takenThisMonth.toLocaleString(), icon: <TrendingUp size={20} />, trend: 'Live', color: 'text-amber-600', bg: 'bg-amber-50' },
               ].map(s => (
@@ -388,9 +388,9 @@ export default function SuperAdminPage() {
 
             {/* Charts Row 1 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-              {/* CVITAL Tier Distribution */}
+              {/* VITAL Tier Distribution */}
               <div className="card p-5">
-                <h3 className="font-semibold text-slate-800 text-sm mb-1">CVITAL Score Distribution</h3>
+                <h3 className="font-semibold text-slate-800 text-sm mb-1">VITAL Score Distribution</h3>
                 <p className="text-xs text-slate-400 mb-4">Breakdown of platform-wide cardiovascular wellness tiers</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
                   <ResponsiveContainer width="100%" height={160}>
@@ -492,7 +492,7 @@ export default function SuperAdminPage() {
                   <tr>
                     <th>Organisation</th>
                     <th>Total Assessments</th>
-                    <th>Avg CVITAL Score</th>
+                    <th>Avg VITAL Score</th>
                     <th>High Risk Prevalence</th>
                     <th>Last Activity</th>
                     <th>Actions</th>

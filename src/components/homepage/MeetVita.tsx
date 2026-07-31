@@ -16,15 +16,15 @@ const MeetVita = () => {
                             <Sparkles size={13} className="text-accent" />
                             <span className="text-xs font-semibold text-primary tracking-wide">Meet VITA</span>
                         </div>
-                        <h2 id="meet-vita-heading" className="text-fluid-4xl font-bold text-foreground mb-5 tracking-tight leading-tight">
+                        <h2 id="meet-vita-heading" className="text-2xl md:text-[length:var(--fz-4xl)] font-bold text-foreground mb-3 md:mb-5 tracking-tight leading-tight">
                             Your AI Wellness Companion,{' '}
                             <span className="gradient-text-soft">Always in Your Corner</span>
                         </h2>
-                        <p className="text-lg text-muted-foreground leading-relaxed mb-6 max-w-xl">
+                        <p className="text-sm md:text-lg text-muted-foreground leading-relaxed mb-4 md:mb-6 max-w-xl line-clamp-2 md:line-clamp-none">
                             VITA knows your latest CVITAL score and risk factors, so when you ask a question, you're not
                             starting from scratch — you're picking up a conversation that already understands your health story.
                         </p>
-                        <ul className="space-y-4 mb-8">
+                        <ul className="space-y-2.5 md:space-y-4 mb-6 md:mb-8">
                             {[
                                 'Explains your score and what actually moved it, in plain language',
                                 'Nudges you gently — a breathing exercise, a walk, an earlier bedtime',
@@ -34,7 +34,7 @@ const MeetVita = () => {
                                     <div className="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                                         <div className="w-1.5 h-1.5 rounded-full bg-accent" />
                                     </div>
-                                    <span className="text-sm text-foreground/80 leading-relaxed">{item}</span>
+                                    <span className="text-xs md:text-sm text-foreground/80 leading-relaxed">{item}</span>
                                 </li>
                             ))}
                         </ul>
@@ -48,8 +48,8 @@ const MeetVita = () => {
                                 Get My Score, Meet VITA
                                 <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
                             </Link>
-                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                                <ShieldCheck size={14} className="text-muted-foreground/70" />
+                            <div className="flex items-center gap-1.5 text-[11px] md:text-xs text-muted-foreground">
+                                <ShieldCheck size={14} className="text-muted-foreground/70 flex-shrink-0" />
                                 <span>A companion to your care team, never a replacement for it</span>
                             </div>
                         </div>

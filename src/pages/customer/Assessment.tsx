@@ -449,7 +449,7 @@ export default function Assessment() {
                                 <HeartPulse className="w-8 h-8 text-primary" />
                             </div>
                             <h1 className="font-bold text-foreground tracking-tight" style={{ fontSize: 'var(--fz-h1-sm)' }}>
-                                Your CVITAL™ Score
+                                Your VITAL™ Score
                             </h1>
                             <p className="text-muted-foreground max-w-lg mx-auto leading-relaxed" style={{ fontSize: 'var(--fz-lg)' }}>
                                 Based on your health data, we've generated your personalized cardiovascular intelligence profile.
@@ -460,7 +460,7 @@ export default function Assessment() {
                             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
-                                {/* CVITAL Score */}
+                                {/* VITAL Score */}
                                 <div className="space-y-5">
                                     <div className="flex items-center gap-2">
                                         <Activity className="w-4 h-4 text-primary" />
@@ -547,7 +547,7 @@ export default function Assessment() {
             <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border px-4 py-3">
                 <div className="max-w-2xl mx-auto flex items-center gap-4">
                     <span className="text-xs font-bold text-primary tracking-widest hidden sm:block whitespace-nowrap">
-                        CVITAL™
+                        VITAL™
                     </span>
                     <div className="flex-1">
                         <div className="flex justify-between text-xs text-muted-foreground mb-1.5">

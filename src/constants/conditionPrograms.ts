@@ -169,8 +169,8 @@ export const conditionPrograms: ConditionProgram[] = [
             { question: 'Do I need to already know yoga or pranayama?', answer: 'No prior experience is needed — the program starts with fundamentals and builds up.' },
             { question: 'Can I do this if I have a diagnosed lung condition?', answer: 'Check with your doctor first — the program can complement treatment for many conditions, but your doctor knows your specific case best.' },
         ],
-        image: 'https://images.unsplash.com/photo-1665214057620-27d1d10f6203?auto=format&fit=crop&w=900&q=80',
-        alt: 'Person practicing an advanced yoga pose to build strength and lung capacity',
+        image: 'https://images.unsplash.com/photo-1775133262755-254aeaa47843?auto=format&fit=crop&w=900&q=80',
+        alt: 'Woman practicing alternate nostril breathing (pranayama) outdoors',
         instructor: {
             name: 'Kavita Desai',
             title: 'Pranayama & Breathwork Coach',

@@ -4,14 +4,23 @@ import { conditionPrograms } from '@/constants/conditionPrograms';
 import FadeInSection from './FadeInSection';
 import AnimatedCounter from './AnimatedCounter';
 
-const accentStyles: Record<string, { accentClass: string; iconBg: string; icon: any }> = {
-    diabetes: { accentClass: 'group-hover:border-blue-200', iconBg: 'bg-blue-50 text-blue-600', icon: Beaker },
-    hypertension: { accentClass: 'group-hover:border-rose-200', iconBg: 'bg-rose-50 text-rose-600', icon: Heart },
-    cardiac: { accentClass: 'group-hover:border-amber-200', iconBg: 'bg-amber-50 text-amber-600', icon: Zap },
-    respiratory: { accentClass: 'group-hover:border-sky-200', iconBg: 'bg-sky-50 text-sky-600', icon: Cloud },
-    mental: { accentClass: 'group-hover:border-purple-200', iconBg: 'bg-purple-50 text-purple-600', icon: Sparkles },
-    weight: { accentClass: 'group-hover:border-emerald-200', iconBg: 'bg-emerald-50 text-emerald-600', icon: Scale },
+const conditionIcons: Record<string, any> = {
+    diabetes: Beaker,
+    hypertension: Heart,
+    cardiac: Zap,
+    respiratory: Cloud,
+    mental: Sparkles,
+    weight: Scale,
 };
+
+// Two-tone system (navy primary / teal accent), alternated by card position —
+// replaces the old one-hue-per-condition rainbow badge treatment. Badge chip
+// stays a consistent near-solid white so it reads cleanly over any photo;
+// only the icon color alternates between the two brand tones.
+const cardTones = [
+    { accentClass: 'group-hover:border-primary/25', iconBg: 'bg-white/90 text-primary' },
+    { accentClass: 'group-hover:border-accent/30', iconBg: 'bg-white/90 text-accent' },
+];
 
 const ConditionCards = () => {
     const conditions = conditionPrograms;
@@ -19,18 +28,18 @@ const ConditionCards = () => {
     return (
         <section className="section-padding bg-section-alt/30">
             <div className="container-wide">
-                <FadeInSection className="text-center mb-16">
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-primary/6 border border-primary/15 rounded-full mb-5">
-                        <span className="text-xs font-bold text-primary uppercase tracking-widest">
+                <FadeInSection className="text-center mb-8 md:mb-16">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 md:px-3.5 md:py-1.5 bg-primary/6 border border-primary/15 rounded-full mb-3 md:mb-5">
+                        <span className="text-[11px] md:text-xs font-bold text-primary uppercase tracking-widest">
                             <AnimatedCounter value={conditions.length} suffix=" Guided Programs" />
                         </span>
                     </div>
-                    <h2 id="preventive-health-conditions" className="text-fluid-4xl font-bold text-foreground mb-4 tracking-tight">
+                    <h2 id="preventive-health-conditions" className="text-2xl md:text-[length:var(--fz-4xl)] font-bold text-foreground mb-2 md:mb-4 tracking-tight">
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-800 to-wellness-600">
                             A Program for Where You Are Today
                         </span>
                     </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed line-clamp-2 md:line-clamp-none">
                         Every risk looks different up close. Each program below is led by a real clinician or coach,
                         grounded in clinical evidence, and paced for real life — not a generic checklist.
                     </p>
@@ -38,7 +47,8 @@ const ConditionCards = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {conditions.map((condition, index) => {
-                        const { accentClass, iconBg, icon: IconComponent } = accentStyles[condition.id];
+                        const IconComponent = conditionIcons[condition.id];
+                        const { accentClass, iconBg } = cardTones[index % 2];
                         return (
                             <FadeInSection key={condition.id} delay={index * 0.06}>
                                 <div
@@ -60,20 +70,20 @@ const ConditionCards = () => {
                                         </div>
                                     </div>
 
-                                    <div className="p-6 md:p-7 flex flex-col flex-1">
-                                        <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-200">
+                                    <div className="p-5 md:p-7 flex flex-col flex-1">
+                                        <h3 className="text-base md:text-lg font-bold text-foreground mb-1.5 md:mb-2 group-hover:text-primary transition-colors duration-200">
                                             {condition.title}
                                         </h3>
-                                        <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
+                                        <p className="text-xs md:text-sm text-muted-foreground mb-2.5 md:mb-3 leading-relaxed line-clamp-2">
                                             {condition.description}
                                         </p>
 
-                                        <div className="flex items-center gap-1.5 mb-3 text-xs font-medium text-muted-foreground">
+                                        <div className="flex items-center gap-1.5 mb-2.5 md:mb-3 text-xs font-medium text-muted-foreground">
                                             <Clock size={13} />
                                             <span>{condition.duration} program</span>
                                         </div>
 
-                                        <p className="text-xs text-muted-foreground mb-5 leading-relaxed">
+                                        <p className="text-xs text-muted-foreground mb-4 md:mb-5 leading-relaxed line-clamp-2 hidden md:block">
                                             {condition.outcomeFocus}
                                         </p>
 
@@ -88,7 +98,12 @@ const ConditionCards = () => {
                                             ))}
                                         </div>
 
-                                        <div className="mt-auto pt-5 border-t border-border/60 flex items-center justify-between gap-3">
+                                        <div className="mt-auto pt-5 border-t border-border/60 flex items-center justify-end gap-3">
+                                            {/*
+                                            // Temporarily hidden — these are placeholder instructor names/photos,
+                                            // not real people. Re-enable (and switch this row back to
+                                            // justify-between) once real, credentialed instructors are assigned
+                                            // per program.
                                             {condition.instructor && (
                                                 <div className="flex items-center gap-2.5 min-w-0">
                                                     <img
@@ -103,6 +118,7 @@ const ConditionCards = () => {
                                                     </div>
                                                 </div>
                                             )}
+                                            */}
                                             <Link
                                                 to={`/disease-prevention-programs/${condition.id}`}
                                                 className="inline-flex items-center text-sm font-bold text-primary hover:gap-2 gap-1.5 transition-all duration-200 flex-shrink-0"

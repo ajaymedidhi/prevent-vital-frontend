@@ -1,5 +1,7 @@
 import { Helmet } from "react-helmet-async";
+import { motion } from "framer-motion";
 import { Award, ShieldCheck, Users, Building2, MapPin, IndianRupee, Activity, ArrowRight } from "lucide-react";
+import FadeInSection from "@/components/homepage/FadeInSection";
 
 // const stats = [
 //     { label: "Patients", value: "10,000+", icon: Users },
@@ -44,7 +46,12 @@ const Team = () => {
                 {/* Hero Section */}
                 <div className="bg-[#020817] text-white pt-10 lg:pt-14 pb-16 lg:pb-20 px-4 relative overflow-hidden">
                     <div className="absolute inset-0 opacity-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
-                    <div className="container mx-auto max-w-4xl text-center relative z-10">
+                    <motion.div
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                        className="container mx-auto max-w-4xl text-center relative z-10"
+                    >
                         <span className="text-indigo-400 font-bold tracking-wider uppercase text-xs mb-4 block">Leadership</span>
                         <h1 className="font-extrabold mb-6 leading-tight text-white" style={{ fontSize: 'var(--fz-h1-sm)' }}>
                             Visionaries driving <span className="text-indigo-400">future health.</span>
@@ -52,13 +59,13 @@ const Team = () => {
                         <p className="text-lg text-gray-300 max-w-2xl mx-auto">
                             Prevent Vital AI is led by clinician-entrepreneurs committed to bridging the gap between advanced technology and human-centric care.
                         </p>
-                    </div>
+                    </motion.div>
                 </div>
 
                 <div className="container mx-auto px-4 -mt-16 pb-20 relative z-20 space-y-12">
 
                     {/* Founder 1: Dr. Rakesh */}
-                    <div className="max-w-5xl mx-auto bg-white rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100 flex flex-col md:flex-row transform hover:-translate-y-1 transition-transform duration-300">
+                    <FadeInSection className="max-w-5xl mx-auto bg-white rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100 flex flex-col md:flex-row transform hover:-translate-y-1 transition-transform duration-300">
                         <div className="md:w-2/5 relative bg-indigo-50 min-h-[320px]">
                             <img
                                 src="/images/rakesh.webp"
@@ -85,10 +92,10 @@ const Team = () => {
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </FadeInSection>
 
                     {/* Founder 2: Dr. Sindhura */}
-                    <div className="max-w-5xl mx-auto bg-white rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100 flex flex-col md:flex-row-reverse transform hover:-translate-y-1 transition-transform duration-300">
+                    <FadeInSection delay={0.15} className="max-w-5xl mx-auto bg-white rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100 flex flex-col md:flex-row-reverse transform hover:-translate-y-1 transition-transform duration-300">
                         <div className="md:w-2/5 relative bg-indigo-50 min-h-[320px]">
                             <img
                                 src="/images/sindhura.webp"
@@ -115,7 +122,7 @@ const Team = () => {
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </FadeInSection>
                 </div>
 
                 {/* Impact Stats */}
@@ -145,7 +152,7 @@ const Team = () => {
 
                 {/* Advisory Board (Simplified) */}
                 <section className="py-20 bg-gray-50 border-t border-gray-200">
-                    <div className="container mx-auto px-4 text-center">
+                    <FadeInSection className="container mx-auto px-4 text-center">
                         <h2 className="text-3xl font-bold mb-8 text-gray-900">Advisory Board</h2>
                         <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12">
                             Our work is guided by leading medical experts in cardiology, endocrinology, pulmonology, mental health, yoga therapy, and AI ethics.
@@ -153,19 +160,28 @@ const Team = () => {
                         <div className="inline-flex items-center text-indigo-600 font-semibold hover:text-indigo-700 cursor-pointer">
                             View all advisors <ArrowRight className="ml-2 w-4 h-4" />
                         </div>
-                    </div>
+                    </FadeInSection>
                 </section>
 
                 {/* Compliance */}
                 <section className="py-16 bg-white border-t border-gray-200">
                     <div className="container mx-auto px-4 text-center">
-                        <p className="text-gray-400 text-sm font-semibold uppercase tracking-widest mb-8">Trusted & Compliant</p>
+                        <FadeInSection>
+                            <p className="text-gray-400 text-sm font-semibold uppercase tracking-widest mb-8">Trusted & Compliant</p>
+                        </FadeInSection>
                         <div className="flex flex-wrap justify-center gap-4 md:gap-8">
                             {badges.map((badge, index) => (
-                                <div key={index} className="flex items-center gap-2 px-6 py-3 bg-gray-50 rounded-full text-gray-600 font-medium border border-gray-100 shadow-sm">
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 12 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: '-40px' }}
+                                    transition={{ duration: 0.4, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                                    className="flex items-center gap-2 px-6 py-3 bg-gray-50 rounded-full text-gray-600 font-medium border border-gray-100 shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all duration-300"
+                                >
                                     <ShieldCheck className="w-4 h-4 text-indigo-600" />
                                     {badge}
-                                </div>
+                                </motion.div>
                             ))}
                         </div>
                     </div>

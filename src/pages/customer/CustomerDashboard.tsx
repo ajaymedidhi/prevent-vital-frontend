@@ -363,7 +363,7 @@ const CustomerDashboard = () => {
 
             {/* Metric Row - Super Admin Style */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                {/* CVITAL Score */}
+                {/* VITAL Score */}
                 <Card className="rounded-xl border-gray-100 shadow-sm hover:shadow-md transition-all bg-white relative overflow-hidden">
                     <CardContent className="p-6">
                         <div className="flex justify-between items-start mb-6">
@@ -377,7 +377,7 @@ const CustomerDashboard = () => {
                                 {cvitalScore > 0 ? cvitalCfg.label : 'Not Set'}
                             </span>
                         </div>
-                        <h3 className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">CVITAL Score</h3>
+                        <h3 className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">VITAL Score</h3>
 
                         {cvitalScore > 0 ? (
                             <div className="flex flex-col">
@@ -394,7 +394,7 @@ const CustomerDashboard = () => {
                             </div>
                         ) : (
                             <div className="flex flex-col items-center py-4 text-center">
-                                <p className="text-xs text-gray-400 mb-4">Complete your assessment to see your CVITAL score.</p>
+                                <p className="text-xs text-gray-400 mb-4">Complete your assessment to see your VITAL score.</p>
                                 <Button size="sm" onClick={() => navigate('/ai-health-assessment')} className="bg-red-500 hover:bg-red-600 rounded-lg text-xs font-bold">Start Now</Button>
                             </div>
                         )}
@@ -552,7 +552,7 @@ const CustomerDashboard = () => {
                                                     </div>
                                                     <div>
                                                         <div className="flex items-center gap-2">
-                                                            <h4 className="text-sm font-bold text-gray-900">CVITAL™ Score</h4>
+                                                            <h4 className="text-sm font-bold text-gray-900">VITAL™ Score</h4>
                                                             <span
                                                                 className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full"
                                                                 style={{ backgroundColor: `${color}15`, color: color }}

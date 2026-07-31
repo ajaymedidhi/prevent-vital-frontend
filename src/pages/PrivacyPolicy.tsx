@@ -83,7 +83,7 @@ const PrivacyPolicy = () => {
                                     <li><strong>Personal Data:</strong> Any information relating to an identified or identifiable natural person, including but not limited to name, email address, phone number, date of birth, and device identifiers.</li>
                                     <li><strong>Health Data / Sensitive Personal Data:</strong> Data pertaining to the physical or mental health of an individual, including but not limited to blood pressure readings, blood glucose levels, cholesterol levels, heart rate, BMI, weight, sleep patterns, and step counts. This constitutes “sensitive personal data” under India’s Digital Personal Data Protection Act 2023 (DPDP Act) and “special categories of personal data” under the GDPR.</li>
                                     <li><strong>VITA AI:</strong> PreventVital’s AI-powered wellness assistant, powered by Google Gemini API, which provides personalised health feedback, alerts, and recommendations based on your data.</li>
-                                    <li><strong>CVITAL Score™:</strong> PreventVital’s proprietary algorithmic health score calculated from your submitted vital metrics to provide an indicative overview of your cardiovascular and metabolic wellness.</li>
+                                    <li><strong>VITAL Score™:</strong> PreventVital’s proprietary algorithmic health score calculated from your submitted vital metrics to provide an indicative overview of your cardiovascular and metabolic wellness.</li>
                                     <li><strong>Data Fiduciary:</strong> Under India’s DPDP Act, gruentzig.ai Private Limited, in its capacity as the entity that determines the purpose and means of processing your personal data.</li>
                                     <li><strong>Data Principal:</strong> Under India’s DPDP Act, you as the individual to whom the personal data relates.</li>
                                     <li><strong>Processing:</strong> Any operation performed on personal data, including collection, storage, use, disclosure, sharing, transfer, or deletion.</li>
@@ -228,7 +228,7 @@ const PrivacyPolicy = () => {
                                 <h3 className="text-xl font-semibold mt-6 mb-2">4.1 Providing Core Application Services</h3>
                                 <p className="text-sm font-medium text-muted-foreground mb-3 uppercase tracking-wide">Legal Basis: Performance of contract / your consent</p>
                                 <ul className="list-disc pl-6 space-y-2">
-                                    <li>Calculate and display your CVITAL Score™ based on submitted vital metrics</li>
+                                    <li>Calculate and display your VITAL Score™ based on submitted vital metrics</li>
                                     <li>Generate personalised health dashboards, trend charts, and progress visualisations</li>
                                     <li>Send automated health alerts when vitals fall outside clinically relevant reference ranges</li>
                                     <li>Power VITA AI conversations and deliver AI-generated wellness recommendations</li>
@@ -303,8 +303,8 @@ const PrivacyPolicy = () => {
                                     <li>Google’s processing of data through the Gemini API is governed by Google’s API Terms of Service and its Privacy Policy</li>
                                 </ul>
 
-                                <h3 className="text-xl font-semibold mt-6 mb-3">5.2 CVITAL Score™ Algorithm</h3>
-                                <p>Your CVITAL Score™ is computed by a proprietary algorithm that analyses multiple health metrics to produce a composite wellness indicator. This is an automated calculation. The score is informational and wellness-oriented only; it is not a medical diagnosis. You are not subject to any legally significant decisions based solely on your CVITAL Score™.</p>
+                                <h3 className="text-xl font-semibold mt-6 mb-3">5.2 VITAL Score™ Algorithm</h3>
+                                <p>Your VITAL Score™ is computed by a proprietary algorithm that analyses multiple health metrics to produce a composite wellness indicator. This is an automated calculation. The score is informational and wellness-oriented only; it is not a medical diagnosis. You are not subject to any legally significant decisions based solely on your VITAL Score™.</p>
                                 
                                 <h3 className="text-xl font-semibold mt-6 mb-3">5.3 Automated Health Alerts</h3>
                                 <p>PreventVital may generate automated alerts when your submitted vitals deviate significantly from standard reference ranges (e.g., blood pressure readings above 180/120 mmHg, blood glucose readings indicating potential hypoglycaemia). These alerts are generated algorithmically and are provided for informational purposes. They do not constitute a medical diagnosis. You are always encouraged to consult a qualified healthcare professional for medical advice.</p>
@@ -795,7 +795,7 @@ const PrivacyPolicy = () => {
                                     PreventVital is a wellness and preventive health monitoring application. It is <strong>NOT a medical device</strong> and should NOT be used as a substitute for professional medical advice, diagnosis, or treatment.
                                 </p>
                                 <ul className="list-disc pl-6 space-y-2 text-amber-900/90 mb-4">
-                                    <li>The CVITAL Score™, VITA AI responses, health alerts, and all other outputs from PreventVital are informational in nature and are not medical diagnoses or clinical recommendations</li>
+                                    <li>The VITAL Score™, VITA AI responses, health alerts, and all other outputs from PreventVital are informational in nature and are not medical diagnoses or clinical recommendations</li>
                                     <li>Always consult a qualified healthcare professional before making any health-related decisions</li>
                                     <li>Do not disregard or delay seeking professional medical advice because of information received through PreventVital</li>
                                     <li>In the event of a medical emergency, contact your local emergency services (in India: 112) immediately</li>

@@ -110,7 +110,7 @@ const HipaaCompliance = () => {
 
                             <section>
                                 <h2 className="text-2xl font-bold text-primary mt-8 mb-4">5. Minimum Necessary Use</h2>
-                                <p>We collect and process only the health information necessary to deliver the specific feature you are using — for example, calculating your CVITAL Score™ or powering a VITA AI conversation. We do not use PHI for advertising, sell it to data brokers, or share it with employers, insurers, or financial institutions. See <a href="/privacy-policy" className="text-accent font-semibold hover:underline">Privacy Policy, Section 4</a> for our full "what we will never do" commitments.</p>
+                                <p>We collect and process only the health information necessary to deliver the specific feature you are using — for example, calculating your VITAL Score™ or powering a VITA AI conversation. We do not use PHI for advertising, sell it to data brokers, or share it with employers, insurers, or financial institutions. See <a href="/privacy-policy" className="text-accent font-semibold hover:underline">Privacy Policy, Section 4</a> for our full "what we will never do" commitments.</p>
                             </section>
 
                             <section>

@@ -58,6 +58,7 @@ const Header = ({ className = '' }: HeaderProps) => {
 
   const consumerLinks = [
     { to: '/homepage',                   label: 'Home' },
+    { to: '/how-it-works',               label: 'How It Works' },
     { to: '/disease-prevention-programs', label: 'Programs' },
     { to: '/ai-health-assessment',        label: 'AI Assessment' },
     { to: '/shop',                        label: 'Shop' },

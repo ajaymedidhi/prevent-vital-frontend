@@ -2,6 +2,7 @@ import { Heart, Shield, Lightbulb, Users, Eye, ArrowRight, Sparkles, Activity, C
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import FadeInSection from '@/components/homepage/FadeInSection';
 
 const values = [
     {
@@ -160,7 +161,7 @@ const AboutUs = () => {
                     <div className="container-wide">
                         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
                             {/* Left: text */}
-                            <div>
+                            <FadeInSection>
                                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/5 border border-primary/20 rounded-full mb-6">
                                     <Activity size={13} className="text-primary" />
                                     <span className="text-xs font-bold text-primary uppercase tracking-widest">Our Story</span>
@@ -180,18 +181,25 @@ const AboutUs = () => {
                                         We believe that with the right technology and timely intervention, most chronic diseases can be prevented before irreversible damage occurs.
                                     </p>
                                 </div>
-                            </div>
+                            </FadeInSection>
 
                             {/* Right: key points card */}
-                            <div className="bg-card border border-border rounded-2xl p-8 space-y-6">
+                            <FadeInSection delay={0.15} className="bg-card border border-border rounded-2xl p-8 space-y-6">
                                 <p className="text-xs font-bold text-foreground uppercase tracking-widest mb-2">What drives us</p>
                                 {storyPoints.map((point, i) => (
-                                    <div key={i} className="flex items-start gap-4">
+                                    <motion.div
+                                        key={i}
+                                        initial={{ opacity: 0, x: -12 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true, margin: '-40px' }}
+                                        transition={{ duration: 0.4, delay: 0.25 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                                        className="flex items-start gap-4"
+                                    >
                                         <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                                             <CheckCircle size={16} className="text-primary" />
                                         </div>
                                         <p className="text-sm text-muted-foreground leading-relaxed">{point}</p>
-                                    </div>
+                                    </motion.div>
                                 ))}
 
                                 {/* Founder callout */}
@@ -205,7 +213,7 @@ const AboutUs = () => {
                                         "Prevention is not a luxury — it is the most powerful medicine we have. We just haven't delivered it at scale yet."
                                     </p>
                                 </div>
-                            </div>
+                            </FadeInSection>
                         </div>
                     </div>
                 </section>
@@ -213,7 +221,7 @@ const AboutUs = () => {
                 {/* ── MISSION & VISION ── */}
                 <section className="section-padding-sm bg-muted/30">
                     <div className="container-wide">
-                        <div className="text-center mb-12 space-y-3">
+                        <FadeInSection className="text-center mb-12 space-y-3">
                             <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/5 border border-primary/20 rounded-full">
                                 <Activity size={13} className="text-primary" />
                                 <span className="text-xs font-bold text-primary uppercase tracking-widest">Purpose</span>
@@ -221,10 +229,13 @@ const AboutUs = () => {
                             <h2 className="text-fluid-4xl font-bold text-foreground tracking-tight">
                                 Mission & Vision
                             </h2>
-                        </div>
+                        </FadeInSection>
 
                         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                            <div className="bg-card border border-border rounded-2xl p-8 space-y-4 hover:shadow-md transition-all duration-300">
+                            <FadeInSection
+                                delay={0.05}
+                                className="bg-card border border-border rounded-2xl p-8 space-y-4 hover:-translate-y-1.5 hover:shadow-md transition-all duration-300"
+                            >
                                 <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
                                     <Heart size={22} className="text-primary" />
                                 </div>
@@ -232,9 +243,12 @@ const AboutUs = () => {
                                 <p className="text-muted-foreground leading-relaxed">
                                     To democratize preventive medicine in India through AI-powered technology and holistic wellness, making early detection and prevention accessible to all.
                                 </p>
-                            </div>
+                            </FadeInSection>
 
-                            <div className="bg-card border border-border rounded-2xl p-8 space-y-4 hover:shadow-md transition-all duration-300">
+                            <FadeInSection
+                                delay={0.15}
+                                className="bg-card border border-border rounded-2xl p-8 space-y-4 hover:-translate-y-1.5 hover:shadow-md transition-all duration-300"
+                            >
                                 <div className="w-11 h-11 rounded-xl bg-accent/10 flex items-center justify-center">
                                     <Eye size={22} className="text-accent" />
                                 </div>
@@ -242,7 +256,7 @@ const AboutUs = () => {
                                 <p className="text-muted-foreground leading-relaxed">
                                     A future where chronic diseases are rare because they are consistently detected and addressed early, leading to a healthier, more vibrant society.
                                 </p>
-                            </div>
+                            </FadeInSection>
                         </div>
                     </div>
                 </section>
@@ -250,7 +264,7 @@ const AboutUs = () => {
                 {/* ── CORE VALUES ── */}
                 <section className="section-padding bg-background">
                     <div className="container-wide">
-                        <div className="text-center mb-12 space-y-3">
+                        <FadeInSection className="text-center mb-12 space-y-3">
                             <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/5 border border-primary/20 rounded-full">
                                 <Activity size={13} className="text-primary" />
                                 <span className="text-xs font-bold text-primary uppercase tracking-widest">What We Stand For</span>
@@ -258,20 +272,21 @@ const AboutUs = () => {
                             <h2 className="text-fluid-4xl font-bold text-foreground tracking-tight">
                                 Core Values
                             </h2>
-                        </div>
+                        </FadeInSection>
 
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
                             {values.map((value, index) => (
-                                <div
+                                <FadeInSection
                                     key={index}
-                                    className="group bg-card border border-border rounded-2xl p-6 hover:shadow-md hover:border-primary/30 transition-all duration-300"
+                                    delay={index * 0.06}
+                                    className="group bg-card border border-border rounded-2xl p-6 hover:-translate-y-1.5 hover:shadow-md hover:border-primary/30 transition-all duration-300"
                                 >
                                     <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${value.iconStyle} group-hover:scale-110 transition-transform duration-300`}>
                                         <value.icon size={20} />
                                     </div>
                                     <h3 className="text-lg font-bold text-foreground mb-2">{value.title}</h3>
                                     <p className="text-muted-foreground text-sm leading-relaxed">{value.description}</p>
-                                </div>
+                                </FadeInSection>
                             ))}
                         </div>
                     </div>
@@ -296,7 +311,7 @@ const AboutUs = () => {
                     />
 
                     <div className="container-wide relative z-10">
-                        <div className="max-w-3xl mx-auto text-center space-y-6">
+                        <FadeInSection className="max-w-3xl mx-auto text-center space-y-6">
                             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 border border-white/15 rounded-full backdrop-blur-sm">
                                 <Shield size={13} className="text-emerald-300" />
                                 <span className="text-xs font-semibold text-white/80 tracking-wide">Join the Movement</span>
@@ -332,7 +347,7 @@ const AboutUs = () => {
                                     Explore Programs
                                 </Link>
                             </div>
-                        </div>
+                        </FadeInSection>
                     </div>
                 </section>
 

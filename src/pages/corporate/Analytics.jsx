@@ -91,7 +91,7 @@ export default function AnalyticsPage() {
       {/* Privacy notice */}
       <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-xl">
         <Info size={16} className="text-blue-500 flex-shrink-0 mt-0.5" />
-        <p className="text-xs text-blue-700"><strong>Privacy Protected:</strong> All analytics show aggregate data only. Individual health scores, vitals, and CVITAL scores are never visible in the corporate portal. Groups smaller than 5 employees show "Insufficient data".</p>
+        <p className="text-xs text-blue-700"><strong>Privacy Protected:</strong> All analytics show aggregate data only. Individual health scores, vitals, and VITAL scores are never visible in the corporate portal. Groups smaller than 5 employees show "Insufficient data".</p>
       </div>
 
       {/* Tabs */}

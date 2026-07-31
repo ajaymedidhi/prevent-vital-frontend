@@ -20,8 +20,8 @@ const PlatformDemo = () => {
             title: 'Your Vitals, Watching Over You',
             description: 'Wear the device you already have, and let it quietly flag anything worth a second look',
             icon: 'ChartBarIcon',
-            image: "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?auto=format&fit=crop&w=1200&q=80",
-            alt: 'Fitness wearable band tracking heart rate and activity in real time',
+            image: "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?auto=format&fit=crop&w=1200&q=80",
+            alt: 'Person checking their smartwatch during their everyday routine',
             metrics: [
                 { label: 'Heart Rate', value: '72 BPM' },
                 { label: 'Blood Pressure', value: '120/80' },
@@ -74,13 +74,13 @@ const PlatformDemo = () => {
                         </div>
 
                         <div className="mb-fluid-12">
-                            <h2 id="platform-technology" className="text-fluid-4xl font-bold text-foreground mb-4 leading-tight">
+                            <h2 id="platform-technology" className="text-2xl md:text-[length:var(--fz-4xl)] font-bold text-foreground mb-2 md:mb-4 leading-tight">
                                 Care That Notices <br className="hidden md:block" />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-800 to-wellness-600">
                                     Things Early
                                 </span>
                             </h2>
-                            <p className="text-fluid-xl text-muted-foreground leading-relaxed">
+                            <p className="text-sm md:text-[length:var(--fz-xl)] text-muted-foreground leading-relaxed line-clamp-2 md:line-clamp-none">
                                 We turn everyday numbers — your heart rate, your sleep, your last check-up — into something you can actually act on, with real clinical grounding behind every recommendation.
                             </p>
                         </div>
@@ -111,11 +111,11 @@ const PlatformDemo = () => {
                                                 <IconComponent size={22} strokeWidth={isActive ? 2.5 : 2} />
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <h3 className={`text-base font-bold mb-1 transition-colors ${isActive ? 'text-foreground' : 'text-foreground/70 group-hover:text-foreground'
+                                                <h3 className={`text-sm md:text-base font-bold mb-1 transition-colors ${isActive ? 'text-foreground' : 'text-foreground/70 group-hover:text-foreground'
                                                     }`}>
                                                     {feature.title}
                                                 </h3>
-                                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed line-clamp-2 md:line-clamp-none">
                                                     {feature.description}
                                                 </p>
                                             </div>
@@ -133,42 +133,46 @@ const PlatformDemo = () => {
 
                     {/* Visual Side */}
                     <div className="w-full lg:w-7/12 relative animate-fade-in-right">
-                        <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-primary/10 border-4 border-card bg-black ring-1 ring-border aspect-[4/3]">
-
-                            {/* Image with overlay */}
+                        <div
+                            className="relative rounded-3xl overflow-hidden border-4 border-card aspect-[4/3]"
+                            style={{ boxShadow: 'var(--shadow-xl)' }}
+                        >
+                            {/* Image */}
                             <img
                                 src={features[activeFeature].image}
                                 alt={features[activeFeature].alt}
                                 loading="lazy"
-                                className="w-full h-full object-cover opacity-90 transition-all duration-500"
+                                className="w-full h-full object-cover transition-all duration-500"
                             />
 
-                            {/* Gradient Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
+                            {/* Gradient — just enough for the caption card to read */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
 
-                            {/* Floating Metrics */}
-                            <div className="absolute bottom-0 left-0 right-0 p-8">
+                            {/* Floating metrics card */}
+                            <div
+                                className="absolute bottom-5 left-5 right-5 bg-white/95 backdrop-blur-md rounded-2xl p-5"
+                                style={{ boxShadow: 'var(--shadow-md)' }}
+                            >
                                 <div className="grid grid-cols-3 gap-4">
                                     {features[activeFeature].metrics.map((metric, index) => (
-                                        <div
-                                            key={index}
-                                            className="bg-black/40 backdrop-blur-md rounded-xl p-4 border border-white/10 transition-all hover:bg-black/50"
-                                        >
-                                            <div className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-1">
+                                        <div key={index} className={index > 0 ? 'pl-4 border-l border-border/60' : ''}>
+                                            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                                                 {metric.label}
-                                            </div>
-                                            <div className="text-xl font-bold text-white">
+                                            </p>
+                                            <p className="text-base font-bold text-foreground">
                                                 {metric.value}
-                                            </div>
+                                            </p>
                                         </div>
                                     ))}
                                 </div>
                             </div>
                         </div>
 
-                        {/* Decorative Blobs */}
-                        <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
-                        <div className="absolute -bottom-10 -left-10 w-56 h-56 bg-accent/20 rounded-full blur-3xl pointer-events-none" />
+                        {/* Ambient glow — single, subtle, matches MeetVita's treatment */}
+                        <div
+                            className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full blur-[100px] opacity-30 pointer-events-none"
+                            style={{ background: 'radial-gradient(circle, hsl(var(--accent)) 0%, transparent 70%)' }}
+                        />
                     </div>
                 </div>
             </div>
