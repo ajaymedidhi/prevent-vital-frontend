@@ -51,56 +51,66 @@ const PricingTable = () => {
                 return;
             }
 
-            console.log("Subscribing with Token:", token); // DEBUG
-            const res = await axios.post('/api/subscriptions/create', {
+            const interval = isAnnual ? 'annual' : 'monthly';
+            const { data: createRes } = await axios.post('/api/payments/orders', {
+                purchaseType: 'subscription',
                 planId: plan.id,
-                interval: isAnnual ? 'annual' : 'monthly'
+                interval
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
-            // Initialize Razorpay
-            const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_placeholder';
+            const { internalOrderId, razorpayOrderId, amount, currency, keyId, prefill, gstAmount } = createRes.data;
 
-            // BYPASS FOR DEV/DEMO: If key is placeholder, simulate success immediately
-            if (keyId === 'rzp_test_placeholder' || keyId === '') {
-                console.log("Dev Mode: Bypassing Razorpay Payment...");
-                await axios.post('/api/subscriptions/verify', {
-                    razorpay_payment_id: `pay_${Date.now()}_mock`,
-                    razorpay_subscription_id: res.data.subscription.id,
-                    razorpay_signature: 'mock_signature', // backend allows bypass if sub_id has _mock
-                    planId: plan.id
-                }, {
+            if (!razorpayOrderId) {
+                toast({ title: "Error", description: "Order creation failed. Please try again.", variant: "destructive" });
+                return;
+            }
+
+            const verifyAndFinish = async (payload: {
+                razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string;
+            }) => {
+                const verifyRes = await axios.post('/api/payments/verify', { internalOrderId, ...payload }, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
 
-                toast({ title: "Subscription Active (Dev Mode)", description: `You are now on the ${plan.name} plan!` });
-                navigate('/account');
+                if (verifyRes.data.data?.status === 'paid') {
+                    toast({ title: "Subscription Active", description: `You are now on the ${plan.name} plan!` });
+                    navigate('/account');
+                } else {
+                    toast({ title: "Verification Failed", description: "Payment verification failed.", variant: "destructive" });
+                }
+            };
+
+            // Dev/mock mode: backend returns a placeholder key when Razorpay isn't configured
+            if (keyId === 'rzp_test_placeholder' || keyId === '') {
+                await verifyAndFinish({
+                    razorpay_order_id: razorpayOrderId,
+                    razorpay_payment_id: `pay_mock_${Date.now()}`,
+                    razorpay_signature: 'bypass'
+                });
                 return;
             }
 
             const options = {
                 key: keyId,
-                subscription_id: res.data.subscription.id,
+                amount,
+                currency,
+                order_id: razorpayOrderId,
                 name: "PreventVital",
-                description: `${plan.name} Subscription`,
+                description: `${plan.name} Subscription (${interval})${gstAmount != null ? ' incl. 18% GST' : ''}`,
                 handler: async function (response: any) {
                     try {
-                        await axios.post('/api/subscriptions/verify', {
+                        await verifyAndFinish({
+                            razorpay_order_id: response.razorpay_order_id,
                             razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_subscription_id: response.razorpay_subscription_id,
-                            razorpay_signature: response.razorpay_signature,
-                            planId: plan.id
-                        }, {
-                            headers: { Authorization: `Bearer ${token}` }
+                            razorpay_signature: response.razorpay_signature
                         });
-
-                        toast({ title: "Subscription Active", description: `You are now on the ${plan.name} plan!` });
-                        navigate('/account');
                     } catch (err) {
                         toast({ title: "Verification Failed", description: "Payment verification failed.", variant: "destructive" });
                     }
                 },
+                prefill: prefill ?? {},
                 theme: { color: "#3399cc" }
             };
 
@@ -154,6 +164,9 @@ const PricingTable = () => {
                                 ₹{isAnnual ? plan.annualPrice : plan.monthlyPrice}
                                 <span className="text-sm font-normal text-muted-foreground">/{isAnnual ? 'yr' : 'mo'}</span>
                             </CardDescription>
+                            {(isAnnual ? plan.annualPrice : plan.monthlyPrice) > 0 && (
+                                <p className="text-xs text-muted-foreground mt-1">+ 18% GST at checkout</p>
+                            )}
                         </CardHeader>
                         <CardContent className="flex-1">
                             <ul className="space-y-3">
