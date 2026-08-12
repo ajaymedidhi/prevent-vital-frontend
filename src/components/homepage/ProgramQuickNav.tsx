@@ -45,7 +45,7 @@ const ProgramQuickNav = () => {
                         <Link
                             key={program.id}
                             to={`/disease-prevention-programs/${program.id}`}
-                            className="px-3.5 py-2 rounded-full text-xs font-semibold text-foreground/75 hover:text-primary hover:bg-primary/6 transition-colors duration-200 whitespace-nowrap flex-shrink-0"
+                            className="px-3.5 py-2 rounded-full text-xs font-semibold text-foreground/75 hover:text-brand-700 hover:bg-primary/6 transition-colors duration-200 whitespace-nowrap flex-shrink-0"
                         >
                             {shortLabels[program.id] ?? program.title}
                         </Link>

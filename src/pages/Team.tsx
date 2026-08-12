@@ -123,6 +123,36 @@ const Team = () => {
                             </div>
                         </div>
                     </FadeInSection>
+
+                    {/* Ajay Medidhi: Product & Technology Lead */}
+                    <FadeInSection delay={0.3} className="max-w-5xl mx-auto bg-white rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100 flex flex-col md:flex-row transform hover:-translate-y-1 transition-transform duration-300">
+                        <div className="md:w-2/5 relative bg-indigo-50 min-h-[320px]">
+                            <img
+                                src="/images/ajay.webp"
+                                alt="Ajay Medidhi"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:bg-gradient-to-r md:from-transparent md:to-black/10"></div>
+                        </div>
+                        <div className="md:w-3/5 p-8 md:p-12">
+                            <div className="mb-6">
+                                <span className="inline-block px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold uppercase tracking-wider mb-2">
+                                    Product &amp; Technology Lead
+                                </span>
+                                <h3 className="text-3xl font-bold text-gray-900">Ajay Medidhi</h3>
+                                <p className="text-gray-500 font-medium">Lead Full Stack Developer &amp; GCP Engineer</p>
+                            </div>
+
+                            <div className="space-y-4 text-gray-600 leading-relaxed text-sm md:text-base">
+                                <p>
+                                    Ajay Medidhi leads product and technology at PreventVital, overseeing the platform end-to-end — from the CVITAL scoring engine to the mobile, web, and corporate experiences built on top of it.
+                                </p>
+                                <p>
+                                    His focus is on turning clinical rigor into a product people actually use every day, and on keeping the engineering behind it reliable as the platform scales.
+                                </p>
+                            </div>
+                        </div>
+                    </FadeInSection>
                 </div>
 
                 {/* Impact Stats */}

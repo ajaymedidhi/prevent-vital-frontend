@@ -9,6 +9,19 @@ interface HeaderProps {
   className?: string;
 }
 
+const TICKER_ITEMS = [
+  'Vital Health',
+  'Prevent Hypertension',
+  'Prevent Diabetes',
+  'Weight Loss',
+  'Stress Relief',
+  'Get Better Sleep',
+  'Heart Health',
+  'Lower Cholesterol',
+  'Boost Energy',
+  'Track Your VITAL Score',
+];
+
 const Header = ({ className = '' }: HeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -76,17 +89,22 @@ const Header = ({ className = '' }: HeaderProps) => {
   return (
     <div className={`fixed top-0 left-0 right-0 z-50 flex flex-col ${className}`}>
 
-      {/* ── Announcement Banner ── */}
-      <div className="bg-primary text-primary-foreground py-2 px-4 text-center text-xs font-medium relative overflow-hidden">
+      {/* ── Announcement Banner — continuous marquee ── */}
+      <div className="bg-primary text-primary-foreground py-2 px-4 text-xs font-medium relative overflow-hidden">
         <div className="absolute inset-0 opacity-20 pointer-events-none"
           style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, white 0%, transparent 60%)' }} />
-        <span className="relative">Transform your health with AI-powered prevention.{' '}</span>
-        <Link
-          to={isAuthenticated ? '/account/assessment' : '/login?redirect=account/assessment'}
-          className="relative underline underline-offset-2 hover:opacity-80 transition-opacity font-semibold"
-        >
-          Start Free Assessment →
-        </Link>
+        <div className="relative overflow-hidden">
+          <div className="flex w-max items-center animate-scroll [animation-duration:40s]">
+            {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
+              <span
+                key={`${item}-${i}`}
+                className={`whitespace-nowrap shrink-0 pr-8 ${item === 'Vital Health' ? 'font-semibold tracking-wide' : ''}`}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* ── Main Header ── */}

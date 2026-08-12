@@ -2,6 +2,7 @@
 import { Helmet } from 'react-helmet-async';
 import PartnershipHero from '@/components/partnership-portal/PartnershipHero';
 import PartnershipTypes from '@/components/partnership-portal/PartnershipTypes';
+import PartnerShowcase from '@/components/partnership-portal/PartnerShowcase';
 import WhyPartner from '@/components/partnership-portal/WhyPartner';
 import PartnerCTA from '@/components/partnership-portal/PartnerCTA';
 
@@ -16,6 +17,7 @@ const PartnershipPortalInteractive = () => {
             <div className="min-h-screen bg-background text-foreground">
                 <PartnershipHero />
                 <PartnershipTypes />
+                <PartnerShowcase />
                 <WhyPartner />
                 <PartnerCTA />
             </div>

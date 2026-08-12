@@ -44,38 +44,39 @@ export default {
     extend: {
       fontFamily: {
         sans:    ['"Plus Jakarta Sans"', "system-ui", "sans-serif"],
-        display: ['"Plus Jakarta Sans"', "system-ui", "sans-serif"],
+        display: ['"Playfair Display"', "Georgia", "serif"],
+        serif:   ['"Playfair Display"', "Georgia", "serif"],
         mono:    ['"JetBrains Mono"', '"Fira Code"', "ui-monospace", "monospace"],
       },
 
       colors: {
-        /* ── Brand scale (Medical Blue) ── */
+        /* ── Brand scale (Cerulean Blue) ── */
         brand: {
-          50:  "#eff6ff",
-          100: "#dbeafe",
-          200: "#bfdbfe",
-          300: "#93c5fd",
-          400: "#60a5fa",
-          500: "#3b82f6",
-          600: "#2563eb",
-          700: "#1d4ed8",
-          800: "#1B4570",
-          900: "#162f54",
-          950: "#0d1d37",
+          50:  "#f0f8fd",
+          100: "#e0f1fa",
+          200: "#b9e3f6",
+          300: "#7cd0ef",
+          400: "#36bbf4",
+          500: "#1d8cd4",
+          600: "#146da9",
+          700: "#125788",
+          800: "#124971",
+          900: "#133d5e",
+          950: "#041f33",
         },
-        /* ── Wellness / Teal scale ── */
+        /* ── Wellness scale (Vibrant Magenta) ── */
         wellness: {
-          50:  "#f0fdfa",
-          100: "#ccfbf1",
-          200: "#99f6e4",
-          300: "#5eead4",
-          400: "#2dd4bf",
-          500: "#14b8a6",
-          600: "#0d9488",
-          700: "#0f766e",
-          800: "#115e59",
-          900: "#134e4a",
-          950: "#042f2e",
+          50:  "#fdf0f7",
+          100: "#fbe4f1",
+          200: "#f7cae5",
+          300: "#f2a0d1",
+          400: "#ec6ab7",
+          500: "#dd298a",
+          600: "#c71b73",
+          700: "#a6125c",
+          800: "#89134d",
+          900: "#721543",
+          950: "#31071e",
         },
         /* ── Design tokens (maps to CSS vars) ── */
         border:     "hsl(var(--border))",
@@ -252,6 +253,7 @@ export default {
       transitionTimingFunction: {
         "spring":    "cubic-bezier(0.16, 1, 0.3, 1)",
         "out-quart": "cubic-bezier(0.25, 1, 0.5, 1)",
+        "premium":   "cubic-bezier(0.22, 1, 0.36, 1)",
       },
     },
   },

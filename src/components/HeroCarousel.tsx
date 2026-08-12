@@ -43,7 +43,7 @@ export const HeroCarousel = () => {
             setCurrentSlide((prev) => (prev + 1) % slides.length);
         }, 5000);
         return () => clearInterval(interval);
-    }, [isPaused]);
+    }, [isPaused, currentSlide]);
 
     return (
         <section

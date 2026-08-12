@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ChevronRight, Heart, Shield, Activity, Sparkles } from 'lucide-react';
+import { ArrowRight, Heart, Shield, Activity, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const APP_STORE_URL = 'https://apps.apple.com/in/app/prevent-vital/id6781125644';
 const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.preventvital.app';
 
 const AppleLogo = () => (
-  <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff" aria-hidden="true">
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
     <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.415-3.13c.837-1.012 1.4-2.42 1.245-3.766-1.207.052-2.662.805-3.532 1.817-.78.887-1.454 2.32-1.273 3.622 1.297.104 2.622-.66 3.56-1.673z" />
   </svg>
 );
 
 const GooglePlayLogo = () => (
-  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
     <path fill="#4285F4" d="M3.609 1.814L13.792 12 3.61 22.186a1.996 1.996 0 0 1-.61-1.442V3.256c0-.554.225-1.055.609-1.442z" />
     <path fill="#34A853" d="M14.499 12.707l2.302 2.302-10.937 6.333 8.635-8.635z" />
     <path fill="#FBBC04" d="M17.698 9.509l2.807 1.626c.71.41 1.109.902 1.109 1.492s-.399 1.082-1.109 1.492l-2.807 1.626L15.401 12l2.297-2.29z" />
@@ -30,64 +30,55 @@ interface HeroSectionProps {
   className?: string;
 }
 
-/**
- * Background photography is Unsplash placeholder imagery (free-to-use, no
- * attribution required) chosen to preview the premium/editorial direction.
- * Swap `image` below for licensed or PreventVital-branded photography before
- * this ships to production.
- */
 const slides = [
   {
-    overline: 'Your health, in plain language',
-    titleBefore: 'Know Your Risk',
-    titleHighlight: 'Before It Knows You',
+    overline: 'Preventive Health,',
+    titleBefore: 'Reclaim Your',
+    titleHighlight: 'Vitality',
     description:
-      "Most heart and metabolic conditions give warning signs for years before anyone notices. We help you see yours early — and know exactly what to do about it.",
+      "Preventvital helps people prevent health problems before they become serious using reactive methods",
     cta: 'Get My Free Score',
     ctaLink: '/ai-health-assessment',
     secondaryCta: 'See How It Works',
     secondaryLink: '/how-it-works',
     tab: 'Your Score',
-    accentColor: '#2dd4bf',
-    image: 'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?auto=format&fit=crop&w=2069&q=80',
-    imagePosition: 'center 20%',
+    accentColor: '#dd298a', // Vibrant Magenta from Logo
+    image: '/images/yoga_buddha_hero.png',
+    imagePosition: 'center 50%',
+    imagePositionMobile: 'center 40%',
   },
   {
     overline: 'Always quietly watching out for you',
     titleBefore: "You're Never",
     titleHighlight: 'Doing This Alone',
     description:
-      'Connect a wearable you already own and let your everyday numbers — heart rate, steps, sleep — turn into gentle, timely nudges instead of after-the-fact regret.',
+      'Connect your wearable to turn everyday metrics like heart rate and sleep into gentle, timely nudges.',
     cta: 'Connect My Device',
     ctaLink: '/disease-prevention-programs',
     secondaryCta: 'Learn More',
     secondaryLink: '/ai-health-assessment',
     tab: 'Everyday Care',
-    accentColor: '#38bdf8',
+    accentColor: '#1d8cd4', // Cerulean Blue from Logo
     image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=2070&q=80',
-    imagePosition: 'center 30%',
+    imagePosition: 'center 50%',
+    imagePositionMobile: 'center 40%',
   },
   {
     overline: 'Care that feels like care',
     titleBefore: 'Yoga, Breath, and',
     titleHighlight: 'a Little Help from AI',
     description:
-      "Pair time-tested practices — yoga, pranayama, mindful movement — with a plan that's actually built around your body, not a generic routine.",
+      "Pair time-tested practices like yoga and mindfulness with a plan tailored specifically for your body.",
     cta: 'Explore Wellness Programs',
     ctaLink: '/disease-prevention-programs',
     secondaryCta: 'See Therapies',
     secondaryLink: '/disease-prevention-programs',
     tab: 'Whole-Person Care',
-    accentColor: '#5eead4',
+    accentColor: '#dd298a', // Vibrant Magenta from Logo
     image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=2069&q=80',
-    imagePosition: 'center 35%',
+    imagePosition: 'center 50%',
+    imagePositionMobile: 'center 40%',
   },
-];
-
-const trustBadges = [
-  { icon: Heart, label: '10,000+ Patients Served' },
-  { icon: Shield, label: 'ACC/AHA Clinically Grounded' },
-  { icon: Activity, label: '96% Satisfaction Rate' },
 ];
 
 const HeroSection = ({ className = '' }: HeroSectionProps) => {
@@ -96,17 +87,15 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
   useEffect(() => {
     const t = setInterval(() => setCurrent(p => (p + 1) % slides.length), 7000);
     return () => clearInterval(t);
-  }, []);
+  }, [current]);
 
   const slide = slides[current];
 
   return (
     <section
-      className={`relative w-full overflow-hidden ${className}`}
-      style={{ minHeight: 'clamp(560px, 92vh, 880px)' }}
+      className={`relative w-full overflow-hidden min-h-[100dvh] ${className}`}
       aria-labelledby="hero-heading"
     >
-      {/* ── Background photography, crossfaded per slide ── */}
       <AnimatePresence>
         <motion.div
           key={current}
@@ -119,22 +108,26 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
           <img
             src={slide.image}
             alt=""
-            className="w-full h-full object-cover"
+            className="block md:hidden w-full h-full object-cover"
+            style={{ objectPosition: slide.imagePositionMobile }}
+          />
+          <img
+            src={slide.image}
+            alt=""
+            className="hidden md:block w-full h-full object-cover"
             style={{ objectPosition: slide.imagePosition }}
           />
         </motion.div>
       </AnimatePresence>
 
-      {/* ── Darkening overlays for text legibility ── */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/35" />
-      <div className="absolute inset-0 hidden md:block bg-gradient-to-r from-black/70 via-black/25 to-transparent" />
+      {/* Dark overlay for mobile (bottom-heavy) */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20 md:hidden" />
+      {/* Dark overlay for desktop (left-heavy and slight bottom-heavy) */}
+      <div className="absolute inset-0 hidden md:block bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+      <div className="absolute inset-0 hidden md:block bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-      {/* ── Content ── */}
-      <div
-        className="relative z-10 container-wide w-full h-full flex flex-col"
-        style={{ minHeight: 'clamp(560px, 92vh, 880px)' }}
-      >
-        <div className="flex-1 flex items-end md:items-center" style={{ paddingTop: 'clamp(3rem, 2.5rem + 2vw, 4.5rem)' }}>
+      <div className="relative z-10 container-wide w-full h-full flex flex-col min-h-[100dvh]">
+        <div className="flex-1 flex items-end md:items-center">
           <div className="max-w-2xl">
             <AnimatePresence mode="wait">
               <motion.div
@@ -143,116 +136,108 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -16 }}
                 transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                className="space-y-4 md:space-y-6"
+                className="space-y-4 md:space-y-5"
               >
-                {/* Overline badge */}
                 <motion.div
-                  initial={{ opacity: 0, y: 8 }}
+                  className="inline-flex items-center space-x-2 rounded-full bg-white/10 px-3 py-1 text-sm font-bold tracking-wider text-white uppercase backdrop-blur-md border border-white/20 mb-6"
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.05, duration: 0.4 }}
-                  className="inline-flex items-center gap-1.5 md:gap-2 px-2.5 py-1 md:px-3.5 md:py-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full"
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <Sparkles size={12} className="text-white md:hidden" />
-                  <Sparkles size={13} className="text-white hidden md:block" />
-                  <span className="text-[11px] md:text-xs font-semibold text-white tracking-wide">
-                    {slide.overline}
-                  </span>
+                  <Sparkles className="h-4 w-4 text-accent" />
+                  <span>{slide.overline}</span>
                 </motion.div>
 
-                {/* Headline */}
                 <motion.h1
                   id="hero-heading"
-                  className="font-semibold leading-[1.15] md:leading-[1.1] tracking-tight text-white text-balance text-[1.75rem] sm:text-[2.25rem] md:text-[length:var(--fz-h1)]"
+                  className="font-display font-bold leading-[1.1] tracking-tight text-white text-4xl sm:text-5xl md:text-[64px] lg:text-[72px]"
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1, duration: 0.5 }}
+                  transition={{ delay: 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
                   {slide.titleBefore}{' '}
-                  <span style={{ color: slide.accentColor }}>{slide.titleHighlight}</span>
+                  <span className="italic font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">{slide.titleHighlight}</span>
                 </motion.h1>
 
-                {/* Description */}
                 <motion.p
-                  className="text-white/80 leading-relaxed text-sm md:text-[length:var(--fz-lg)] line-clamp-2 md:line-clamp-none"
-                  style={{ maxWidth: '42ch' }}
+                  className="text-lg sm:text-xl text-white font-bold leading-relaxed max-w-xl"
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.18, duration: 0.5 }}
-                >
-                  {slide.description}
+                  transition={{ delay: 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                >  {slide.description}
                 </motion.p>
 
-                {/* CTAs */}
                 <motion.div
-                  className="flex flex-col sm:flex-row gap-2.5 md:gap-3 pt-1 md:pt-2"
+                  className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-4"
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.26, duration: 0.5 }}
                 >
                   <Link
                     to={slide.ctaLink}
-                    className="group inline-flex items-center justify-center gap-2 px-5 py-2.5 md:px-7 md:py-3.5 rounded-xl text-xs md:text-sm font-semibold text-slate-900 bg-white transition-all duration-300 hover:opacity-90 hover:-translate-y-px"
-                    style={{ boxShadow: '0 12px 32px -8px rgba(0,0,0,0.5)' }}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-md text-sm md:text-base font-bold text-foreground bg-white transition-all duration-300 hover:bg-slate-100 hover:shadow-xl hover:-translate-y-1"
                   >
                     {slide.cta}
-                    <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                   </Link>
 
                   <Link
                     to={slide.secondaryLink}
-                    className="group inline-flex items-center justify-center gap-2 px-5 py-2.5 md:px-7 md:py-3.5 rounded-xl text-xs md:text-sm font-semibold text-white bg-white/10 backdrop-blur-md border border-white/30 hover:bg-white/20 transition-all duration-300"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-md text-sm md:text-base font-bold text-white border-2 border-white/30 hover:border-white transition-all duration-300 hover:bg-white/10"
                   >
                     {slide.secondaryCta}
-                    <ChevronRight size={15} className="text-white/70 group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 </motion.div>
 
-                {/*
-                // Temporarily hidden — unverified stats (patient count, satisfaction
-                // rate). Re-enable once real, confirmed numbers are available.
                 <motion.div
-                  className="flex flex-wrap gap-2.5 pt-2"
-                  initial={{ opacity: 0, y: 12 }}
+                  className="flex items-center gap-4 pt-8"
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.32, duration: 0.5 }}
+                  transition={{ delay: 0.34, duration: 0.5 }}
                 >
-                  {trustBadges.map(({ icon: Icon, label }) => (
-                    <div
-                      key={label}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/8 backdrop-blur-md border border-white/15"
-                    >
-                      <Icon size={12} className="text-white/70" />
-                      <span className="text-[11px] font-semibold text-white/85">{label}</span>
-                    </div>
-                  ))}
+                  <p className="text-xs font-bold text-white uppercase tracking-[0.2em] hidden sm:block">
+                    Get the App
+                  </p>
+                  <div className="flex items-center gap-3">
+                    {appBadges.map(({ name, href, Logo, eyebrow, title }) => (
+                      <a
+                        key={name}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={name}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-slate-950 hover:bg-slate-900 border border-white/30 hover:border-white/50 transition-all duration-200 shadow-md text-white"
+                      >
+                        <Logo />
+                        <span className="text-left leading-none">
+                          <span className="block text-[8px] font-bold text-white/90 tracking-wide mb-0.5">{eyebrow}</span>
+                          <span className="block text-[11px] font-bold text-white">{title}</span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
                 </motion.div>
-                */}
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
 
-        {/* ── Bottom bar: slide tabs + app store badges ── */}
-        <div className="pb-8 md:pb-10">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 pt-6">
-            {/* Slide tabs */}
-            <div className="hidden md:flex flex-wrap gap-x-5 gap-y-2">
+        <div className="pb-6 md:pb-8">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 md:gap-8 pt-6">
+            <div className="hidden md:flex flex-wrap gap-x-6 gap-y-2">
               {slides.map((s, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrent(i)}
-                  className={`relative pb-1.5 text-xs font-semibold tracking-wide transition-all duration-250 ${
-                    current === i ? 'text-white' : 'text-white/50 hover:text-white/80'
-                  }`}
+                  className={`relative pb-1.5 text-[11px] font-medium tracking-wide transition-colors duration-300 ${current === i ? 'text-white' : 'text-white/50 hover:text-white/80'
+                    }`}
                   aria-current={current === i ? 'true' : undefined}
                 >
-                  <span className="opacity-50 mr-1 text-[10px]">0{i + 1}</span>
-                  {s.tab.toUpperCase()}
+                  {s.tab}
                   {current === i && (
                     <motion.span
                       layoutId="heroTab"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full"
-                      style={{ backgroundColor: slide.accentColor }}
+                      className="absolute bottom-0 left-0 right-0 h-px bg-white/70"
                       transition={{ duration: 0.3 }}
                     />
                   )}
@@ -260,30 +245,6 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
               ))}
             </div>
 
-            {/* Available on App Store / Google Play */}
-            <div>
-              <p className="text-[9px] font-bold text-white/60 uppercase tracking-[0.15em] mb-2">
-                Available On
-              </p>
-              <div className="flex items-center gap-2">
-                {appBadges.map(({ name, href, Logo, eyebrow, title }) => (
-                  <a
-                    key={name}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={name}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 hover:bg-black/55 hover:-translate-y-px transition-all duration-200"
-                  >
-                    <Logo />
-                    <span className="text-left leading-none">
-                      <span className="block text-[9px] font-semibold text-white/60 tracking-wide mb-0.5">{eyebrow}</span>
-                      <span className="block text-sm font-bold text-white">{title}</span>
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </div>

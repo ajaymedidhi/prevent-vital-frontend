@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { ArrowRight, Users, Shield, Activity, Clock } from 'lucide-react';
 
@@ -16,7 +15,6 @@ const CTASection = () => {
       style={{ background: 'var(--gradient-health)' }}
       aria-labelledby="cta-heading"
     >
-      {/* Pattern overlay */}
       <div
         className="absolute inset-0 opacity-[0.04]"
         style={{
@@ -25,73 +23,49 @@ const CTASection = () => {
         }}
       />
 
-      {/* Soft radial glow */}
       <div className="absolute top-0 left-1/4 rounded-full blur-[80px] pointer-events-none bg-white/5"
         style={{ width: 'clamp(16rem, 36vw, 36rem)', height: 'clamp(16rem, 36vw, 36rem)' }} />
       <div className="absolute bottom-0 right-1/4 rounded-full blur-[80px] pointer-events-none bg-accent/10"
         style={{ width: 'clamp(14rem, 28vw, 28rem)', height: 'clamp(14rem, 28vw, 28rem)' }} />
 
       <div className="container-wide relative z-10">
-        <div className="max-w-3xl mx-auto text-center space-y-4 md:space-y-8">
+        <div className="max-w-3xl mx-auto text-center space-y-3 md:space-y-6">
 
-          {/* Overline */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-1.5 bg-white/10 border border-white/15 rounded-full backdrop-blur-sm">
-            <Shield size={13} className="text-emerald-300" />
-            <span className="text-[11px] md:text-xs font-semibold text-white/80 tracking-wide">Today Is a Fine Day to Start</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 border border-white/15 rounded-full backdrop-blur-sm">
+            <Shield size={12} className="text-emerald-300" />
+            <span className="text-[10px] md:text-[11px] font-semibold text-white tracking-wide uppercase">Today Is a Fine Day to Start</span>
           </div>
 
-          {/* Headline */}
           <h2
             id="cta-heading"
-            className="text-2xl md:text-[length:var(--fz-4xl)] font-semibold text-white leading-[1.15] tracking-tight"
+            className="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-[1.15] tracking-tight"
           >
-            Your Future Self <span className="text-white/40">Will Thank You for This</span>
+            Your Future Self <span className="text-white/75">Will Thank You for This</span>
           </h2>
 
-          {/* Subtext */}
-          <p className="text-sm md:text-[length:var(--fz-lg)] text-white/65 max-w-xl mx-auto leading-relaxed line-clamp-2 md:line-clamp-none">
-            Five minutes today for a clearer picture of your health tomorrow. No commitment, no judgment — just a starting point.
+          <p className="text-sm md:text-base text-white/90 max-w-xl mx-auto leading-relaxed line-clamp-2 md:line-clamp-none mb-6">
+            Five minutes today for a clearer picture of your health tomorrow. No commitment, just a starting point.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center pt-1 md:pt-2">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center pt-2 md:pt-4">
             <Link
               to="/ai-health-assessment"
-              className="group inline-flex items-center gap-2.5 px-6 py-3 md:px-8 md:py-4 rounded-xl text-xs md:text-sm font-semibold bg-white text-primary hover:bg-white/95 transition-all duration-200 hover:-translate-y-px"
+              className="group inline-flex items-center gap-2 px-5 py-3 md:px-6 md:py-3.5 rounded-xl text-xs md:text-[13px] font-semibold bg-white text-brand-700 hover:bg-white/95 transition-all duration-200 hover:-translate-y-px"
               style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.15)' }}
             >
               Get My Free Assessment
-              <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
             </Link>
 
             <Link
               to="/medical-professional-portal"
-              className="inline-flex items-center gap-2.5 px-6 py-3 md:px-8 md:py-4 rounded-xl text-xs md:text-sm font-semibold text-white border border-white/20 hover:bg-white/10 hover:border-white/30 backdrop-blur-sm transition-all duration-200"
+              className="inline-flex items-center gap-2 px-5 py-3 md:px-6 md:py-3.5 rounded-xl text-xs md:text-[13px] font-semibold text-white border border-white/20 hover:bg-white/10 hover:border-white/30 backdrop-blur-sm transition-all duration-200"
             >
-              <Users size={16} />
+              <Users size={14} />
               For Healthcare Providers
             </Link>
           </div>
         </div>
-
-        {/* Stats strip */}
-        {/*
-        // Temporarily hidden as per client request.
-        // Metrics will be updated and re-enabled once official numbers are finalized.
-        <div className="mt-16 pt-10 border-t border-white/10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto">
-            {stats.map(({ value, label, icon: Icon }) => (
-              <div key={label} className="text-center space-y-1">
-                <div className="flex justify-center mb-2">
-                  <Icon size={16} className="text-white/40" />
-                </div>
-                <div className="text-fluid-3xl font-bold text-white">{value}</div>
-                <div className="text-xs font-medium text-white/50 uppercase tracking-wider">{label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-        */}
       </div>
     </section>
   );

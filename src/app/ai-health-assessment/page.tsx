@@ -44,43 +44,40 @@ const AiHealthAssessmentPage = () => {
                 ) : (
                     <section
                         className="relative w-full overflow-hidden"
-                        style={{ paddingTop: 'clamp(2.5rem, 1.8rem + 2.5vw, 4rem)', paddingBottom: 'clamp(2.5rem, 1.8rem + 2.5vw, 4rem)' }}
+                        style={{ minHeight: 'clamp(560px, 78vh, 780px)' }}
                     >
-                        <div className="absolute inset-0 healthcare-mesh" />
-                        <div
-                            className="absolute inset-0 opacity-[0.025]"
-                            style={{
-                                backgroundImage: `
-                                    linear-gradient(hsl(var(--primary)) 1px, transparent 1px),
-                                    linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)
-                                `,
-                                backgroundSize: '60px 60px',
-                            }}
-                        />
-                        <div
-                            className="absolute inset-0 pointer-events-none"
-                            style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 60%, hsl(var(--primary) / 0.08) 0%, transparent 70%)' }}
-                        />
+                        <div className="absolute inset-0">
+                            <img
+                                src="https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?auto=format&fit=crop&w=2069&q=80"
+                                alt=""
+                                className="w-full h-full object-cover"
+                                style={{ objectPosition: 'center 30%' }}
+                            />
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/55 to-black/45" />
+                        <div className="absolute inset-0 hidden md:block bg-gradient-to-r from-black/70 via-black/25 to-transparent" />
 
-                        <div className="container-wide relative z-10 text-center">
+                        <div
+                            className="container-wide relative z-10 text-center flex flex-col justify-center h-full"
+                            style={{ minHeight: 'clamp(560px, 78vh, 780px)', paddingTop: 'clamp(3rem, 2.5rem + 2vw, 4.5rem)', paddingBottom: 'clamp(2.5rem, 2rem + 2vw, 3.5rem)' }}
+                        >
                             <div className="space-y-4 mb-8">
                                 <div className="flex justify-center">
-                                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-border rounded-full shadow-xs">
-                                        <Sparkles size={13} className="text-accent" />
-                                        <span className="text-xs font-semibold text-primary tracking-wide">AI-Powered Assessment</span>
+                                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full">
+                                        <Sparkles size={13} className="text-white" />
+                                        <span className="text-xs font-semibold text-white tracking-wide">AI-Powered Assessment</span>
                                     </div>
                                 </div>
 
                                 <h1
-                                    className="font-semibold leading-[1.15] tracking-tight text-foreground text-balance mx-auto"
+                                    className="font-semibold leading-[1.15] tracking-tight text-white text-balance mx-auto"
                                     style={{ fontSize: 'var(--fz-h1-sm)', maxWidth: '18ch' }}
                                 >
-                                    Get Your{' '}
-                                    <span className="gradient-text-soft">VITAL™ Score</span>
+                                    Get Your <span style={{ color: '#5eead4' }}>VITAL™ Score</span>
                                 </h1>
 
                                 <p
-                                    className="text-muted-foreground leading-relaxed mx-auto"
+                                    className="text-white/80 leading-relaxed mx-auto"
                                     style={{ fontSize: 'var(--fz-base)', maxWidth: '48ch' }}
                                 >
                                     Discover your personal health score and receive tailored recommendations through our advanced predictive analytics engine.
@@ -88,7 +85,7 @@ const AiHealthAssessmentPage = () => {
                             </div>
 
                             {/* Auth card */}
-                            <div className="bg-card border border-border rounded-2xl p-8 max-w-sm mx-auto shadow-sm space-y-5">
+                            <div className="bg-white/95 backdrop-blur-md border border-white/40 rounded-2xl p-8 max-w-sm mx-auto space-y-5" style={{ boxShadow: 'var(--shadow-xl)' }}>
                                 <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto">
                                     <Shield size={22} className="text-primary" />
                                 </div>

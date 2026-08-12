@@ -10,8 +10,6 @@ interface Testimonial {
     duration: string;
 }
 
-// Illustrative testimonials for design purposes — replace with real, consented
-// customer stories before this section goes live.
 const testimonials: Testimonial[] = [
     {
         id: '1',
@@ -72,56 +70,51 @@ const testimonials: Testimonial[] = [
 const TestimonialSection = () => {
     return (
         <section className="section-padding bg-section-alt/40 relative overflow-hidden">
-            {/* Background pattern */}
             <div
                 className="absolute inset-0 opacity-[0.025] pointer-events-none"
                 style={{ backgroundImage: 'radial-gradient(hsl(var(--primary)) 1px, transparent 1px)', backgroundSize: '32px 32px' }}
             />
 
             <div className="container-wide relative z-10">
-                {/* Section header */}
-                <div className="text-center mb-7 md:mb-14">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 md:px-3.5 md:py-1.5 bg-accent/8 border border-accent/15 rounded-full mb-3 md:mb-5">
-                        <Quote size={13} className="text-accent" />
+                <div className="text-center mb-10 md:mb-16">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/8 border border-accent/15 rounded-full mb-5 md:mb-6">
+                        <Quote size={14} className="text-accent" />
                         <span className="text-[11px] md:text-xs font-bold text-accent uppercase tracking-widest">Real Stories</span>
                     </div>
-                    <h2 className="text-2xl md:text-[length:var(--fz-4xl)] font-semibold text-foreground leading-tight tracking-tight mb-2 md:mb-3">
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight tracking-tight mb-2 md:mb-3">
                         Real People,{' '}
                         <span className="gradient-text-soft">Real Turnarounds</span>
                     </h2>
-                    <p className="text-xs md:text-base text-muted-foreground max-w-xl mx-auto line-clamp-2 md:line-clamp-none">
-                        Behind every score is a person who decided today was the day to start. Here's what that looked like for a few of them.
+                    <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto line-clamp-2 md:line-clamp-none mb-4">
+                        Behind every score is a person who decided to start today. Here's what that looks like.
                     </p>
                 </div>
-
             </div>
 
-            {/* Testimonial marquee — drifts continuously left, pauses on hover */}
-            <div className="relative mt-2">
-                {/* Edge fade masks */}
-                <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-section-alt/40 to-transparent z-10 pointer-events-none" />
-                <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-section-alt/40 to-transparent z-10 pointer-events-none" />
+            <div className="relative mt-4">
+                <div className="absolute inset-y-0 left-0 w-24 md:w-40 bg-gradient-to-r from-section-alt/40 to-transparent z-10 pointer-events-none" />
+                <div className="absolute inset-y-0 right-0 w-24 md:w-40 bg-gradient-to-l from-section-alt/40 to-transparent z-10 pointer-events-none" />
 
                 <div className="group overflow-hidden">
-                    <div className="flex w-max gap-5 animate-scroll [animation-duration:48s] group-hover:[animation-play-state:paused]">
+                    <div className="flex w-max gap-6 animate-scroll [animation-duration:55s] group-hover:[animation-play-state:paused]">
                         {[...testimonials, ...testimonials].map((t, i) => (
                             <div
                                 key={`${t.id}-${i}`}
-                                className="bg-white rounded-2xl p-6 border border-border/60 flex flex-col w-[340px] flex-shrink-0"
-                                style={{ boxShadow: 'var(--shadow-sm)' }}
+                                className="bg-white rounded-[1.5rem] p-6 md:p-8 border border-border/60 flex flex-col w-[340px] md:w-[400px] flex-shrink-0"
+                                style={{ boxShadow: 'var(--shadow-md)' }}
                             >
-                                <Quote size={22} className="text-primary/15 mb-3 flex-shrink-0" fill="currentColor" />
+                                <Quote size={24} className="text-primary/15 mb-4 flex-shrink-0" fill="currentColor" />
 
-                                <span className="inline-flex self-start px-2.5 py-1 rounded-full bg-primary/8 text-primary text-[10px] font-bold uppercase tracking-wide mb-3">
+                                <span className="inline-flex self-start px-3 py-1.5 rounded-full bg-primary/8 text-brand-700 text-[10px] md:text-[11px] font-bold uppercase tracking-wider mb-4">
                                     {t.condition}
                                 </span>
 
-                                <blockquote className="text-sm text-foreground leading-relaxed flex-1 line-clamp-4 md:line-clamp-none">
+                                <blockquote className="text-base md:text-lg text-foreground leading-relaxed flex-1 line-clamp-4 md:line-clamp-none italic">
                                     "{t.quote}"
                                 </blockquote>
 
-                                <div className="flex items-center justify-between gap-3 mt-5 pt-4 border-t border-border/60">
-                                    <p className="text-sm font-bold text-foreground">
+                                <div className="flex items-center justify-between gap-3 mt-4 pt-4 border-t border-border/60">
+                                    <p className="text-[13px] font-bold text-foreground">
                                         {t.name}, {t.age}
                                     </p>
                                     <div className="text-right leading-tight">

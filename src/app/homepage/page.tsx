@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import HeroSection from '@/components/homepage/HeroSection';
 import TrustIndicators from '@/components/homepage/TrustIndicators';
 import WellnessJourney from '@/components/homepage/WellnessJourney';
+import EverydayPrevention from '@/components/homepage/EverydayPrevention';
 import ConditionCards from '@/components/homepage/ConditionCards';
 import PlatformDemo from '@/components/homepage/PlatformDemo';
 import MeetVita from '@/components/homepage/MeetVita';
@@ -47,9 +48,10 @@ const Index = () => {
                 <TrustIndicators />
                 */}
                 <WellnessJourney />
+                <EverydayPrevention />
                 <PlatformDemo />
-                <MeetVita />
                 <ConditionCards />
+                <MeetVita />
                 <FlowingDivider className="bg-background" />
                 <WellnessTeamSection />
                 {/*

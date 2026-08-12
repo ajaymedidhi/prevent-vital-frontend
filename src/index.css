@@ -9,9 +9,9 @@
   :root {
     /* ── PreventVital Premium Design System ── */
 
-    /* Primary: Deep Medical Blue — Trust, Authority, Safety */
-    /* #1B4570 → HSL 213 60% 27% */
-    --primary: 213 60% 27%;
+    /* Primary: Soft Cerulean — Trust, Action (From Mobile Theme) */
+    /* #51A6CB → HSL 198 55% 56% */
+    --primary: 198 55% 56%;
     --primary-foreground: 0 0% 100%;
 
     /* ── Fluid Spacing Scale (clamp: 375px → 1440px viewport) ── */
@@ -51,9 +51,9 @@
     --secondary: 214 25% 96%;
     --secondary-foreground: 213 40% 25%;
 
-    /* Accent: Wellness Teal — Vitality, Prevention, Health */
-    /* #0D9488 → HSL 174 84% 31% */
-    --accent: 174 84% 31%;
+    /* Accent: Soft Magenta — Energy, Highlights (From Mobile Theme) */
+    /* #BF40A3 → HSL 313 50% 50% */
+    --accent: 313 50% 50%;
     --accent-foreground: 0 0% 100%;
 
     /* Surfaces */
@@ -82,19 +82,19 @@
     /* Radius — consistent throughout */
     --radius: 0.75rem;
 
-    /* ── Elevation System ── */
-    --shadow-xs:   0 1px 2px rgba(15, 30, 60, 0.04);
-    --shadow-sm:   0 2px 8px rgba(15, 30, 60, 0.06);
-    --shadow-md:   0 4px 16px rgba(15, 30, 60, 0.08), 0 1px 4px rgba(15, 30, 60, 0.04);
-    --shadow-lg:   0 8px 30px rgba(15, 30, 60, 0.10), 0 2px 8px rgba(15, 30, 60, 0.05);
-    --shadow-xl:   0 20px 50px rgba(15, 30, 60, 0.12), 0 4px 16px rgba(15, 30, 60, 0.06);
-    --shadow-glow-primary: 0 0 0 3px hsl(213 60% 27% / 0.15);
-    --shadow-glow-accent:  0 0 0 3px hsl(174 84% 31% / 0.15);
+    /* ── Elevation System (Softer, Premium Drop Shadows) ── */
+    --shadow-xs:   0 1px 2px rgba(15, 23, 42, 0.02);
+    --shadow-sm:   0 2px 10px rgba(15, 23, 42, 0.04);
+    --shadow-md:   0 8px 30px rgba(15, 23, 42, 0.04), 0 2px 10px rgba(15, 23, 42, 0.02);
+    --shadow-lg:   0 15px 40px rgba(15, 23, 42, 0.06), 0 4px 15px rgba(15, 23, 42, 0.03);
+    --shadow-xl:   0 25px 60px rgba(15, 23, 42, 0.08), 0 8px 25px rgba(15, 23, 42, 0.04);
+    --shadow-glow-primary: 0 0 0 3px hsl(198 55% 56% / 0.20);
+    --shadow-glow-accent:  0 0 0 3px hsl(313 50% 50% / 0.25);
 
-    /* ── Premium Gradients ── */
-    --gradient-hero:    linear-gradient(135deg, hsl(213 60% 27%) 0%, hsl(174 84% 31%) 100%);
-    --gradient-health:  linear-gradient(135deg, hsl(213 60% 22%) 0%, hsl(213 60% 32%) 50%, hsl(174 84% 28%) 100%);
-    --gradient-soft:    linear-gradient(135deg, hsl(214 25% 97%) 0%, hsl(174 40% 96%) 100%);
+    /* ── Premium Gradients (Mobile Theme) ── */
+    --gradient-hero:    linear-gradient(135deg, hsl(217 47% 11%) 0%, hsl(217 50% 8%) 100%); /* Slate overlay */
+    --gradient-health:  linear-gradient(135deg, hsl(198 55% 40%) 0%, hsl(313 50% 40%) 100%); /* Brand Gradient — darkened from L56/L50 so white text stays WCAG AA-readable at both ends */
+    --gradient-soft:    linear-gradient(135deg, hsl(214 25% 99%) 0%, hsl(214 20% 95%) 100%);
     --gradient-card:    linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(214 25% 98%) 100%);
 
     /* ── Glassmorphism ── */

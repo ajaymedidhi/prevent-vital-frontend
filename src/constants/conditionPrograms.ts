@@ -135,8 +135,8 @@ export const conditionPrograms: ConditionProgram[] = [
             { question: 'Do I need an ECG device at home?', answer: 'No — ECG integration uses data from a connected wearable or your latest clinical reports where available; it isn’t required to begin the program.' },
             { question: 'How is this different from the Diabetes or Weight programs?', answer: 'This program is built specifically around your ASCVD risk factors — cholesterol, smoking, inactivity — using the same clinical framework as your CVITAL cardiovascular risk score.' },
         ],
-        image: 'https://images.unsplash.com/photo-1612531386530-97286d97c2d2?auto=format&fit=crop&w=900&q=80',
-        alt: 'Cardiologist with a stethoscope, arms crossed, ready for a patient consultation',
+        image: 'https://images.unsplash.com/photo-1654588836262-fb473e1a34ee?auto=format&fit=crop&w=900&q=80',
+        alt: 'Man holding his heart with chest pain',
         instructor: {
             name: 'Dr. Ritu Malhotra',
             title: 'Interventional Cardiologist',

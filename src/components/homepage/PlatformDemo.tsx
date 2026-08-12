@@ -65,27 +65,27 @@ const PlatformDemo = () => {
     return (
         <section className="section-padding bg-section-alt/30 overflow-hidden">
             <div className="container-wide">
-                <div className="flex flex-col lg:flex-row gap-16 items-center">
+                <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
                     {/* Content Side */}
-                    <div className="w-full lg:w-5/12 space-y-8 animate-fade-in-left">
-                        <div className="inline-flex items-center space-x-2 px-3 py-1 bg-primary/5 border border-primary/20 rounded-full">
-                            <Activity size={14} className="text-primary" />
-                            <span className="text-xs font-bold text-primary uppercase tracking-widest">Platform Technology</span>
+                    <div className="w-full lg:w-5/12 space-y-6 lg:space-y-8 animate-fade-in-left">
+                        <div className="inline-flex items-center space-x-2 px-3 py-1.5 bg-primary/5 border border-primary/20 rounded-full">
+                            <Activity size={12} className="text-primary" />
+                            <span className="text-[10px] md:text-[11px] font-bold text-brand-700 uppercase tracking-widest">Platform Technology</span>
                         </div>
 
-                        <div className="mb-fluid-12">
-                            <h2 id="platform-technology" className="text-2xl md:text-[length:var(--fz-4xl)] font-bold text-foreground mb-2 md:mb-4 leading-tight">
+                        <div className="mb-8 md:mb-12">
+                            <h2 id="platform-technology" className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-2 md:mb-3 leading-tight">
                                 Care That Notices <br className="hidden md:block" />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-800 to-wellness-600">
                                     Things Early
                                 </span>
                             </h2>
-                            <p className="text-sm md:text-[length:var(--fz-xl)] text-muted-foreground leading-relaxed line-clamp-2 md:line-clamp-none">
-                                We turn everyday numbers — your heart rate, your sleep, your last check-up — into something you can actually act on, with real clinical grounding behind every recommendation.
+                            <p className="text-sm md:text-base text-muted-foreground leading-relaxed line-clamp-2 md:line-clamp-none">
+                                We turn everyday numbers into actionable insights, with real clinical grounding behind every recommendation.
                             </p>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="space-y-3 md:space-y-4">
                             {features.map((feature, index) => {
                                 const IconComponent = IconMap[feature.icon];
                                 const isActive = activeFeature === index;
@@ -93,34 +93,34 @@ const PlatformDemo = () => {
                                     <button
                                         key={feature.id}
                                         onClick={() => setActiveFeature(index)}
-                                        className={`group w-full text-left p-5 rounded-2xl border transition-all duration-300 relative overflow-hidden ${isActive
+                                        className={`group w-full text-left p-4 md:p-5 rounded-[1.25rem] border transition-all duration-300 relative overflow-hidden ${isActive
                                             ? 'bg-primary/5 border-primary/40'
                                             : 'bg-card border-border hover:border-primary/30 hover:bg-muted/40'
                                             }`}
-                                        style={isActive ? { boxShadow: 'var(--shadow-sm)' } : {}}
+                                        style={isActive ? { boxShadow: 'var(--shadow-xs)' } : {}}
                                     >
                                         {/* Active left accent bar */}
                                         {isActive && (
                                             <div className="absolute left-0 top-4 bottom-4 w-0.5 bg-primary rounded-r-full" />
                                         )}
-                                        <div className="relative z-10 flex items-start gap-4">
-                                            <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${isActive
+                                        <div className="relative z-10 flex items-start gap-3 md:gap-4">
+                                            <div className={`w-10 h-10 md:w-11 md:h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${isActive
                                                 ? 'bg-primary text-primary-foreground shadow-sm'
                                                 : 'bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary'
                                                 }`}>
-                                                <IconComponent size={22} strokeWidth={isActive ? 2.5 : 2} />
+                                                <IconComponent size={20} strokeWidth={isActive ? 2.5 : 2} />
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <h3 className={`text-sm md:text-base font-bold mb-1 transition-colors ${isActive ? 'text-foreground' : 'text-foreground/70 group-hover:text-foreground'
+                                                <h3 className={`text-sm md:text-[15px] font-bold mb-1 transition-colors ${isActive ? 'text-foreground' : 'text-foreground/70 group-hover:text-foreground'
                                                     }`}>
                                                     {feature.title}
                                                 </h3>
-                                                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed line-clamp-2 md:line-clamp-none">
+                                                <p className="text-xs md:text-[13px] text-muted-foreground leading-relaxed line-clamp-2 md:line-clamp-none">
                                                     {feature.description}
                                                 </p>
                                             </div>
                                             <ChevronRight
-                                                size={18}
+                                                size={16}
                                                 className={`flex-shrink-0 mt-0.5 transition-transform duration-300 ${isActive ? 'text-primary rotate-90' : 'text-muted-foreground/50 group-hover:text-foreground'
                                                     }`}
                                             />
@@ -134,8 +134,8 @@ const PlatformDemo = () => {
                     {/* Visual Side */}
                     <div className="w-full lg:w-7/12 relative animate-fade-in-right">
                         <div
-                            className="relative rounded-3xl overflow-hidden border-4 border-card aspect-[4/3]"
-                            style={{ boxShadow: 'var(--shadow-xl)' }}
+                            className="relative rounded-[1.5rem] overflow-hidden border-4 border-card aspect-[4/3]"
+                            style={{ boxShadow: 'var(--shadow-lg)' }}
                         >
                             {/* Image */}
                             <img
@@ -150,16 +150,16 @@ const PlatformDemo = () => {
 
                             {/* Floating metrics card */}
                             <div
-                                className="absolute bottom-5 left-5 right-5 bg-white/95 backdrop-blur-md rounded-2xl p-5"
-                                style={{ boxShadow: 'var(--shadow-md)' }}
+                                className="absolute bottom-4 left-4 right-4 md:bottom-5 md:left-5 md:right-5 bg-white/95 backdrop-blur-md rounded-2xl p-4 md:p-5"
+                                style={{ boxShadow: 'var(--shadow-sm)' }}
                             >
-                                <div className="grid grid-cols-3 gap-4">
+                                <div className="grid grid-cols-3 gap-3 md:gap-4">
                                     {features[activeFeature].metrics.map((metric, index) => (
-                                        <div key={index} className={index > 0 ? 'pl-4 border-l border-border/60' : ''}>
-                                            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                                        <div key={index} className={index > 0 ? 'pl-3 md:pl-4 border-l border-border/60' : ''}>
+                                            <p className="text-[9px] md:text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                                                 {metric.label}
                                             </p>
-                                            <p className="text-base font-bold text-foreground">
+                                            <p className="text-[13px] md:text-[15px] font-bold text-foreground truncate">
                                                 {metric.value}
                                             </p>
                                         </div>
@@ -170,7 +170,7 @@ const PlatformDemo = () => {
 
                         {/* Ambient glow — single, subtle, matches MeetVita's treatment */}
                         <div
-                            className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full blur-[100px] opacity-30 pointer-events-none"
+                            className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 md:w-80 md:h-80 rounded-full blur-[90px] opacity-25 pointer-events-none"
                             style={{ background: 'radial-gradient(circle, hsl(var(--accent)) 0%, transparent 70%)' }}
                         />
                     </div>

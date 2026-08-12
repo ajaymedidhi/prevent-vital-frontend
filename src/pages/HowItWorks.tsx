@@ -1,6 +1,7 @@
+import { useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
 import {
     Sparkles,
     ArrowRight,
@@ -145,11 +146,13 @@ const TrendVisual = () => (
 
 const steps = [
     {
-        tag: '5 minutes · No lab visit needed',
+        tag: '5 minutes · Cholesterol numbers needed',
         title: 'Tell Us About You',
         description:
-            'A quick questionnaire on vitals, lipids, glycaemic health, family history, and lifestyle — nothing here needs a clinic visit.',
+            "A quick questionnaire on your vitals, blood sugar, family history, and lifestyle. You'll also need your total cholesterol and HDL (\"good\" cholesterol) — numbers from your last blood test. No need for a new one if you've had a checkup recently.",
         Visual: QuestionnaireVisual,
+        photo: 'https://images.unsplash.com/photo-1573497491208-6b1acb260507?auto=format&fit=crop&w=1000&q=80',
+        photoAlt: 'Person having a relaxed intake conversation',
     },
     {
         tag: 'Instant · 0–100 scale',
@@ -157,6 +160,8 @@ const steps = [
         description:
             'Your CVITAL score, 10-year ASCVD risk, and vascular age — calculated instantly with real ACC/AHA equations, not an invented metric.',
         Visual: ScoreVisual,
+        photo: 'https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?auto=format&fit=crop&w=1000&q=80',
+        photoAlt: 'Clinician checking a patient’s vitals',
     },
     {
         tag: 'Personalized to your risk band',
@@ -164,6 +169,8 @@ const steps = [
         description:
             'Higher risk opens a cardiac program and consultation. Moderate risk gets targeted changes. Lower risk gets a wearable nudge toward Excellent.',
         Visual: PlanVisual,
+        photo: 'https://images.unsplash.com/photo-1487956382158-bb926046304a?auto=format&fit=crop&w=1000&q=80',
+        photoAlt: 'Person walking outdoors as part of a daily plan',
     },
 ];
 
@@ -173,7 +180,59 @@ const laterStep = {
     description:
         "Connect a wearable you already own and watch your score move with real daily data — reassess quarterly to confirm you're on track.",
     Visual: TrendVisual,
+    photo: 'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?auto=format&fit=crop&w=1000&q=80',
+    photoAlt: 'Person checking their smartwatch during their everyday routine',
 };
+
+interface StepCardProps {
+    index: number;
+    anchorId?: string;
+    tag: string;
+    title: string;
+    description: string;
+    Visual: () => JSX.Element;
+    photo: string;
+    photoAlt: string;
+    reversed?: boolean;
+}
+
+const StepCard = ({ index, anchorId, tag, title, description, Visual, photo, photoAlt, reversed = false }: StepCardProps) => (
+    <div id={anchorId} className={`relative scroll-mt-24 md:w-[82%] ${reversed ? 'md:ml-auto' : ''}`}>
+        <FadeInSection>
+            <div
+                className="relative rounded-[2rem] overflow-hidden border border-border/60 grid grid-cols-1 md:grid-cols-5"
+                style={{ boxShadow: 'var(--shadow-lg)' }}
+            >
+                {/* Photo panel */}
+                <div className={`md:col-span-3 relative min-h-[240px] md:min-h-[360px] ${reversed ? 'md:order-1' : 'md:order-2'}`}>
+                    <img src={photo} alt={photoAlt} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+
+                    {/* Floating clinical mockup — real data shape, not just a nice photo. Scales down (not hidden) on mobile. */}
+                    <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 w-64 sm:w-72 scale-[0.62] sm:scale-100 origin-bottom-right">
+                        <Visual />
+                    </div>
+                </div>
+
+                {/* Text panel */}
+                <div className={`md:col-span-2 p-8 md:p-9 flex flex-col justify-center bg-card ${reversed ? 'md:order-2' : 'md:order-1'}`}>
+                    <div className="w-11 h-11 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm mb-5 flex-shrink-0">
+                        0{index}
+                    </div>
+                    <span className="inline-flex self-start px-2.5 py-1 rounded-full bg-accent/8 text-accent text-[11px] font-bold uppercase tracking-wide mb-3">
+                        {tag}
+                    </span>
+                    <h2 className="text-xl md:text-2xl font-bold text-foreground tracking-tight mb-2.5 leading-tight">
+                        {title}
+                    </h2>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                        {description}
+                    </p>
+                </div>
+            </div>
+        </FadeInSection>
+    </div>
+);
 
 const quickSteps = [
     { anchor: '#step-1', label: 'Tell Us About You', tag: '5 min', Icon: ClipboardList },
@@ -247,6 +306,13 @@ const PhoneMockup = () => (
 );
 
 const HowItWorks = () => {
+    const stepsSectionRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress: curveProgress } = useScroll({
+        target: stepsSectionRef,
+        offset: ['start 0.75', 'end 0.4'],
+    });
+    const curvePathLength = useSpring(curveProgress, { stiffness: 80, damping: 24, restDelta: 0.001 });
+
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Helmet>
@@ -367,58 +433,110 @@ const HowItWorks = () => {
 
                 {/* ── STEPS 1–3 ── */}
                 <section className="section-padding bg-background">
-                    <div className="container-wide space-y-20 md:space-y-28">
-                        {steps.map((step, index) => {
-                            const Visual = step.Visual;
-                            const isReversed = index % 2 === 1;
-                            return (
-                                <div key={step.title} id={`step-${index + 1}`} className="grid md:grid-cols-2 gap-10 md:gap-16 items-center scroll-mt-24">
-                                    <FadeInSection className={isReversed ? 'md:order-2' : ''}>
-                                        <span className="block text-7xl md:text-8xl font-extrabold text-primary/10 leading-none select-none">
-                                            0{index + 1}
-                                        </span>
-                                        <div className="-mt-4 md:-mt-6">
-                                            <span className="inline-flex px-2.5 py-1 rounded-full bg-accent/8 text-accent text-[11px] font-bold uppercase tracking-wide mb-3">
-                                                {step.tag}
-                                            </span>
-                                            <h2 className="text-fluid-3xl font-bold text-foreground tracking-tight mb-3 leading-tight">
-                                                {step.title}
-                                            </h2>
-                                            <p className="text-muted-foreground leading-relaxed" style={{ fontSize: 'var(--fz-lg)' }}>
-                                                {step.description}
-                                            </p>
-                                        </div>
-                                    </FadeInSection>
+                    <div ref={stepsSectionRef} className="container-wide relative">
+                        {/* Curved connector — traces the zigzag between step numbers, drawing in as you scroll */}
+                        <svg
+                            className="hidden md:block absolute inset-0 w-full h-full pointer-events-none"
+                            viewBox="0 0 1000 1000"
+                            preserveAspectRatio="none"
+                            fill="none"
+                            aria-hidden="true"
+                        >
+                            {/* Faint full-length guide, always visible */}
+                            <path
+                                d="M120,100 C120,300 880,300 880,500 C880,700 120,700 120,900"
+                                stroke="hsl(var(--primary))"
+                                strokeOpacity="0.08"
+                                strokeWidth="3"
+                                strokeDasharray="2 14"
+                                strokeLinecap="round"
+                                vectorEffect="non-scaling-stroke"
+                            />
+                            {/* Progress trace — fills in with scroll */}
+                            <motion.path
+                                d="M740,80 C740,290 260,290 260,500 C260,710 740,710 740,920"
+                                stroke="hsl(var(--primary))"
+                                strokeOpacity="0.4"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                vectorEffect="non-scaling-stroke"
+                                style={{ pathLength: curvePathLength }}
+                            />
+                        </svg>
+                        {[
+                            { top: '8%', left: '74%' },
+                            { top: '50%', left: '26%' },
+                            { top: '92%', left: '74%' },
+                        ].map((pos, i) => (
+                            <span
+                                key={i}
+                                className="hidden md:block absolute w-2.5 h-2.5 rounded-full bg-primary/50 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                                style={pos}
+                            />
+                        ))}
 
-                                    <FadeInSection delay={0.1} className={isReversed ? 'md:order-1' : ''}>
-                                        <Visual />
-                                    </FadeInSection>
-                                </div>
-                            );
-                        })}
+                        <div className="space-y-14 md:space-y-16 relative">
+                            {steps.map((step, index) => (
+                                <StepCard
+                                    key={step.title}
+                                    index={index + 1}
+                                    anchorId={`step-${index + 1}`}
+                                    tag={step.tag}
+                                    title={step.title}
+                                    description={step.description}
+                                    Visual={step.Visual}
+                                    photo={step.photo}
+                                    photoAlt={step.photoAlt}
+                                    reversed={index % 2 === 1}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* ── MID-PAGE NUDGE — catches intent before the long scroll to the bottom CTA ── */}
+                <section className="bg-background pb-14 md:pb-20">
+                    <div className="container-wide text-center">
+                        <p className="text-sm text-muted-foreground">
+                            Already convinced?{' '}
+                            <Link to="/ai-health-assessment" className="font-semibold text-primary hover:underline underline-offset-4">
+                                Start your free assessment now →
+                            </Link>
+                        </p>
                     </div>
                 </section>
 
                 {/* ── STEP 4: THE APP (showcase) ── */}
-                <section id="the-app" className="section-padding bg-section-alt/30 relative overflow-hidden scroll-mt-20">
-                    <div
-                        className="absolute inset-0 opacity-[0.025]"
-                        style={{ backgroundImage: 'radial-gradient(hsl(var(--primary)) 1px, transparent 1px)', backgroundSize: '32px 32px' }}
-                    />
-                    <div className="container-wide relative z-10">
-                        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
-                            <FadeInSection>
-                                <span className="block text-7xl md:text-8xl font-extrabold text-primary/10 leading-none select-none">
-                                    04
-                                </span>
-                                <div className="-mt-4 md:-mt-6">
-                                    <span className="inline-flex px-2.5 py-1 rounded-full bg-accent/8 text-accent text-[11px] font-bold uppercase tracking-wide mb-3">
+                <section id="the-app" className="section-padding bg-section-alt/30 scroll-mt-20">
+                    <div className="container-wide">
+                        <FadeInSection>
+                            <div
+                                className="relative rounded-[2rem] overflow-hidden border border-border/60 grid grid-cols-1 md:grid-cols-5"
+                                style={{ boxShadow: 'var(--shadow-lg)' }}
+                            >
+                                {/* Visual panel — phone mockup on a soft gradient backdrop, matching the photo panels' weight */}
+                                <div className="md:col-span-3 relative min-h-[320px] md:min-h-[440px] md:order-2 flex items-center justify-center py-10 md:py-0 bg-gradient-to-br from-primary/6 via-background to-accent/8">
+                                    <div
+                                        className="absolute inset-0 opacity-[0.03]"
+                                        style={{ backgroundImage: 'radial-gradient(hsl(var(--primary)) 1px, transparent 1px)', backgroundSize: '32px 32px' }}
+                                    />
+                                    <div className="relative z-10">
+                                        <PhoneMockup />
+                                    </div>
+                                </div>
+
+                                {/* Text panel */}
+                                <div className="md:col-span-2 p-8 md:p-9 flex flex-col justify-center bg-card md:order-1">
+                                    <div className="w-11 h-11 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm mb-5 flex-shrink-0">
+                                        04
+                                    </div>
+                                    <span className="inline-flex self-start px-2.5 py-1 rounded-full bg-accent/8 text-accent text-[11px] font-bold uppercase tracking-wide mb-3">
                                         iOS &amp; Android · Free to start
                                     </span>
-                                    <h2 className="text-fluid-3xl font-bold text-foreground tracking-tight mb-3 leading-tight">
+                                    <h2 className="text-xl md:text-2xl font-bold text-foreground tracking-tight mb-2.5 leading-tight">
                                         Download the App &amp; Meet VITA
                                     </h2>
-                                    <p className="text-muted-foreground leading-relaxed mb-6" style={{ fontSize: 'var(--fz-lg)' }}>
+                                    <p className="text-sm text-muted-foreground leading-relaxed mb-6">
                                         Everything from here on lives in the PreventVital app — your score, your program, your wearable data, and VITA, the AI companion that already knows your health story.
                                     </p>
 
@@ -451,40 +569,24 @@ const HowItWorks = () => {
                                         ))}
                                     </div>
                                 </div>
-                            </FadeInSection>
-
-                            <FadeInSection delay={0.15}>
-                                <PhoneMockup />
-                            </FadeInSection>
-                        </div>
+                            </div>
+                        </FadeInSection>
                     </div>
                 </section>
 
                 {/* ── STEP 5 ── */}
-                <section id="step-5" className="section-padding bg-background scroll-mt-24">
+                <section className="section-padding bg-background">
                     <div className="container-wide">
-                        <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
-                            <FadeInSection>
-                                <span className="block text-7xl md:text-8xl font-extrabold text-primary/10 leading-none select-none">
-                                    05
-                                </span>
-                                <div className="-mt-4 md:-mt-6">
-                                    <span className="inline-flex px-2.5 py-1 rounded-full bg-accent/8 text-accent text-[11px] font-bold uppercase tracking-wide mb-3">
-                                        {laterStep.tag}
-                                    </span>
-                                    <h2 className="text-fluid-3xl font-bold text-foreground tracking-tight mb-3 leading-tight">
-                                        {laterStep.title}
-                                    </h2>
-                                    <p className="text-muted-foreground leading-relaxed" style={{ fontSize: 'var(--fz-lg)' }}>
-                                        {laterStep.description}
-                                    </p>
-                                </div>
-                            </FadeInSection>
-
-                            <FadeInSection delay={0.1}>
-                                <laterStep.Visual />
-                            </FadeInSection>
-                        </div>
+                        <StepCard
+                            index={5}
+                            anchorId="step-5"
+                            tag={laterStep.tag}
+                            title={laterStep.title}
+                            description={laterStep.description}
+                            Visual={laterStep.Visual}
+                            photo={laterStep.photo}
+                            photoAlt={laterStep.photoAlt}
+                        />
                     </div>
                 </section>
 

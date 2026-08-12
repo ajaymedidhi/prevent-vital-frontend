@@ -180,6 +180,9 @@ export default function Assessment() {
                             {renderOption('sex', 'Male', 'male')}
                             {renderOption('sex', 'Female', 'female')}
                         </div>
+                        <div className="mt-3">
+                            {renderOption('sex', 'Prefer not to say', 'other', 'ASCVD 10-year risk requires a specific sex and won’t be available')}
+                        </div>
                     </div>
                     {formData.sex === 'female' && (
                         <div>
