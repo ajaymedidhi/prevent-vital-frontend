@@ -52,7 +52,7 @@ const testimonials: Testimonial[] = [
         name: 'Divya',
         age: 34,
         condition: 'Stress & Sleep',
-        quote: 'Family history of heart disease made me anxious to even check my numbers. CVITAL turned that anxiety into a plan — daily breathwork and a score I actually watch improve.',
+        quote: 'Family history of heart disease made me anxious to even check my numbers. VITAL turned that anxiety into a plan — daily breathwork and a score I actually watch improve.',
         improvement: '28% Better Sleep',
         duration: '4 months',
     },

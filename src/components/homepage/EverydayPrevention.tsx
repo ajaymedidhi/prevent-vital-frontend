@@ -8,7 +8,7 @@ const EverydayPrevention = () => {
             <div className="container-wide">
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                     {/* Image collage */}
-                    <FadeInSection delay={0.1} className="order-1 lg:order-1">
+                    <FadeInSection delay={0.2} className="order-2 lg:order-2">
                         <div className="relative w-full max-w-lg mx-auto lg:max-w-none">
                             {/* Top wide image (Family) — 3:2 to match the source photo, so no one gets cropped out */}
                             <div
@@ -52,7 +52,7 @@ const EverydayPrevention = () => {
                     </FadeInSection>
 
                     {/* Copy */}
-                    <FadeInSection delay={0.2} className="order-2 lg:order-2">
+                    <FadeInSection delay={0.1} className="order-1 lg:order-1">
                         <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-accent/8 border border-accent/15 rounded-full mb-4">
                             <Leaf size={12} className="text-accent" />
                             <span className="text-[10px] md:text-[11px] font-bold text-accent uppercase tracking-wider">Everyday Prevention</span>
@@ -62,7 +62,7 @@ const EverydayPrevention = () => {
                             <span className="gradient-text-soft">Real Life</span>
                         </h2>
                         <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-6 max-w-lg">
-                            An extra serving of fruit, a shared family walk, a home-cooked dinner instead of takeout—small, sustainable choices move your CVITAL score more than any single test. Your plan is built around the life you already have.
+                            An extra serving of fruit, a shared family walk, a home-cooked dinner instead of takeout—small, sustainable choices move your VITAL score more than any single test. Your plan is built around the life you already have.
                         </p>
                         
                         <h3 className="text-xl md:text-2xl font-bold text-foreground mt-4 mb-2 tracking-tight">

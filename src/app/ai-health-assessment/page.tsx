@@ -43,8 +43,7 @@ const AiHealthAssessmentPage = () => {
                     <Assessment />
                 ) : (
                     <section
-                        className="relative w-full overflow-hidden"
-                        style={{ minHeight: 'clamp(560px, 78vh, 780px)' }}
+                        className="relative w-full overflow-hidden min-h-[100dvh]"
                     >
                         <div className="absolute inset-0">
                             <img

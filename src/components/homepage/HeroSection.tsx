@@ -44,6 +44,7 @@ const slides = [
     tab: 'Your Score',
     accentColor: '#dd298a', // Vibrant Magenta from Logo
     image: '/images/yoga_buddha_hero.png',
+    mobileImage: '/images/yoga_buddha_mobile.png',
     imagePosition: 'center 50%',
     imagePositionMobile: 'center 40%',
   },
@@ -60,6 +61,7 @@ const slides = [
     tab: 'Everyday Care',
     accentColor: '#1d8cd4', // Cerulean Blue from Logo
     image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=2070&q=80',
+    mobileImage: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=2070&q=80',
     imagePosition: 'center 50%',
     imagePositionMobile: 'center 40%',
   },
@@ -76,6 +78,7 @@ const slides = [
     tab: 'Whole-Person Care',
     accentColor: '#dd298a', // Vibrant Magenta from Logo
     image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=2069&q=80',
+    mobileImage: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=2069&q=80',
     imagePosition: 'center 50%',
     imagePositionMobile: 'center 40%',
   },
@@ -106,7 +109,7 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
           className="absolute inset-0"
         >
           <img
-            src={slide.image}
+            src={slide.mobileImage || slide.image}
             alt=""
             className="block md:hidden w-full h-full object-cover"
             style={{ objectPosition: slide.imagePositionMobile }}
@@ -168,7 +171,7 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
                 </motion.p>
 
                 <motion.div
-                  className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-4"
+                  className="hidden md:flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-4"
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.26, duration: 0.5 }}

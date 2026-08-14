@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Outlet, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { performLogout } from '../store';
-import { Layout, Clock, CreditCard, Building2, ShoppingBag, LogOut, Heart, User, Video, ShieldCheck, Package } from 'lucide-react';
+import { Layout, Clock, CreditCard, Building2, ShoppingBag, LogOut, Heart, User, Video, ShieldCheck, Package, Activity } from 'lucide-react';
 import { RootState } from '../store';
 
 const CustomerLayout = () => {
@@ -106,17 +106,29 @@ const CustomerLayout = () => {
                             <ShieldCheck className="w-5 h-5 text-slate-500 group-hover:text-white" />
                             <span className="text-sm">AI Health Check</span>
                         </Link>
+                        <Link
+                            to="/account/dashboard?tab=assessment-history"
+                            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group mt-1 ${isActive('/account/dashboard?tab=assessment-history')
+                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40 font-medium'
+                                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                                }`}
+                        >
+                            <Activity className={`w-5 h-5 transition-colors ${isActive('/account/dashboard?tab=assessment-history') ? 'text-white' : 'text-slate-500 group-hover:text-white'}`} />
+                            <span className="text-sm">Assessment History</span>
+                        </Link>
                     </div>
                 </nav>
 
                 <div className="p-4 border-t border-gray-800 bg-[#0b1120]">
                     <div className="flex items-center gap-3 mb-4 px-2">
                         <div className="w-8 h-8 rounded-full bg-blue-900/50 border border-blue-700/50 flex items-center justify-center text-blue-400 text-xs font-bold">
-                            {user?.name?.charAt(0) || 'U'}
+                            {(user?.profile?.firstName || user?.name)?.charAt(0) || 'U'}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-white truncate">{user?.name || 'User'}</p>
-                            <p className="text-xs text-slate-500 truncate capitalize">{(user as any)?.subscription?.plan || 'Free'} Plan</p>
+                            <p className="text-sm font-medium text-white truncate">
+                                {[user?.profile?.firstName, user?.profile?.lastName].filter(Boolean).join(' ') || user?.name || 'User'}
+                            </p>
+                            <p className="text-xs text-slate-500 truncate capitalize">{user?.subscriptionPlan || 'Free'} Plan</p>
                         </div>
                     </div>
                     <button onClick={handleLogout} className="flex items-center gap-2 text-slate-400 hover:text-red-400 w-full px-2 py-2 transition-colors">

@@ -1,22 +1,77 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, setCredentials } from '../../store';
+import { RootState, setCredentials, performLogout } from '../../store';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
     HeartPulse, PlayCircle, ShieldCheck, ChevronRight, Activity,
     TrendingUp, Home, ShoppingBag, Settings, Star, Zap,
     LogOut, User, Bell, Search, Plus, Play, Info, Lock,
-    Clock, BookOpen, Crown, Loader2, Filter, X, Video
+    Clock, BookOpen, Crown, Loader2, Filter, X, Video,
+    Pencil, Calendar, Droplet, MapPin, Ruler, Phone, Mail, Weight
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import CustomerOrders from './Orders';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Dot } from 'recharts';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getCvitalTierConfig } from '@/config/cvitalTierConfig';
+
+const ScoreTrendChart = ({ history }: { history: any[] }) => {
+    const sorted = [...history]
+        .sort((a, b) => new Date(a.completedAt || a.createdAt).getTime() - new Date(b.completedAt || b.createdAt).getTime())
+        .slice(-6);
+    
+    // In the frontend, the score is named vitalScore now, or maybe it was still cvitalScore in the DB.
+    // The previous text replacement changed it to cvitalScore... wait, it was just text replacement.
+    const validAssessments = sorted.filter(a => a.results?.cvitalScore > 0);
+    if (validAssessments.length < 2) return null;
+
+    const data = validAssessments.map(a => ({
+        date: new Date(a.completedAt || a.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        score: a.results.cvitalScore
+    }));
+
+    const firstScore = data[0].score;
+    const lastScore = data[data.length - 1].score;
+    const diff = lastScore - firstScore;
+    const diffColor = diff > 0 ? 'text-emerald-500' : diff < 0 ? 'text-red-500' : 'text-slate-500';
+    const diffLabel = diff > 0 ? `▲ +${diff} pts` : diff < 0 ? `▼ ${diff} pts` : '— No change';
+
+    return (
+        <div className="p-5 border-b border-gray-100 bg-white">
+            <div className="flex justify-between items-center mb-4">
+                <h3 className="text-sm font-bold text-gray-900">Score Trend</h3>
+                <span className={`text-sm font-bold ${diffColor}`}>{diffLabel}</span>
+            </div>
+            <div className="h-40 w-full mb-2">
+                <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                        <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                        <YAxis domain={['dataMin - 5', 'dataMax + 5']} axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                        <Tooltip 
+                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                            itemStyle={{ color: '#8b5cf6', fontWeight: 'bold' }}
+                        />
+                        <Line type="monotone" dataKey="score" stroke="#8b5cf6" strokeWidth={3} dot={{ r: 4, fill: '#8b5cf6', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
+            <p className="text-xs text-gray-500 leading-relaxed">
+                {diff > 0
+                    ? `You've improved from ${firstScore} → ${lastScore} — keep it up!`
+                    : diff < 0
+                    ? `Score dropped from ${firstScore} → ${lastScore}. Focus on your recommendations.`
+                    : `Score stable at ${lastScore}. Small lifestyle changes can push you higher.`}
+            </p>
+        </div>
+    );
+};
 
 const CustomerDashboard = () => {
     const { user } = useSelector((state: RootState) => state.auth);
@@ -71,7 +126,7 @@ const CustomerDashboard = () => {
         setPlayingModule({ ...mod, videoUrl: resolvedUrl });
     };
 
-    const userPlan = (user as any)?.subscription?.plan || 'free';
+    const userPlan = user?.subscriptionPlan || 'free';
 
     const PLAN_COLORS: Record<string, string> = {
         free: 'bg-gray-100 text-gray-600',
@@ -140,6 +195,78 @@ const CustomerDashboard = () => {
         }
     };
 
+    const profileForm_init = {
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        gender: '',
+        dateOfBirth: '',
+        bloodGroup: '',
+        city: '',
+        country: '',
+        height: '',
+        weight: '',
+    };
+    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+    const [profileForm, setProfileForm] = useState(profileForm_init);
+    const [savingProfile, setSavingProfile] = useState(false);
+
+    const openProfileModal = () => {
+        const p = user?.profile;
+        setProfileForm({
+            firstName: p?.firstName || '',
+            lastName: p?.lastName || '',
+            phoneNumber: p?.phoneNumber || '',
+            gender: p?.gender || '',
+            dateOfBirth: p?.dateOfBirth ? new Date(p.dateOfBirth).toISOString().slice(0, 10) : '',
+            bloodGroup: p?.bloodGroup || '',
+            city: p?.city || '',
+            country: p?.country || '',
+            height: p?.height?.toString() || '',
+            weight: p?.weight?.toString() || '',
+        });
+        setIsProfileModalOpen(true);
+    };
+
+    const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setProfileForm({ ...profileForm, [e.target.name]: e.target.value });
+    };
+
+    const handleProfileSubmit = async () => {
+        if (!profileForm.firstName.trim() || !profileForm.lastName.trim()) {
+            return;
+        }
+        setSavingProfile(true);
+        try {
+            const token = sessionStorage.getItem('token');
+            const payload: any = {
+                firstName: profileForm.firstName.trim(),
+                lastName: profileForm.lastName.trim(),
+                phoneNumber: profileForm.phoneNumber.trim(),
+                gender: profileForm.gender || null,
+                bloodGroup: profileForm.bloodGroup || null,
+                city: profileForm.city.trim(),
+                country: profileForm.country.trim(),
+                height: profileForm.height ? parseFloat(profileForm.height) : null,
+                weight: profileForm.weight ? parseFloat(profileForm.weight) : null,
+                dateOfBirth: profileForm.dateOfBirth || null,
+            };
+
+            const res = await axios.patch('/api/users/updateMe', { profile: payload }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            if (res.data.status === 'success') {
+                dispatch(setCredentials({ user: res.data.data.user, token: token || '' }));
+                setIsProfileModalOpen(false);
+            }
+        } catch (err) {
+            console.error("Failed to update profile", err);
+        } finally {
+            setSavingProfile(false);
+        }
+    };
+
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -199,7 +326,7 @@ const CustomerDashboard = () => {
                 }
 
                 // Fetch Assessment History and Products when on 'home' tab
-                if (activeTab === 'home') {
+                if (activeTab === 'home' || activeTab === 'assessment-history') {
                     try {
                         const assessRes = await axios.get('/api/vitals/assessments', {
                             headers: { Authorization: `Bearer ${token}` }
@@ -324,6 +451,130 @@ const CustomerDashboard = () => {
     const cvitalScore = (user as any)?.healthProfile?.cvitalScore || 0;
     const cvitalCfg = getCvitalTierConfig(cvitalScore);
 
+    const renderAssessmentHistory = () => (
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {/* AI Health Assessment History Panel */}
+            <div>
+                <div className="flex justify-between items-end mb-4 px-2">
+                    <div>
+                        <h2 className="text-xl font-semibold text-gray-900 font-sans">Assessment History</h2>
+                        <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mt-1">AI Health Check Records</p>
+                    </div>
+                    <Button variant="ghost" size="sm" onClick={() => navigate('/ai-health-assessment')} className="text-blue-600 font-bold hover:bg-blue-50">
+                        Take Assessment <ChevronRight className="w-4 h-4 ml-1" />
+                    </Button>
+                </div>
+
+                <Card className="rounded-xl border-gray-100 shadow-sm overflow-hidden bg-white">
+                    <CardContent className="p-0">
+                        {assessmentHistory.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
+                                <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-4 border border-blue-100/50">
+                                    <ShieldCheck className="w-8 h-8" />
+                                </div>
+                                <h3 className="text-lg font-bold text-gray-900">No Assessments Yet</h3>
+                                <p className="text-sm text-gray-500 max-w-sm mt-2 mb-6">Take your first AI health assessment to establish your cardiovascular baseline and generate personalized insights.</p>
+                                <Button onClick={() => navigate('/ai-health-assessment')} className="rounded-xl transition-all duration-200 hover:-translate-y-px" style={{ background: 'hsl(var(--primary))', boxShadow: 'var(--shadow-sm)' }}>
+                                    Begin AI Assessment
+                                </Button>
+                            </div>
+                        ) : (
+                            <div>
+                                <ScoreTrendChart history={assessmentHistory} />
+                                <div className="divide-y divide-gray-50">
+                                    {assessmentHistory.map((assessment, idx) => {
+                                        if (userPlan === 'free' && idx >= 1) return null;
+                                        const date = new Date(assessment.completedAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+                                        const score = assessment.results?.cvitalScore || '--';
+                                        const tierLabel = assessment.results?.cvitalTierDetails?.label || assessment.results?.cvitalTier || 'Unknown';
+                                        const color = assessment.results?.cvitalTierDetails?.color || '#3b82f6';
+                                        const ascvdRisk = assessment.results?.ascvdRisk || '--';
+
+                                        return (
+                                            <div key={assessment._id} className="p-5 hover:bg-gray-50/80 transition-colors flex items-center justify-between group">
+                                                <div className="flex items-center gap-4">
+                                                    <div
+                                                        className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm shrink-0 border border-black/5"
+                                                        style={{ backgroundColor: `${color}15`, color: color }}
+                                                    >
+                                                        <HeartPulse className="w-6 h-6" />
+                                                    </div>
+                                                    <div>
+                                                        <div className="flex items-center gap-2">
+                                                            <h4 className="text-sm font-bold text-gray-900">VITAL™ Score</h4>
+                                                            <span
+                                                                className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full"
+                                                                style={{ backgroundColor: `${color}15`, color: color }}
+                                                            >
+                                                                {tierLabel}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
+                                                            <span className="flex items-center gap-1">
+                                                                <Clock className="w-3 h-3" /> {date}
+                                                            </span>
+                                                            <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                                                            <span>ASCVD Risk: <strong className="text-gray-700">{ascvdRisk !== '--' ? `${ascvdRisk}%` : 'N/A'}</strong></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex items-center gap-6">
+                                                    <div className="text-right hidden sm:block">
+                                                        <span className="text-2xl font-semibold" style={{ color: color }}>{score}</span>
+                                                        <span className="text-gray-400 text-xs font-bold block -mt-1">/ 100</span>
+                                                    </div>
+                                                    <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-blue-600 transition-colors" />
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                                {/* Soft paywall for free users with more than 1 assessment */}
+                                {userPlan === 'free' && assessmentHistory.length > 1 && (
+                                    <div className="relative">
+                                        {/* Blurred ghost rows */}
+                                        <div className="divide-y divide-gray-50 blur-sm pointer-events-none select-none" aria-hidden>
+                                            {assessmentHistory.slice(1, Math.min(3, assessmentHistory.length)).map((assessment, idx) => (
+                                                <div key={idx} className="p-5 flex items-center justify-between">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 shrink-0" />
+                                                        <div className="space-y-2">
+                                                            <div className="h-3 w-32 bg-gray-200 rounded-full" />
+                                                            <div className="h-2 w-48 bg-gray-100 rounded-full" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="h-8 w-10 bg-gray-200 rounded-lg" />
+                                                </div>
+                                            ))}
+                                        </div>
+                                        {/* Lock overlay */}
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-[2px] px-6 py-5 text-center">
+                                            <div className="w-10 h-10 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-3">
+                                                <Crown className="w-5 h-5" />
+                                            </div>
+                                            <p className="text-sm font-bold text-gray-900 mb-1">Score trend history is a Pro feature</p>
+                                            <p className="text-xs text-gray-500 mb-4 max-w-xs">Upgrade to see your full progress. <span className="font-semibold text-gray-700">{assessmentHistory.length - 1} more record{assessmentHistory.length - 1 > 1 ? 's' : ''} locked.</span></p>
+                                            <Button
+                                                size="sm"
+                                                onClick={() => navigate('/pricing')}
+                                                className="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl px-5 shadow-md hover:shadow-lg transition-all"
+                                            >
+                                                <Crown className="w-3.5 h-3.5 mr-1.5" /> Upgrade to Pro
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
+
+        </div>
+    );
+
     const renderHome = () => (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Welcome Banner */}
@@ -344,7 +595,7 @@ const CustomerDashboard = () => {
                         <span className="text-xs font-semibold uppercase tracking-widest text-white/70">Health Dashboard</span>
                     </div>
                     <h1 className="text-2xl md:text-3xl font-semibold mb-2 tracking-tight">
-                        Welcome back, {user?.name?.split(' ')[0] || 'Member'}
+                        Welcome back, {user?.profile?.firstName || user?.name?.split(' ')[0] || 'Member'}
                     </h1>
                     <p className="text-white/70 text-sm max-w-md leading-relaxed">
                         Your health metrics are being monitored.{' '}
@@ -502,124 +753,6 @@ const CustomerDashboard = () => {
                     </div>
                     <h3 className="text-sm font-bold text-gray-700">Detailed Analytics</h3>
                     <p className="text-xs text-gray-500 mt-1 max-w-[200px]">Unlock comprehensive health insights by connecting your smartwatch.</p>
-                </Card>
-            </div>
-
-            {/* AI Health Assessment History Panel */}
-            <div className="mt-8">
-                <div className="flex justify-between items-end mb-4 px-2">
-                    <div>
-                        <h2 className="text-xl font-semibold text-gray-900 font-sans">Assessment History</h2>
-                        <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mt-1">AI Health Check Records</p>
-                    </div>
-                    <Button variant="ghost" size="sm" onClick={() => navigate('/ai-health-assessment')} className="text-blue-600 font-bold hover:bg-blue-50">
-                        Take Assessment <ChevronRight className="w-4 h-4 ml-1" />
-                    </Button>
-                </div>
-
-                <Card className="rounded-xl border-gray-100 shadow-sm overflow-hidden bg-white">
-                    <CardContent className="p-0">
-                        {assessmentHistory.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
-                                <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-4 border border-blue-100/50">
-                                    <ShieldCheck className="w-8 h-8" />
-                                </div>
-                                <h3 className="text-lg font-bold text-gray-900">No Assessments Yet</h3>
-                                <p className="text-sm text-gray-500 max-w-sm mt-2 mb-6">Take your first AI health assessment to establish your cardiovascular baseline and generate personalized insights.</p>
-                                <Button onClick={() => navigate('/ai-health-assessment')} className="rounded-xl transition-all duration-200 hover:-translate-y-px" style={{ background: 'hsl(var(--primary))', boxShadow: 'var(--shadow-sm)' }}>
-                                    Begin AI Assessment
-                                </Button>
-                            </div>
-                        ) : (
-                            <div>
-                                <div className="divide-y divide-gray-50">
-                                    {assessmentHistory.map((assessment, idx) => {
-                                        if (userPlan === 'free' && idx >= 1) return null;
-                                        const date = new Date(assessment.completedAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
-                                        const score = assessment.results?.cvitalScore || '--';
-                                        const tierLabel = assessment.results?.cvitalTierDetails?.label || assessment.results?.cvitalTier || 'Unknown';
-                                        const color = assessment.results?.cvitalTierDetails?.color || '#3b82f6';
-                                        const ascvdRisk = assessment.results?.ascvdRisk || '--';
-
-                                        return (
-                                            <div key={assessment._id} className="p-5 hover:bg-gray-50/80 transition-colors flex items-center justify-between group">
-                                                <div className="flex items-center gap-4">
-                                                    <div
-                                                        className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm shrink-0 border border-black/5"
-                                                        style={{ backgroundColor: `${color}15`, color: color }}
-                                                    >
-                                                        <HeartPulse className="w-6 h-6" />
-                                                    </div>
-                                                    <div>
-                                                        <div className="flex items-center gap-2">
-                                                            <h4 className="text-sm font-bold text-gray-900">VITAL™ Score</h4>
-                                                            <span
-                                                                className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full"
-                                                                style={{ backgroundColor: `${color}15`, color: color }}
-                                                            >
-                                                                {tierLabel}
-                                                            </span>
-                                                        </div>
-                                                        <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
-                                                            <span className="flex items-center gap-1">
-                                                                <Clock className="w-3 h-3" /> {date}
-                                                            </span>
-                                                            <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                                            <span>ASCVD Risk: <strong className="text-gray-700">{ascvdRisk !== '--' ? `${ascvdRisk}%` : 'N/A'}</strong></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="flex items-center gap-6">
-                                                    <div className="text-right hidden sm:block">
-                                                        <span className="text-2xl font-semibold" style={{ color: color }}>{score}</span>
-                                                        <span className="text-gray-400 text-xs font-bold block -mt-1">/ 100</span>
-                                                    </div>
-                                                    <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-blue-600 transition-colors" />
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-
-                                {/* Soft paywall for free users with more than 1 assessment */}
-                                {userPlan === 'free' && assessmentHistory.length > 1 && (
-                                    <div className="relative">
-                                        {/* Blurred ghost rows */}
-                                        <div className="divide-y divide-gray-50 blur-sm pointer-events-none select-none" aria-hidden>
-                                            {assessmentHistory.slice(1, Math.min(3, assessmentHistory.length)).map((assessment, idx) => (
-                                                <div key={idx} className="p-5 flex items-center justify-between">
-                                                    <div className="flex items-center gap-4">
-                                                        <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 shrink-0" />
-                                                        <div className="space-y-2">
-                                                            <div className="h-3 w-32 bg-gray-200 rounded-full" />
-                                                            <div className="h-2 w-48 bg-gray-100 rounded-full" />
-                                                        </div>
-                                                    </div>
-                                                    <div className="h-8 w-10 bg-gray-200 rounded-lg" />
-                                                </div>
-                                            ))}
-                                        </div>
-                                        {/* Lock overlay */}
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-[2px] px-6 py-5 text-center">
-                                            <div className="w-10 h-10 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-3">
-                                                <Crown className="w-5 h-5" />
-                                            </div>
-                                            <p className="text-sm font-bold text-gray-900 mb-1">Score trend history is a Pro feature</p>
-                                            <p className="text-xs text-gray-500 mb-4 max-w-xs">Upgrade to see your full progress. <span className="font-semibold text-gray-700">{assessmentHistory.length - 1} more record{assessmentHistory.length - 1 > 1 ? 's' : ''} locked.</span></p>
-                                            <Button
-                                                size="sm"
-                                                onClick={() => navigate('/pricing')}
-                                                className="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl px-5 shadow-md hover:shadow-lg transition-all"
-                                            >
-                                                <Crown className="w-3.5 h-3.5 mr-1.5" /> Upgrade to Pro
-                                            </Button>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </CardContent>
                 </Card>
             </div>
 
@@ -986,64 +1119,114 @@ const CustomerDashboard = () => {
         </div>
     );
 
-    const renderSettings = () => (
-        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="text-3xl font-semibold text-gray-900 font-sans">Account Console</h1>
+    const renderSettings = () => {
+        const profile = user?.profile;
+        const fullName = [profile?.firstName, profile?.lastName].filter(Boolean).join(' ') || user?.name || 'Member';
+        const formattedDob = profile?.dateOfBirth
+            ? new Date(profile.dateOfBirth).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+            : null;
+        const location = [profile?.city, profile?.country].filter(Boolean).join(', ') || null;
 
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <div className="p-6 bg-gray-50/50 border-b border-gray-100 flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xl font-semibold">
-                        {user?.name?.[0] || 'U'}
-                    </div>
-                    <div>
-                        <h3 className="text-xl font-bold text-gray-900">{user?.name || 'Member'}</h3>
-                        <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">{user?.role?.replace('_', ' ') || 'Consumer'}</p>
-                    </div>
-                </div>
+        const detailRows: { icon: any; label: string; value: string | null }[] = [
+            { icon: Mail, label: 'Email', value: user?.email || null },
+            { icon: Phone, label: 'Phone Number', value: profile?.phoneNumber || null },
+            { icon: Calendar, label: 'Date of Birth', value: formattedDob },
+            { icon: User, label: 'Gender', value: profile?.gender ? profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1) : null },
+            { icon: Droplet, label: 'Blood Group', value: profile?.bloodGroup || null },
+            { icon: Ruler, label: 'Height', value: profile?.height ? `${profile.height} cm` : null },
+            { icon: Weight, label: 'Weight', value: profile?.weight ? `${profile.weight} kg` : null },
+            { icon: MapPin, label: 'Location', value: location },
+        ];
 
-                <div className="p-2">
-                    {[
-                        { icon: User, label: 'Profile Intelligence', sub: 'Manage personal bio and demographics', color: 'text-blue-500 bg-blue-50' },
-                        { icon: Bell, label: 'Alert Center', sub: 'Customize health notifications', color: 'text-purple-500 bg-purple-50' },
-                        { icon: HeartPulse, label: 'Telemetry Sync', sub: 'Connect wearable and health apps', color: 'text-red-500 bg-red-50' },
-                        { icon: ShieldCheck, label: 'Privacy & Security', sub: 'Manage encryption and access', color: 'text-emerald-500 bg-emerald-50' },
-                    ].map((item, idx) => (
-                        <button key={idx} className="w-full flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors rounded-2xl text-left group">
-                            <div className={`w-11 h-11 ${item.color} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                                <item.icon size={20} />
+        return (
+            <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <h1 className="text-3xl font-semibold text-gray-900 font-sans">Account Console</h1>
+
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div className="p-6 bg-gray-50/50 border-b border-gray-100 flex items-center gap-4">
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xl font-semibold overflow-hidden flex-shrink-0">
+                            {profile?.avatar ? (
+                                <img src={profile.avatar} alt={fullName} className="w-full h-full object-cover" />
+                            ) : (
+                                fullName[0]?.toUpperCase() || 'U'
+                            )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <h3 className="text-xl font-bold text-gray-900 truncate">{fullName}</h3>
+                            <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">{user?.role?.replace('_', ' ') || 'Consumer'}</p>
+                        </div>
+                        <Button
+                            onClick={openProfileModal}
+                            variant="outline"
+                            size="sm"
+                            className="rounded-xl border-gray-200 font-bold text-xs gap-1.5 flex-shrink-0"
+                        >
+                            <Pencil size={14} /> Edit
+                        </Button>
+                    </div>
+
+                    {/* Profile Details */}
+                    <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
+                        {detailRows.map((row, idx) => (
+                            <div key={idx} className="flex items-start gap-3">
+                                <div className="w-9 h-9 rounded-xl bg-gray-50 text-gray-400 flex items-center justify-center flex-shrink-0">
+                                    <row.icon size={16} />
+                                </div>
+                                <div className="min-w-0">
+                                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{row.label}</p>
+                                    <p className={`text-sm font-semibold truncate ${row.value ? 'text-gray-900' : 'text-gray-300'}`}>
+                                        {row.value || 'Not set'}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="h-px bg-gray-50 mx-4" />
+
+                    <div className="p-2">
+                        {[
+                            { icon: Bell, label: 'Alert Center', sub: 'Customize health notifications', color: 'text-purple-500 bg-purple-50' },
+                            { icon: HeartPulse, label: 'Telemetry Sync', sub: 'Connect wearable and health apps', color: 'text-red-500 bg-red-50' },
+                            { icon: ShieldCheck, label: 'Privacy & Security', sub: 'Manage encryption and access', color: 'text-emerald-500 bg-emerald-50' },
+                        ].map((item, idx) => (
+                            <button key={idx} className="w-full flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors rounded-2xl text-left group">
+                                <div className={`w-11 h-11 ${item.color} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                                    <item.icon size={20} />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-sm font-bold text-gray-900">{item.label}</p>
+                                    <p className="text-[11px] text-gray-400 font-medium">{item.sub}</p>
+                                </div>
+                                <ChevronRight size={18} className="text-gray-300 group-hover:text-blue-600 transition-colors" />
+                            </button>
+                        ))}
+                        <div className="h-px bg-gray-50 mx-4 my-2" />
+                        <button
+                            onClick={async () => { await performLogout(dispatch); navigate('/login'); }}
+                            className="w-full flex items-center gap-4 p-4 hover:bg-red-50 transition-colors rounded-2xl text-left group"
+                        >
+                            <div className="w-11 h-11 bg-red-50 text-red-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <LogOut size={20} />
                             </div>
                             <div className="flex-1">
-                                <p className="text-sm font-bold text-gray-900">{item.label}</p>
-                                <p className="text-[11px] text-gray-400 font-medium">{item.sub}</p>
+                                <p className="text-sm font-bold text-red-600">Secure Sign Out</p>
+                                <p className="text-[11px] text-red-300 font-medium">Terminate all active sessions safely</p>
                             </div>
-                            <ChevronRight size={18} className="text-gray-300 group-hover:text-blue-600 transition-colors" />
                         </button>
-                    ))}
-                    <div className="h-px bg-gray-50 mx-4 my-2" />
-                    <button
-                        onClick={() => dispatch({ type: 'LOGOUT' })}
-                        className="w-full flex items-center gap-4 p-4 hover:bg-red-50 transition-colors rounded-2xl text-left group"
-                    >
-                        <div className="w-11 h-11 bg-red-50 text-red-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <LogOut size={20} />
-                        </div>
-                        <div className="flex-1">
-                            <p className="text-sm font-bold text-red-600">Secure Sign Out</p>
-                            <p className="text-[11px] text-red-300 font-medium">Terminate all active sessions safely</p>
-                        </div>
-                    </button>
+                    </div>
                 </div>
-            </div>
 
-            <div className="flex flex-col items-center gap-2 pt-4">
-                <p className="text-[10px] font-semibold text-gray-300 uppercase tracking-widest">Prevent Vital Mobile — v2.4.0</p>
-                <div className="flex gap-4">
-                    <p className="text-[10px] font-bold text-blue-600 capitalize">Terms of Protocol</p>
-                    <p className="text-[10px] font-bold text-blue-600 capitalize">Audit Log</p>
+                <div className="flex flex-col items-center gap-2 pt-4">
+                    <p className="text-[10px] font-semibold text-gray-300 uppercase tracking-widest">Prevent Vital Mobile — v2.4.0</p>
+                    <div className="flex gap-4">
+                        <p className="text-[10px] font-bold text-blue-600 capitalize">Terms of Protocol</p>
+                        <p className="text-[10px] font-bold text-blue-600 capitalize">Audit Log</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+        );
+    };
 
     // ── Programme Execution View ──────────────────────────────────────
     const renderProgramPlayer = () => {
@@ -1319,6 +1502,7 @@ const CustomerDashboard = () => {
         { id: 'programs', icon: PlayCircle, label: 'Programs' },
         { id: 'orders',   icon: ShoppingBag, label: 'Orders' },
         { id: 'settings', icon: Settings,   label: 'Account' },
+        { id: 'assessment-history', icon: Activity, label: 'History' },
     ];
 
     return (
@@ -1362,6 +1546,7 @@ const CustomerDashboard = () => {
                 {/* Standard Page Content based on Tab */}
                 {activeProgram ? renderProgramPlayer() : (
                     <>
+                        {activeTab === 'assessment-history' && renderAssessmentHistory()}
                         {activeTab === 'home' && renderHome()}
                         {activeTab === 'programs' && renderPrograms()}
                         {activeTab === 'orders' && <CustomerOrders />}
@@ -1451,6 +1636,110 @@ const CustomerDashboard = () => {
                     </div>
                     <DialogFooter>
                         <Button onClick={handleVitalSubmit} className="w-full bg-blue-600 font-bold rounded-xl py-6">Save Vitals</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* Edit Profile Modal */}
+            <Dialog open={isProfileModalOpen} onOpenChange={setIsProfileModalOpen}>
+                <DialogContent className="sm:max-w-[520px] rounded-2xl border-none shadow-2xl max-h-[85vh] overflow-y-auto">
+                    <DialogHeader>
+                        <DialogTitle className="text-2xl font-semibold font-sans">Edit Profile</DialogTitle>
+                    </DialogHeader>
+                    <div className="grid gap-5 py-4">
+                        <div>
+                            <p className="text-xs font-bold uppercase text-gray-400 tracking-wider mb-3">Identity</p>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="firstName" className="text-xs font-bold uppercase text-gray-500">First Name</Label>
+                                    <Input id="firstName" name="firstName" placeholder="First name" value={profileForm.firstName} onChange={handleProfileChange} className="rounded-xl bg-gray-50 border-gray-100" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="lastName" className="text-xs font-bold uppercase text-gray-500">Last Name</Label>
+                                    <Input id="lastName" name="lastName" placeholder="Last name" value={profileForm.lastName} onChange={handleProfileChange} className="rounded-xl bg-gray-50 border-gray-100" />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4 mt-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="email" className="text-xs font-bold uppercase text-gray-500">Email Address</Label>
+                                    <Input id="email" value={user?.email || ''} disabled className="rounded-xl bg-gray-100 border-gray-100 text-gray-400" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="phoneNumber" className="text-xs font-bold uppercase text-gray-500">Phone Number</Label>
+                                    <Input id="phoneNumber" name="phoneNumber" placeholder="Phone number" value={profileForm.phoneNumber} onChange={handleProfileChange} className="rounded-xl bg-gray-50 border-gray-100" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p className="text-xs font-bold uppercase text-gray-400 tracking-wider mb-3">Body Metrics</p>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="dateOfBirth" className="text-xs font-bold uppercase text-gray-500">Date of Birth</Label>
+                                    <Input id="dateOfBirth" name="dateOfBirth" type="date" value={profileForm.dateOfBirth} onChange={handleProfileChange} className="rounded-xl bg-gray-50 border-gray-100" max={new Date().toISOString().slice(0, 10)} />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="text-xs font-bold uppercase text-gray-500">Gender</Label>
+                                    <Select value={profileForm.gender} onValueChange={(v) => setProfileForm({ ...profileForm, gender: v })}>
+                                        <SelectTrigger className="rounded-xl bg-gray-50 border-gray-100">
+                                            <SelectValue placeholder="Select gender" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="male">Male</SelectItem>
+                                            <SelectItem value="female">Female</SelectItem>
+                                            <SelectItem value="other">Other</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-3 gap-4 mt-4">
+                                <div className="space-y-2">
+                                    <Label className="text-xs font-bold uppercase text-gray-500">Blood Group</Label>
+                                    <Select value={profileForm.bloodGroup} onValueChange={(v) => setProfileForm({ ...profileForm, bloodGroup: v })}>
+                                        <SelectTrigger className="rounded-xl bg-gray-50 border-gray-100">
+                                            <SelectValue placeholder="Select" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(bg => (
+                                                <SelectItem key={bg} value={bg}>{bg}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="height" className="text-xs font-bold uppercase text-gray-500">Height (cm)</Label>
+                                    <Input id="height" name="height" type="number" placeholder="170" value={profileForm.height} onChange={handleProfileChange} className="rounded-xl bg-gray-50 border-gray-100" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="weight" className="text-xs font-bold uppercase text-gray-500">Weight (kg)</Label>
+                                    <Input id="weight" name="weight" type="number" placeholder="70" value={profileForm.weight} onChange={handleProfileChange} className="rounded-xl bg-gray-50 border-gray-100" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p className="text-xs font-bold uppercase text-gray-400 tracking-wider mb-3">Location</p>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="city" className="text-xs font-bold uppercase text-gray-500">City</Label>
+                                    <Input id="city" name="city" placeholder="City" value={profileForm.city} onChange={handleProfileChange} className="rounded-xl bg-gray-50 border-gray-100" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="country" className="text-xs font-bold uppercase text-gray-500">Country</Label>
+                                    <Input id="country" name="country" placeholder="Country" value={profileForm.country} onChange={handleProfileChange} className="rounded-xl bg-gray-50 border-gray-100" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button
+                            onClick={handleProfileSubmit}
+                            disabled={savingProfile || !profileForm.firstName.trim() || !profileForm.lastName.trim()}
+                            className="w-full bg-blue-600 font-bold rounded-xl py-6"
+                        >
+                            {savingProfile ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                            {savingProfile ? 'Saving…' : 'Save Changes'}
+                        </Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

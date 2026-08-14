@@ -65,7 +65,7 @@ export const conditionPrograms: ConditionProgram[] = [
         faqs: [
             { question: 'Do I need a glucometer to join?', answer: 'It helps but isn’t required to start — we’ll guide you on tracking options, including connecting a compatible wearable if you have one.' },
             { question: 'Can I do this program alongside diabetes medication?', answer: 'Yes, this program is designed to complement medical care, not replace it. Always check with your doctor before changing your medication routine.' },
-            { question: 'What happens after the 12 weeks?', answer: 'You’ll retake your CVITAL assessment to see how your risk profile has changed, and can choose a maintenance plan or move to a different program.' },
+            { question: 'What happens after the 12 weeks?', answer: 'You’ll retake your VITAL assessment to see how your risk profile has changed, and can choose a maintenance plan or move to a different program.' },
         ],
         image: 'https://images.unsplash.com/photo-1685660375327-47bcca398780',
         alt: 'Blood glucose meter with test strips on wooden table showing diabetes monitoring equipment',
@@ -114,13 +114,13 @@ export const conditionPrograms: ConditionProgram[] = [
         title: 'Cardiac Health',
         tagline: 'Advanced heart health monitoring and cardiac rehab-style conditioning to lower cardiovascular risk.',
         description: 'Advanced heart health monitoring with ECG integration and cardiovascular risk assessment.',
-        overview: 'Built for people with elevated cardiovascular risk — from high cholesterol to a family history of heart disease — this program combines ECG-informed monitoring with cardiac rehab exercises, breathwork, and nutrition guidance. It’s grounded in the same ACC/AHA risk framework behind your CVITAL score, so progress is measured against a real clinical baseline, not just how you feel.',
+        overview: 'Built for people with elevated cardiovascular risk — from high cholesterol to a family history of heart disease — this program combines ECG-informed monitoring with cardiac rehab exercises, breathwork, and nutrition guidance. It’s grounded in the same ACC/AHA risk framework behind your VITAL score, so progress is measured against a real clinical baseline, not just how you feel.',
         riskFactors: ['Cholesterol', 'Smoking', 'Inactivity'],
         duration: '12 weeks',
         includes: ['Cardiac Rehab', 'Breathwork', 'Physiotherapy', 'Nutrition'],
         outcomeFocus: 'Lower ASCVD risk and strengthen cardiovascular fitness under clinical guidance.',
         whoItsFor: [
-            'Your CVITAL assessment flagged an elevated ASCVD risk score',
+            'Your VITAL assessment flagged an elevated ASCVD risk score',
             'You have high cholesterol, smoke, or have a sedentary lifestyle',
             'You have a family history of cardiac events',
             'You’re recovering from a cardiac event and have been cleared by your doctor for guided activity',
@@ -133,7 +133,7 @@ export const conditionPrograms: ConditionProgram[] = [
         faqs: [
             { question: 'Is this safe if I’ve had a cardiac event?', answer: 'This program only begins guided physical activity once you’ve been medically cleared by your doctor. We recommend sharing your discharge notes with our team before starting.' },
             { question: 'Do I need an ECG device at home?', answer: 'No — ECG integration uses data from a connected wearable or your latest clinical reports where available; it isn’t required to begin the program.' },
-            { question: 'How is this different from the Diabetes or Weight programs?', answer: 'This program is built specifically around your ASCVD risk factors — cholesterol, smoking, inactivity — using the same clinical framework as your CVITAL cardiovascular risk score.' },
+            { question: 'How is this different from the Diabetes or Weight programs?', answer: 'This program is built specifically around your ASCVD risk factors — cholesterol, smoking, inactivity — using the same clinical framework as your VITAL cardiovascular risk score.' },
         ],
         image: 'https://images.unsplash.com/photo-1654588836262-fb473e1a34ee?auto=format&fit=crop&w=900&q=80',
         alt: 'Man holding his heart with chest pain',

@@ -17,7 +17,7 @@ const team: TeamCard[] = [
     {
         id: 'vita',
         title: 'VITA, Your AI Assistant',
-        description: "Reads your CVITAL score and check-ins so it can answer questions the moment they come up — day or night.",
+        description: "Reads your VITAL score and check-ins so it can answer questions the moment they come up — day or night.",
         icon: Sparkles,
         link: '/ai-health-assessment',
         linkLabel: 'Talk to VITA',

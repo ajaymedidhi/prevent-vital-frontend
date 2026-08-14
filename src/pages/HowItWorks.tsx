@@ -41,7 +41,7 @@ const appBadges = [
 ];
 
 /* ── Step visual mockups — illustrative UI, mirrors real product data shapes
-   (CVITAL 0–100 score, ASCVD %, vascular age) described in the product docs,
+   (VITAL 0–100 score, ASCVD %, vascular age) described in the product docs,
    not fabricated numbers presented as live user data. ── */
 
 const QuestionnaireVisual = () => (
@@ -82,7 +82,7 @@ const ScoreVisual = () => (
                 </div>
             </div>
             <div>
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">CVITAL Score</p>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">VITAL Score</p>
                 <p className="text-base font-bold text-foreground mt-0.5">Very Good</p>
             </div>
         </div>
@@ -156,9 +156,9 @@ const steps = [
     },
     {
         tag: 'Instant · 0–100 scale',
-        title: 'Meet Your CVITAL Score',
+        title: 'Meet Your VITAL Score',
         description:
-            'Your CVITAL score, 10-year ASCVD risk, and vascular age — calculated instantly with real ACC/AHA equations, not an invented metric.',
+            'Your VITAL score, 10-year ASCVD risk, and vascular age — calculated instantly with real ACC/AHA equations, not an invented metric.',
         Visual: ScoreVisual,
         photo: 'https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?auto=format&fit=crop&w=1000&q=80',
         photoAlt: 'Clinician checking a patient’s vitals',
@@ -243,7 +243,7 @@ const quickSteps = [
 ];
 
 const appFeatures = [
-    'Your CVITAL score, wearable data, and program sessions in one home screen',
+    'Your VITAL score, wearable data, and program sessions in one home screen',
     'VITA, your AI companion, already knows your score and check-ins',
     'Reminders for your next reassessment — nothing to remember yourself',
 ];
@@ -259,7 +259,7 @@ const PhoneMockup = () => (
             <div className="h-9" />
 
             <div className="px-5 pb-4 text-center">
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">Your CVITAL Score</p>
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">Your VITAL Score</p>
                 <div className="relative w-28 h-28 mx-auto mt-3">
                     <svg viewBox="0 0 112 112" className="w-full h-full -rotate-90">
                         <circle cx="56" cy="56" r="46" fill="none" stroke="hsl(var(--border))" strokeWidth="8" />
@@ -319,7 +319,7 @@ const HowItWorks = () => {
                 <title>How It Works | Your 5-Step Path to Better Health - PreventVital</title>
                 <meta
                     name="description"
-                    content="See exactly how PreventVital works: a 5-minute assessment, your CVITAL score, a plan matched to your risk, the PreventVital app with VITA AI, and ongoing tracking as your score changes."
+                    content="See exactly how PreventVital works: a 5-minute assessment, your VITAL score, a plan matched to your risk, the PreventVital app with VITA AI, and ongoing tracking as your score changes."
                 />
                 <link rel="canonical" href="https://preventvital.com/how-it-works" />
                 <meta property="og:type" content="website" />

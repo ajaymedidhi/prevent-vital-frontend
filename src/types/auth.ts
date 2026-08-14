@@ -9,6 +9,16 @@ export interface User {
     profile?: {
         firstName?: string;
         lastName?: string;
+        gender?: 'male' | 'female' | 'other';
+        dateOfBirth?: string;
+        phoneNumber?: string;
+        bloodGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-' | 'Unknown';
+        city?: string;
+        country?: string;
+        height?: number;
+        weight?: number;
+        bmi?: number;
+        avatar?: string;
     };
     corporateProfile?: {
         department?: string;
@@ -20,6 +30,7 @@ export interface User {
         marketingEmails: boolean;
         twoFactorEnabled: boolean;
     };
+    subscriptionPlan?: 'free' | 'premium' | 'pro' | 'family';
     isVerified: boolean;
     status: 'active' | 'suspended';
     permissions: string[];

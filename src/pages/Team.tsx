@@ -145,7 +145,7 @@ const Team = () => {
 
                             <div className="space-y-4 text-gray-600 leading-relaxed text-sm md:text-base">
                                 <p>
-                                    Ajay Medidhi leads product and technology at PreventVital, overseeing the platform end-to-end — from the CVITAL scoring engine to the mobile, web, and corporate experiences built on top of it.
+                                    Ajay Medidhi leads product and technology at PreventVital, overseeing the platform end-to-end — from the VITAL scoring engine to the mobile, web, and corporate experiences built on top of it.
                                 </p>
                                 <p>
                                     His focus is on turning clinical rigor into a product people actually use every day, and on keeping the engineering behind it reliable as the platform scales.

@@ -128,7 +128,7 @@ const WellnessPhilosophy = () => {
                                     A clinical risk score tells you where you stand. It doesn't teach your nervous system to calm down, or give you a daily practice you'll actually keep. That's where breathwork, yoga therapy, and mindfulness earn their place — not as alternatives to medicine, but as the daily discipline that makes the medicine work.
                                 </p>
                                 <p className="text-muted-foreground leading-relaxed" style={{ fontSize: 'var(--fz-lg)' }}>
-                                    Every practice below is chosen for a specific physiological reason, not because it's trendy — and every plan sits alongside your CVITAL score, not apart from it.
+                                    Every practice below is chosen for a specific physiological reason, not because it's trendy — and every plan sits alongside your VITAL score, not apart from it.
                                 </p>
                             </FadeInSection>
 
@@ -204,7 +204,7 @@ const WellnessPhilosophy = () => {
                                 </span>
                             </h2>
                             <p className="text-fluid-lg text-white/65 max-w-xl mx-auto leading-relaxed">
-                                Your CVITAL score points to which of these five pillars matters most for you, right now.
+                                Your VITAL score points to which of these five pillars matters most for you, right now.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
                                 <Link

@@ -68,7 +68,7 @@ const ProductShowcase = () => {
                     {/* Metrics List */}
                     <div className="space-y-2.5 mb-auto">
                         <div className="flex items-center justify-between text-xs font-medium">
-                            <span className="text-zinc-600">CVITAL Score</span>
+                            <span className="text-zinc-600">VITAL Score</span>
                             <div className="flex items-center gap-2">
                                 <div className="w-14 h-1.5 bg-blue-100 rounded-full overflow-hidden">
                                     <div className="w-[68%] h-full bg-blue-500 rounded-full" />
@@ -123,7 +123,7 @@ const ProductShowcase = () => {
             </motion.div>
 
             {/* Floating Glass Cards */}
-            {/* CVITAL Score */}
+            {/* VITAL Score */}
             <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0, y: [-5, 5, -5] }}
@@ -133,7 +133,7 @@ const ProductShowcase = () => {
                 <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center mb-2.5">
                     <Heart size={13} />
                 </div>
-                <div className="text-[10px] text-zinc-500 font-medium mb-0.5">CVITAL Score</div>
+                <div className="text-[10px] text-zinc-500 font-medium mb-0.5">VITAL Score</div>
                 <div className="text-base font-bold text-zinc-900 mb-1.5">68<span className="text-xs font-medium text-zinc-400">/100</span></div>
                 <div className="inline-flex items-center px-2 py-0.5 bg-blue-50 text-blue-600 text-[9px] font-bold rounded-md">
                     Good

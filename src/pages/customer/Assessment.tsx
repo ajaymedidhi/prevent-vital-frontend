@@ -44,6 +44,7 @@ export default function Assessment() {
         smoking: '', alcohol: '', activity: '', diet: '',
         crp: '', egfr: '', microalbumin: '',
         lvh: '', plaque: '', abi: '',
+        mac: '', neck: '', bodyFat: '',
     });
 
     const updateForm = (key: string, value: string) =>
@@ -67,6 +68,26 @@ export default function Assessment() {
         return '—';
     };
 
+    const calcBodyFat = () => {
+        const h = parseFloat(formData.height);
+        const w = parseFloat(formData.waist);
+        const n = parseFloat(formData.neck);
+        const hip = parseFloat(formData.hip);
+        const isFemale = formData.sex === 'female';
+
+        if (!h || !w || !n || (isFemale && !hip)) return '';
+
+        let bf = 0;
+        if (isFemale) {
+            // US Navy Female formula (cm)
+            bf = 163.205 * Math.log10(w + hip - n) - 97.684 * Math.log10(h) - 78.387;
+        } else {
+            // US Navy Male formula (cm)
+            bf = 86.010 * Math.log10(w - n) - 70.041 * Math.log10(h) + 36.76;
+        }
+        return bf > 0 ? bf.toFixed(1) : '0.0';
+    };
+
     const validateStep = () => {
         let valid = true;
         switch (currentStep) {
@@ -88,6 +109,13 @@ export default function Assessment() {
             setCurrentStep(c => c + 1);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
+            // Include auto-calculated body fat if not manually overridden
+            if (!formData.bodyFat) {
+                const autoBF = calcBodyFat();
+                if (autoBF && autoBF !== '—') {
+                    setFormData(prev => ({ ...prev, bodyFat: autoBF }));
+                }
+            }
             await submitAssessment();
         }
     };
@@ -236,6 +264,21 @@ export default function Assessment() {
                     <div>
                         {label('Waist-to-Hip Ratio')}
                         <input type="text" className={calcCls} value={calcWHR()} disabled />
+                    </div>
+                    <div>
+                        {label('Neck Circumference (cm)')}
+                        {hint('Used to calculate Body Fat % via US Navy method')}
+                        <input type="number" className={inputCls} placeholder="e.g. 38" value={formData.neck} onChange={e => updateForm('neck', e.target.value)} />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            {label('Body Fat % (Auto)')}
+                            <input type="text" className={calcCls} value={calcBodyFat()} disabled />
+                        </div>
+                        <div>
+                            {label('Manual Body Fat %')}
+                            <input type="number" className={inputCls} placeholder="Override" value={formData.bodyFat} onChange={e => updateForm('bodyFat', e.target.value)} />
+                        </div>
                     </div>
                 </div>
             );

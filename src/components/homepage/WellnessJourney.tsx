@@ -12,7 +12,7 @@ const steps = [
             'A quick questionnaire covering vitals, lifestyle, and family history. Keep your recent cholesterol test results handy.',
     },
     {
-        title: 'Meet Your CVITAL Score',
+        title: 'Meet Your VITAL Score',
         time: 'Instant',
         description:
             'Get your 0–100 score, 10-year ASCVD risk, and vascular age—the core clinical metrics you\'ll track over time.',

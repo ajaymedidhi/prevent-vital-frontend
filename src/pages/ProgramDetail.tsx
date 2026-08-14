@@ -21,7 +21,7 @@ import { conditionPrograms } from '@/constants/conditionPrograms';
 
 const howItWorks = [
     {
-        title: 'Free CVITAL Assessment',
+        title: 'Free VITAL Assessment',
         description: 'Complete a quick clinical assessment to establish your baseline risk profile.',
     },
     {
@@ -34,7 +34,7 @@ const howItWorks = [
     },
     {
         title: 'Reassess & Adjust',
-        description: 'Retake your CVITAL assessment to track improvement and adjust your plan over time.',
+        description: 'Retake your VITAL assessment to track improvement and adjust your plan over time.',
     },
 ];
 
@@ -253,7 +253,7 @@ const ProgramDetail = () => {
                                 </Link>
 
                                 <p className="text-xs text-muted-foreground text-center leading-relaxed">
-                                    Take the free CVITAL assessment to see if this program is right for you.
+                                    Take the free VITAL assessment to see if this program is right for you.
                                 </p>
 
                                 <div className="flex items-start gap-2 pt-4 border-t border-border/60 text-xs text-muted-foreground leading-relaxed">
