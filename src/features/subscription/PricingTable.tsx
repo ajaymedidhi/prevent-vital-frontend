@@ -97,7 +97,7 @@ const PricingTable = () => {
                 amount,
                 currency,
                 order_id: razorpayOrderId,
-                name: "PreventVital",
+                name: "Preventvital",
                 description: `${plan.name} Subscription (${interval})${gstAmount != null ? ' incl. 18% GST' : ''}`,
                 handler: async function (response: any) {
                     try {

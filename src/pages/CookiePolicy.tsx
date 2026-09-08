@@ -6,16 +6,16 @@ const CookiePolicy = () => {
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Helmet>
-                <title>Cookie Policy | How We Use Cookies - PreventVital</title>
-                <meta name="description" content="PreventVital's Cookie Policy: how we use cookies and similar tracking technologies on our website and mobile app, and how you can manage your preferences." />
+                <title>Cookie Policy | How We Use Cookies - Preventvital</title>
+                <meta name="description" content="Preventvital's Cookie Policy: how we use cookies and similar tracking technologies on our website and mobile app, and how you can manage your preferences." />
                 <meta name="keywords" content="preventvital cookie policy, cookies, tracking technologies, website analytics, preventvital privacy" />
                 <link rel="canonical" href="https://preventvital.com/cookie-policy" />
                 <meta name="robots" content="index, follow" />
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="PreventVital" />
+                <meta property="og:site_name" content="Preventvital" />
                 <meta property="og:url" content="https://preventvital.com/cookie-policy" />
-                <meta property="og:title" content="Cookie Policy | PreventVital" />
-                <meta property="og:description" content="How PreventVital uses cookies and similar technologies, and how to manage your preferences." />
+                <meta property="og:title" content="Cookie Policy | Preventvital" />
+                <meta property="og:description" content="How Preventvital uses cookies and similar technologies, and how to manage your preferences." />
                 <meta property="og:image" content="https://preventvital.com/og-image.jpg" />
             </Helmet>
             <main className="flex-grow">
@@ -67,7 +67,7 @@ const CookiePolicy = () => {
 
                             <div className="bg-gradient-to-r from-accent/10 to-accent/5 border-l-4 border-accent p-6 rounded-r-2xl shadow-sm">
                                 <p className="my-0 text-lg leading-relaxed text-foreground font-medium">
-                                    This Cookie Policy explains how gruentzig.ai Private Limited ("PreventVital", "we", "our", "us") uses cookies and similar tracking technologies on preventvital.com and within the PreventVital mobile application, and how you can control them.
+                                    This Cookie Policy explains how gruentzig.ai Private Limited ("Preventvital", "we", "our", "us") uses cookies and similar tracking technologies on preventvital.com and within the Preventvital mobile application, and how you can control them.
                                 </p>
                             </div>
 
@@ -137,7 +137,7 @@ const CookiePolicy = () => {
 
                             <section>
                                 <h2 className="text-2xl font-bold text-accent mt-8 mb-4">3. Tracking Technologies in Our Mobile App</h2>
-                                <p>The PreventVital mobile application does not use browser cookies. Instead, it uses:</p>
+                                <p>The Preventvital mobile application does not use browser cookies. Instead, it uses:</p>
                                 <ul className="list-disc pl-6 space-y-2">
                                     <li><strong>Session tokens (JWT):</strong> Stored securely on-device to keep you logged in. These expire automatically and are not shared with third parties.</li>
                                     <li><strong>Device advertising identifiers (IDFA / GAID):</strong> Used only for aggregated, anonymised analytics — never for targeted advertising. You can reset or opt out of these identifiers at any time in your device's privacy settings.</li>
@@ -187,7 +187,7 @@ const CookiePolicy = () => {
 
                             <section className="mt-12 pt-8 border-t border-border text-sm text-muted-foreground">
                                 <p className="mb-2"><strong>gruentzig.ai Private Limited</strong><br/>
-                                PreventVital — AI-Powered Preventive Wellness<br/>
+                                Preventvital — AI-Powered Preventive Wellness<br/>
                                 Hyderabad, Telangana, India<br/>
                                 privacy@preventvital.com • https://preventvital.com/cookie-policy</p>
                                 <p>© 2026 gruentzig.ai Private Limited. All rights reserved.<br/>

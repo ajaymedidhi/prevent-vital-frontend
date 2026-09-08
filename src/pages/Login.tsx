@@ -160,9 +160,9 @@ const Login = () => {
             className="flex items-center gap-3"
           >
             <div className="w-12 h-12 bg-white/15 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20">
-              <img src="/images/logo-new.png" alt="PreventVital" className="w-8 h-8 object-contain" />
+              <img src="/images/logo-new.png" alt="Preventvital" className="w-8 h-8 object-contain" />
             </div>
-            <span className="text-xl font-bold text-white tracking-tight">PreventVital</span>
+            <span className="text-xl font-bold text-white tracking-tight">Preventvital</span>
           </motion.div>
 
           {/* Vitals cards */}
@@ -322,7 +322,7 @@ const Login = () => {
             </div>
             <div className="relative flex justify-center">
               <span className="bg-background px-3 text-xs text-muted-foreground">
-                New to PreventVital?
+                New to Preventvital?
               </span>
             </div>
           </div>
@@ -341,7 +341,7 @@ const Login = () => {
 
         {/* Footer */}
         <p className="absolute bottom-6 text-xs text-muted-foreground/60 text-center px-4">
-          © {new Date().getFullYear()} PreventVital. Protected by HIPAA & ISO 27001.
+          © {new Date().getFullYear()} Preventvital. Protected by HIPAA & ISO 27001.
         </p>
       </div>
     </div>

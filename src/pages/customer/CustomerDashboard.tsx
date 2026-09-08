@@ -1013,6 +1013,10 @@ const CustomerDashboard = () => {
                     {filteredPrograms.map((program: any) => {
                         const isLocked = program.locked;
                         const reqPlan = program.requiredPlan;
+                        
+                        let rawImg = program.coverImageMediaId?.signedUrl || program.thumbnail || program.image;
+                        if (rawImg === 'https://placehold.co/600x400') rawImg = null;
+                        const imgUrl = rawImg ? rawImg.replace('10.0.2.2', 'localhost') : null;
 
                         return (
                             <Card key={program._id} className={`rounded-xl border-none shadow-sm overflow-hidden bg-white group hover:shadow-xl transition-all duration-300 relative ${isLocked ? 'opacity-90' : ''
@@ -1026,10 +1030,16 @@ const CustomerDashboard = () => {
 
                                 <div className="flex flex-col md:flex-row">
                                     {/* Image */}
-                                    <div className="w-full md:w-52 h-48 relative overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50">
-                                        <div className="w-full h-full flex items-center justify-center">
-                                            <span className="text-6xl">{CAT_EMOJI[program.category] || '📋'}</span>
-                                        </div>
+                                    <div className="w-full md:w-52 h-48 relative overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center">
+                                        <span className="text-6xl absolute">{CAT_EMOJI[program.category] || '📋'}</span>
+                                        {imgUrl && (
+                                            <img
+                                                src={imgUrl}
+                                                alt={program.title}
+                                                className="w-full h-full object-cover relative z-10 bg-gradient-to-br from-gray-100 to-gray-50"
+                                                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                            />
+                                        )}
                                         {isLocked && (
                                             <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] flex items-center justify-center">
                                                 <Lock className="w-10 h-10 text-white/60" />

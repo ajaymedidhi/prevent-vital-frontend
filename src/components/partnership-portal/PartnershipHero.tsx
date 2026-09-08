@@ -61,7 +61,7 @@ const PartnershipHero = ({ className = '' }: PartnershipHeroProps) => {
                         className="text-white/80 leading-relaxed mx-auto"
                         style={{ fontSize: 'var(--fz-base)', maxWidth: '52ch' }}
                     >
-                        Join India's pioneering integrated wellness-technology platform. Partner with PreventVital to transform healthcare delivery through AI-powered prevention.
+                        Join India's pioneering integrated wellness-technology platform. Partner with Preventvital to transform healthcare delivery through AI-powered prevention.
                     </p>
 
                     {/* CTAs */}

@@ -19,24 +19,24 @@ const Index = () => {
     return (
         <>
             <Helmet>
-                <title>PreventVital - India's AI-Powered Preventive Healthcare Platform</title>
+                <title>Preventvital - India's AI-Powered Preventive Healthcare Platform</title>
                 <meta
                     name="description"
-                    content="Empowering you with AI-driven health predictions, personalized wellness plans, and disease prevention programs. India's leading preventive healthcare platform. Get your VITAL Score today."
+                    content="Preventvital is an AI-powered health intelligence platform that continuously understands your health, identifies emerging risks, and helps you take action before disease becomes a bigger problem."
                 />
                 <meta name="keywords" content="preventvital, AI health assessment, preventive healthcare India, VITAL score, health risk assessment, disease prevention, wellness platform, AI wellness" />
                 <link rel="canonical" href="https://preventvital.com/" />
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="PreventVital" />
+                <meta property="og:site_name" content="Preventvital" />
                 <meta property="og:url" content="https://preventvital.com/" />
-                <meta property="og:title" content="PreventVital - India's AI-Powered Preventive Healthcare Platform" />
-                <meta property="og:description" content="AI-driven health predictions, personalized wellness plans, and disease prevention programs. Get your VITAL Score today." />
+                <meta property="og:title" content="Preventvital - India's AI-Powered Preventive Healthcare Platform" />
+                <meta property="og:description" content="Preventvital is an AI-powered health intelligence platform that continuously understands your health, identifies emerging risks, and helps you take action before disease becomes a bigger problem." />
                 <meta property="og:image" content="https://preventvital.com/og-image.jpg" />
                 <meta property="og:locale" content="en_IN" />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:site" content="@preventvital" />
-                <meta name="twitter:title" content="PreventVital - India's AI-Powered Preventive Healthcare" />
-                <meta name="twitter:description" content="AI-driven health predictions, personalized wellness plans, and disease prevention programs." />
+                <meta name="twitter:title" content="Preventvital - India's AI-Powered Preventive Healthcare" />
+                <meta name="twitter:description" content="Preventvital is an AI-powered health intelligence platform that continuously understands your health, identifies emerging risks, and helps you take action before disease becomes a bigger problem." />
                 <meta name="twitter:image" content="https://preventvital.com/og-image.jpg" />
             </Helmet>
 

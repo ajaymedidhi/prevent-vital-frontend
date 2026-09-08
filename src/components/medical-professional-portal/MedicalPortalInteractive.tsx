@@ -109,7 +109,7 @@ export default function MedicalPortalInteractive() {
     ];
 
     const testimonials: Testimonial[] = [
-        { id: 1, name: 'Dr. Anil Mehta',  role: 'Chief Cardiologist',  hospital: 'City Medical Center, Mumbai',  quote: 'PreventVital has transformed how I manage high-risk cardiac patients. The predictive alerts have prevented multiple emergency situations.', image: "https://img.rocket.new/generatedImages/rocket_gen_img_1fe03ce7b-1763294977207.png", alt: 'Senior Indian male doctor' },
+        { id: 1, name: 'Dr. Anil Mehta',  role: 'Chief Cardiologist',  hospital: 'City Medical Center, Mumbai',  quote: 'Preventvital has transformed how I manage high-risk cardiac patients. The predictive alerts have prevented multiple emergency situations.', image: "https://img.rocket.new/generatedImages/rocket_gen_img_1fe03ce7b-1763294977207.png", alt: 'Senior Indian male doctor' },
         { id: 2, name: 'Dr. Kavita Desai', role: 'Endocrinologist',    hospital: 'Fortis Healthcare, Delhi',     quote: 'The AI-powered insights help me personalize diabetes management plans with unprecedented precision. Patient outcomes have improved dramatically.',  image: "https://img.rocket.new/generatedImages/rocket_gen_img_100d9dcb9-1764892974318.png", alt: 'Indian female doctor' },
     ];
 
@@ -466,7 +466,7 @@ export default function MedicalPortalInteractive() {
                         </h2>
 
                         <p className="text-fluid-lg text-white/65 max-w-xl mx-auto leading-relaxed">
-                            Join thousands of healthcare professionals using PreventVital to deliver superior patient outcomes through AI-powered preventive care.
+                            Join thousands of healthcare professionals using Preventvital to deliver superior patient outcomes through AI-powered preventive care.
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">

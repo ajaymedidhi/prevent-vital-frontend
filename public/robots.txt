@@ -1,4 +1,4 @@
-# PreventVital - robots.txt
+# Preventvital - robots.txt
 # https://preventvital.com
 
 # Allow all compliant crawlers

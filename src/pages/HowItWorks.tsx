@@ -316,16 +316,16 @@ const HowItWorks = () => {
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Helmet>
-                <title>How It Works | Your 5-Step Path to Better Health - PreventVital</title>
+                <title>How It Works | Your 5-Step Path to Better Health - Preventvital</title>
                 <meta
                     name="description"
-                    content="See exactly how PreventVital works: a 5-minute assessment, your VITAL score, a plan matched to your risk, the PreventVital app with VITA AI, and ongoing tracking as your score changes."
+                    content="See exactly how Preventvital works: a 5-minute assessment, your VITAL score, a plan matched to your risk, the Preventvital app with VITA AI, and ongoing tracking as your score changes."
                 />
                 <link rel="canonical" href="https://preventvital.com/how-it-works" />
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="PreventVital" />
+                <meta property="og:site_name" content="Preventvital" />
                 <meta property="og:url" content="https://preventvital.com/how-it-works" />
-                <meta property="og:title" content="How PreventVital Works | Your 5-Step Path to Better Health" />
+                <meta property="og:title" content="How Preventvital Works | Your 5-Step Path to Better Health" />
                 <meta property="og:description" content="From a 5-minute questionnaire to a wearable-connected app that tracks your risk over time." />
                 <meta property="og:locale" content="en_IN" />
             </Helmet>
@@ -378,7 +378,7 @@ const HowItWorks = () => {
                                 className="text-white/80 leading-relaxed mx-auto"
                                 style={{ fontSize: 'var(--fz-base)', maxWidth: '54ch' }}
                             >
-                                From a 5-minute questionnaire to a wearable-connected app that watches your risk change over time — here's exactly what happens when you start with PreventVital.
+                                From a 5-minute questionnaire to a wearable-connected app that watches your risk change over time — here's exactly what happens when you start with Preventvital.
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
@@ -537,7 +537,7 @@ const HowItWorks = () => {
                                         Download the App &amp; Meet VITA
                                     </h2>
                                     <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                                        Everything from here on lives in the PreventVital app — your score, your program, your wearable data, and VITA, the AI companion that already knows your health story.
+                                        Everything from here on lives in the Preventvital app — your score, your program, your wearable data, and VITA, the AI companion that already knows your health story.
                                     </p>
 
                                     <ul className="space-y-3 mb-8">

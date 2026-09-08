@@ -32,7 +32,7 @@ const OrderSuccessPage = () => {
                     </div>
                     <h2 className="text-xl font-bold text-foreground mb-2">Start Your Health Program</h2>
                     <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                        Download the PreventVital App now to pair your device and start tracking your vitals.
+                        Download the Preventvital App now to pair your device and start tracking your vitals.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
                         <button

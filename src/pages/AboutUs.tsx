@@ -54,32 +54,32 @@ const AboutUs = () => {
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Helmet>
-                <title>About Us | Building India's AI Preventive Healthcare Future - PreventVital</title>
-                <meta name="description" content="Learn about PreventVital's mission to democratize preventive medicine in India. AI-powered technology, clinician-led programs, and holistic wellness approach to transform healthcare." />
+                <title>About Us | Building India's AI Preventive Healthcare Future - Preventvital</title>
+                <meta name="description" content="Learn about Preventvital's mission to democratize preventive medicine in India. AI-powered technology, clinician-led programs, and holistic wellness approach to transform healthcare." />
                 <meta name="keywords" content="about preventvital, preventive healthcare mission India, AI healthcare company, health tech startup India, preventive medicine platform" />
                 <link rel="canonical" href="https://preventvital.com/about-us" />
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="PreventVital" />
+                <meta property="og:site_name" content="Preventvital" />
                 <meta property="og:url" content="https://preventvital.com/about-us" />
-                <meta property="og:title" content="About PreventVital | Building India's AI Preventive Healthcare Future" />
-                <meta property="og:description" content="PreventVital's mission: democratizing preventive medicine through AI-powered technology and holistic wellness in India." />
+                <meta property="og:title" content="About Preventvital | Building India's AI Preventive Healthcare Future" />
+                <meta property="og:description" content="Preventvital's mission: democratizing preventive medicine through AI-powered technology and holistic wellness in India." />
                 <meta property="og:image" content="https://preventvital.com/og-about.jpg" />
                 <meta property="og:locale" content="en_IN" />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:site" content="@preventvital" />
-                <meta name="twitter:title" content="About PreventVital | India's AI Preventive Healthcare" />
+                <meta name="twitter:title" content="About Preventvital | India's AI Preventive Healthcare" />
                 <meta name="twitter:description" content="Democratizing preventive medicine through AI-powered technology and holistic wellness." />
                 <meta name="twitter:image" content="https://preventvital.com/og-about.jpg" />
                 <script type="application/ld+json">{JSON.stringify({
                     '@context': 'https://schema.org',
                     '@type': 'AboutPage',
-                    name: 'About PreventVital',
-                    description: "PreventVital's mission to democratize preventive medicine in India through AI-powered technology",
+                    name: 'About Preventvital',
+                    description: "Preventvital's mission to democratize preventive medicine in India through AI-powered technology",
                     url: 'https://preventvital.com/about-us',
                     isPartOf: { '@type': 'WebSite', url: 'https://preventvital.com/' },
                     about: {
                         '@type': 'Organization',
-                        name: 'PreventVital',
+                        name: 'Preventvital',
                         url: 'https://preventvital.com/',
                         description: "India's AI-powered preventive healthcare platform",
                     },
@@ -172,10 +172,10 @@ const AboutUs = () => {
                                 </h2>
                                 <div className="space-y-4 text-muted-foreground leading-relaxed" style={{ fontSize: 'var(--fz-lg)' }}>
                                     <p>
-                                        PreventVital was founded after witnessing a recurring tragedy in Indian healthcare: chronic diseases silently progressing and being detected too late — even when patients had access to top hospitals.
+                                        Preventvital was founded after witnessing a recurring tragedy in Indian healthcare: chronic diseases silently progressing and being detected too late — even when patients had access to top hospitals.
                                     </p>
                                     <p>
-                                        Founded by Dr. Rakesh Kumar, a senior interventional cardiologist with experience treating over 6,000 patients, PreventVital exists to change this narrative.
+                                        Founded by Dr. Rakesh Kumar, a senior interventional cardiologist with experience treating over 6,000 patients, Preventvital exists to change this narrative.
                                     </p>
                                     <p>
                                         We believe that with the right technology and timely intervention, most chronic diseases can be prevented before irreversible damage occurs.
@@ -208,7 +208,7 @@ const AboutUs = () => {
                                     style={{ background: 'hsl(var(--primary) / 0.04)', borderColor: 'hsl(var(--primary) / 0.15)' }}
                                 >
                                     <p className="text-sm font-bold text-foreground mb-1">Dr. Rakesh Kumar</p>
-                                    <p className="text-xs text-muted-foreground">Senior Interventional Cardiologist · Founder, PreventVital</p>
+                                    <p className="text-xs text-muted-foreground">Senior Interventional Cardiologist · Founder, Preventvital</p>
                                     <p className="text-xs text-muted-foreground mt-2 italic leading-relaxed">
                                         "Prevention is not a luxury — it is the most powerful medicine we have. We just haven't delivered it at scale yet."
                                     </p>

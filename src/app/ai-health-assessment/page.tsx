@@ -11,20 +11,20 @@ const AiHealthAssessmentPage = () => {
     return (
         <>
             <Helmet>
-                <title>AI Health Assessment | VITAL Score - PreventVital</title>
-                <meta name="description" content="Take PreventVital's AI-powered health assessment to get your personalized VITAL Score. Understand your cardiovascular, metabolic, and mental wellness profile. Science-backed health risk analysis in minutes." />
+                <title>AI Health Assessment | VITAL Score - Preventvital</title>
+                <meta name="description" content="Take Preventvital's AI-powered health assessment to get your personalized VITAL Score. Understand your cardiovascular, metabolic, and mental wellness profile. Science-backed health risk analysis in minutes." />
                 <meta name="keywords" content="AI health assessment, VITAL score, health risk assessment India, cardiovascular risk assessment, metabolic health test, online health assessment, preventvital assessment" />
                 <link rel="canonical" href="https://preventvital.com/ai-health-assessment" />
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="PreventVital" />
+                <meta property="og:site_name" content="Preventvital" />
                 <meta property="og:url" content="https://preventvital.com/ai-health-assessment" />
-                <meta property="og:title" content="AI Health Assessment | Get Your VITAL Score - PreventVital" />
+                <meta property="og:title" content="AI Health Assessment | Get Your VITAL Score - Preventvital" />
                 <meta property="og:description" content="AI-powered health assessment: get your personalized VITAL Score and understand your cardiovascular, metabolic, and mental wellness profile." />
                 <meta property="og:image" content="https://preventvital.com/og-assessment.jpg" />
                 <meta property="og:locale" content="en_IN" />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:site" content="@preventvital" />
-                <meta name="twitter:title" content="AI Health Assessment | VITAL Score - PreventVital" />
+                <meta name="twitter:title" content="AI Health Assessment | VITAL Score - Preventvital" />
                 <meta name="twitter:description" content="Get your personalized VITAL Score. AI-powered cardiovascular, metabolic, and mental wellness assessment." />
                 <meta name="twitter:image" content="https://preventvital.com/og-assessment.jpg" />
                 <script type="application/ld+json">{JSON.stringify({
@@ -33,7 +33,7 @@ const AiHealthAssessmentPage = () => {
                     "name": "VITAL Health Risk Assessment",
                     "description": "AI-powered comprehensive health risk assessment covering cardiovascular, metabolic, and mental wellness parameters.",
                     "usedToDiagnose": ["Cardiovascular Risk", "Metabolic Health Risk", "Mental Wellness"],
-                    "provider": { "@type": "Organization", "name": "PreventVital", "url": "https://preventvital.com/" },
+                    "provider": { "@type": "Organization", "name": "Preventvital", "url": "https://preventvital.com/" },
                     "url": "https://preventvital.com/ai-health-assessment"
                 })}</script>
             </Helmet>

@@ -44,7 +44,7 @@ export const Contact = () => {
 
     toast({
       title: "Thank you for your interest!",
-      description: "We'll be in touch soon to discuss how PreventVital can help.",
+      description: "We'll be in touch soon to discuss how Preventvital can help.",
     });
 
     setFormData({ name: "", email: "", organization: "", message: "" });
@@ -72,7 +72,7 @@ export const Contact = () => {
                 <div>
                   <h3 className="font-medium text-foreground mb-1">Email</h3>
                   <p className="text-muted-foreground text-sm">
-                    contact@PreventVital.ai
+                    contact@Preventvital.ai
                   </p>
                 </div>
               </div>
@@ -142,7 +142,7 @@ export const Contact = () => {
                   id="message"
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder="Tell us about your interest in PreventVital"
+                  placeholder="Tell us about your interest in Preventvital"
                   rows={4}
                   maxLength={1000}
                 />

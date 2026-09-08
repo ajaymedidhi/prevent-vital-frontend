@@ -6,10 +6,10 @@ const PartnershipPortalPage = () => {
     return (
         <>
             <Helmet>
-                <title>Partnership Portal | Corporate Wellness Partner - PreventVital</title>
+                <title>Partnership Portal | Corporate Wellness Partner - Preventvital</title>
                 <meta
                     name="description"
-                    content="Partner with PreventVital to deliver AI-powered preventive healthcare to your employees. Corporate wellness partnerships, white-label solutions, and B2B health programs for businesses in India."
+                    content="Partner with Preventvital to deliver AI-powered preventive healthcare to your employees. Corporate wellness partnerships, white-label solutions, and B2B health programs for businesses in India."
                 />
                 <meta
                     name="keywords"
@@ -19,29 +19,29 @@ const PartnershipPortalPage = () => {
 
                 {/* Open Graph */}
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="PreventVital" />
+                <meta property="og:site_name" content="Preventvital" />
                 <meta property="og:url" content="https://preventvital.com/partnership-portal" />
-                <meta property="og:title" content="Partnership Portal | Corporate Wellness Partner - PreventVital" />
-                <meta property="og:description" content="Partner with PreventVital to deliver AI-powered preventive healthcare to your employees. Corporate wellness partnerships and B2B health programs." />
+                <meta property="og:title" content="Partnership Portal | Corporate Wellness Partner - Preventvital" />
+                <meta property="og:description" content="Partner with Preventvital to deliver AI-powered preventive healthcare to your employees. Corporate wellness partnerships and B2B health programs." />
                 <meta property="og:image" content="https://preventvital.com/og-partnership.jpg" />
                 <meta property="og:locale" content="en_IN" />
 
                 {/* Twitter */}
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:site" content="@preventvital" />
-                <meta name="twitter:title" content="Partnership Portal | Corporate Wellness Partner - PreventVital" />
-                <meta name="twitter:description" content="Partner with PreventVital to deliver AI-powered preventive healthcare to your employees." />
+                <meta name="twitter:title" content="Partnership Portal | Corporate Wellness Partner - Preventvital" />
+                <meta name="twitter:description" content="Partner with Preventvital to deliver AI-powered preventive healthcare to your employees." />
                 <meta name="twitter:image" content="https://preventvital.com/og-partnership.jpg" />
 
                 {/* JSON-LD */}
                 <script type="application/ld+json">{JSON.stringify({
                     "@context": "https://schema.org",
                     "@type": "Service",
-                    "name": "PreventVital Corporate Partnership Program",
+                    "name": "Preventvital Corporate Partnership Program",
                     "description": "B2B healthcare partnership program enabling businesses to offer AI-powered preventive healthcare and wellness programs to their employees.",
                     "provider": {
                         "@type": "Organization",
-                        "name": "PreventVital",
+                        "name": "Preventvital",
                         "url": "https://preventvital.com/"
                     },
                     "serviceType": "Corporate Wellness Partnership",

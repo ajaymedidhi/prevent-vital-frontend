@@ -98,7 +98,7 @@ const CheckoutPage = () => {
                 key: keyId,
                 amount,
                 currency,
-                name: "PreventVital",
+                name: "Preventvital",
                 description: "Medical Device Purchase",
                 order_id: razorpayOrderId,
                 handler: async (response: any) => {

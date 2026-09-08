@@ -36,7 +36,7 @@ export const WhatWeDo = () => {
                         Prevention Is Better Than Cure. We Make It Possible.
                     </h2>
                     <p className="text-lg text-muted-foreground text-balance">
-                        PreventVital unifies real-time wearable monitoring, AI-driven predictive analytics, yoga therapy, meditation, breathwork, and lifestyle coaching into one preventive healthcare platform — helping people stay ahead of chronic diseases.
+                        Preventvital unifies real-time wearable monitoring, AI-driven predictive analytics, yoga therapy, meditation, breathwork, and lifestyle coaching into one preventive healthcare platform — helping people stay ahead of chronic diseases.
                     </p>
                 </div>
 

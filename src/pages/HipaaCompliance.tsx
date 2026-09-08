@@ -6,16 +6,16 @@ const HipaaCompliance = () => {
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Helmet>
-                <title>HIPAA Compliance | How We Safeguard Health Data - PreventVital</title>
-                <meta name="description" content="PreventVital's approach to HIPAA-equivalent safeguards for health data: administrative, physical, and technical controls that protect your protected health information (PHI)." />
+                <title>HIPAA Compliance | How We Safeguard Health Data - Preventvital</title>
+                <meta name="description" content="Preventvital's approach to HIPAA-equivalent safeguards for health data: administrative, physical, and technical controls that protect your protected health information (PHI)." />
                 <meta name="keywords" content="preventvital hipaa compliance, health data security, PHI protection, HIPAA equivalent safeguards, medical data security India" />
                 <link rel="canonical" href="https://preventvital.com/hipaa-compliance" />
                 <meta name="robots" content="index, follow" />
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="PreventVital" />
+                <meta property="og:site_name" content="Preventvital" />
                 <meta property="og:url" content="https://preventvital.com/hipaa-compliance" />
-                <meta property="og:title" content="HIPAA Compliance | PreventVital" />
-                <meta property="og:description" content="How PreventVital safeguards protected health information with HIPAA-equivalent administrative, physical, and technical controls." />
+                <meta property="og:title" content="HIPAA Compliance | Preventvital" />
+                <meta property="og:description" content="How Preventvital safeguards protected health information with HIPAA-equivalent administrative, physical, and technical controls." />
                 <meta property="og:image" content="https://preventvital.com/og-image.jpg" />
             </Helmet>
             <main className="flex-grow">
@@ -67,7 +67,7 @@ const HipaaCompliance = () => {
 
                             <div className="bg-gradient-to-r from-primary/10 to-primary/5 border-l-4 border-primary p-6 rounded-r-2xl shadow-sm">
                                 <p className="text-primary font-medium my-0 text-lg leading-relaxed">
-                                    PreventVital is built on the same safeguarding principles as the U.S. Health Insurance Portability and Accountability Act (HIPAA) — even though PreventVital primarily operates in India under the Digital Personal Data Protection Act 2023 (DPDP Act). We apply HIPAA-equivalent administrative, physical, and technical controls to every piece of health information you share with us.
+                                    Preventvital is built on the same safeguarding principles as the U.S. Health Insurance Portability and Accountability Act (HIPAA) — even though Preventvital primarily operates in India under the Digital Personal Data Protection Act 2023 (DPDP Act). We apply HIPAA-equivalent administrative, physical, and technical controls to every piece of health information you share with us.
                                 </p>
                             </div>
 
@@ -91,7 +91,7 @@ const HipaaCompliance = () => {
                                 <h2 className="text-2xl font-bold text-primary mt-8 mb-4">3. Physical Safeguards</h2>
                                 <ul className="list-disc pl-6 space-y-2">
                                     <li>All infrastructure runs on Google Cloud Platform data centres, which maintain independently audited physical security controls (biometric access, 24/7 monitoring, redundant power and network)</li>
-                                    <li>PreventVital does not operate its own physical servers; no PHI is stored on local company hardware</li>
+                                    <li>Preventvital does not operate its own physical servers; no PHI is stored on local company hardware</li>
                                     <li>Workstations used by team members with data access are encrypted and protected by mandatory screen-lock and endpoint security policies</li>
                                 </ul>
                             </section>
@@ -115,7 +115,7 @@ const HipaaCompliance = () => {
 
                             <section>
                                 <h2 className="text-2xl font-bold text-primary mt-8 mb-4">6. Business Associates and Sub-processors</h2>
-                                <p>Where PreventVital engages third-party service providers to process health data on our behalf (cloud hosting, database management, AI inference), each provider operates under a written agreement that restricts their use of PHI strictly to the services they provide us and requires them to maintain safeguards consistent with this policy.</p>
+                                <p>Where Preventvital engages third-party service providers to process health data on our behalf (cloud hosting, database management, AI inference), each provider operates under a written agreement that restricts their use of PHI strictly to the services they provide us and requires them to maintain safeguards consistent with this policy.</p>
                             </section>
 
                             <section>
@@ -134,7 +134,7 @@ const HipaaCompliance = () => {
                                     <h4 className="font-bold text-xl m-0 text-amber-950">Scope Note</h4>
                                 </div>
                                 <p className="text-amber-900 font-medium mb-0">
-                                    PreventVital is an India-based company and is not a U.S. "covered entity" or "business associate" as those terms are defined under HIPAA. This page describes the HIPAA-equivalent safeguards we voluntarily apply because we believe health data deserves the highest standard of protection, regardless of jurisdiction. Our primary legal obligations for data protection are governed by India's DPDP Act 2023, as detailed in our <a href="/privacy-policy" className="underline">Privacy Policy</a>.
+                                    Preventvital is an India-based company and is not a U.S. "covered entity" or "business associate" as those terms are defined under HIPAA. This page describes the HIPAA-equivalent safeguards we voluntarily apply because we believe health data deserves the highest standard of protection, regardless of jurisdiction. Our primary legal obligations for data protection are governed by India's DPDP Act 2023, as detailed in our <a href="/privacy-policy" className="underline">Privacy Policy</a>.
                                 </p>
                             </section>
 
@@ -162,7 +162,7 @@ const HipaaCompliance = () => {
 
                             <section className="mt-12 pt-8 border-t border-border text-sm text-muted-foreground">
                                 <p className="mb-2"><strong>gruentzig.ai Private Limited</strong><br/>
-                                PreventVital — AI-Powered Preventive Wellness<br/>
+                                Preventvital — AI-Powered Preventive Wellness<br/>
                                 Hyderabad, Telangana, India<br/>
                                 privacy@preventvital.com • https://preventvital.com/hipaa-compliance</p>
                                 <p>© 2026 gruentzig.ai Private Limited. All rights reserved.<br/>

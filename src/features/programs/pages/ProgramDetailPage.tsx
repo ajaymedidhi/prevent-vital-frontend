@@ -115,7 +115,7 @@ export default function ProgramDetailPage() {
                 <VideoPlayer module={activeModule} onClose={() => setActiveModule(null)} />
             )}
             <Helmet>
-                <title>{program.title} - PreventVital</title>
+                <title>{program.title} - Preventvital</title>
                 <meta name="description" content={program.description.slice(0, 160)} />
             </Helmet>
 
@@ -282,7 +282,7 @@ export default function ProgramDetailPage() {
                             </Button>
 
                             <p className="text-xs text-center text-muted-foreground">
-                                Use the PreventVital App to enroll, track vitals, and execute daily sessions.
+                                Use the Preventvital App to enroll, track vitals, and execute daily sessions.
                             </p>
                         </div>
 

@@ -9,7 +9,7 @@ export const Vision = () => {
             Our Vision
           </h2>
           <p className="text-lg text-muted-foreground text-balance">
-            We believe healthcare should prevent disease, not just treat it. PreventVital is building the future of preventive medicine in India — making proactive health management accessible to everyone.
+            We believe healthcare should prevent disease, not just treat it. Preventvital is building the future of preventive medicine in India — making proactive health management accessible to everyone.
           </p>
         </div>
 

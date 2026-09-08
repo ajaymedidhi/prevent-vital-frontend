@@ -36,7 +36,7 @@ const slides = [
     titleBefore: 'Reclaim Your',
     titleHighlight: 'Vitality',
     description:
-      "Preventvital helps people prevent health problems before they become serious using reactive methods",
+      "Preventvital helps people prevent health problems before they become serious using proactive methods",
     cta: 'Get My Free Score',
     ctaLink: '/ai-health-assessment',
     secondaryCta: 'See How It Works',

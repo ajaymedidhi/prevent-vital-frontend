@@ -38,7 +38,7 @@ const WhyPartner = ({ className = '' }: WhyPartnerProps) => {
             <div className="container-wide">
                 <div className="text-center max-w-3xl mx-auto mb-14">
                     <h2 className="text-fluid-4xl font-bold text-foreground tracking-tight">
-                        Why Partner with PreventVital?
+                        Why Partner with Preventvital?
                     </h2>
                 </div>
 

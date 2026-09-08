@@ -103,7 +103,7 @@ const SuperAdminLayout = () => {
                     <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white p-1">
                         <img
                             src="/images/logo-new.png"
-                            alt="PreventVital Logo"
+                            alt="Preventvital Logo"
                             className="w-full h-full object-contain filter brightness-0 invert"
                         />
                     </div>

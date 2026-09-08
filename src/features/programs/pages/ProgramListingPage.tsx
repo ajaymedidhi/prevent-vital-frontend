@@ -29,7 +29,7 @@ export default function ProgramListingPage() {
     return (
         <>
             <Helmet>
-                <title>Browse Health Programs - PreventVital</title>
+                <title>Browse Health Programs - Preventvital</title>
                 <meta name="description" content="Discover doctor-designed health programs for diabetes, heart health, mental wellness, and more." />
             </Helmet>
 

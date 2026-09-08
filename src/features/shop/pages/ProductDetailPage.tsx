@@ -154,7 +154,7 @@ const ProductDetailPage = () => {
                         <div className="h-px bg-border" />
 
                         <p className="text-muted-foreground leading-relaxed text-sm">
-                            {product.description || "Experience the future of health monitoring with our clinical-grade device. Designed for precision and ease of use, it integrates seamlessly with the PreventVital ecosystem to give you actionable insights."}
+                            {product.description || "Experience the future of health monitoring with our clinical-grade device. Designed for precision and ease of use, it integrates seamlessly with the Preventvital ecosystem to give you actionable insights."}
                         </p>
 
                         {product.supportedVitals && product.supportedVitals.length > 0 && (

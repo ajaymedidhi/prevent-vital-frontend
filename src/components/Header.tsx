@@ -123,7 +123,7 @@ const Header = ({ className = '' }: HeaderProps) => {
               <div className="h-12 md:h-[60px] w-auto">
                 <AppImage
                   src="/images/logo-new.png"
-                  alt="PreventVital"
+                  alt="Preventvital"
                   width={275}
                   height={60}
                   className="h-full w-auto object-contain object-left"
