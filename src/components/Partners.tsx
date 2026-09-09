@@ -33,7 +33,7 @@ export const Partners = () => {
             Partner With Us
           </h2>
           <p className="text-lg text-muted-foreground text-balance">
-            Preventvital is designed for seamless integration with healthcare ecosystems. Let's build the future of preventive care together.
+            PreventVital is designed for seamless integration with healthcare ecosystems. Let's build the future of preventive care together.
           </p>
         </div>
 

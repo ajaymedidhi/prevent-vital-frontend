@@ -36,10 +36,10 @@ const WellnessPhilosophy = () => {
     return (
         <>
         <Helmet>
-            <title>Wellness Philosophy | Holistic Health Rooted in Science - Preventvital</title>
+            <title>Wellness Philosophy | Holistic Health Rooted in Science - PreventVital</title>
             <meta
                 name="description"
-                content="Explore Preventvital's wellness philosophy: integrating yoga therapy, meditation, breathwork (pranayama), nutrition, and mental health support with evidence-based medicine for complete holistic health."
+                content="Explore PreventVital's wellness philosophy: integrating yoga therapy, meditation, breathwork (pranayama), nutrition, and mental health support with evidence-based medicine for complete holistic health."
             />
             <meta
                 name="keywords"
@@ -47,15 +47,15 @@ const WellnessPhilosophy = () => {
             />
             <link rel="canonical" href="https://preventvital.com/wellness-philosophy" />
             <meta property="og:type" content="website" />
-            <meta property="og:site_name" content="Preventvital" />
+            <meta property="og:site_name" content="PreventVital" />
             <meta property="og:url" content="https://preventvital.com/wellness-philosophy" />
-            <meta property="og:title" content="Wellness Philosophy | Holistic Health Rooted in Science - Preventvital" />
-            <meta property="og:description" content="Preventvital integrates yoga, meditation, breathwork, nutrition, and mental health support with modern medicine for complete holistic health." />
+            <meta property="og:title" content="Wellness Philosophy | Holistic Health Rooted in Science - PreventVital" />
+            <meta property="og:description" content="PreventVital integrates yoga, meditation, breathwork, nutrition, and mental health support with modern medicine for complete holistic health." />
             <meta property="og:image" content="https://preventvital.com/og-wellness.jpg" />
             <meta property="og:locale" content="en_IN" />
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:site" content="@preventvital" />
-            <meta name="twitter:title" content="Wellness Philosophy | Holistic Health Rooted in Science - Preventvital" />
+            <meta name="twitter:title" content="Wellness Philosophy | Holistic Health Rooted in Science - PreventVital" />
             <meta name="twitter:description" content="Integrating yoga, meditation, breathwork, nutrition, and mental health support with modern medicine." />
             <meta name="twitter:image" content="https://preventvital.com/og-wellness.jpg" />
         </Helmet>

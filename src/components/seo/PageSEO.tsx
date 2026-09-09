@@ -17,7 +17,7 @@ interface PageSEOProps {
  *
  * Usage:
  *   <PageSEO
- *     title="Shop | Health Products - Preventvital"
+ *     title="Shop | Health Products - PreventVital"
  *     description="..."
  *     canonical="https://preventvital.com/shop"
  *     ogImage="https://preventvital.com/og-shop.jpg"
@@ -43,7 +43,7 @@ const PageSEO = ({
 
             {/* Open Graph */}
             <meta property="og:type" content={ogType} />
-            <meta property="og:site_name" content="Preventvital" />
+            <meta property="og:site_name" content="PreventVital" />
             <meta property="og:url" content={canonical} />
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />

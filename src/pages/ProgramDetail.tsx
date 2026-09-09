@@ -51,7 +51,7 @@ const ProgramDetail = () => {
     return (
         <div className="min-h-screen bg-background">
             <Helmet>
-                <title>{program.title} Program | Preventvital</title>
+                <title>{program.title} Program | PreventVital</title>
                 <meta name="description" content={program.tagline} />
                 <link rel="canonical" href={`https://preventvital.com/disease-prevention-programs/${program.id}`} />
             </Helmet>

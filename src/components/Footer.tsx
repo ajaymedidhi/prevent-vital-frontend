@@ -87,10 +87,10 @@ export const Footer = () => {
           <div className="lg:max-w-xs space-y-5">
             <Link to="/" className="flex items-center gap-2.5 group">
               <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center border border-white/15">
-                <img src="/images/logo-new.png" alt="Preventvital" className="w-6 h-6 object-contain" />
+                <img src="/images/logo-new.png" alt="PreventVital" className="w-6 h-6 object-contain" />
               </div>
               <span className="text-lg font-semibold tracking-tight text-white group-hover:text-white/90 transition-colors">
-                Preventvital
+                PreventVital
               </span>
             </Link>
 
@@ -174,7 +174,7 @@ export const Footer = () => {
         {/* ── Bottom bar ── */}
         <div className="border-t border-white/8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-white/35 order-2 sm:order-1">
-            © {currentYear} Preventvital, a unit of GruentzigAI Private Limited. All rights reserved.
+            © {currentYear} PreventVital, a unit of GruentzigAI Private Limited. All rights reserved.
           </p>
 
           <div className="flex items-center gap-4 order-1 sm:order-2">

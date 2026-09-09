@@ -37,7 +37,7 @@ export const HowItWorks = () => {
       <div className="container">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-6">
-            How Preventvital Works
+            How PreventVital Works
           </h2>
           <p className="text-lg text-muted-foreground text-balance">
             A seamless integration of wearable technology, artificial intelligence, and medical expertise to deliver preventive care that actually works.

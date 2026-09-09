@@ -14,7 +14,7 @@ const partnershipTypes: PartnershipType[] = [
     {
         id: 'hospital',
         title: 'Hospital Partnerships',
-        description: 'Integrate Preventvital into your healthcare facility to enhance patient outcomes through predictive analytics.',
+        description: 'Integrate PreventVital into your healthcare facility to enhance patient outcomes through predictive analytics.',
         icon: Building2,
         benefits: [
             'Patient referral tracking system',

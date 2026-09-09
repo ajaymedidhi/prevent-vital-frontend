@@ -6,22 +6,22 @@ const TherapeuticProgramsPage = () => {
     return (
         <>
             <Helmet>
-                <title>Therapeutic Programs Center | Yoga, Meditation & Wellness - Preventvital</title>
+                <title>Therapeutic Programs Center | Yoga, Meditation & Wellness - PreventVital</title>
                 <meta
                     name="description"
-                    content="Explore Preventvital's evidence-based therapeutic programs: yoga therapy, meditation, breathwork, nutrition coaching, and mental health support. Disease-specific wellness programs designed by medical experts in India."
+                    content="Explore PreventVital's evidence-based therapeutic programs: yoga therapy, meditation, breathwork, nutrition coaching, and mental health support. Disease-specific wellness programs designed by medical experts in India."
                 />
                 <meta
                     name="keywords"
-                    content="therapeutic wellness programs, yoga therapy India, disease-specific yoga, meditation for health, breathwork pranayama, nutrition coaching, mental health support, preventvital therapeutic"
+                    content="therapeutic wellness programs, yoga therapy India, disease-specific yoga, meditation for health, breathwork pranayama, nutrition coaching, mental health support, PreventVital therapeutic"
                 />
                 <link rel="canonical" href="https://preventvital.com/therapeutic-programs-center" />
 
                 {/* Open Graph */}
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="Preventvital" />
+                <meta property="og:site_name" content="PreventVital" />
                 <meta property="og:url" content="https://preventvital.com/therapeutic-programs-center" />
-                <meta property="og:title" content="Therapeutic Programs Center | Yoga, Meditation & Wellness - Preventvital" />
+                <meta property="og:title" content="Therapeutic Programs Center | Yoga, Meditation & Wellness - PreventVital" />
                 <meta property="og:description" content="Evidence-based therapeutic programs: yoga therapy, meditation, breathwork, nutrition coaching, and mental health support designed by medical experts." />
                 <meta property="og:image" content="https://preventvital.com/og-therapeutic.jpg" />
                 <meta property="og:locale" content="en_IN" />
@@ -29,7 +29,7 @@ const TherapeuticProgramsPage = () => {
                 {/* Twitter */}
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:site" content="@preventvital" />
-                <meta name="twitter:title" content="Therapeutic Programs Center | Yoga, Meditation & Wellness - Preventvital" />
+                <meta name="twitter:title" content="Therapeutic Programs Center | Yoga, Meditation & Wellness - PreventVital" />
                 <meta name="twitter:description" content="Evidence-based therapeutic programs: yoga therapy, meditation, breathwork, nutrition coaching, and mental health support." />
                 <meta name="twitter:image" content="https://preventvital.com/og-therapeutic.jpg" />
 
@@ -37,11 +37,11 @@ const TherapeuticProgramsPage = () => {
                 <script type="application/ld+json">{JSON.stringify({
                     "@context": "https://schema.org",
                     "@type": "Service",
-                    "name": "Preventvital Therapeutic Programs Center",
+                    "name": "PreventVital Therapeutic Programs Center",
                     "description": "Evidence-based therapeutic wellness programs including yoga therapy, meditation, breathwork (pranayama), lifestyle and nutrition coaching, and mental health support for chronic disease management.",
                     "provider": {
                         "@type": "Organization",
-                        "name": "Preventvital",
+                        "name": "PreventVital",
                         "url": "https://preventvital.com/"
                     },
                     "serviceType": ["Yoga Therapy", "Meditation", "Breathwork", "Nutrition Coaching", "Mental Health Support"],

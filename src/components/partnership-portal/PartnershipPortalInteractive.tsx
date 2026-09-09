@@ -10,8 +10,8 @@ const PartnershipPortalInteractive = () => {
     return (
         <>
             <Helmet>
-                <title>Partnership Portal | Preventvital</title>
-                <meta name="description" content="Partner with Preventvital to transform healthcare. Explore our ecosystem for hospitals, device manufacturers, and technology providers." />
+                <title>Partnership Portal | PreventVital</title>
+                <meta name="description" content="Partner with PreventVital to transform healthcare. Explore our ecosystem for hospitals, device manufacturers, and technology providers." />
             </Helmet>
 
             <div className="min-h-screen bg-background text-foreground">

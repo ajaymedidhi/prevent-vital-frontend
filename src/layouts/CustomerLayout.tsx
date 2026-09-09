@@ -66,7 +66,7 @@ const CustomerLayout = () => {
                             <div className="w-full h-full bg-[#0F172A] rounded-[10px] flex items-center justify-center overflow-hidden">
                                 <img
                                     src="/images/logo-new.png"
-                                    alt="Preventvital Logo"
+                                    alt="PreventVital Logo"
                                     className="w-8 h-8 object-contain"
                                 />
                             </div>

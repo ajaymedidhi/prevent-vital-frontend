@@ -93,12 +93,12 @@ const AdminLayout = () => {
                     <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white p-1">
                         <img
                             src="/images/logo-new.png"
-                            alt="Preventvital Logo"
+                            alt="PreventVital Logo"
                             className="w-full h-full object-contain filter brightness-0 invert"
                         />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <div className="text-white font-bold text-[14px] truncate tracking-tight">Preventvital</div>
+                        <div className="text-white font-bold text-[14px] truncate tracking-tight">PreventVital</div>
                         <div className="text-slate-400 text-[11px] uppercase tracking-wider">Admin Console</div>
                     </div>
                     <button onClick={toggleSidebar} className="lg:hidden text-slate-400 hover:text-white transition-colors">

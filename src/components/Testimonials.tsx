@@ -14,7 +14,7 @@ export const Testimonials = () => {
                         Real Results, Real People
                     </h2>
                     <p className="text-lg text-muted-foreground">
-                        Discover how Preventvital has transformed lives through preventive healthcare
+                        Discover how PreventVital has transformed lives through preventive healthcare
                     </p>
                 </div>
 
@@ -49,7 +49,7 @@ export const Testimonials = () => {
                             <div className="md:col-span-8">
                                 <MessageSquare className="w-10 h-10 text-primary/20 mb-6" />
                                 <blockquote className="text-xl md:text-2xl font-medium text-foreground leading-relaxed mb-6">
-                                    "Preventvital helped me prevent diabetes through personalized lifestyle changes. The AI predictions were accurate, and the yoga therapy programs transformed my health. My HbA1c dropped from 6.2 to 5.4 in just 6 months."
+                                    "PreventVital helped me prevent diabetes through personalized lifestyle changes. The AI predictions were accurate, and the yoga therapy programs transformed my health. My HbA1c dropped from 6.2 to 5.4 in just 6 months."
                                 </blockquote>
                             </div>
 

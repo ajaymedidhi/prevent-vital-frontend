@@ -42,7 +42,7 @@ const Checkout = () => {
                 key: 'rzp_test_placeholder', // Should come from env in real app
                 amount: razorpayOrder.amount,
                 currency: "INR",
-                name: "Preventvital",
+                name: "PreventVital",
                 description: "Medical Supplies",
                 order_id: razorpayOrder.id,
                 handler: async function (response: any) {

@@ -6,9 +6,9 @@ const PrivacyPolicy = () => {
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Helmet>
-                <title>Privacy Policy | How We Protect Your Health Data - Preventvital</title>
-                <meta name="description" content="Preventvital's Privacy Policy version 2.0: learn how we collect, use, and protect your personal and health data. DPDP Act, GDPR, Google Play and Apple App Store compliant." />
-                <meta name="keywords" content="preventvital privacy policy, health data protection, DPDP Act, GDPR, medical data security, health information protection" />
+                <title>Privacy Policy | How We Protect Your Health Data - PreventVital</title>
+                <meta name="description" content="PreventVital's Privacy Policy version 2.0: learn how we collect, use, and protect your personal and health data. DPDP Act, GDPR, Google Play and Apple App Store compliant." />
+                <meta name="keywords" content="PreventVital privacy policy, health data protection, DPDP Act, GDPR, medical data security, health information protection" />
                 <link rel="canonical" href="https://preventvital.com/privacy-policy" />
             </Helmet>
             <main className="flex-grow">
@@ -60,20 +60,20 @@ const PrivacyPolicy = () => {
 
                             <div className="bg-gradient-to-r from-primary/10 to-primary/5 border-l-4 border-primary p-6 rounded-r-2xl shadow-sm">
                                 <p className="text-primary font-medium my-0 text-lg leading-relaxed">
-                                    <strong className="font-bold text-primary">Health Data Warning:</strong> Preventvital collects, processes, and stores sensitive health and medical information. We treat this data with the highest level of care and protection. This application is intended for general wellness and preventive health monitoring only and is not a substitute for professional medical advice, diagnosis, or treatment.
+                                    <strong className="font-bold text-primary">Health Data Warning:</strong> PreventVital collects, processes, and stores sensitive health and medical information. We treat this data with the highest level of care and protection. This application is intended for general wellness and preventive health monitoring only and is not a substitute for professional medical advice, diagnosis, or treatment.
                                 </p>
                             </div>
 
                             <section>
                                 <h2 className="text-2xl font-bold text-primary mt-8 mb-4">1. Introduction and Scope</h2>
-                                <p>Preventvital (“Preventvital,” “we,” “our,” or “us”) is a preventive health and wellness application developed and operated by gruentzig.ai Private Limited, a company incorporated under the laws of India, with its registered office in Hyderabad, Telangana. This Privacy Policy (“Policy”) explains in detail how we collect, use, process, store, share, and protect your personal data and health information when you use the Preventvital mobile application and related services (collectively, the “Service”).</p>
+                                <p>PreventVital (“PreventVital,” “we,” “our,” or “us”) is a preventive health and wellness application developed and operated by gruentzig.ai Private Limited, a company incorporated under the laws of India, with its registered office in Hyderabad, Telangana. This Privacy Policy (“Policy”) explains in detail how we collect, use, process, store, share, and protect your personal data and health information when you use the PreventVital mobile application and related services (collectively, the “Service”).</p>
                                 <p>This Policy applies to:</p>
                                 <ul className="list-disc pl-6 space-y-2">
-                                    <li>All users who download and use the Preventvital application on Android (Google Play Store) or iOS (Apple App Store) devices</li>
+                                    <li>All users who download and use the PreventVital application on Android (Google Play Store) or iOS (Apple App Store) devices</li>
                                     <li>Visitors to our website at preventvital.com</li>
                                     <li>Any person who contacts us for support or inquiries</li>
                                 </ul>
-                                <p className="mt-4">By installing the Preventvital application, creating an account, or using any of our features, you acknowledge that you have read, understood, and agreed to the practices described in this Policy. If you do not agree, you must discontinue use of the Service and uninstall the application.</p>
+                                <p className="mt-4">By installing the PreventVital application, creating an account, or using any of our features, you acknowledge that you have read, understood, and agreed to the practices described in this Policy. If you do not agree, you must discontinue use of the Service and uninstall the application.</p>
                             </section>
 
                             <section>
@@ -82,14 +82,14 @@ const PrivacyPolicy = () => {
                                 <ul className="list-disc pl-6 space-y-2">
                                     <li><strong>Personal Data:</strong> Any information relating to an identified or identifiable natural person, including but not limited to name, email address, phone number, date of birth, and device identifiers.</li>
                                     <li><strong>Health Data / Sensitive Personal Data:</strong> Data pertaining to the physical or mental health of an individual, including but not limited to blood pressure readings, blood glucose levels, cholesterol levels, heart rate, BMI, weight, sleep patterns, and step counts. This constitutes “sensitive personal data” under India’s Digital Personal Data Protection Act 2023 (DPDP Act) and “special categories of personal data” under the GDPR.</li>
-                                    <li><strong>VITA AI:</strong> Preventvital’s AI-powered wellness assistant, powered by Google Gemini API, which provides personalised health feedback, alerts, and recommendations based on your data.</li>
-                                    <li><strong>VITAL Score™:</strong> Preventvital’s proprietary algorithmic health score calculated from your submitted vital metrics to provide an indicative overview of your cardiovascular and metabolic wellness.</li>
+                                    <li><strong>VITA AI:</strong> PreventVital’s AI-powered wellness assistant, powered by Google Gemini API, which provides personalised health feedback, alerts, and recommendations based on your data.</li>
+                                    <li><strong>VITAL Score™:</strong> PreventVital’s proprietary algorithmic health score calculated from your submitted vital metrics to provide an indicative overview of your cardiovascular and metabolic wellness.</li>
                                     <li><strong>Data Fiduciary:</strong> Under India’s DPDP Act, gruentzig.ai Private Limited, in its capacity as the entity that determines the purpose and means of processing your personal data.</li>
                                     <li><strong>Data Principal:</strong> Under India’s DPDP Act, you as the individual to whom the personal data relates.</li>
                                     <li><strong>Processing:</strong> Any operation performed on personal data, including collection, storage, use, disclosure, sharing, transfer, or deletion.</li>
                                     <li><strong>Consent:</strong> A freely given, specific, informed, and unambiguous indication of the Data Principal’s wishes by which they, by a statement or by a clear affirmative action, signify agreement to the processing of their personal data.</li>
                                     <li><strong>Google Play Policy:</strong> Google LLC’s Developer Programme Policies applicable to applications distributed via the Google Play Store, including the User Data policy and Sensitive App Permissions policy.</li>
-                                    <li><strong>Apple HealthKit:</strong> Apple Inc.’s framework that allows Preventvital to read and write health and fitness data to and from Apple Health on iOS and iPadOS devices, subject to Apple’s HealthKit entitlement guidelines.</li>
+                                    <li><strong>Apple HealthKit:</strong> Apple Inc.’s framework that allows PreventVital to read and write health and fitness data to and from Apple Health on iOS and iPadOS devices, subject to Apple’s HealthKit entitlement guidelines.</li>
                                 </ul>
                             </section>
 
@@ -98,7 +98,7 @@ const PrivacyPolicy = () => {
                                 <p>We collect information that is necessary to provide you with a personalised, safe, and effective preventive wellness experience. We do not collect information beyond what is required to operate the Service. The categories of information we collect are described below.</p>
                                 
                                 <h3 className="text-xl font-semibold mt-6 mb-3">3.1 Account and Identity Information</h3>
-                                <p>When you register for a Preventvital account, we collect:</p>
+                                <p>When you register for a PreventVital account, we collect:</p>
                                 <ul className="list-disc pl-6 space-y-2">
                                     <li>Full name</li>
                                     <li>Email address</li>
@@ -125,7 +125,7 @@ const PrivacyPolicy = () => {
                                 </ul>
 
                                 <h4 className="text-lg font-medium mt-4 mb-2">3.2.2 Data from Integrated Platforms</h4>
-                                <p>With your explicit consent, Preventvital may receive the following data from Apple HealthKit (iOS) or Google Fit / Health Connect (Android):</p>
+                                <p>With your explicit consent, PreventVital may receive the following data from Apple HealthKit (iOS) or Google Fit / Health Connect (Android):</p>
                                 <ul className="list-disc pl-6 space-y-2">
                                     <li>Heart rate and heart rate variability (HRV)</li>
                                     <li>Daily step count and physical activity minutes</li>
@@ -170,7 +170,7 @@ const PrivacyPolicy = () => {
                                 </ul>
 
                                 <h3 className="text-xl font-semibold mt-6 mb-3">3.6 Permissions We Request</h3>
-                                <p>The Preventvital application requests the following device permissions. Each permission is optional where noted and serves a specific purpose:</p>
+                                <p>The PreventVital application requests the following device permissions. Each permission is optional where noted and serves a specific purpose:</p>
                                 <div className="overflow-x-auto mt-4">
                                     <table className="min-w-full border-collapse border border-gray-200">
                                         <thead>
@@ -292,7 +292,7 @@ const PrivacyPolicy = () => {
 
                             <section>
                                 <h2 className="text-2xl font-bold text-primary mt-8 mb-4">5. Artificial Intelligence and Automated Processing</h2>
-                                <p>Preventvital uses artificial intelligence and automated processing to deliver personalised wellness insights. This section explains how AI is used and what it means for your data.</p>
+                                <p>PreventVital uses artificial intelligence and automated processing to deliver personalised wellness insights. This section explains how AI is used and what it means for your data.</p>
                                 
                                 <h3 className="text-xl font-semibold mt-6 mb-3">5.1 VITA AI — Our Wellness Assistant</h3>
                                 <p>VITA AI is powered by the Google Gemini API, a large language model (LLM) developed by Google LLC. When you interact with VITA AI:</p>
@@ -307,7 +307,7 @@ const PrivacyPolicy = () => {
                                 <p>Your VITAL Score™ is computed by a proprietary algorithm that analyses multiple health metrics to produce a composite wellness indicator. This is an automated calculation. The score is informational and wellness-oriented only; it is not a medical diagnosis. You are not subject to any legally significant decisions based solely on your VITAL Score™.</p>
                                 
                                 <h3 className="text-xl font-semibold mt-6 mb-3">5.3 Automated Health Alerts</h3>
-                                <p>Preventvital may generate automated alerts when your submitted vitals deviate significantly from standard reference ranges (e.g., blood pressure readings above 180/120 mmHg, blood glucose readings indicating potential hypoglycaemia). These alerts are generated algorithmically and are provided for informational purposes. They do not constitute a medical diagnosis. You are always encouraged to consult a qualified healthcare professional for medical advice.</p>
+                                <p>PreventVital may generate automated alerts when your submitted vitals deviate significantly from standard reference ranges (e.g., blood pressure readings above 180/120 mmHg, blood glucose readings indicating potential hypoglycaemia). These alerts are generated algorithmically and are provided for informational purposes. They do not constitute a medical diagnosis. You are always encouraged to consult a qualified healthcare professional for medical advice.</p>
                                 
                                 <h3 className="text-xl font-semibold mt-6 mb-3">5.4 Your Rights Regarding Automated Processing</h3>
                                 <p>You have the right to:</p>
@@ -372,7 +372,7 @@ const PrivacyPolicy = () => {
                                 <p>We may disclose your personal data when required or permitted by law:</p>
                                 <ul className="list-disc pl-6 space-y-2">
                                     <li>In response to a court order, subpoena, or legally binding request from a government or regulatory authority</li>
-                                    <li>To protect the rights, property, or safety of Preventvital, our users, or the public</li>
+                                    <li>To protect the rights, property, or safety of PreventVital, our users, or the public</li>
                                     <li>To detect, investigate, or prevent fraud or illegal activities</li>
                                     <li>In connection with legal proceedings to which we are a party</li>
                                 </ul>
@@ -389,7 +389,7 @@ const PrivacyPolicy = () => {
                                 <h2 className="text-2xl font-bold text-primary mt-8 mb-4">7. Data Storage, Infrastructure, and Security</h2>
                                 
                                 <h3 className="text-xl font-semibold mt-6 mb-3">7.1 Storage Infrastructure</h3>
-                                <p>All Preventvital user data is stored on Google Cloud Platform (GCP), with primary data residency in the GCP Mumbai (asia-south1) region, located in India. This ensures compliance with India’s data localisation requirements under applicable laws.</p>
+                                <p>All PreventVital user data is stored on Google Cloud Platform (GCP), with primary data residency in the GCP Mumbai (asia-south1) region, located in India. This ensures compliance with India’s data localisation requirements under applicable laws.</p>
                                 <ul className="list-disc pl-6 space-y-2">
                                     <li><strong>Application servers:</strong> Containerised microservices deployed on Google Cloud Run with strict Identity and Access Management (IAM) policies</li>
                                     <li><strong>Database:</strong> MongoDB Atlas cluster hosted within the GCP Mumbai region, with automated backups and point-in-time recovery</li>
@@ -487,7 +487,7 @@ const PrivacyPolicy = () => {
 
                             <section>
                                 <h2 className="text-2xl font-bold text-primary mt-8 mb-4">9. International Data Transfers</h2>
-                                <p>Preventvital primarily stores and processes your data within India (GCP Mumbai region). However, certain technical operations may involve data transfers to other countries, specifically:</p>
+                                <p>PreventVital primarily stores and processes your data within India (GCP Mumbai region). However, certain technical operations may involve data transfers to other countries, specifically:</p>
                                 <ul className="list-disc pl-6 space-y-2">
                                     <li><strong>Google Gemini API (AI Processing):</strong> When you use VITA AI, your conversation data and relevant health context are transmitted to Google’s servers, which may be located in the United States or other countries. Google LLC is certified under applicable international data transfer frameworks.</li>
                                     <li><strong>Crash Reporting / Analytics:</strong> Anonymised crash and usage data may be processed on Google’s globally distributed infrastructure.</li>
@@ -498,7 +498,7 @@ const PrivacyPolicy = () => {
                                     <li>Transfers only to countries that provide an adequate level of data protection</li>
                                     <li>Encryption of all data in transit using TLS 1.3</li>
                                 </ul>
-                                <p className="mt-4"><strong>For users in the European Economic Area (EEA):</strong> If you access Preventvital from the EEA, your data may be transferred to India, which does not have a formal EU adequacy decision. We rely on Standard Contractual Clauses approved by the European Commission to lawfully transfer your data.</p>
+                                <p className="mt-4"><strong>For users in the European Economic Area (EEA):</strong> If you access PreventVital from the EEA, your data may be transferred to India, which does not have a formal EU adequacy decision. We rely on Standard Contractual Clauses approved by the European Commission to lawfully transfer your data.</p>
                             </section>
                             
                             <section>
@@ -549,9 +549,9 @@ const PrivacyPolicy = () => {
 
                             <section>
                                 <h2 className="text-2xl font-bold text-primary mt-8 mb-4">11. Children’s Privacy</h2>
-                                <p>Preventvital is designed for adults aged 18 years and above. We do not knowingly collect personal data from individuals under the age of 18.</p>
+                                <p>PreventVital is designed for adults aged 18 years and above. We do not knowingly collect personal data from individuals under the age of 18.</p>
                                 <ul className="list-disc pl-6 space-y-2">
-                                    <li>If you are under 18, you must not use Preventvital or provide any personal information to us</li>
+                                    <li>If you are under 18, you must not use PreventVital or provide any personal information to us</li>
                                     <li>Parents and guardians should supervise their children’s use of digital health applications</li>
                                     <li>If we become aware that we have inadvertently collected personal data from a person under the age of 18, we will take immediate steps to delete that information from our systems</li>
                                     <li>If you believe that a child under 18 has provided personal information to us, please contact us immediately at privacy@preventvital.com</li>
@@ -566,14 +566,14 @@ const PrivacyPolicy = () => {
                                 <h3 className="text-xl font-semibold mt-6 mb-3">12.1 Prominent Disclosure</h3>
                                 <p>In accordance with Google Play’s User Data policy, we provide the following prominent disclosures:</p>
                                 <ul className="list-disc pl-6 space-y-2">
-                                    <li>Preventvital collects personal data including health and fitness information as described in this Policy</li>
+                                    <li>PreventVital collects personal data including health and fitness information as described in this Policy</li>
                                     <li>Data is shared with Google (as our cloud infrastructure and AI provider) and is not sold to third parties</li>
                                     <li>Health permissions (HealthKit / Health Connect) are used solely for in-app wellness features</li>
                                     <li>A link to this Privacy Policy is accessible within the app and on the Google Play Store listing</li>
                                 </ul>
 
                                 <h3 className="text-xl font-semibold mt-6 mb-3">12.2 Sensitive Permissions</h3>
-                                <p>Preventvital uses the following sensitive permissions as classified by Google Play:</p>
+                                <p>PreventVital uses the following sensitive permissions as classified by Google Play:</p>
                                 <ul className="list-disc pl-6 space-y-2">
                                     <li><strong>READ_HEALTH_DATA and WRITE_HEALTH_DATA</strong> (Health Connect — Android): Used to read biometric and activity data you choose to sync. This data is used solely within the app to enhance your health profile and is never used for advertising.</li>
                                     <li><strong>POST_NOTIFICATIONS:</strong> Used to send health alerts and wellness reminders. You can revoke this permission in device settings.</li>
@@ -594,9 +594,9 @@ const PrivacyPolicy = () => {
                                 <p>This section addresses the requirements of Apple Inc.’s App Store Review Guidelines, specifically for applications that access Apple HealthKit data.</p>
                                 
                                 <h3 className="text-xl font-semibold mt-6 mb-3">13.1 HealthKit Data Usage</h3>
-                                <p>Preventvital accesses Apple HealthKit data only with your explicit permission through Apple’s standard permission prompt. The following rules govern our use of HealthKit data:</p>
+                                <p>PreventVital accesses Apple HealthKit data only with your explicit permission through Apple’s standard permission prompt. The following rules govern our use of HealthKit data:</p>
                                 <ul className="list-disc pl-6 space-y-2">
-                                    <li>HealthKit data is used ONLY to provide and improve health and fitness features within Preventvital</li>
+                                    <li>HealthKit data is used ONLY to provide and improve health and fitness features within PreventVital</li>
                                     <li>HealthKit data will NOT be used for advertising or user profiling</li>
                                     <li>HealthKit data will NOT be shared with third parties except as strictly necessary to provide our Service (i.e., with our cloud infrastructure provider, Google Cloud, under strict data processing terms)</li>
                                     <li>HealthKit data will NOT be sold to data brokers or any other parties</li>
@@ -604,7 +604,7 @@ const PrivacyPolicy = () => {
                                 </ul>
 
                                 <h3 className="text-xl font-semibold mt-6 mb-3">13.2 HealthKit Permissions Requested</h3>
-                                <p>Preventvital requests read permission for the following HealthKit data types (with your explicit consent):</p>
+                                <p>PreventVital requests read permission for the following HealthKit data types (with your explicit consent):</p>
                                 <ul className="list-disc pl-6 space-y-2">
                                     <li>Heart Rate</li>
                                     <li>Step Count</li>
@@ -621,12 +621,12 @@ const PrivacyPolicy = () => {
 
                             <section>
                                 <h2 className="text-2xl font-bold text-primary mt-8 mb-4">14. Account Deletion — Complete Procedure</h2>
-                                <p>In compliance with Google Play’s Account Deletion policy and Apple’s App Store guidelines, Preventvital provides a clear and accessible mechanism to permanently delete your account and all associated data.</p>
+                                <p>In compliance with Google Play’s Account Deletion policy and Apple’s App Store guidelines, PreventVital provides a clear and accessible mechanism to permanently delete your account and all associated data.</p>
                                 
                                 <h3 className="text-xl font-semibold mt-6 mb-3">14.1 How to Delete Your Account</h3>
                                 <p className="font-semibold text-primary">Method 1 — In-App (Recommended):</p>
                                 <ul className="list-disc pl-6 space-y-2 mb-4">
-                                    <li>Open Preventvital</li>
+                                    <li>Open PreventVital</li>
                                     <li>Tap on your Profile icon (bottom right)</li>
                                     <li>Go to Settings → Account → Delete Account</li>
                                     <li>Read the deletion confirmation screen and confirm your identity</li>
@@ -662,7 +662,7 @@ const PrivacyPolicy = () => {
                                 <h2 className="text-2xl font-bold text-primary mt-8 mb-4">15. Cookies, Tracking Technologies, and Analytics</h2>
                                 
                                 <h3 className="text-xl font-semibold mt-6 mb-3">15.1 Mobile Application</h3>
-                                <p>The Preventvital mobile application does not use browser cookies. We use the following tracking technologies in the app:</p>
+                                <p>The PreventVital mobile application does not use browser cookies. We use the following tracking technologies in the app:</p>
                                 <ul className="list-disc pl-6 space-y-2">
                                     <li><strong>Device advertising identifiers (IDFA on iOS, GAID on Android):</strong> Used only for aggregate analytics, not for targeted advertising. You may reset or opt out of advertising identifiers in your device settings.</li>
                                     <li><strong>Session tokens (JWT):</strong> Used to maintain your authenticated session securely. These are stored in device secure storage and expire automatically.</li>
@@ -680,7 +680,7 @@ const PrivacyPolicy = () => {
 
                             <section>
                                 <h2 className="text-2xl font-bold text-primary mt-8 mb-4">16. India Digital Personal Data Protection Act 2023 (DPDP Act) — Specific Provisions</h2>
-                                <p>Preventvital is operated by gruentzig.ai Private Limited, incorporated in India and subject to the Digital Personal Data Protection Act 2023 (the “DPDP Act”). This section sets out our specific obligations and your rights under this Act.</p>
+                                <p>PreventVital is operated by gruentzig.ai Private Limited, incorporated in India and subject to the Digital Personal Data Protection Act 2023 (the “DPDP Act”). This section sets out our specific obligations and your rights under this Act.</p>
                                 
                                 <h3 className="text-xl font-semibold mt-6 mb-3">16.1 Our Role as Data Fiduciary</h3>
                                 <p>gruentzig.ai Private Limited acts as the Data Fiduciary for all personal data processed through Preventvital. As Data Fiduciary, we are responsible for determining the purpose and means of processing your personal data and for ensuring that processing is lawful, fair, and transparent.</p>
@@ -709,7 +709,7 @@ const PrivacyPolicy = () => {
 
                             <section>
                                 <h2 className="text-2xl font-bold text-primary mt-8 mb-4">17. European Users — GDPR Compliance</h2>
-                                <p>If you access Preventvital from the European Economic Area (EEA), United Kingdom, or Switzerland, this section sets out your additional rights under the General Data Protection Regulation (GDPR) and UK GDPR.</p>
+                                <p>If you access PreventVital from the European Economic Area (EEA), United Kingdom, or Switzerland, this section sets out your additional rights under the General Data Protection Regulation (GDPR) and UK GDPR.</p>
                                 <ul className="list-disc pl-6 space-y-2">
                                     <li><strong>Data Controller:</strong> gruentzig.ai Private Limited acts as Data Controller for EEA users’ personal data.</li>
                                     <li><strong>Legal Bases:</strong> We process your data under Article 6(1)(a) (consent), Article 6(1)(b) (contract performance), Article 6(1)(c) (legal obligation), and Article 6(1)(f) (legitimate interests). Health data is processed under Article 9(2)(a) (explicit consent).</li>
@@ -727,7 +727,7 @@ const PrivacyPolicy = () => {
                                     <li>We will notify you via a prominent in-app notification and/or email to your registered address at least 30 days before the changes take effect</li>
                                     <li>For changes involving new or expanded collection of sensitive health data, we will obtain fresh consent before processing your data under the new terms</li>
                                 </ul>
-                                <p className="mt-4">Your continued use of Preventvital after the effective date of any updated Policy constitutes your acceptance of the revised terms. If you do not agree with the updated Policy, you must stop using the Service and may delete your account.</p>
+                                <p className="mt-4">Your continued use of PreventVital after the effective date of any updated Policy constitutes your acceptance of the revised terms. If you do not agree with the updated Policy, you must stop using the Service and may delete your account.</p>
                                 <p className="mt-4">Previous versions of this Privacy Policy are available upon request by contacting privacy@preventvital.com.</p>
                             </section>
 
@@ -792,12 +792,12 @@ const PrivacyPolicy = () => {
                                     <h4 className="font-bold text-xl m-0 text-amber-950">20. Medical Disclaimer and Limitation of Liability</h4>
                                 </div>
                                 <p className="text-amber-900 font-medium mb-4">
-                                    Preventvital is a wellness and preventive health monitoring application. It is <strong>NOT a medical device</strong> and should NOT be used as a substitute for professional medical advice, diagnosis, or treatment.
+                                    PreventVital is a wellness and preventive health monitoring application. It is <strong>NOT a medical device</strong> and should NOT be used as a substitute for professional medical advice, diagnosis, or treatment.
                                 </p>
                                 <ul className="list-disc pl-6 space-y-2 text-amber-900/90 mb-4">
-                                    <li>The VITAL Score™, VITA AI responses, health alerts, and all other outputs from Preventvital are informational in nature and are not medical diagnoses or clinical recommendations</li>
+                                    <li>The VITAL Score™, VITA AI responses, health alerts, and all other outputs from PreventVital are informational in nature and are not medical diagnoses or clinical recommendations</li>
                                     <li>Always consult a qualified healthcare professional before making any health-related decisions</li>
-                                    <li>Do not disregard or delay seeking professional medical advice because of information received through Preventvital</li>
+                                    <li>Do not disregard or delay seeking professional medical advice because of information received through PreventVital</li>
                                     <li>In the event of a medical emergency, contact your local emergency services (in India: 112) immediately</li>
                                 </ul>
                                 <p className="text-amber-900 font-medium italic">
@@ -807,7 +807,7 @@ const PrivacyPolicy = () => {
                             
                             <section className="mt-12 pt-8 border-t border-border text-sm text-muted-foreground">
                                 <p className="mb-2"><strong>gruentzig.ai Private Limited</strong><br/>
-                                Preventvital — AI-Powered Preventive Wellness<br/>
+                                PreventVital — AI-Powered Preventive Wellness<br/>
                                 Hyderabad, Telangana, India<br/>
                                 privacy@preventvital.com • https://preventvital.com/privacy-policy</p>
                                 <p>© 2026 gruentzig.ai Private Limited. All rights reserved.<br/>

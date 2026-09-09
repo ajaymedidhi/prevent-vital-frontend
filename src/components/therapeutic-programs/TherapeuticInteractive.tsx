@@ -349,7 +349,7 @@ export default function TherapeuticInteractive() {
             author: 'Ananya Reddy',
             authorImage: "https://img.rocket.new/generatedImages/rocket_gen_img_14e479cba-1763300676390.png",
             authorAlt: 'Young Indian woman with long dark hair smiling in casual attire',
-            content: 'Just completed my 30-day yoga challenge! The AI recommendations helped me progress from beginner to intermediate level. My flexibility has improved dramatically and I feel more energized throughout the day. Thank you Preventvital community for the constant support!',
+            content: 'Just completed my 30-day yoga challenge! The AI recommendations helped me progress from beginner to intermediate level. My flexibility has improved dramatically and I feel more energized throughout the day. Thank you PreventVital community for the constant support!',
             timestamp: '2 hours ago',
             likes: 124,
             comments: 18,
@@ -477,7 +477,7 @@ export default function TherapeuticInteractive() {
     return (
         <>
             <Helmet>
-                <title>Therapeutic Programs | Preventvital</title>
+                <title>Therapeutic Programs | PreventVital</title>
                 <meta name="description" content="Discover AI-enhanced therapeutic programs for holistic wellness. Yoga, meditation, breathwork, and physiotherapy customized for you." />
             </Helmet>
 

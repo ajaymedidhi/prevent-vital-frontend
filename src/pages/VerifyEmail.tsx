@@ -59,9 +59,9 @@ const VerifyEmail = () => {
             className="flex items-center gap-3"
           >
             <div className="w-12 h-12 bg-white/15 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20">
-              <img src="/images/logo-new.png" alt="Preventvital" className="w-8 h-8 object-contain" />
+              <img src="/images/logo-new.png" alt="PreventVital" className="w-8 h-8 object-contain" />
             </div>
-            <span className="text-xl font-bold text-white tracking-tight">Preventvital</span>
+            <span className="text-xl font-bold text-white tracking-tight">PreventVital</span>
           </motion.div>
 
           <motion.div

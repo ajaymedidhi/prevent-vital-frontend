@@ -58,7 +58,7 @@ const MedicalPrograms = () => {
                     </div>
                     <h3 className="font-bold text-xl mb-2 relative z-10">AI Effectiveness Analysis</h3>
                     <p className="text-indigo-200 text-sm mb-6 relative z-10 max-w-xs">
-                        Preventvital AI analyzes patient outcomes across all active programs to suggest protocol optimizations.
+                        PreventVital AI analyzes patient outcomes across all active programs to suggest protocol optimizations.
                     </p>
 
                     <div className="relative z-10 space-y-4">

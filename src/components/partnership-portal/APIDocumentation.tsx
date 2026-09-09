@@ -100,7 +100,7 @@ const APIDocumentation = ({ className = '' }: APIDocumentationProps) => {
                         API Documentation
                     </h2>
                     <p className="text-lg text-muted-foreground">
-                        Comprehensive REST API documentation for seamless integration with Preventvital platform
+                        Comprehensive REST API documentation for seamless integration with PreventVital platform
                     </p>
                 </div>
 
@@ -192,7 +192,7 @@ const APIDocumentation = ({ className = '' }: APIDocumentationProps) => {
                                     Need API Access?
                                 </h3>
                                 <p className="text-muted-foreground text-sm">
-                                    Get your API credentials and start integrating with Preventvital platform today
+                                    Get your API credentials and start integrating with PreventVital platform today
                                 </p>
                             </div>
                         </div>

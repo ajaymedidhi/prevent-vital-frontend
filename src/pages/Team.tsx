@@ -24,20 +24,20 @@ const Team = () => {
     return (
         <>
             <Helmet>
-                <title>Our Team | Medical Visionaries & Tech Experts - Preventvital</title>
-                <meta name="description" content="Meet the clinician-entrepreneurs and technology experts behind Preventvital AI. A team of doctors, data scientists, and wellness experts building India's preventive healthcare future." />
-                <meta name="keywords" content="preventvital team, healthcare founders India, AI health experts, medical professionals team, health tech leadership" />
+                <title>Our Team | Medical Visionaries & Tech Experts - PreventVital</title>
+                <meta name="description" content="Meet the clinician-entrepreneurs and technology experts behind PreventVital AI. A team of doctors, data scientists, and wellness experts building India's preventive healthcare future." />
+                <meta name="keywords" content="PreventVital team, healthcare founders India, AI health experts, medical professionals team, health tech leadership" />
                 <link rel="canonical" href="https://preventvital.com/team" />
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="Preventvital" />
+                <meta property="og:site_name" content="PreventVital" />
                 <meta property="og:url" content="https://preventvital.com/team" />
-                <meta property="og:title" content="Our Team | Medical Visionaries & Tech Experts - Preventvital" />
+                <meta property="og:title" content="Our Team | Medical Visionaries & Tech Experts - PreventVital" />
                 <meta property="og:description" content="Clinician-entrepreneurs and technology experts building India's preventive healthcare future." />
                 <meta property="og:image" content="https://preventvital.com/og-team.jpg" />
                 <meta property="og:locale" content="en_IN" />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:site" content="@preventvital" />
-                <meta name="twitter:title" content="Our Team | Preventvital Medical & Tech Experts" />
+                <meta name="twitter:title" content="Our Team | PreventVital Medical & Tech Experts" />
                 <meta name="twitter:description" content="Clinician-entrepreneurs and technology experts building India's preventive healthcare future." />
                 <meta name="twitter:image" content="https://preventvital.com/og-team.jpg" />
             </Helmet>
@@ -145,7 +145,7 @@ const Team = () => {
 
                             <div className="space-y-4 text-gray-600 leading-relaxed text-sm md:text-base">
                                 <p>
-                                    Ajay Medidhi leads product and technology at Preventvital, overseeing the platform end-to-end — from the VITAL scoring engine to the mobile, web, and corporate experiences built on top of it.
+                                    Ajay Medidhi leads product and technology at PreventVital, overseeing the platform end-to-end — from the VITAL scoring engine to the mobile, web, and corporate experiences built on top of it.
                                 </p>
                                 <p>
                                     His focus is on turning clinical rigor into a product people actually use every day, and on keeping the engineering behind it reliable as the platform scales.

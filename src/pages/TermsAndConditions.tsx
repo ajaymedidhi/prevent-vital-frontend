@@ -6,16 +6,16 @@ const TermsAndConditions = () => {
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Helmet>
-                <title>Terms & Conditions | User Agreement - Preventvital</title>
-                <meta name="description" content="Preventvital's Terms & Conditions: the legal agreements governing your use of our AI-powered preventive healthcare platform, health programs, and wellness services." />
-                <meta name="keywords" content="preventvital terms and conditions, healthcare platform terms, user agreement health app, wellness platform legal" />
+                <title>Terms & Conditions | User Agreement - PreventVital</title>
+                <meta name="description" content="PreventVital's Terms & Conditions: the legal agreements governing your use of our AI-powered preventive healthcare platform, health programs, and wellness services." />
+                <meta name="keywords" content="PreventVital terms and conditions, healthcare platform terms, user agreement health app, wellness platform legal" />
                 <link rel="canonical" href="https://preventvital.com/terms-and-conditions" />
                 <meta name="robots" content="index, follow" />
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="Preventvital" />
+                <meta property="og:site_name" content="PreventVital" />
                 <meta property="og:url" content="https://preventvital.com/terms-and-conditions" />
-                <meta property="og:title" content="Terms & Conditions | Preventvital" />
-                <meta property="og:description" content="Legal agreements governing your use of Preventvital's AI preventive healthcare platform and wellness services." />
+                <meta property="og:title" content="Terms & Conditions | PreventVital" />
+                <meta property="og:description" content="Legal agreements governing your use of PreventVital's AI preventive healthcare platform and wellness services." />
                 <meta property="og:image" content="https://preventvital.com/og-image.jpg" />
             </Helmet>
             <main className="flex-grow">
@@ -33,7 +33,7 @@ const TermsAndConditions = () => {
                             Terms & Conditions
                         </h1>
                         <p className="text-lg md:text-xl text-primary/70 leading-relaxed text-balance max-w-2xl mx-auto font-medium">
-                            The legal agreements and operational guidelines for using the Preventvital platform and services.
+                            The legal agreements and operational guidelines for using the PreventVital platform and services.
                         </p>
                     </div>
                 </section>
@@ -68,7 +68,7 @@ const TermsAndConditions = () => {
 
                             <div className="bg-gradient-to-r from-accent/10 to-accent/5 border-l-4 border-accent p-6 rounded-r-2xl shadow-sm">
                                 <p className="text-accent-foreground font-medium my-0 text-lg leading-relaxed text-foreground">
-                                    <strong className="font-bold text-accent">Please Read Carefully:</strong> These Terms and Conditions ("Terms") govern your access to and use of the Preventvital application, website, and related services. By creating an account or using our services, you agree to be bound by these Terms. If you do not agree, do not use Preventvital.
+                                    <strong className="font-bold text-accent">Please Read Carefully:</strong> These Terms and Conditions ("Terms") govern your access to and use of the PreventVital application, website, and related services. By creating an account or using our services, you agree to be bound by these Terms. If you do not agree, do not use Preventvital.
                                 </p>
                             </div>
 
@@ -77,7 +77,7 @@ const TermsAndConditions = () => {
                                     <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">1</div>
                                     <h2 className="text-3xl font-bold text-primary m-0">Acceptance of Terms</h2>
                                 </div>
-                                <p className="mb-6 text-lg">By downloading, installing, or using Preventvital ("the App", "Platform", "Service"), you represent that:</p>
+                                <p className="mb-6 text-lg">By downloading, installing, or using PreventVital ("the App", "Platform", "Service"), you represent that:</p>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                                     <div className="bg-white border border-border p-4 rounded-xl shadow-sm flex items-start gap-3">
@@ -105,7 +105,7 @@ const TermsAndConditions = () => {
                                     <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">2</div>
                                     <h2 className="text-3xl font-bold text-primary m-0">Description of Services</h2>
                                 </div>
-                                <p className="mb-6 text-lg">Preventvital provides the following health monitoring and wellness services:</p>
+                                <p className="mb-6 text-lg">PreventVital provides the following health monitoring and wellness services:</p>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="bg-white border border-border p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow group">
@@ -150,12 +150,12 @@ const TermsAndConditions = () => {
                                             NOT MEDICAL ADVICE
                                         </h3>
                                         <p className="text-lg font-medium text-white/90 mb-6 leading-relaxed">
-                                            Preventvital is a health information and wellness platform. It is NOT a medical device, does NOT provide medical advice, and is NOT a substitute for professional medical care.
+                                            PreventVital is a health information and wellness platform. It is NOT a medical device, does NOT provide medical advice, and is NOT a substitute for professional medical care.
                                         </p>
                                         <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm border border-white/20">
                                             <p className="font-bold text-white mb-3">You must NOT:</p>
                                             <ul className="list-none pl-0 space-y-3 m-0 text-white/90">
-                                                <li className="flex items-start gap-3"><span className="text-white font-bold opacity-50 mt-1">✗</span> Use Preventvital as a substitute for consulting a qualified healthcare professional</li>
+                                                <li className="flex items-start gap-3"><span className="text-white font-bold opacity-50 mt-1">✗</span> Use PreventVital as a substitute for consulting a qualified healthcare professional</li>
                                                 <li className="flex items-start gap-3"><span className="text-white font-bold opacity-50 mt-1">✗</span> Make medication changes based solely on information from this platform</li>
                                                 <li className="flex items-start gap-3"><span className="text-white font-bold opacity-50 mt-1">✗</span> Delay seeking emergency medical care based on app data or alerts</li>
                                                 <li className="flex items-start gap-3"><span className="text-white font-bold opacity-50 mt-1">✗</span> Rely on VITA AI responses for clinical decision-making</li>
@@ -198,7 +198,7 @@ const TermsAndConditions = () => {
 
                                     <div className="bg-white border border-border p-6 rounded-2xl shadow-sm">
                                         <h3 className="text-xl font-bold text-primary mb-3">Prohibited Activities</h3>
-                                        <p className="mb-4 text-foreground/80">You agree to use Preventvital only for lawful purposes. You must not:</p>
+                                        <p className="mb-4 text-foreground/80">You agree to use PreventVital only for lawful purposes. You must not:</p>
                                         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none pl-0 m-0 text-sm">
                                             <li className="flex items-start gap-2 text-destructive/80 font-medium"><span className="mt-0.5">⊗</span> Provide false or fabricated health data</li>
                                             <li className="flex items-start gap-2 text-destructive/80 font-medium"><span className="mt-0.5">⊗</span> Attempt to disrupt other users' accounts</li>
@@ -217,7 +217,7 @@ const TermsAndConditions = () => {
                                 </div>
 
                                 <p className="mb-6 text-primary-foreground/90 text-lg font-medium leading-relaxed bg-black/20 p-5 rounded-2xl backdrop-blur-sm border border-white/10">
-                                    <strong>DISCLAIMER OF WARRANTIES:</strong> Preventvital is provided "as is" and "as available" without warranties of any kind. We do not warrant that calculations will be accurate or suitable for any specific medical purpose.
+                                    <strong>DISCLAIMER OF WARRANTIES:</strong> PreventVital is provided "as is" and "as available" without warranties of any kind. We do not warrant that calculations will be accurate or suitable for any specific medical purpose.
                                 </p>
 
                                 <h3 className="text-xl font-bold text-accent mb-4">You agree to indemnify us from claims arising from:</h3>
@@ -232,7 +232,7 @@ const TermsAndConditions = () => {
                         </div>
 
                         <div className="mt-16 pt-8 border-t-2 border-primary/10 text-center text-sm text-primary/60 font-medium pb-12">
-                            <p>By using Preventvital, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions. Last updated: March 1, 2026.</p>
+                            <p>By using PreventVital, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions. Last updated: March 1, 2026.</p>
                             <p className="mt-2">These Terms and Conditions constitute a binding legal agreement between you and gruentzig.ai Private Limited. Effective Date: March 1, 2026 | Version 1.0</p>
                         </div>
                     </div>

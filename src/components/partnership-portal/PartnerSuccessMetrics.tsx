@@ -27,13 +27,13 @@ const partnerCases: PartnerCase[] = [
         logo: "https://img.rocket.new/generatedImages/rocket_gen_img_180fba7dc-1764649751287.png",
         logoAlt: 'Modern hospital building exterior with glass facade and medical cross signage',
         challenge: 'Managing chronic disease patients across multiple facilities with inconsistent monitoring and delayed interventions',
-        solution: 'Integrated Preventvital platform across 12 facilities enabling real-time patient monitoring and predictive analytics',
+        solution: 'Integrated PreventVital platform across 12 facilities enabling real-time patient monitoring and predictive analytics',
         results: [
             { metric: 'Patient Readmissions', value: '35%', description: 'Reduction in 30-day readmissions' },
             { metric: 'Early Detection', value: '48%', description: 'Increase in early intervention cases' },
             { metric: 'Patient Satisfaction', value: '92%', description: 'Positive feedback score' }
         ],
-        testimonial: 'Preventvital has transformed how we deliver preventive care. The predictive analytics have enabled us to intervene earlier, resulting in significantly better patient outcomes and reduced healthcare costs.',
+        testimonial: 'PreventVital has transformed how we deliver preventive care. The predictive analytics have enabled us to intervene earlier, resulting in significantly better patient outcomes and reduced healthcare costs.',
         author: 'Dr. Rajesh Kumar',
         authorRole: 'Chief Medical Officer, Unity Hospital Group'
     },
