@@ -217,7 +217,7 @@ const UserManagement = () => {
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
                                             <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-sm">
-                                                {(user.name || user.profile?.firstName) ? (user.name || user.profile?.firstName).charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
+                                                {(user.name || (user.profile && user.profile.firstName)) ? (user.name || user.profile.firstName).charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
                                             </div>
                                             <div>
                                                 <div className="font-semibold text-gray-900">{user.name || (user.profile?.firstName ? `${user.profile.firstName} ${user.profile?.lastName || ''}`.trim() : 'Unnamed User')}</div>
@@ -341,7 +341,7 @@ const UserManagement = () => {
                     <div className="space-y-6">
                         <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
                             <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-2xl">
-                                {(selectedUser.name || selectedUser.profile?.firstName) ? (selectedUser.name || selectedUser.profile?.firstName).charAt(0).toUpperCase() : selectedUser.email.charAt(0).toUpperCase()}
+                                {(selectedUser.name || (selectedUser.profile && selectedUser.profile.firstName)) ? (selectedUser.name || selectedUser.profile.firstName).charAt(0).toUpperCase() : selectedUser.email.charAt(0).toUpperCase()}
                             </div>
                             <div>
                                 <h4 className="text-xl font-bold text-gray-900">{selectedUser.name || (selectedUser.profile?.firstName ? `${selectedUser.profile.firstName} ${selectedUser.profile?.lastName || ''}`.trim() : 'Unnamed User')}</h4>

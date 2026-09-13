@@ -20,7 +20,7 @@ const Profile = () => {
         if (user) {
             setProfileData(prev => ({
                 ...prev,
-                name: user.name || prev.name,
+                name: user.name || (user.profile?.firstName ? `${user.profile.firstName} ${user.profile.lastName || ''}`.trim() : prev.name),
                 email: user.email || prev.email,
                 role: user.role === 'super_admin' ? 'Super Admin' : (user.role || prev.role)
             }));
@@ -49,7 +49,7 @@ const Profile = () => {
                     <div className="relative group cursor-pointer">
                         <div className="w-32 h-32 rounded-2xl bg-white p-1 shadow-xl">
                             <div className="w-full h-full rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-5xl font-bold uppercase">
-                                {profileData.name.charAt(0)}
+                                {(profileData.name || 'S').charAt(0)}
                             </div>
                         </div>
                         <div className="absolute inset-0 bg-black/40 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
