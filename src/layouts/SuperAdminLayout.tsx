@@ -7,7 +7,7 @@ import { PERMISSIONS } from '../config/rbacConfig';
 import {
     LayoutDashboard, Users, BookOpen, Megaphone, BarChart3,
     CreditCard, Settings, Shield, HeadphonesIcon, LogOut, Zap,
-    ChevronDown, User, Key, Menu, Bell, Search, X, ClipboardCheck, Heart
+    ChevronDown, User, Key, Menu, Bell, Search, X, ClipboardCheck, Heart, Calculator
 } from 'lucide-react';
 import { Avatar } from '../admin-shared/components/ui';
 
@@ -23,6 +23,7 @@ const NAV_MAIN = [
 
 const NAV_ADMIN = [
     { path: '/super-admin/billing', label: 'Billing', icon: CreditCard },
+    { path: '/super-admin/gst', label: 'GST & Tax', icon: Calculator },
     { path: '/super-admin/settings', label: 'Settings', icon: Settings, permission: PERMISSIONS.MANAGE_PLATFORM },
     { path: '/super-admin/security', label: 'Security', icon: Shield },
     { path: '/super-admin/support', label: 'Support', icon: HeadphonesIcon },
@@ -84,6 +85,33 @@ const SuperAdminLayout = () => {
         setSidebarOpen(false);
     }, [location.pathname]);
 
+    // Session Idle Timeout (15 minutes)
+    React.useEffect(() => {
+        let timeoutId: NodeJS.Timeout;
+
+        const resetTimer = () => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                handleLogout();
+            }, 15 * 60 * 1000); // 15 minutes
+        };
+
+        const events = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
+        
+        events.forEach(event => {
+            window.addEventListener(event, resetTimer, { passive: true });
+        });
+
+        resetTimer();
+
+        return () => {
+            clearTimeout(timeoutId);
+            events.forEach(event => {
+                window.removeEventListener(event, resetTimer);
+            });
+        };
+    }, []);
+
     return (
         <div className="flex min-h-screen font-sans text-gray-900 bg-gray-50/50" style={{ background: '#f8f9fa' }}>
             {/* Mobile Overlay */}
@@ -133,19 +161,6 @@ const SuperAdminLayout = () => {
                     {NAV_SUPER.map((item) => <NavItem key={item.path} {...item} />)}
                 </nav>
 
-                {/* Subscription usage bar */}
-                <div className="mx-3 mb-3 p-3 rounded-xl bg-white/5 border border-white/10">
-                    <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-[11px] text-slate-400">Seat Usage</span>
-                    </div>
-                    <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                        <div className="h-full rounded-full bg-gradient-to-r from-blue-400 to-blue-500 transition-all duration-700"
-                            style={{ width: `24%` }} />
-                    </div>
-                    <div className="mt-1.5 text-[10px] text-slate-500">
-                        347 / 500 · Enterprise Plan
-                    </div>
-                </div>
 
                 {/* Profile area */}
                 <div className="border-t border-white/10 p-3 relative">

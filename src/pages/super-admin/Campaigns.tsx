@@ -4,12 +4,7 @@ import { Modal } from '../../admin-shared/components/ui';
 
 const Campaigns = () => {
     const [isCreatingCampaign, setIsCreatingCampaign] = useState(false);
-    const [campaigns, setCampaigns] = useState([
-        { id: 1, name: 'Q3 Onboarding Nudge', type: 'Email', status: 'Active', target: 'Inactive Users < 30 Days', sent: '12,045', conversion: '18.2%' },
-        { id: 2, name: 'Cardio Pro Launch', type: 'Push', status: 'Completed', target: 'All B2C Users', sent: '45,210', conversion: '24.5%' },
-        { id: 3, name: 'Corporate Wellness Renewal', type: 'Email', status: 'Draft', target: 'B2B Admins (Expiring)', sent: '-', conversion: '-' },
-        { id: 4, name: 'Weekly Activity Summary', type: 'In-App', status: 'Active', target: 'All Users', sent: '89,400', conversion: '42.1%' }
-    ]);
+    const [campaigns, setCampaigns] = useState<any[]>([]);
     const [newCampaign, setNewCampaign] = useState({ name: '', targetAudience: 'all_b2c', type: 'email', message: '' });
 
     return (

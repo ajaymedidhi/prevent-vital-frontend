@@ -216,11 +216,11 @@ const UserManagement = () => {
                                 <tr key={user._id} className="hover:bg-gray-50/50 transition-colors group">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 border border-blue-200 flex items-center justify-center text-blue-700 font-bold text-sm shadow-sm ring-2 ring-white">
-                                                {user.name ? user.name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
+                                            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-sm">
+                                                {(user.name || user.profile?.firstName) ? (user.name || user.profile?.firstName).charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
                                             </div>
                                             <div>
-                                                <div className="font-semibold text-gray-900">{user.name || 'Unnamed User'}</div>
+                                                <div className="font-semibold text-gray-900">{user.name || (user.profile?.firstName ? `${user.profile.firstName} ${user.profile?.lastName || ''}`.trim() : 'Unnamed User')}</div>
                                                 <div className="text-xs text-gray-500 mt-0.5">{user.email}</div>
                                             </div>
                                         </div>
@@ -340,11 +340,11 @@ const UserManagement = () => {
                 {selectedUser && (
                     <div className="space-y-6">
                         <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                            <div className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center text-white text-2xl font-bold shadow-inner">
-                                {selectedUser.name ? selectedUser.name.charAt(0).toUpperCase() : selectedUser.email.charAt(0).toUpperCase()}
+                            <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-2xl">
+                                {(selectedUser.name || selectedUser.profile?.firstName) ? (selectedUser.name || selectedUser.profile?.firstName).charAt(0).toUpperCase() : selectedUser.email.charAt(0).toUpperCase()}
                             </div>
                             <div>
-                                <h4 className="text-xl font-bold text-gray-900">{selectedUser.name || 'Unnamed User'}</h4>
+                                <h4 className="text-xl font-bold text-gray-900">{selectedUser.name || (selectedUser.profile?.firstName ? `${selectedUser.profile.firstName} ${selectedUser.profile?.lastName || ''}`.trim() : 'Unnamed User')}</h4>
                                 <p className="text-gray-500 text-sm font-medium">{selectedUser.email}</p>
                                 <div className="flex gap-2 mt-2">
                                     <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold uppercase rounded-md border border-blue-200">{selectedUser.role.replace('_', ' ')}</span>

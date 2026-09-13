@@ -29,11 +29,7 @@ const MedicalPrograms = () => {
                         Standard Care Plans
                     </h3>
                     <div className="space-y-4">
-                        {[
-                            { name: "Hypertension Management", patients: 1240, status: "Active" },
-                            { name: "Type 2 Diabetes Prevention", patients: 850, status: "Active" },
-                            { name: "Post-Cardiac Rehab", patients: 320, status: "Review" },
-                        ].map((prog, i) => (
+                        {[].map((prog: any, i) => (
                             <div key={i} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors border border-transparent hover:border-gray-100 cursor-pointer group">
                                 <div>
                                     <p className="font-bold text-gray-800 group-hover:text-indigo-600 transition-colors">{prog.name}</p>
@@ -45,6 +41,7 @@ const MedicalPrograms = () => {
                                 </span>
                             </div>
                         ))}
+                        <p className="text-sm text-gray-500 text-center py-4">No active programs found.</p>
                     </div>
                     <button className="w-full mt-4 text-sm text-gray-500 hover:text-indigo-600 font-medium flex items-center justify-center gap-1 py-2">
                         View All Programs <ArrowRight className="w-4 h-4" />
@@ -62,18 +59,9 @@ const MedicalPrograms = () => {
                     </p>
 
                     <div className="relative z-10 space-y-4">
-                        <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/10">
-                            <div className="flex justify-between items-end mb-1">
-                                <span className="text-indigo-100 text-sm font-medium">Protocol Efficiency</span>
-                                <span className="text-2xl font-bold">94%</span>
-                            </div>
-                            <div className="w-full bg-white/20 h-1.5 rounded-full overflow-hidden">
-                                <div className="bg-green-400 h-full w-[94%]"></div>
-                            </div>
+                        <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/10 text-center">
+                            <span className="text-indigo-100 text-sm font-medium">Gathering Data...</span>
                         </div>
-                        <button className="bg-white text-indigo-900 px-4 py-2 rounded-lg text-sm font-bold shadow-md hover:bg-gray-100 transition-colors">
-                            View AI Insights
-                        </button>
                     </div>
                 </div>
             </div>

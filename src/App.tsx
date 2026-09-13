@@ -81,7 +81,10 @@ import Campaigns from './pages/super-admin/Campaigns';
 import Analytics from './pages/super-admin/Analytics';
 import Billing from './pages/super-admin/Billing';
 import Security from './pages/super-admin/Security';
+import Profile from './pages/super-admin/Profile';
 import Support from './pages/super-admin/Support';
+import GSTManagement from './pages/super-admin/GSTManagement';
+
 
 // Stubs for other roles
 // New Admin Pages
@@ -185,7 +188,9 @@ const App = () => (
                             <Route path="campaigns" element={<Campaigns />} />
                             <Route path="analytics" element={<Analytics />} />
                             <Route path="billing" element={<Billing />} />
+                            <Route path="gst" element={<GSTManagement />} />
                             <Route path="security" element={<Security />} />
+                            <Route path="profile" element={<Profile />} />
                             <Route path="support" element={<Support />} />
                             <Route path="settings" element={<GlobalConfig />} />
                             <Route path="platform" element={<SuperAdminDashboard />} />
