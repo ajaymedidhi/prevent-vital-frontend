@@ -57,7 +57,7 @@ const Team = () => {
                             Visionaries driving <span className="text-indigo-400">future health.</span>
                         </h1>
                         <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-                            Prevent Vital AI is led by clinician-entrepreneurs committed to bridging the gap between advanced technology and human-centric care.
+                            PreventVital AI is led by clinician-entrepreneurs committed to bridging the gap between advanced technology and human-centric care.
                         </p>
                     </motion.div>
                 </div>

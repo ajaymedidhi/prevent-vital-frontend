@@ -1228,7 +1228,7 @@ const CustomerDashboard = () => {
                 </div>
 
                 <div className="flex flex-col items-center gap-2 pt-4">
-                    <p className="text-[10px] font-semibold text-gray-300 uppercase tracking-widest">Prevent Vital Mobile — v2.4.0</p>
+                    <p className="text-[10px] font-semibold text-gray-300 uppercase tracking-widest">PreventVital Mobile — v2.4.0</p>
                     <div className="flex gap-4">
                         <p className="text-[10px] font-bold text-blue-600 capitalize">Terms of Protocol</p>
                         <p className="text-[10px] font-bold text-blue-600 capitalize">Audit Log</p>

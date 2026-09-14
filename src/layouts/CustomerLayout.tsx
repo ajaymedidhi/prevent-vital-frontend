@@ -73,7 +73,7 @@ const CustomerLayout = () => {
                         </div>
                         <div>
                             <h1 className="text-lg font-bold tracking-tight text-white leading-none">
-                                PREVENT VITAL
+                                PREVENTVITAL
                             </h1>
                             <p className="text-[10px] text-blue-400 font-medium mt-1 tracking-wider uppercase flex items-center gap-1">
                                 <Heart className="w-3 h-3" /> Member Portal

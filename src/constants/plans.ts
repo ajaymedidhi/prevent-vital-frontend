@@ -27,7 +27,7 @@ export const PLANS = [
         id: 'family',
         name: 'Family',
         monthlyPrice: 999,
-        annualPrice: 1499,
+        annualPrice: 1999,
         features: ['All Pro Features', 'Unlimited Consultations', 'Family Plan (up to 4)', 'Personal Health Coach'],
         isPopular: false
     }
