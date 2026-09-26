@@ -47,7 +47,7 @@ const ConditionCards = () => {
                         return (
                             <FadeInSection key={condition.id} delay={index * 0.06}>
                                 <div
-                                    className={`group bg-card rounded-[1.5rem] overflow-hidden border border-border hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full flex flex-col ${accentClass}`}
+                                    className={`group bg-card rounded-[1.5rem] overflow-hidden border border-border hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:border-primary/20 transition-all duration-500 hover:-translate-y-2 h-full flex flex-col ${accentClass}`}
                                     style={{ boxShadow: 'var(--shadow-md)' }}
                                 >
                                     <div className="relative h-48 md:h-56 overflow-hidden">

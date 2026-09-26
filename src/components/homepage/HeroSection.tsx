@@ -96,7 +96,7 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
 
   return (
     <section
-      className={`relative w-full overflow-hidden min-h-[100dvh] ${className}`}
+      className={`relative w-full overflow-hidden min-h-[100dvh] bg-slate-950 ${className}`}
       aria-labelledby="hero-heading"
     >
       <AnimatePresence>
@@ -178,10 +178,13 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
                 >
                   <Link
                     to={slide.ctaLink}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-md text-sm md:text-base font-bold text-foreground bg-white transition-all duration-300 hover:bg-slate-100 hover:shadow-xl hover:-translate-y-1"
+                    className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-md text-sm md:text-base font-bold text-foreground bg-white transition-all duration-300 hover:bg-slate-100 hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:-translate-y-1 overflow-hidden"
                   >
-                    {slide.cta}
-                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    <span className="absolute inset-0 w-full h-full bg-white/20 animate-pulse rounded-md" />
+                    <span className="relative flex items-center gap-2">
+                        {slide.cta}
+                        <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    </span>
                   </Link>
 
                   <Link
