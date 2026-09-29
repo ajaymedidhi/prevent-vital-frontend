@@ -63,6 +63,7 @@ import CookiePolicy from "./pages/CookiePolicy";
 
 // New Auth & Admin Pages
 import Login from './pages/Login';
+import BlogHeartHealth from './pages/BlogHeartHealth';
 import Signup from './pages/Signup';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
@@ -159,6 +160,7 @@ const App = () => (
                             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
                             <Route path="/hipaa-compliance" element={<HipaaCompliance />} />
                             <Route path="/cookie-policy" element={<CookiePolicy />} />
+                            <Route path="/blog/heart-health-prevention-world-heart-day" element={<BlogHeartHealth />} />
                         </Route>
 
                         {/* AUTH */}
