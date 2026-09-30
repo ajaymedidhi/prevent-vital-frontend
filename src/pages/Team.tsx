@@ -124,15 +124,45 @@ const Team = () => {
                         </div>
                     </FadeInSection>
 
-                    {/* Ajay Medidhi: Product & Technology Lead */}
+                    {/* Kanapala Amulya: Consultant Clinical Nutritionist */}
                     <FadeInSection delay={0.3} className="max-w-5xl mx-auto bg-white rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100 flex flex-col md:flex-row transform hover:-translate-y-1 transition-transform duration-300">
+                        <div className="md:w-2/5 relative bg-indigo-50 min-h-[320px]">
+                            <img
+                                src="/images/amulya.JPG"
+                                alt="Kanapala Amulya"
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:bg-gradient-to-r md:from-transparent md:to-black/10"></div>
+                        </div>
+                        <div className="md:w-3/5 p-8 md:p-12">
+                            <div className="mb-6">
+                                <span className="inline-block px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold uppercase tracking-wider mb-2">
+                                    Clinical Nutritionist
+                                </span>
+                                <h3 className="text-3xl font-bold text-gray-900">Kanapala Amulya</h3>
+                                <p className="text-gray-500 font-medium">Consultant Clinical Nutritionist &amp; Dietetics</p>
+                            </div>
+
+                            <div className="space-y-4 text-gray-600 leading-relaxed text-sm md:text-base">
+                                <p>
+                                    Passionate about helping people build healthier lives through practical, personalised, and evidence-based nutrition, fitness, and mindful eating.
+                                </p>
+                                <p>
+                                    My approach goes beyond calorie counting and restrictive diets. I believe good nutrition should fit into your health needs, lifestyle, daily routine, food preferences, and long-term goals. Through personalised nutrition guidance and preventive wellness strategies, I help individuals understand their body, improve their eating habits, and make sustainable lifestyle changes.
+                                </p>
+                            </div>
+                        </div>
+                    </FadeInSection>
+
+                    {/* Ajay Medidhi: Product & Technology Lead */}
+                    <FadeInSection delay={0.45} className="max-w-5xl mx-auto bg-white rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100 flex flex-col md:flex-row-reverse transform hover:-translate-y-1 transition-transform duration-300">
                         <div className="md:w-2/5 relative bg-indigo-50 min-h-[320px]">
                             <img
                                 src="/images/ajay.webp"
                                 alt="Ajay Medidhi"
                                 className="absolute inset-0 w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:bg-gradient-to-r md:from-transparent md:to-black/10"></div>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:bg-gradient-to-l md:from-transparent md:to-black/10"></div>
                         </div>
                         <div className="md:w-3/5 p-8 md:p-12">
                             <div className="mb-6">
