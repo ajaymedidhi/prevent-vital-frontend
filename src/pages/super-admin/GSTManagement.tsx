@@ -69,7 +69,19 @@ const GSTManagement = () => {
         let filename = 'export.csv';
 
         if (activeTab === 'monthly') {
-            dataToExport = monthlyTransactions;
+            dataToExport = monthlyTransactions.map(tx => ({
+                'Invoice #': tx.id,
+                'Name': tx.name,
+                'Receipt ID': tx.receiptId,
+                'Date': new Date(tx.date).toLocaleDateString('en-IN'),
+                'Type': tx.type,
+                'GSTIN': tx.gstin,
+                'State (POS)': tx.state,
+                'Taxable': tx.taxable,
+                'CGST': tx.cgst,
+                'SGST': tx.sgst,
+                'IGST': tx.igst,
+            }));
             filename = `monthly_gst_${selectedMonth.replace(' ', '_')}.csv`;
         } else if (activeTab === 'transactions') {
             dataToExport = transactionsLedger;
@@ -91,14 +103,14 @@ const GSTManagement = () => {
         const csvRows = [];
         
         // Add headers
-        csvRows.push(headers.join(','));
+        csvRows.push(headers.map(h => `"${h.replace(/"/g, '""')}"`).join(','));
         
         // Add data rows
         for (const row of dataToExport) {
             const values = headers.map(header => {
                 const val = row[header];
                 // Escape quotes and wrap in quotes to handle commas within values
-                const escaped = ('' + (val || '')).replace(/"/g, '""');
+                const escaped = ('' + (val ?? '')).replace(/"/g, '""');
                 return `"${escaped}"`;
             });
             csvRows.push(values.join(','));
@@ -317,46 +329,50 @@ const GSTManagement = () => {
                         </select>
                     </div>
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
+                        <table className="w-full min-w-max text-left border-collapse">
                             <thead>
                                 <tr className="bg-gray-50/50">
-                                    <th className="py-3 px-5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Invoice #</th>
-                                    <th className="py-3 px-5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Date</th>
-                                    <th className="py-3 px-5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Type</th>
-                                    <th className="py-3 px-5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">GSTIN</th>
-                                    <th className="py-3 px-5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">State (POS)</th>
-                                    <th className="py-3 px-5 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">Taxable</th>
-                                    <th className="py-3 px-5 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">CGST</th>
-                                    <th className="py-3 px-5 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">SGST</th>
-                                    <th className="py-3 px-5 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">IGST</th>
+                                    <th className="py-3 px-5 whitespace-nowrap text-[10px] font-bold text-gray-400 uppercase tracking-wider">Invoice #</th>
+                                    <th className="py-3 px-5 whitespace-nowrap text-[10px] font-bold text-gray-400 uppercase tracking-wider">Name</th>
+                                    <th className="py-3 px-5 whitespace-nowrap text-[10px] font-bold text-gray-400 uppercase tracking-wider">Receipt ID</th>
+                                    <th className="py-3 px-5 whitespace-nowrap text-[10px] font-bold text-gray-400 uppercase tracking-wider">Date</th>
+                                    <th className="py-3 px-5 whitespace-nowrap text-[10px] font-bold text-gray-400 uppercase tracking-wider">Type</th>
+                                    <th className="py-3 px-5 whitespace-nowrap text-[10px] font-bold text-gray-400 uppercase tracking-wider">GSTIN</th>
+                                    <th className="py-3 px-5 whitespace-nowrap text-[10px] font-bold text-gray-400 uppercase tracking-wider">State (POS)</th>
+                                    <th className="py-3 px-5 whitespace-nowrap text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">Taxable</th>
+                                    <th className="py-3 px-5 whitespace-nowrap text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">CGST</th>
+                                    <th className="py-3 px-5 whitespace-nowrap text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">SGST</th>
+                                    <th className="py-3 px-5 whitespace-nowrap text-[10px] font-bold text-gray-400 uppercase tracking-wider text-right">IGST</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
                                 {monthlyTransactions.map((tx, idx) => (
                                     <tr key={idx} className="hover:bg-gray-50/60 transition-colors">
-                                        <td className="py-3 px-5 text-sm font-mono text-gray-700">{tx.id}</td>
-                                        <td className="py-3 px-5 text-sm text-gray-500">{new Date(tx.date).toLocaleDateString()}</td>
-                                        <td className="py-3 px-5 text-sm font-medium">
+                                        <td className="py-3 px-5 whitespace-nowrap text-sm font-mono text-gray-700">{tx.id}</td>
+                                        <td className="py-3 px-5 whitespace-nowrap text-sm text-gray-700">{tx.name}</td>
+                                        <td className="py-3 px-5 whitespace-nowrap text-xs font-mono text-gray-500">{tx.receiptId}</td>
+                                        <td className="py-3 px-5 whitespace-nowrap text-sm text-gray-500">{new Date(tx.date).toLocaleDateString()}</td>
+                                        <td className="py-3 px-5 whitespace-nowrap text-sm font-medium">
                                             <Badge color={tx.type === 'B2B' ? 'blue' : 'gray'}>{tx.type}</Badge>
                                         </td>
-                                        <td className="py-3 px-5 text-xs text-gray-500 font-mono">{tx.gstin}</td>
-                                        <td className="py-3 px-5 text-sm text-gray-700">{tx.state}</td>
-                                        <td className="py-3 px-5 text-sm text-right font-medium text-gray-900">₹{tx.taxable?.toLocaleString()}</td>
-                                        <td className="py-3 px-5 text-sm text-right text-gray-600">{tx.cgst > 0 ? `₹${tx.cgst.toLocaleString()}` : '-'}</td>
-                                        <td className="py-3 px-5 text-sm text-right text-gray-600">{tx.sgst > 0 ? `₹${tx.sgst.toLocaleString()}` : '-'}</td>
-                                        <td className="py-3 px-5 text-sm text-right text-gray-600">{tx.igst > 0 ? `₹${tx.igst.toLocaleString()}` : '-'}</td>
+                                        <td className="py-3 px-5 whitespace-nowrap text-xs text-gray-500 font-mono">{tx.gstin}</td>
+                                        <td className="py-3 px-5 whitespace-nowrap text-sm text-gray-700">{tx.state}</td>
+                                        <td className="py-3 px-5 whitespace-nowrap text-sm text-right font-medium text-gray-900">₹{tx.taxable?.toLocaleString()}</td>
+                                        <td className="py-3 px-5 whitespace-nowrap text-sm text-right text-gray-600">{tx.cgst > 0 ? `₹${tx.cgst.toLocaleString()}` : '-'}</td>
+                                        <td className="py-3 px-5 whitespace-nowrap text-sm text-right text-gray-600">{tx.sgst > 0 ? `₹${tx.sgst.toLocaleString()}` : '-'}</td>
+                                        <td className="py-3 px-5 whitespace-nowrap text-sm text-right text-gray-600">{tx.igst > 0 ? `₹${tx.igst.toLocaleString()}` : '-'}</td>
                                     </tr>
                                 ))}
                                 {monthlyTransactions.length === 0 && (
-                                    <tr><td colSpan={9} className="py-6 text-center text-sm text-gray-500">No transactions found</td></tr>
+                                    <tr><td colSpan={11} className="py-6 text-center text-sm text-gray-500">No transactions found</td></tr>
                                 )}
                                 {monthlyTransactions.length > 0 && (
                                     <tr className="bg-gray-50 font-bold">
-                                        <td colSpan={5} className="py-3 px-5 text-right text-gray-900">Total</td>
-                                        <td className="py-3 px-5 text-right text-gray-900">₹{monthlyTransactions.reduce((acc, curr) => acc + (curr.taxable || 0), 0).toLocaleString()}</td>
-                                        <td className="py-3 px-5 text-right text-gray-900">₹{monthlyTransactions.reduce((acc, curr) => acc + (curr.cgst || 0), 0).toLocaleString()}</td>
-                                        <td className="py-3 px-5 text-right text-gray-900">₹{monthlyTransactions.reduce((acc, curr) => acc + (curr.sgst || 0), 0).toLocaleString()}</td>
-                                        <td className="py-3 px-5 text-right text-gray-900">₹{monthlyTransactions.reduce((acc, curr) => acc + (curr.igst || 0), 0).toLocaleString()}</td>
+                                        <td colSpan={7} className="py-3 px-5 whitespace-nowrap text-right text-gray-900">Total</td>
+                                        <td className="py-3 px-5 whitespace-nowrap text-right text-gray-900">₹{monthlyTransactions.reduce((acc, curr) => acc + (curr.taxable || 0), 0).toLocaleString()}</td>
+                                        <td className="py-3 px-5 whitespace-nowrap text-right text-gray-900">₹{monthlyTransactions.reduce((acc, curr) => acc + (curr.cgst || 0), 0).toLocaleString()}</td>
+                                        <td className="py-3 px-5 whitespace-nowrap text-right text-gray-900">₹{monthlyTransactions.reduce((acc, curr) => acc + (curr.sgst || 0), 0).toLocaleString()}</td>
+                                        <td className="py-3 px-5 whitespace-nowrap text-right text-gray-900">₹{monthlyTransactions.reduce((acc, curr) => acc + (curr.igst || 0), 0).toLocaleString()}</td>
                                     </tr>
                                 )}
                             </tbody>

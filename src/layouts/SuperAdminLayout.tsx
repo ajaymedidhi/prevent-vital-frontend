@@ -198,7 +198,7 @@ const SuperAdminLayout = () => {
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 lg:ml-64 flex flex-col min-h-screen">
+            <main className="flex-1 min-w-0 lg:ml-64 flex flex-col min-h-screen">
                 {/* Top Header */}
                 <header className="bg-white border-b border-gray-200 px-6 py-3 flex justify-between items-center sticky top-0 z-30 shadow-sm">
                     <div className="flex items-center gap-4 flex-1">
