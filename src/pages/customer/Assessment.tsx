@@ -501,15 +501,20 @@ export default function Assessment() {
         const ascvdAvailable = result.ascvdRisk != null;
         const ascvdRisk = ascvdAvailable ? result.ascvdRisk : null;
         
-        const ascvdStatus = !ascvdAvailable ? { lbl: 'NOT AVAILABLE', col: '#94A3B8', bg: '#94A3B820' }
-            : ascvdRisk >= 20 ? { lbl: 'HIGH RISK', col: '#EF4444', bg: '#EF444420' }
-            : ascvdRisk >= 7.5 ? { lbl: 'INTERMEDIATE', col: '#F59E0B', bg: '#F59E0B20' }
-            : ascvdRisk >= 5 ? { lbl: 'BORDERLINE', col: '#F97316', bg: '#F9731620' }
-            : { lbl: 'LOW RISK', col: '#10B981', bg: '#10B98120' };
+        // Tier comes from the backend (PREVENT categories, 2026 ACC/AHA: <3 / 3–5 / 5–10 / ≥10%)
+        // so the cut-offs live in one place: getASCVDTier in cvitalScoring.service.js.
+        const ASCVD_TIER_STYLE: Record<string, { lbl: string; col: string; bg: string }> = {
+            high: { lbl: 'HIGH RISK', col: '#B91C1C', bg: '#EF444420' },
+            intermediate: { lbl: 'INTERMEDIATE', col: '#C2410C', bg: '#F9731620' },
+            borderline: { lbl: 'BORDERLINE', col: '#B45309', bg: '#F59E0B20' },
+            low: { lbl: 'LOW RISK', col: '#047857', bg: '#10B98120' },
+        };
+        const ascvdStatus = (ascvdAvailable && ASCVD_TIER_STYLE[result.ascvdTier])
+            || { lbl: 'NOT AVAILABLE', col: '#64748B', bg: '#94A3B820' };
 
         const managementPlan = [
             { id: 1, title: 'WELLNESS CHECK-INS', value: result.cvitalTierDetails?.reviewInterval || 'Routine checkup', icon: <Activity className="w-4 h-4" />, color: '#EF4444' },
-            { id: 2, title: 'PREVENTIVE GUIDANCE', value: !ascvdAvailable ? 'Add biological sex' : (ascvdRisk >= 7.5 ? 'Consult physician' : 'Standard approach'), icon: <HeartPulse className="w-4 h-4" />, color: '#F59E0B' },
+            { id: 2, title: 'PREVENTIVE GUIDANCE', value: !ascvdAvailable ? 'Not calculated' : (ascvdRisk >= 5 ? 'Discuss with a doctor' : 'Standard approach'), icon: <HeartPulse className="w-4 h-4" />, color: '#F59E0B' },
             { id: 3, title: 'LIFESTYLE', value: 'Supervised plan', icon: <Footprints className="w-4 h-4" />, color: '#10B981' },
             { id: 4, title: 'BIOMARKER REVIEW', value: 'Quarterly', icon: <FlaskConical className="w-4 h-4" />, color: '#3B82F6' }
         ];
@@ -599,7 +604,7 @@ export default function Assessment() {
 
                             <div className="flex flex-col items-center mt-auto">
                                 <p className="text-[10px] font-bold text-muted-foreground mb-3 uppercase">
-                                    {ascvdAvailable ? 'AHA PREVENT-ALIGNED' : 'REQUIRES BIOLOGICAL SEX'}
+                                    {ascvdAvailable ? 'AHA PREVENT™ EQUATIONS' : 'NOT CALCULATED FOR THIS ASSESSMENT'}
                                 </p>
                                 <div className="flex items-center gap-2 px-4 py-1.5 rounded-full" style={{ backgroundColor: ascvdStatus.bg }}>
                                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: ascvdStatus.col }} />
@@ -669,7 +674,7 @@ export default function Assessment() {
                             <span className="font-bold" style={{ color: tierColor }}> VITAL Score™ of {result.cvitalScore} ({result.cvitalTierDetails?.label.toUpperCase()})</span>
                             {ascvdAvailable 
                                 ? <span> and a <span className="font-bold">PREVENT ASCVD risk of {ascvdRisk}% (10-year)</span>. </span>
-                                : <span>. PREVENT ASCVD score is not available without biological sex. </span>
+                                : <span>. A PREVENT risk estimate was not calculated for this assessment. </span>
                             }
                             Your vascular age is estimated at <span className="font-bold text-foreground">{result.vascularAge} years</span>.
                         </p>

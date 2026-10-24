@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -23,6 +24,17 @@ import CheckoutPage from "./features/shop/pages/CheckoutPage";
 import OrderSuccessPage from "./features/shop/pages/OrderSuccessPage";
 
 import CreatorLayout from './layouts/CreatorLayout';
+import ExpertLayout from './layouts/ExpertLayout';
+import ExpertDashboard from './features/consultations/pages/ExpertDashboard';
+import ExpertSchedule from './features/consultations/pages/ExpertSchedule';
+import ExpertConsultationDetail from './features/consultations/pages/ExpertConsultationDetail';
+import ExpertAvailability from './features/consultations/pages/ExpertAvailability';
+import SuperAdminExperts from './features/consultations/pages/SuperAdminExperts';
+import SuperAdminReferrals from './features/referrals/pages/SuperAdminReferrals';
+import SuperAdminCoupons from './features/coupons/pages/SuperAdminCoupons';
+import ReferralLanding from './features/referrals/pages/ReferralLanding';
+// LiveKit is large; load it only when an expert opens a call.
+const ExpertCall = lazy(() => import('./features/consultations/pages/ExpertCall'));
 import CreatorDashboard from './pages/creator/Dashboard';
 import ProgramBuilder from './pages/creator/ProgramBuilder';
 import CorporateDashboard from './pages/corporate/Dashboard';
@@ -154,6 +166,7 @@ const App = () => (
                             <Route path="/how-it-works" element={<HowItWorks />} />
                             <Route path="/about-us" element={<AboutUs />} />
                             <Route path="/team" element={<Team />} />
+                            <Route path="/refer/:code" element={<ReferralLanding />} />
                             <Route path="/contact" element={<Contact />} />
                             <Route path="/wellness-philosophy" element={<WellnessPhilosophy />} />
                             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -184,6 +197,9 @@ const App = () => (
                             <Route path="start-program" element={<MedicalPrograms />} />
                             <Route path="users" element={<UserManagement />} />
                             <Route path="approvals" element={<Approvals />} />
+                            <Route path="experts" element={<SuperAdminExperts />} />
+                            <Route path="referrals" element={<SuperAdminReferrals />} />
+                            <Route path="coupons" element={<SuperAdminCoupons />} />
                             <Route path="audit-logs" element={<AuditLogs />} />
                             <Route path="programmes" element={<Programmes />} />
                             <Route path="programmes/new" element={<ProgrammeBuilder />} />
@@ -232,6 +248,26 @@ const App = () => (
                             <Route path="earnings" element={<div className="p-8 text-center text-gray-500 font-medium">Earnings Analytics (Coming Soon)</div>} />
                             <Route path="community" element={<div className="p-8 text-center text-gray-500 font-medium">My Community (Coming Soon)</div>} />
                             <Route path="settings" element={<div className="p-8 text-center text-gray-500 font-medium">Studio Settings (Coming Soon)</div>} />
+                        </Route>
+
+                        {/* EXPERT ROUTE GROUP — live consultations (backend /api/consultations) */}
+                        <Route path="/expert/consultations/:id/call" element={
+                            <ProtectedRoute allowedRoles={['expert']}>
+                                <Suspense fallback={<div className="min-h-screen bg-slate-900" />}>
+                                    <ExpertCall />
+                                </Suspense>
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/expert" element={
+                            <ProtectedRoute allowedRoles={['expert']}>
+                                <ExpertLayout />
+                            </ProtectedRoute>
+                        }>
+                            <Route index element={<Navigate to="dashboard" replace />} />
+                            <Route path="dashboard" element={<ExpertDashboard />} />
+                            <Route path="schedule" element={<ExpertSchedule />} />
+                            <Route path="consultations/:id" element={<ExpertConsultationDetail />} />
+                            <Route path="availability" element={<ExpertAvailability />} />
                         </Route>
 
                         {/* CORPORATE ROUTE GROUP */}

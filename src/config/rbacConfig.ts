@@ -31,5 +31,6 @@ export const ROLES = {
     ADMIN: 'admin',
     CORPORATE_ADMIN: 'corporate_admin',
     CONTENT_CREATOR: 'content_creator',
+    EXPERT: 'expert',
     CUSTOMER: 'customer'
 };

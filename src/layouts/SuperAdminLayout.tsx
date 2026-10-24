@@ -7,7 +7,7 @@ import { PERMISSIONS } from '../config/rbacConfig';
 import {
     LayoutDashboard, Users, BookOpen, Megaphone, BarChart3,
     CreditCard, Settings, Shield, HeadphonesIcon, LogOut, Zap,
-    ChevronDown, User, Key, Menu, Bell, Search, X, ClipboardCheck, Heart, Calculator
+    ChevronDown, User, Key, Menu, Bell, Search, X, ClipboardCheck, Heart, Calculator, Stethoscope, Gift, Ticket
 } from 'lucide-react';
 import { Avatar } from '../admin-shared/components/ui';
 
@@ -15,6 +15,7 @@ const NAV_MAIN = [
     { path: '/super-admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/super-admin/users', label: 'Staff', icon: Users, badge: '347' },
     { path: '/super-admin/approvals', label: 'Approvals', icon: ClipboardCheck },
+    { path: '/super-admin/experts', label: 'Experts', icon: Stethoscope },
     { path: '/super-admin/assessments', label: 'Assessments', icon: Heart },
     { path: '/super-admin/programmes', label: 'Programmes', icon: BookOpen },
     { path: '/super-admin/campaigns', label: 'Campaigns', icon: Megaphone },
@@ -24,6 +25,8 @@ const NAV_MAIN = [
 const NAV_ADMIN = [
     { path: '/super-admin/billing', label: 'Billing', icon: CreditCard },
     { path: '/super-admin/gst', label: 'GST & Tax', icon: Calculator },
+    { path: '/super-admin/referrals', label: 'Refer & Earn', icon: Gift },
+    { path: '/super-admin/coupons', label: 'Coupons', icon: Ticket },
     { path: '/super-admin/settings', label: 'Settings', icon: Settings, permission: PERMISSIONS.MANAGE_PLATFORM },
     { path: '/super-admin/security', label: 'Security', icon: Shield },
     { path: '/super-admin/support', label: 'Support', icon: HeadphonesIcon },

@@ -77,6 +77,7 @@ const Login = () => {
     const roleRoutes: Record<string, string> = {
       super_admin:    '/super-admin/dashboard',
       content_creator: '/creator/dashboard',
+      expert:         '/expert/dashboard',
       admin:          '/admin/dashboard',
       customer:       '/account',
     };
