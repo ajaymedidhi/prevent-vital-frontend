@@ -14,7 +14,7 @@ import CTASection from '@/components/homepage/CTASection';
 import FlowingDivider from '@/components/homepage/FlowingDivider';
 import ProgramQuickNav from '@/components/homepage/ProgramQuickNav';
 import ChatWithVitaButton from '@/components/homepage/ChatWithVitaButton';
-import BlogPopup from '@/components/BlogPopup';
+// import BlogPopup from '@/components/BlogPopup';
 
 const Index = () => {
     return (
@@ -65,7 +65,7 @@ const Index = () => {
             </main>
             <ProgramQuickNav />
             <ChatWithVitaButton />
-            <BlogPopup />
+            {/* <BlogPopup /> */}
         </>
     );
 };
