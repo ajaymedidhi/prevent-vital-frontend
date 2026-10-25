@@ -73,6 +73,8 @@ const SuperAdminReferrals = () => {
 
 const NUMBER_FIELDS: { key: keyof ReferralProgram; label: string; rupees?: boolean; hint?: string }[] = [
     { key: 'rewardPaise', label: 'Reward per referral (₹)', rupees: true },
+    { key: 'teamRewardPaise', label: 'Core-team reward per referral (₹)', rupees: true, hint: 'Replaces the reward above for allowlisted members' },
+    { key: 'refereeDiscountPaise', label: 'Discount for core-team referrals (₹)', rupees: true, hint: 'Off the referred friend’s first Pro annual plan; 0 = off' },
     { key: 'minWithdrawalPaise', label: 'Minimum withdrawal (₹)', rupees: true },
     { key: 'maxWithdrawalPaise', label: 'Maximum per withdrawal (₹)', rupees: true },
     { key: 'holdDays', label: 'Hold period (days)', hint: 'Pending → available' },

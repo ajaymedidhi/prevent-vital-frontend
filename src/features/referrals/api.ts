@@ -13,6 +13,8 @@ export interface ReferralProgram {
     rolloutMode: RolloutMode;
     currency: string;
     rewardPaise: number;
+    teamRewardPaise: number;
+    refereeDiscountPaise: number;
     minWithdrawalPaise: number;
     maxWithdrawalPaise: number;
     holdDays: number;
