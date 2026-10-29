@@ -6,6 +6,8 @@ import { addToCart, Product } from '@/store/shopSlice';
 import { Badge } from '@/components/ui/badge';
 import SpecsTable from '../components/SpecsTable';
 import VitalsIcons from '../components/VitalsIcons';
+import AmazonProductDetail from '../components/AmazonProductDetail';
+import { isAmazonProduct } from '../affiliate';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from "sonner";
 import { ChevronLeft, Truck, ShieldCheck, HeartPulse, Star, ShoppingCart, Share2 } from 'lucide-react';
@@ -52,6 +54,8 @@ const ProductDetailPage = () => {
             </button>
         </div>
     );
+
+    if (isAmazonProduct(product)) return <AmazonProductDetail product={product} />;
 
     const discount = product.mrp && product.mrp > product.price
         ? Math.round(((product.mrp - product.price) / product.mrp) * 100)

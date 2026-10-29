@@ -15,6 +15,7 @@ export interface ReferralProgram {
     rewardPaise: number;
     teamRewardPaise: number;
     refereeDiscountPaise: number;
+    referrerRequiresPaidPlan: boolean;
     minWithdrawalPaise: number;
     maxWithdrawalPaise: number;
     holdDays: number;
@@ -58,6 +59,7 @@ export interface TeamMember extends UserSummary {
     status: string;
     blocked: boolean;
     blockedReason?: string;
+    paidPlan: boolean;
     code: string | null;
     shareLink: string | null;
     codeCreatedAt?: string;

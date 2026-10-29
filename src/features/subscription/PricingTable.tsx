@@ -3,6 +3,8 @@ import { PLANS } from '@/constants/plans';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { INDIAN_STATES } from '@/constants/indianStates';
 import Icon from '@/components/ui/AppIcon';
 import axios from 'axios';
 import { useToast } from "@/components/ui/use-toast";
@@ -14,6 +16,9 @@ const PricingTable = () => {
     const [isAnnual, setIsAnnual] = useState(false);
     const [plans, setPlans] = useState(PLANS);
     const [loading, setLoading] = useState(true);
+    // The buyer's state is the place of supply on the GST invoice and must be recorded before
+    // the sale; the server refuses a subscription order without it.
+    const [stateCode, setStateCode] = useState<string>('');
     const { toast } = useToast();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -51,11 +56,17 @@ const PricingTable = () => {
                 return;
             }
 
+            if (!stateCode) {
+                toast({ title: "Select your state", description: "Your state is needed for your GST invoice.", variant: "destructive" });
+                return;
+            }
+
             const interval = isAnnual ? 'annual' : 'monthly';
             const { data: createRes } = await axios.post('/api/payments/orders', {
                 purchaseType: 'subscription',
                 planId: plan.id,
-                interval
+                interval,
+                billing: { stateCode }
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -127,7 +138,7 @@ const PricingTable = () => {
                 navigate('/login');
                 return;
             }
-            toast({ title: "Error", description: err.message || "Failed to initiate subscription.", variant: "destructive" });
+            toast({ title: "Error", description: err.response?.data?.message || err.message || "Failed to initiate subscription.", variant: "destructive" });
         }
     };
 
@@ -148,6 +159,21 @@ const PricingTable = () => {
                     <div className={`bg-white w-5 h-5 rounded-full shadow-md transform duration-300 ease-in-out ${isAnnual ? 'translate-x-7' : ''}`}></div>
                 </button>
                 <span className={`text-sm ${isAnnual ? 'font-bold' : ''}`}>Annual (Save ~17%)</span>
+            </div>
+
+            <div className="flex flex-col items-center gap-1 mb-8">
+                <label htmlFor="billing-state" className="text-sm font-medium">Your state</label>
+                <Select value={stateCode} onValueChange={setStateCode}>
+                    <SelectTrigger id="billing-state" className="w-72" aria-label="Your state">
+                        <SelectValue placeholder="Select your state" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {INDIAN_STATES.map(s => (
+                            <SelectItem key={s.code} value={s.code}>{s.name}</SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">Needed for your GST invoice.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

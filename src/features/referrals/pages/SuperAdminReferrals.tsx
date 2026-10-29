@@ -78,7 +78,7 @@ const NUMBER_FIELDS: { key: keyof ReferralProgram; label: string; rupees?: boole
     { key: 'minWithdrawalPaise', label: 'Minimum withdrawal (₹)', rupees: true },
     { key: 'maxWithdrawalPaise', label: 'Maximum per withdrawal (₹)', rupees: true },
     { key: 'holdDays', label: 'Hold period (days)', hint: 'Pending → available' },
-    { key: 'attributionWindowDays', label: 'Code entry window (days after sign-up)' },
+    { key: 'attributionWindowDays', label: 'Code entry window (days after sign-up)', hint: '0 = no limit; codes still need no earlier paid plan' },
     { key: 'maxRewardsPerReferrerPerMonth', label: 'Rewards per member per 30 days', hint: 'Above this, referrals go to review' },
     { key: 'maxAttributionsPerReferrerPerDay', label: 'Sign-ups per code per day', hint: 'Above this, referrals go to review' },
 ];
@@ -187,6 +187,14 @@ const Overview = () => {
                             ))}
                         </div>
                     </div>
+                    <label className="flex items-center justify-between gap-4 rounded-lg border border-slate-200 p-3">
+                        <span>
+                            <span className="font-medium text-slate-900 block">Referrers need a paid plan</span>
+                            <span className="text-sm text-slate-600">A member's code works only while they have an active paid plan, core team included.</span>
+                        </span>
+                        <Switch checked={program.referrerRequiresPaidPlan} disabled={busy} aria-label="Referrers need a paid plan"
+                            onCheckedChange={v => save({ referrerRequiresPaidPlan: v })} />
+                    </label>
                     <label className="flex items-center justify-between gap-4 rounded-lg border border-slate-200 p-3">
                         <span>
                             <span className="font-medium text-slate-900 block">Approve each withdrawal</span>
@@ -397,6 +405,11 @@ const Team = ({ onWallet }: { onWallet: (id: string) => void }) => {
                                             <div className="font-medium text-slate-900">{m.name || '—'}</div>
                                             <div className="text-slate-500">{m.email || m.phone}</div>
                                             {m.blocked && <Badge variant="outline" className={`${STATUS_STYLE.rejected} mt-1`}>Blocked</Badge>}
+                                            {!m.paidPlan && (
+                                                <Badge variant="outline" className={`${STATUS_STYLE.review} mt-1`} title="While &quot;Referrers need a paid plan&quot; is on, their code doesn’t work">
+                                                    No paid plan
+                                                </Badge>
+                                            )}
                                         </td>
                                         <td className="p-3">
                                             {m.code ? (

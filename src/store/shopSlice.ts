@@ -14,6 +14,13 @@ export interface Product {
     allowedRegions: string[];
     specs?: { label: string; value: string }[];
     supportedVitals?: string[];
+    // 'amazon' = affiliate product: no price/stock, never in the cart (features/shop/affiliate.ts).
+    source?: 'store' | 'amazon';
+    affiliateUrl?: string;
+    healthGoals?: string[];
+    shortDescription?: string;
+    detailedDescription?: string;
+    benefits?: string[];
 }
 
 interface CartItem extends Product {
@@ -53,6 +60,7 @@ const shopSlice = createSlice({
     initialState,
     reducers: {
         addToCart: (state, action: PayloadAction<Product>) => {
+            if (action.payload.source === 'amazon') return; // bought on Amazon, not here
             const itemIndex = state.cart.findIndex(item => item._id === action.payload._id);
             if (itemIndex >= 0) {
                 state.cart[itemIndex].quantity += 1;

@@ -6,16 +6,67 @@ import { Product } from '@/store/shopSlice';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@/store/shopSlice';
 import { toast } from "sonner";
-import { ShoppingCart, Heart, Star } from 'lucide-react';
+import { ShoppingCart, Heart, Star, ShoppingBag, ChevronRight } from 'lucide-react';
+import { isAmazonProduct, splitListingTitle } from '../affiliate';
 
 interface ProductCardProps {
     product: Product;
     userRegion: string;
 }
 
+// Amazon affiliate product: no price (Amazon only allows prices from its API), no cart,
+// no rating. Opens our product page, which links out to Amazon.
+const AmazonProductCard = ({ product }: { product: Product }) => {
+    const mainImage = product.images?.[0] || product.image || '/placeholder.png';
+    const href = `/products/${product.slug || product._id}`;
+    const { tags } = splitListingTitle(product.shortDescription);
+
+    return (
+        <Card className="group relative border border-border shadow-sm hover:shadow-md transition-all duration-300 bg-card rounded-2xl overflow-hidden flex flex-col h-full">
+            <Link to={href} className="relative block aspect-square overflow-hidden bg-white">
+                <span className="absolute top-3 left-3 z-10 inline-flex items-center gap-1 rounded-full bg-amber-500 px-2.5 py-0.5 text-xs font-semibold text-white shadow-sm">
+                    <ShoppingBag size={12} /> Amazon
+                </span>
+                <img
+                    src={mainImage}
+                    alt={product.name}
+                    loading="lazy"
+                    className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+                />
+            </Link>
+
+            <CardContent className="p-4 flex-1 flex flex-col">
+                <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase mb-1">
+                    Sold on Amazon
+                </p>
+                <Link to={href} className="block mb-2">
+                    <h3 className="font-semibold text-foreground text-sm leading-snug line-clamp-2 hover:text-primary transition-colors">
+                        {product.name}
+                    </h3>
+                </Link>
+                {tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mb-3">
+                        {tags.slice(0, 3).map(t => (
+                            <span key={t} className="rounded-md border border-border px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{t}</span>
+                        ))}
+                    </div>
+                )}
+                <Link
+                    to={href}
+                    className="mt-auto inline-flex items-center justify-between gap-2 text-sm font-semibold text-indigo-700 hover:underline"
+                >
+                    See price on Amazon <ChevronRight size={16} />
+                </Link>
+            </CardContent>
+        </Card>
+    );
+};
+
 const ProductCard = ({ product, userRegion }: ProductCardProps) => {
     const dispatch  = useDispatch();
     const mainImage = product.images?.[0] || product.image || '/placeholder.png';
+
+    if (isAmazonProduct(product)) return <AmazonProductCard product={product} />;
 
     const getBadge = () => {
         if (product.stock <= 5 && product.stock > 0) return { label: 'Limited',     color: 'bg-orange-500' };

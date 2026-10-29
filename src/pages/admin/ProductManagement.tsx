@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
     Plus, Search, Edit2, Trash2, Globe, Eye, EyeOff, Loader, UploadCloud, 
-    Check, X, FileText, ChevronRight, HelpCircle, Package, Layers, Tag
+    Check, X, FileText, ChevronRight, HelpCircle, Package, Layers, Tag, ExternalLink, Store, ShoppingBag
 } from 'lucide-react';
 import { 
     getProducts, getProduct, createProduct, updateProduct, deleteProduct, 
@@ -9,16 +9,31 @@ import {
 } from '../../admin-shared/services/productService';
 import { uploadToGCS, confirmUpload } from '../../admin-shared/services/mediaApi';
 import { toast } from 'react-hot-toast';
+// Health goals a product suits; the app recommends products for the user's goal.
+import { PRODUCT_GOALS } from '../../features/shop/affiliate';
 
 const CATEGORIES = [
     { value: 'bp_monitor', label: 'BP Monitor' },
     { value: 'ecg_patch', label: 'ECG Patch' },
     { value: 'smart_watch', label: 'Smart Watch' },
+    { value: 'fitness_tracker', label: 'Fitness Tracker / Ring' },
     { value: 'accessory', label: 'Accessory' },
     { value: 'device', label: 'Device' },
     { value: 'supplement', label: 'Supplement' },
+    { value: 'personal_care', label: 'Personal Care' },
     { value: 'program', label: 'Program' }
 ];
+
+// Hosts the backend accepts for Amazon links (config/affiliateProducts.js).
+const AMAZON_HOSTS = ['link.amazon', 'amzn.to', 'amzn.in', 'amazon.in', 'www.amazon.in', 'amzlinks.in'];
+const isAmazonLink = (url: string) => {
+    try {
+        const u = new URL(url.trim());
+        return u.protocol === 'https:' && AMAZON_HOSTS.includes(u.hostname.toLowerCase());
+    } catch {
+        return false;
+    }
+};
 
 export default function ProductManagement() {
     const [products, setProducts] = useState<any[]>([]);
@@ -27,6 +42,7 @@ export default function ProductManagement() {
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState('');
     const [status, setStatus] = useState('');
+    const [source, setSource] = useState('');
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
@@ -45,6 +61,12 @@ export default function ProductManagement() {
     const [formShortDesc, setFormShortDesc] = useState('');
     const [formDetailedDesc, setFormDetailedDesc] = useState('');
     const [formStatus, setFormStatus] = useState('draft');
+    const [formSource, setFormSource] = useState<'store' | 'amazon'>('store');
+    const [formAffiliateUrl, setFormAffiliateUrl] = useState('');
+    const [formGoals, setFormGoals] = useState<string[]>([]);
+    const [formDisplayOrder, setFormDisplayOrder] = useState('100');
+    const [formIsFeatured, setFormIsFeatured] = useState(false);
+    const isAmazon = formSource === 'amazon';
     
     // Dynamic lists
     const [formTags, setFormTags] = useState<string[]>([]);
@@ -68,12 +90,12 @@ export default function ProductManagement() {
     useEffect(() => {
         fetchProducts();
         fetchLocations();
-    }, [search, category, status, page]);
+    }, [search, category, status, source, page]);
 
     const fetchProducts = async () => {
         setLoading(true);
         try {
-            const res = await getProducts({ search, category, status, page, limit: 10 });
+            const res = await getProducts({ search, category, status, source, page, limit: 10 });
             setProducts(res.data.products || []);
             setTotalPages(res.totalPages || 1);
         } catch (err: any) {
@@ -104,6 +126,11 @@ export default function ProductManagement() {
         setFormShortDesc('');
         setFormDetailedDesc('');
         setFormStatus('draft');
+        setFormSource('store');
+        setFormAffiliateUrl('');
+        setFormGoals([]);
+        setFormDisplayOrder('100');
+        setFormIsFeatured(false);
         setFormTags([]);
         setFormBenefits([]);
         setFormIngredients([]);
@@ -131,6 +158,11 @@ export default function ProductManagement() {
             setFormShortDesc(p.shortDescription || '');
             setFormDetailedDesc(p.detailedDescription || '');
             setFormStatus(p.status || 'draft');
+            setFormSource(p.source === 'amazon' ? 'amazon' : 'store');
+            setFormAffiliateUrl(p.affiliateUrl || '');
+            setFormGoals(p.healthGoals || []);
+            setFormDisplayOrder(p.displayOrder?.toString() || '100');
+            setFormIsFeatured(!!p.isFeatured);
             setFormTags(p.tags || []);
             setFormBenefits(p.benefits || []);
             setFormIngredients(p.ingredients || []);
@@ -207,18 +239,38 @@ export default function ProductManagement() {
     };
 
     const handleSave = async () => {
-        if (!formName || !formPrice) {
-            toast.error('Product Name and Price are required');
+        if (!formName) {
+            toast.error('Product Name is required');
             return;
         }
+        if (isAmazon && !isAmazonLink(formAffiliateUrl)) {
+            toast.error('Enter the Amazon link (https://link.amazon/... or https://www.amazon.in/...)');
+            return;
+        }
+        if (!isAmazon && !formPrice) {
+            toast.error('Price is required for store products');
+            return;
+        }
+
+        // Amazon products have no price, stock or delivery areas of ours (the backend drops them too).
+        const commerce = isAmazon
+            ? { affiliateUrl: formAffiliateUrl.trim() }
+            : {
+                price: Number(formPrice),
+                discountedPrice: formDiscountedPrice ? Number(formDiscountedPrice) : undefined,
+                stock: Number(formStock),
+                deliveryLocations: selectedLocations
+            };
 
         const payload = {
             name: formName,
             sku: formSku,
             category: formCategory,
-            price: Number(formPrice),
-            discountedPrice: formDiscountedPrice ? Number(formDiscountedPrice) : undefined,
-            stock: Number(formStock),
+            source: formSource,
+            healthGoals: formGoals,
+            displayOrder: Number(formDisplayOrder) || 100,
+            isFeatured: formIsFeatured,
+            ...commerce,
             shortDescription: formShortDesc,
             detailedDescription: formDetailedDesc,
             status: formStatus,
@@ -226,7 +278,6 @@ export default function ProductManagement() {
             benefits: formBenefits,
             ingredients: formIngredients,
             usageInstructions: formInstructions,
-            deliveryLocations: selectedLocations,
             thumbnail: thumbnailUrl,
             gallery: galleryUrls,
             documents
@@ -297,6 +348,15 @@ export default function ProductManagement() {
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
                     </select>
+                    <select
+                        value={source}
+                        onChange={(e) => { setSource(e.target.value); setPage(1); }}
+                        className="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500 text-slate-600"
+                    >
+                        <option value="">All Sources</option>
+                        <option value="store">PreventVital Store</option>
+                        <option value="amazon">Amazon (affiliate)</option>
+                    </select>
                 </div>
             </div>
 
@@ -340,16 +400,32 @@ export default function ProductManagement() {
                                                     <Package className="text-slate-400" size={20} />
                                                 )}
                                             </div>
-                                            <div>
-                                                <div className="font-semibold text-slate-800">{product.name}</div>
-                                                <div className="text-xs text-slate-400">{product.shortDescription || 'No description'}</div>
+                                            <div className="min-w-0 max-w-xs">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleOpenEditModal(product)}
+                                                    className="font-semibold text-slate-800 flex items-center gap-2 text-left hover:text-blue-600 hover:underline"
+                                                    title="Edit product"
+                                                >
+                                                    <span className="line-clamp-1">{product.name}</span>
+                                                    {product.source === 'amazon' && (
+                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-[10px] font-bold uppercase">
+                                                            <ShoppingBag size={10} /> Amazon
+                                                        </span>
+                                                    )}
+                                                </button>
+                                                <div className="text-xs text-slate-400 line-clamp-1" title={product.shortDescription}>{product.shortDescription || 'No description'}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 font-mono font-medium text-slate-600">{product.sku || 'N/A'}</td>
                                     <td className="px-6 py-4 text-slate-600 capitalize">{product.category?.replace('_', ' ')}</td>
                                     <td className="px-6 py-4">
-                                        {product.discountedPrice ? (
+                                        {product.source === 'amazon' ? (
+                                            <a href={product.affiliateUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-blue-600 hover:underline font-semibold">
+                                                On Amazon <ExternalLink size={12} />
+                                            </a>
+                                        ) : product.discountedPrice ? (
                                             <div>
                                                 <span className="font-bold text-slate-800">₹{product.discountedPrice}</span>
                                                 <span className="text-xs line-through text-slate-400 ml-1.5">₹{product.price}</span>
@@ -359,9 +435,13 @@ export default function ProductManagement() {
                                         )}
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className={`font-semibold ${product.stock <= 5 ? 'text-rose-500 font-bold' : 'text-slate-600'}`}>
-                                            {product.stock} units
-                                        </span>
+                                        {product.source === 'amazon' ? (
+                                            <span className="text-slate-400">—</span>
+                                        ) : (
+                                            <span className={`font-semibold ${product.stock <= 5 ? 'text-rose-500 font-bold' : 'text-slate-600'}`}>
+                                                {product.stock} units
+                                            </span>
+                                        )}
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold uppercase ${
@@ -383,10 +463,10 @@ export default function ProductManagement() {
                                             </button>
                                             <button
                                                 onClick={() => handleOpenEditModal(product)}
-                                                className="p-2 text-slate-400 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold text-blue-600 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors"
                                                 title="Edit Product"
                                             >
-                                                <Edit2 size={16} />
+                                                <Edit2 size={14} /> Edit
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(product._id)}
@@ -449,7 +529,7 @@ export default function ProductManagement() {
                                 { id: 'details', label: 'Detailed Info', icon: Layers },
                                 { id: 'media', label: 'Media Assets', icon: UploadCloud },
                                 { id: 'delivery', label: 'Fulfillment', icon: Globe }
-                            ].map(tab => (
+                            ].filter(tab => !(isAmazon && tab.id === 'delivery')).map(tab => (
                                 <button
                                     key={tab.id}
                                     onClick={() => setModalTab(tab.id as any)}
@@ -469,6 +549,62 @@ export default function ProductManagement() {
                         <div className="flex-1 overflow-y-auto p-6 space-y-6">
                             {modalTab === 'basic' && (
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="col-span-1 md:col-span-2">
+                                        <label className="block text-xs font-bold uppercase text-slate-500 mb-1.5">Sold By *</label>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                            {[
+                                                { value: 'store', icon: Store, title: 'PreventVital Store', desc: 'We sell it: price, stock, cart and delivery.' },
+                                                { value: 'amazon', icon: ShoppingBag, title: 'Amazon (affiliate)', desc: 'App shows "Buy on Amazon" and opens your affiliate link.' }
+                                            ].map(opt => (
+                                                <button
+                                                    key={opt.value}
+                                                    type="button"
+                                                    onClick={() => setFormSource(opt.value as 'store' | 'amazon')}
+                                                    className={`flex items-start gap-3 p-4 border rounded-xl text-left transition-colors ${
+                                                        formSource === opt.value ? 'border-blue-500 bg-blue-50/40' : 'border-slate-200 hover:bg-slate-50'
+                                                    }`}
+                                                >
+                                                    <opt.icon size={20} className={formSource === opt.value ? 'text-blue-600' : 'text-slate-400'} />
+                                                    <div>
+                                                        <div className="text-sm font-bold text-slate-800">{opt.title}</div>
+                                                        <div className="text-xs text-slate-500">{opt.desc}</div>
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    {isAmazon && (
+                                        <div className="col-span-1 md:col-span-2 space-y-2">
+                                            <label className="block text-xs font-bold uppercase text-slate-500 mb-1.5">Amazon Affiliate Link *</label>
+                                            <div className="flex gap-2">
+                                                <input
+                                                    value={formAffiliateUrl}
+                                                    onChange={(e) => setFormAffiliateUrl(e.target.value)}
+                                                    placeholder="https://link.amazon/B03znlpAG"
+                                                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:border-blue-500 outline-none font-mono"
+                                                />
+                                                {isAmazonLink(formAffiliateUrl) && (
+                                                    <a
+                                                        href={formAffiliateUrl.trim()}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-flex items-center gap-1 px-4 py-2 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 whitespace-nowrap"
+                                                    >
+                                                        Test link <ExternalLink size={14} />
+                                                    </a>
+                                                )}
+                                            </div>
+                                            {formAffiliateUrl && !isAmazonLink(formAffiliateUrl) && (
+                                                <p className="text-xs text-rose-600">Must be an https Amazon link ({AMAZON_HOSTS.join(', ')}).</p>
+                                            )}
+                                            <div className="text-xs text-amber-800 bg-amber-50 border border-amber-100 rounded-xl p-3 leading-relaxed">
+                                                Use the link from Amazon Associates SiteStripe ("Get Link"), so it carries your Associates tag.
+                                                Amazon's rules: <strong>no prices</strong> typed in here (the app shows "See price on Amazon"),
+                                                and <strong>no photos downloaded from Amazon</strong> — upload the brand's own press images or your own photos.
+                                                Don't write health claims in the descriptions.
+                                            </div>
+                                        </div>
+                                    )}
                                     <div>
                                         <label className="block text-xs font-bold uppercase text-slate-500 mb-1.5">Product Name *</label>
                                         <input
@@ -497,7 +633,7 @@ export default function ProductManagement() {
                                             {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                                         </select>
                                     </div>
-                                    <div>
+                                    {!isAmazon && <div>
                                         <label className="block text-xs font-bold uppercase text-slate-500 mb-1.5">Initial Stock Quantity</label>
                                         <input
                                             type="number"
@@ -508,8 +644,8 @@ export default function ProductManagement() {
                                             className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:border-blue-500 outline-none bg-slate-50 disabled:text-slate-400"
                                         />
                                         {editingProduct && <p className="text-[11px] text-slate-400 mt-1">Stock quantity must be updated via the Inventory screen.</p>}
-                                    </div>
-                                    <div>
+                                    </div>}
+                                    {!isAmazon && <div>
                                         <label className="block text-xs font-bold uppercase text-slate-500 mb-1.5">Regular Price (INR) *</label>
                                         <input
                                             type="number"
@@ -518,8 +654,8 @@ export default function ProductManagement() {
                                             placeholder="0"
                                             className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:border-blue-500 outline-none"
                                         />
-                                    </div>
-                                    <div>
+                                    </div>}
+                                    {!isAmazon && <div>
                                         <label className="block text-xs font-bold uppercase text-slate-500 mb-1.5">Discounted Price (INR)</label>
                                         <input
                                             type="number"
@@ -528,7 +664,7 @@ export default function ProductManagement() {
                                             placeholder="Leave empty if none"
                                             className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:border-blue-500 outline-none"
                                         />
-                                    </div>
+                                    </div>}
                                     <div className="col-span-1 md:col-span-2">
                                         <label className="block text-xs font-bold uppercase text-slate-500 mb-1.5">Short Description</label>
                                         <input
@@ -549,6 +685,52 @@ export default function ProductManagement() {
                                             <option value="active">Active</option>
                                             <option value="inactive">Inactive</option>
                                         </select>
+                                        {isAmazon && <p className="text-[11px] text-slate-400 mt-1">Amazon products show in the app only when Active.</p>}
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold uppercase text-slate-500 mb-1.5">Display Priority (Lower shows first)</label>
+                                        <input
+                                            type="number"
+                                            value={formDisplayOrder}
+                                            onChange={(e) => setFormDisplayOrder(e.target.value)}
+                                            placeholder="10 = Wearables, 25 = Monitors, 50 = Supplements"
+                                            className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:border-blue-500 outline-none"
+                                        />
+                                        <p className="text-[11px] text-slate-400 mt-1">e.g. 1–10 Wearables, 11–30 Devices, 50+ Nutrition</p>
+                                    </div>
+                                    <div className="col-span-1 md:col-span-2 flex items-center gap-2 pt-1">
+                                        <input
+                                            type="checkbox"
+                                            id="isFeaturedCheck"
+                                            checked={formIsFeatured}
+                                            onChange={(e) => setFormIsFeatured(e.target.checked)}
+                                            className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
+                                        />
+                                        <label htmlFor="isFeaturedCheck" className="text-sm font-medium text-slate-700 cursor-pointer">
+                                            Featured Product (Highlight at top of Shop & Recommendations)
+                                        </label>
+                                    </div>
+                                    <div className="col-span-1 md:col-span-2">
+                                        <label className="block text-xs font-bold uppercase text-slate-500 mb-1.5">Recommend For (Health Goals)</label>
+                                        <p className="text-[11px] text-slate-400 mb-2">The app suggests this product to users who chose these goals.</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {PRODUCT_GOALS.map(g => {
+                                                const on = formGoals.includes(g.value);
+                                                return (
+                                                    <button
+                                                        key={g.value}
+                                                        type="button"
+                                                        onClick={() => setFormGoals(on ? formGoals.filter(x => x !== g.value) : [...formGoals, g.value])}
+                                                        className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
+                                                            on ? 'bg-blue-600 border-blue-600 text-white' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                                                        }`}
+                                                    >
+                                                        {on && <Check size={12} />}
+                                                        {g.label}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
                                     </div>
                                 </div>
                             )}

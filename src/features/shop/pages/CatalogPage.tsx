@@ -5,8 +5,23 @@ import StoreHero from '../components/StoreHero';
 import { Product } from '@/store/shopSlice';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Filter } from 'lucide-react';
+import { AMAZON_DISCLOSURE, isAmazonProduct } from '../affiliate';
 
-const categories = ['All', 'Wearables', 'Test Kits', 'Supplements'];
+// Backend Product.category ids → filter labels. Filters are built from the categories
+// actually present, so a chip never leads to an empty grid.
+const CATEGORY_LABELS: Record<string, string> = {
+    device: 'Devices',
+    smart_watch: 'Smart Watches',
+    fitness_tracker: 'Fitness Trackers',
+    bp_monitor: 'BP Monitors',
+    ecg_patch: 'ECG Patches',
+    accessory: 'Accessories',
+    supplement: 'Supplements',
+    personal_care: 'Personal Care',
+    program: 'Programs'
+};
+const categoryLabel = (id: string) =>
+    CATEGORY_LABELS[id] || id.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 
 const CatalogPage = () => {
     const [products,         setProducts]         = useState<Product[]>([]);
@@ -19,7 +34,8 @@ const CatalogPage = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await axios.get('/api/shop/products');
+                // include=affiliate: also return Amazon products (the API leaves them out by default).
+                const res = await axios.get('/api/shop/products', { params: { include: 'affiliate' } });
                 setProducts(res.data.data.products);
                 setFilteredProducts(res.data.data.products);
                 setUserRegion(res.data.userRegion);
@@ -35,12 +51,13 @@ const CatalogPage = () => {
     useEffect(() => {
         let result = products;
         if (activeCategory !== 'All') {
-            result = result.filter(p =>
-                p.category.toLowerCase() === activeCategory.toLowerCase().replace(/ /g, '_')
-            );
+            result = result.filter(p => p.category === activeCategory);
         }
         setFilteredProducts(result);
     }, [activeCategory, products]);
+
+    const categories = ['All', ...Array.from(new Set(products.map(p => p.category).filter(Boolean)))];
+    const hasAmazon = filteredProducts.some(isAmazonProduct);
 
     if (error) {
         return (
@@ -72,7 +89,7 @@ const CatalogPage = () => {
                             }`}
                             style={activeCategory === cat ? { background: 'hsl(var(--primary))' } : {}}
                         >
-                            {cat}
+                            {cat === 'All' ? 'All' : categoryLabel(cat)}
                         </button>
                     ))}
                 </div>
@@ -85,13 +102,18 @@ const CatalogPage = () => {
                         ))}
                     </div>
                 ) : filteredProducts.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                        {filteredProducts.map(product => (
-                            <div key={product._id} className="animate-in fade-in zoom-in-95 duration-500 h-full">
-                                <ProductCard product={product} userRegion={userRegion} />
-                            </div>
-                        ))}
-                    </div>
+                    <>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                            {filteredProducts.map(product => (
+                                <div key={product._id} className="animate-in fade-in zoom-in-95 duration-500 h-full">
+                                    <ProductCard product={product} userRegion={userRegion} />
+                                </div>
+                            ))}
+                        </div>
+                        {hasAmazon && (
+                            <p className="mt-8 text-xs text-muted-foreground">{AMAZON_DISCLOSURE}</p>
+                        )}
+                    </>
                 ) : (
                     <div className="py-24 text-center">
                         <h3 className="text-lg font-bold text-foreground mb-2">No products found</h3>

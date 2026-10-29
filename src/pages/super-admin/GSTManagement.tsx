@@ -55,6 +55,9 @@ const GSTManagement = () => {
             } else if (activeTab === 'invoices') {
                 const res = await superAdminApi.get('/gst/invoices');
                 setInvoicesData(res.data || []);
+            } else if (activeTab === 'refunds') {
+                const res = await superAdminApi.get('/gst/credit-notes');
+                setRefundsData(res.data || []);
             }
         } catch (err) {
             console.error("Failed to fetch GST data", err);
@@ -69,26 +72,36 @@ const GSTManagement = () => {
         let filename = 'export.csv';
 
         if (activeTab === 'monthly') {
+            // Issued invoices and credit notes (credit notes negative), from the backend register.
             dataToExport = monthlyTransactions.map(tx => ({
-                'Invoice #': tx.id,
+                'Document #': tx.id,
+                'Document': tx.documentType,
+                'Against invoice': tx.originalInvoice,
                 'Name': tx.name,
                 'Receipt ID': tx.receiptId,
                 'Date': new Date(tx.date).toLocaleDateString('en-IN'),
                 'Type': tx.type,
                 'GSTIN': tx.gstin,
-                'State (POS)': tx.state,
+                'Place of supply': tx.state,
+                'State code': tx.stateCode,
+                'SAC': tx.sac,
+                'Rate %': tx.rate,
                 'Taxable': tx.taxable,
                 'CGST': tx.cgst,
                 'SGST': tx.sgst,
                 'IGST': tx.igst,
+                'Total': tx.total,
             }));
             filename = `monthly_gst_${selectedMonth.replace(' ', '_')}.csv`;
         } else if (activeTab === 'transactions') {
             dataToExport = transactionsLedger;
             filename = 'gst_transactions.csv';
         } else if (activeTab === 'invoices') {
-            dataToExport = invoicesData.map(inv => ({ ...inv, invoiceUrl: inv.invoiceUrl || 'N/A' }));
+            dataToExport = invoicesData.map(({ documentId, ...inv }) => inv);
             filename = 'invoices.csv';
+        } else if (activeTab === 'refunds') {
+            dataToExport = refundsData.map(({ documentId, ...cn }) => cn);
+            filename = 'credit_notes.csv';
         } else {
             toast.error(`Export not supported for ${activeTab} tab.`);
             return;
@@ -98,7 +111,10 @@ const GSTManagement = () => {
             toast.error('No data to export.');
             return;
         }
+        downloadCsv(dataToExport, filename);
+    };
 
+    const downloadCsv = (dataToExport: any[], filename: string) => {
         const headers = Object.keys(dataToExport[0]);
         const csvRows = [];
         
@@ -128,6 +144,50 @@ const GSTManagement = () => {
         toast.success(`Exported ${filename}`);
     };
 
+    // GSTR-1 figures for the selected month as one CSV, a section per table.
+    const handleGstr1Export = async () => {
+        try {
+            const res = await superAdminApi.get(`/gst/gstr1?month=${encodeURIComponent(selectedMonth)}`);
+            const g = res.data;
+            const rows: any[] = [];
+            const section = (name: string, items: any[]) => items.forEach(item => rows.push({ Section: name, ...item }));
+            section('Table 4/9B - B2B', g.b2b);
+            section('Table 5 - B2C large', g.b2cl);
+            section('Table 9B - CDNUR (credit notes on B2C large)', g.cdnur || []);
+            section('Table 7 - B2C others', g.b2cs);
+            section('Table 12 - HSN/SAC', g.hsn);
+            section('Table 13 - Documents', g.documents);
+            if (rows.length === 0) {
+                toast.error('No issued documents in this month.');
+                return;
+            }
+            // Columns differ per section, so collect them all.
+            const columns = [...new Set(rows.flatMap(r => Object.keys(r)))];
+            downloadCsv(rows.map(r => Object.fromEntries(columns.map(c => [c, r[c] ?? '']))), `gstr1_${g.period}.csv`);
+            if (g.warnings?.length) toast.error(`${g.warnings.length} document(s) have no approved SAC yet.`);
+        } catch (err) {
+            console.error('GSTR-1 export failed', err);
+            toast.error('Could not build the GSTR-1 summary.');
+        }
+    };
+
+    const downloadPdf = async (documentId: string, documentNumber: string) => {
+        try {
+            const blob: any = await superAdminApi.get(`/gst/documents/${documentId}/pdf`, { responseType: 'blob', timeout: 60000 });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `PreventVital-${documentNumber.replace(/\//g, '-')}.pdf`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error('PDF download failed', err);
+            toast.error('Could not download the PDF. It may still be being prepared.');
+        }
+    };
+
     const [refundsData, setRefundsData] = useState<any[]>([]);
 
     const tabs = [
@@ -148,6 +208,11 @@ const GSTManagement = () => {
                     <p className="text-sm text-gray-500 mt-1">Manage taxation, internal monitoring, and month-end GST reporting data.</p>
                 </div>
                 <div className="flex gap-2">
+                    {activeTab === 'monthly' && (
+                        <button onClick={handleGstr1Export} className="flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-600 px-3 py-2 rounded-xl text-sm font-medium shadow-sm transition-colors">
+                            <FileSpreadsheet size={15} /> GSTR-1 Summary (CSV)
+                        </button>
+                    )}
                     <button onClick={handleExport} className="flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-600 px-3 py-2 rounded-xl text-sm font-medium shadow-sm transition-colors">
                         <Download size={15} /> Export Data (CSV)
                     </button>
@@ -171,7 +236,7 @@ const GSTManagement = () => {
                         {[
                             { label: 'YTD Taxable Revenue', value: `₹${((dashboardData?.ytdTaxableRevenue || 0) / 100000).toFixed(2)}L`, icon: TrendingUp, color: 'blue' },
                             { label: 'Total GST Collected', value: `₹${((dashboardData?.totalGstCollected || 0) / 100000).toFixed(2)}L`, icon: Calculator, color: 'indigo' },
-                            { label: 'Pending Filings (Mo)', value: dashboardData?.pendingFilings || 0, icon: AlertCircle, color: 'amber' },
+                            { label: 'Invoices On Hold', value: dashboardData?.invoicesHeld || 0, icon: AlertCircle, color: 'amber' },
                             { label: 'Refunds Processed', value: `₹${((dashboardData?.refundsProcessed || 0) / 1000).toFixed(0)}k`, icon: CreditCard, color: 'red' },
                         ].map((kpi, i) => (
                             <div key={i} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
@@ -291,7 +356,7 @@ const GSTManagement = () => {
                                         <div className="flex justify-between items-center p-3 rounded-xl bg-red-50/50 border border-red-100/50">
                                             <span className="text-red-600 font-medium flex items-center gap-2">
                                                 <ArrowDownRight className="w-4 h-4" />
-                                                Refunds
+                                                GST reversed ({weeklyData?.creditNotes || 0} credit {weeklyData?.creditNotes === 1 ? 'note' : 'notes'})
                                             </span>
                                             <span className="font-bold text-red-600">-₹{(weeklyData?.refunds || 0).toLocaleString()}</span>
                                         </div>
@@ -452,13 +517,9 @@ const GSTManagement = () => {
                                     <td className="py-4 px-5 text-sm text-gray-500">₹{(inv.gst || 0).toLocaleString()}</td>
                                     <td className="py-4 px-5 text-sm text-gray-500">{new Date(inv.date).toLocaleDateString()}</td>
                                     <td className="py-4 px-5 text-right">
-                                        {inv.invoiceUrl ? (
-                                            <a href={inv.invoiceUrl} target="_blank" rel="noopener noreferrer" className="inline-block p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                                                <Download size={15} />
-                                            </a>
-                                        ) : (
-                                            <span className="text-xs text-gray-400">No PDF</span>
-                                        )}
+                                        <button onClick={() => downloadPdf(inv.documentId, inv.id)} aria-label={`Download ${inv.id}`} className="inline-block p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                                            <Download size={15} />
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
@@ -490,14 +551,19 @@ const GSTManagement = () => {
                         <tbody className="divide-y divide-gray-100">
                             {refundsData.map(ref => (
                                 <tr key={ref.id} className="hover:bg-gray-50/60 transition-colors">
-                                    <td className="py-4 px-5 font-mono text-sm text-gray-700">{ref.id}</td>
+                                    <td className="py-4 px-5 font-mono text-sm text-gray-700">
+                                        <button onClick={() => downloadPdf(ref.documentId, ref.id)} className="hover:text-blue-600 hover:underline">{ref.id}</button>
+                                    </td>
                                     <td className="py-4 px-5 font-mono text-xs text-gray-400">{ref.invoiceRef}</td>
                                     <td className="py-4 px-5 text-sm font-medium text-gray-900">{ref.customer}</td>
                                     <td className="py-4 px-5 font-semibold text-red-600 text-sm">-₹{ref.amount.toLocaleString()}</td>
                                     <td className="py-4 px-5 text-sm text-gray-500">-₹{ref.gstRefund.toLocaleString()}</td>
-                                    <td className="py-4 px-5 text-sm text-gray-500">{ref.date}</td>
+                                    <td className="py-4 px-5 text-sm text-gray-500">{new Date(ref.date).toLocaleDateString('en-IN')}</td>
                                 </tr>
                             ))}
+                            {refundsData.length === 0 && (
+                                <tr><td colSpan={6} className="py-6 text-center text-sm text-gray-500">No credit notes issued</td></tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
