@@ -18,10 +18,10 @@ import { useToast } from '../hooks/use-toast';
 /* Animated vitals strip on the left panel */
 const VitalsStrip = () => {
   const vitals = [
-    { label: 'Heart Rate', value: '72 BPM', color: '#ef4444', icon: Heart, bg: '#fef2f2' },
-    { label: 'SpO₂', value: '98%', color: '#3b82f6', icon: Activity, bg: '#eff6ff' },
-    { label: 'Risk Score', value: 'Low', color: '#0d9488', icon: Shield, bg: '#f0fdfa' },
-    { label: 'Streak', value: '7 Days', color: '#f59e0b', icon: Zap, bg: '#fffbeb' },
+    { label: 'Heart Rate',  value: '72 BPM',  color: '#ef4444', icon: Heart,    bg: '#fef2f2' },
+    { label: 'SpO₂',        value: '98%',     color: '#3b82f6', icon: Activity, bg: '#eff6ff' },
+    { label: 'Risk Score',  value: 'Low',     color: '#0d9488', icon: Shield,   bg: '#f0fdfa' },
+    { label: 'Streak',      value: '7 Days',  color: '#f59e0b', icon: Zap,      bg: '#fffbeb' },
   ];
 
   return (
@@ -52,20 +52,20 @@ const VitalsStrip = () => {
 };
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail]               = useState('');
+  const [password, setPassword]         = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading]       = useState(false);
 
   const { toast } = useToast();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch   = useDispatch();
+  const navigate   = useNavigate();
 
   React.useEffect(() => { preWarmBackend(); }, []);
 
   const applyAuthResponse = (data: any) => {
-    const { token } = data;
-    const { user } = data.data;
+    const { token }  = data;
+    const { user }   = data.data;
 
     if (!token || !user) throw new Error('Invalid response from server');
 
@@ -88,11 +88,11 @@ const Login = () => {
     }
 
     const roleRoutes: Record<string, string> = {
-      super_admin: '/super-admin/dashboard',
+      super_admin:    '/super-admin/dashboard',
       content_creator: '/creator/dashboard',
-      expert: '/expert/dashboard',
-      admin: '/admin/dashboard',
-      customer: '/account',
+      expert:         '/expert/dashboard',
+      admin:          '/admin/dashboard',
+      customer:       '/account',
     };
 
     if (user.role === 'corporate_admin') {
@@ -108,16 +108,16 @@ const Login = () => {
     setIsLoading(true);
     try {
       const response = await axios.post('/api/auth/login', {
-        email: email.trim(),
+        email:    email.trim(),
         password: password.trim(),
       });
 
       applyAuthResponse(response.data);
     } catch (error: any) {
       toast({
-        title: 'Login failed',
+        title:       'Login failed',
         description: error.response?.data?.message ?? 'Please check your credentials and try again.',
-        variant: 'destructive',
+        variant:     'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -136,9 +136,9 @@ const Login = () => {
       applyAuthResponse(response.data);
     } catch (error: any) {
       toast({
-        title: 'Google sign-in failed',
+        title:       'Google sign-in failed',
         description: error.response?.data?.message ?? 'Please try again.',
-        variant: 'destructive',
+        variant:     'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -321,9 +321,9 @@ const Login = () => {
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
               onError={() => toast({
-                title: 'Google sign-in failed',
+                title:       'Google sign-in failed',
                 description: 'Please try again.',
-                variant: 'destructive',
+                variant:     'destructive',
               })}
               width="330"
             />
