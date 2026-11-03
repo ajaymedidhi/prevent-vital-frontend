@@ -1,23 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
 import { Crown, Sparkles, Check, ArrowRight, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import SubscriptionCheckoutModal from '@/features/subscription/SubscriptionCheckoutModal';
 import FadeInSection from './FadeInSection';
 
 export const LaunchOfferSection: React.FC = () => {
     const navigate = useNavigate();
-    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
-    const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
     const handleSubscribe = () => {
-        if (!isAuthenticated) {
-            navigate('/login?redirect=/subscription');
-            return;
-        }
-        setIsCheckoutOpen(true);
+        navigate('/account/dashboard');
     };
 
     return (
@@ -154,13 +145,6 @@ export const LaunchOfferSection: React.FC = () => {
                     </div>
                 </FadeInSection>
             </div>
-
-            {/* In-page Checkout Modal */}
-            <SubscriptionCheckoutModal
-                isOpen={isCheckoutOpen}
-                onClose={() => setIsCheckoutOpen(false)}
-                planId="pro"
-            />
         </section>
     );
 };

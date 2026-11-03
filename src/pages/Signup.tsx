@@ -75,6 +75,23 @@ const Signup = () => {
     if (!token || !user) throw new Error('Invalid response from server');
 
     dispatch(setCredentials({ user, token }));
+
+    const redirectParam = new URLSearchParams(window.location.search).get('redirect');
+    if (redirectParam) {
+      let target = redirectParam.trim();
+      if (target.startsWith('http://') || target.startsWith('https://')) {
+        try {
+          const parsed = new URL(target);
+          target = parsed.pathname + parsed.search;
+        } catch {
+          target = '/account/dashboard';
+        }
+      }
+      target = '/' + target.replace(/^\/+/, '');
+      navigate(target);
+      return;
+    }
+
     navigate('/account');
   };
 
