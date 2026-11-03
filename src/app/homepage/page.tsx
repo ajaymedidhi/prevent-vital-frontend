@@ -10,6 +10,7 @@ import MeetVita from '@/components/homepage/MeetVita';
 import WellnessTeamSection from '@/components/homepage/WellnessTeamSection';
 import ClinicalCredibility from '@/components/homepage/ClinicalCredibility';
 import TestimonialSection from '@/components/homepage/TestimonialSection';
+import LaunchOfferSection from '@/components/homepage/LaunchOfferSection';
 import CTASection from '@/components/homepage/CTASection';
 import FlowingDivider from '@/components/homepage/FlowingDivider';
 import ProgramQuickNav from '@/components/homepage/ProgramQuickNav';
@@ -61,6 +62,7 @@ const Index = () => {
                 <ClinicalCredibility />
                 */}
                 <TestimonialSection />
+                <LaunchOfferSection />
                 <CTASection />
             </main>
             <ProgramQuickNav />

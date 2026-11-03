@@ -8,7 +8,8 @@ import {
     TrendingUp, Home, ShoppingBag, Settings, Star, Zap,
     LogOut, User, Bell, Search, Plus, Play, Info, Lock,
     Clock, BookOpen, Crown, Loader2, Filter, X, Video,
-    Pencil, Calendar, Droplet, MapPin, Ruler, Phone, Mail, Weight
+    Pencil, Calendar, Droplet, MapPin, Ruler, Phone, Mail, Weight,
+    Check, Sparkles
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
@@ -20,6 +21,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getCvitalTierConfig } from '@/config/cvitalTierConfig';
+import SubscriptionCheckoutModal from '@/features/subscription/SubscriptionCheckoutModal';
 
 const ScoreTrendChart = ({ history }: { history: any[] }) => {
     const sorted = [...history]
@@ -126,7 +128,15 @@ const CustomerDashboard = () => {
         setPlayingModule({ ...mod, videoUrl: resolvedUrl });
     };
 
-    const userPlan = user?.subscriptionPlan || 'free';
+    const [checkoutPlanId, setCheckoutPlanId] = useState<string | null>(null);
+    const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+
+    let currentPlan = (user as any)?.subscription?.plan || user?.subscriptionPlan || 'free';
+    if (currentPlan.toLowerCase() === 'basic') currentPlan = 'free';
+    const isFreePlan = currentPlan === 'free';
+    const isCorporate = user?.customerType === 'corporate' || Boolean((user as any)?.corporateId);
+
+    const userPlan = currentPlan;
 
     const PLAN_COLORS: Record<string, string> = {
         free: 'bg-gray-100 text-gray-600',
@@ -577,38 +587,108 @@ const CustomerDashboard = () => {
 
     const renderHome = () => (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {/* Welcome Banner */}
+            {/* Unified Health Dashboard Hero Container */}
             <div
-                className="relative overflow-hidden rounded-2xl p-7 md:p-8 text-white"
-                style={{ background: 'var(--gradient-health)', boxShadow: 'var(--shadow-lg)' }}
+                className="relative overflow-hidden rounded-3xl p-6 sm:p-7 lg:p-8 text-white shadow-xl border border-white/20"
+                style={{ background: 'linear-gradient(135deg, #3A8AB5 0%, #51A6CB 25%, #9035A0 65%, #BF40A3 100%)' }}
             >
-                {/* Subtle pattern */}
+                {/* Background decorative glows */}
                 <div className="absolute inset-0 opacity-[0.04]"
                     style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '24px 24px' }} />
-                <div className="absolute top-0 right-0 w-72 h-72 bg-white/5 rounded-full blur-3xl -mr-24 -mt-24 pointer-events-none" />
+                <div className="absolute -top-16 -right-16 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute -bottom-16 -left-16 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />
 
-                <div className="relative z-10">
-                    <div className="flex items-center gap-2 mb-3">
-                        <div className="bg-white/15 backdrop-blur-sm p-1.5 rounded-lg border border-white/20">
-                            <Activity className="w-4 h-4 text-white" />
+                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    {/* Left Column: Greeting, Health Status & Assessment Action */}
+                    <div className={!isCorporate && isFreePlan ? 'lg:col-span-7 space-y-4' : 'lg:col-span-12 space-y-4'}>
+                        <div className="flex flex-wrap items-center gap-2">
+                            <div className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 text-xs font-semibold text-white/90">
+                                <Activity className="w-3.5 h-3.5 text-cyan-200" />
+                                <span>Health Dashboard</span>
+                            </div>
+                            <div className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 text-xs font-semibold text-white/90">
+                                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                                <span>{(user as any)?.gamification?.streaks?.current || 0}-day streak</span>
+                            </div>
                         </div>
-                        <span className="text-xs font-semibold uppercase tracking-widest text-white/70">Health Dashboard</span>
+
+                        <div>
+                            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                                Welcome back, {user?.profile?.firstName || user?.name?.split(' ')[0] || 'Member'} 👋
+                            </h1>
+                            <p className="text-white/80 text-xs sm:text-sm mt-1 max-w-lg leading-relaxed">
+                                Your preventive health metrics and vitals are actively monitored. Take your routine assessment to keep your vascular age updated.
+                            </p>
+                        </div>
+
+                        <div className="pt-1">
+                            <Button
+                                onClick={() => navigate('/ai-health-assessment')}
+                                className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-md font-bold rounded-xl px-5 h-10 shadow-sm transition-all hover:scale-[1.02]"
+                            >
+                                <ShieldCheck className="mr-2 h-4 w-4 text-cyan-200" /> Run AI Assessment
+                            </Button>
+                        </div>
                     </div>
-                    <h1 className="text-2xl md:text-3xl font-semibold mb-2 tracking-tight">
-                        Welcome back, {user?.profile?.firstName || user?.name?.split(' ')[0] || 'Member'}
-                    </h1>
-                    <p className="text-white/70 text-sm max-w-md leading-relaxed">
-                        Your health metrics are being monitored.{' '}
-                        <span className="text-white font-semibold">{(user as any)?.gamification?.streaks?.current || 0}-day streak</span> maintained.
-                    </p>
-                    <div className="flex flex-wrap gap-3 mt-6">
-                        <Button
-                            onClick={() => navigate('/ai-health-assessment')}
-                            className="bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-sm font-semibold rounded-xl px-5 transition-all duration-200"
-                        >
-                            <ShieldCheck className="mr-2 h-4 w-4" /> Run AI Assessment
-                        </Button>
-                    </div>
+
+                    {/* Right Column: Embedded Upgrade Card (for Free Users) */}
+                    {!isCorporate && isFreePlan && (
+                        <div className="lg:col-span-5 bg-black/20 hover:bg-black/25 transition-all backdrop-blur-md rounded-2xl p-5 border border-white/20 flex flex-col justify-between gap-4 shadow-lg">
+                            <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                    <span className="inline-flex items-center gap-1 bg-amber-400/25 border border-amber-300/40 text-amber-200 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
+                                        <Crown className="w-3 h-3 text-amber-300 fill-amber-300" />
+                                        LAUNCH OFFER
+                                    </span>
+                                    <span className="text-[11px] text-white/70 line-through">₹4,999/yr</span>
+                                </div>
+
+                                <div className="flex items-baseline justify-between">
+                                    <h3 className="text-base sm:text-lg font-bold text-white">
+                                        Upgrade to Individual
+                                    </h3>
+                                    <span className="text-xl font-extrabold text-amber-300">
+                                        ₹999<span className="text-xs font-normal text-white/80">/yr</span>
+                                    </span>
+                                </div>
+
+                                <ul className="space-y-1.5 text-xs text-white/90">
+                                    <li className="flex items-center gap-2">
+                                        <Check className="w-3.5 h-3.5 text-emerald-300 stroke-[3] shrink-0" />
+                                        <span>Unlimited AI VITAL assessments</span>
+                                    </li>
+                                    <li className="flex items-center gap-2">
+                                        <Check className="w-3.5 h-3.5 text-emerald-300 stroke-[3] shrink-0" />
+                                        <span>Wearable sync & longitudinal risk</span>
+                                    </li>
+                                    <li className="flex items-center gap-2">
+                                        <Check className="w-3.5 h-3.5 text-emerald-300 stroke-[3] shrink-0" />
+                                        <span>Includes 1 month free</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div className="flex items-center gap-2 pt-1">
+                                <Button
+                                    onClick={() => {
+                                        setCheckoutPlanId('pro');
+                                        setIsCheckoutOpen(true);
+                                    }}
+                                    className="flex-1 h-10 bg-white hover:bg-slate-100 text-slate-950 font-bold rounded-xl text-xs shadow-md transition-all hover:scale-[1.02] flex items-center justify-center gap-1.5"
+                                >
+                                    <Sparkles className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                                    <span>Subscribe · ₹999</span>
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    onClick={() => navigate('/subscription')}
+                                    className="h-10 px-3 text-white hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold"
+                                >
+                                    View Plans
+                                </Button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -1871,6 +1951,17 @@ const CustomerDashboard = () => {
                     )}
                 </DialogContent>
             </Dialog>
+
+            {checkoutPlanId && (
+                <SubscriptionCheckoutModal
+                    isOpen={isCheckoutOpen}
+                    onClose={() => {
+                        setIsCheckoutOpen(false);
+                        setCheckoutPlanId(null);
+                    }}
+                    planId={checkoutPlanId}
+                />
+            )}
 
         </div >
     );

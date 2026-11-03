@@ -1,220 +1,183 @@
 import React, { useState } from 'react';
-import { PLANS } from '@/constants/plans';
+import { PLANS, Plan } from '@/constants/plans';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { INDIAN_STATES } from '@/constants/indianStates';
-import Icon from '@/components/ui/AppIcon';
-import axios from 'axios';
-import { useToast } from "@/components/ui/use-toast";
+import SubscriptionCheckoutModal from './SubscriptionCheckoutModal';
+import { Check, Flame, CheckCircle2, Building2, Leaf, User as UserIcon, Users, ArrowUpCircle } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setCredentials } from '../../store';
 
 const PricingTable = () => {
-    const [isAnnual, setIsAnnual] = useState(false);
-    const [plans, setPlans] = useState(PLANS);
-    const [loading, setLoading] = useState(true);
-    // The buyer's state is the place of supply on the GST invoice and must be recorded before
-    // the sale; the server refuses a subscription order without it.
-    const [stateCode, setStateCode] = useState<string>('');
-    const { toast } = useToast();
+    const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
-    React.useEffect(() => {
-        const fetchPlans = async () => {
-            try {
-                // Using the public config endpoint
-                const res = await axios.get('/api/public/config/pricing-plans');
-                if (res.data?.data?.config?.value?.b2c) {
-                    setPlans(res.data.data.config.value.b2c);
-                }
-            } catch (err) {
-                console.error('Error fetching public pricing plans:', err);
-                // Fallback to hardcoded PLANS if API fails
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchPlans();
-    }, []);
+    const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+    const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
-    const handleSubscribe = async (plan: any) => {
-        try {
-            // Check auth (assuming localStorage token or similar context check)
-            const token = sessionStorage.getItem('token'); // Simplistic check, ideally use Auth Context
-            if (!token) {
-                toast({ title: "Login Required", description: "Please login to subscribe.", variant: "destructive" });
-                navigate('/login');
-                return;
-            }
+    let currentPlan = (user as any)?.subscription?.plan || user?.subscriptionPlan || 'free';
+    if (currentPlan.toLowerCase() === 'basic') currentPlan = 'free';
 
-            if (plan.monthlyPrice === 0) {
-                toast({ title: "Free Plan", description: "You are already on the free tier." });
-                return;
-            }
+    const isCorporate = user?.customerType === 'corporate';
 
-            if (!stateCode) {
-                toast({ title: "Select your state", description: "Your state is needed for your GST invoice.", variant: "destructive" });
-                return;
-            }
+    const handleSelectPlan = (plan: Plan) => {
+        if (plan.id === currentPlan || plan.annualPrice === 0) return;
+        if (isCorporate) return;
 
-            const interval = isAnnual ? 'annual' : 'monthly';
-            const { data: createRes } = await axios.post('/api/payments/orders', {
-                purchaseType: 'subscription',
-                planId: plan.id,
-                interval,
-                billing: { stateCode }
-            }, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+        if (!isAuthenticated) {
+            navigate('/login?redirect=/subscription');
+            return;
+        }
 
-            const { internalOrderId, razorpayOrderId, amount, currency, keyId, prefill, gstAmount } = createRes.data;
+        setSelectedPlanId(plan.id);
+        setIsCheckoutOpen(true);
+    };
 
-            if (!razorpayOrderId) {
-                toast({ title: "Error", description: "Order creation failed. Please try again.", variant: "destructive" });
-                return;
-            }
-
-            const verifyAndFinish = async (payload: {
-                razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string;
-            }) => {
-                const verifyRes = await axios.post('/api/payments/verify', { internalOrderId, ...payload }, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-
-                if (verifyRes.data.data?.status === 'paid') {
-                    toast({ title: "Subscription Active", description: `You are now on the ${plan.name} plan!` });
-                    navigate('/account');
-                } else {
-                    toast({ title: "Verification Failed", description: "Payment verification failed.", variant: "destructive" });
-                }
-            };
-
-            // Dev/mock mode: backend returns a placeholder key when Razorpay isn't configured
-            if (keyId === 'rzp_test_placeholder' || keyId === '') {
-                await verifyAndFinish({
-                    razorpay_order_id: razorpayOrderId,
-                    razorpay_payment_id: `pay_mock_${Date.now()}`,
-                    razorpay_signature: 'bypass'
-                });
-                return;
-            }
-
-            const options = {
-                key: keyId,
-                amount,
-                currency,
-                order_id: razorpayOrderId,
-                name: "PreventVital",
-                description: `${plan.name} Subscription (${interval})${gstAmount != null ? ' incl. 18% GST' : ''}`,
-                handler: async function (response: any) {
-                    try {
-                        await verifyAndFinish({
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_signature: response.razorpay_signature
-                        });
-                    } catch (err) {
-                        toast({ title: "Verification Failed", description: "Payment verification failed.", variant: "destructive" });
-                    }
-                },
-                prefill: prefill ?? {},
-                theme: { color: "#3399cc" }
-            };
-
-            const rzp = new (window as any).Razorpay(options);
-            rzp.open();
-
-        } catch (err: any) {
-            console.error(err);
-            if (err.response && err.response.status === 401) {
-                // Auto-logout on 401
-                sessionStorage.removeItem('token');
-                sessionStorage.removeItem('user');
-                toast({ title: "Session Expired", description: "Please login again to continue.", variant: "destructive" });
-                navigate('/login');
-                return;
-            }
-            toast({ title: "Error", description: err.response?.data?.message || err.message || "Failed to initiate subscription.", variant: "destructive" });
+    const getPlanIcon = (id: string, color: string) => {
+        switch (id) {
+            case 'free':
+                return <Leaf className="w-5 h-5" style={{ color }} />;
+            case 'pro':
+                return <UserIcon className="w-5 h-5" style={{ color }} />;
+            case 'family':
+                return <Users className="w-5 h-5" style={{ color }} />;
+            default:
+                return <Check className="w-5 h-5" style={{ color }} />;
         }
     };
 
-    if (loading) return (
-        <div className="flex items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        </div>
-    );
-
     return (
-        <div className="py-12">
-            <div className="flex justify-center mb-8 gap-4 items-center">
-                <span className={`text-sm ${!isAnnual ? 'font-bold' : ''}`}>Monthly</span>
-                <button
-                    onClick={() => setIsAnnual(!isAnnual)}
-                    className={`w-14 h-7 flex items-center bg-gray-300 rounded-full p-1 duration-300 ease-in-out ${isAnnual ? 'bg-primary' : ''}`}
-                >
-                    <div className={`bg-white w-5 h-5 rounded-full shadow-md transform duration-300 ease-in-out ${isAnnual ? 'translate-x-7' : ''}`}></div>
-                </button>
-                <span className={`text-sm ${isAnnual ? 'font-bold' : ''}`}>Annual (Save ~17%)</span>
-            </div>
+        <div className="py-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+                {PLANS.map((plan) => {
+                    const isCurrentPlan = plan.id === currentPlan;
+                    const isPopular = plan.popular && !isCurrentPlan;
 
-            <div className="flex flex-col items-center gap-1 mb-8">
-                <label htmlFor="billing-state" className="text-sm font-medium">Your state</label>
-                <Select value={stateCode} onValueChange={setStateCode}>
-                    <SelectTrigger id="billing-state" className="w-72" aria-label="Your state">
-                        <SelectValue placeholder="Select your state" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {INDIAN_STATES.map(s => (
-                            <SelectItem key={s.code} value={s.code}>{s.name}</SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-                <p className="text-xs text-muted-foreground">Needed for your GST invoice.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {plans.map((plan) => (
-                    <Card key={plan.id} className={`relative flex flex-col ${plan.id === 'pro' ? 'border-primary border-2 shadow-xl scale-105 z-10' : ''}`}>
-                        {(plan as any).isPopular && (
-                            <div className="absolute top-0 right-0 transform translate-x-2 -translate-y-2">
-                                <Badge className="bg-yellow-500 text-black px-3 py-1">Best Value</Badge>
-                            </div>
-                        )}
-                        <CardHeader className="text-center">
-                            <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
-                            <CardDescription className="text-3xl font-bold text-primary mt-2">
-                                ₹{isAnnual ? plan.annualPrice : plan.monthlyPrice}
-                                <span className="text-sm font-normal text-muted-foreground">/{isAnnual ? 'yr' : 'mo'}</span>
-                            </CardDescription>
-                            {(isAnnual ? plan.annualPrice : plan.monthlyPrice) > 0 && (
-                                <p className="text-xs text-muted-foreground mt-1">+ 18% GST at checkout</p>
+                    return (
+                        <div
+                            key={plan.id}
+                            className={`bg-white rounded-3xl p-6 flex flex-col justify-between relative transition-all duration-300 border ${
+                                isPopular
+                                    ? 'border-amber-400 shadow-xl shadow-amber-500/10 md:-translate-y-1'
+                                    : isCurrentPlan
+                                    ? 'border-emerald-300 shadow-md'
+                                    : 'border-slate-200 shadow-sm hover:shadow-md'
+                            }`}
+                        >
+                            {/* Popular Badge */}
+                            {isPopular && (
+                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-3 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
+                                    <Flame className="w-3 h-3 fill-white" />
+                                    <span>Most Popular</span>
+                                </div>
                             )}
-                        </CardHeader>
-                        <CardContent className="flex-1">
-                            <ul className="space-y-3">
-                                {plan.features.map((feature: string, idx: number) => (
-                                    <li key={idx} className="flex items-center gap-2 text-sm">
-                                        <Icon name="CheckCircle" className="text-green-500 w-4 h-4" />
-                                        {feature}
-                                    </li>
-                                ))}
-                            </ul>
-                        </CardContent>
-                        <CardFooter>
-                            <Button
-                                className={`w-full ${plan.id === 'pro' ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black' : ''}`}
-                                onClick={() => handleSubscribe(plan)}
-                            >
-                                {plan.monthlyPrice === 0 ? 'Current Plan' : 'Upgrade Now'}
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                ))}
+
+                            {/* Current Plan Badge */}
+                            {isCurrentPlan && (
+                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-bold px-3 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
+                                    <CheckCircle2 className="w-3 h-3" />
+                                    <span>Current Plan</span>
+                                </div>
+                            )}
+
+                            <div>
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div
+                                        className="w-10 h-10 rounded-xl flex items-center justify-center shadow-inner"
+                                        style={{ backgroundColor: plan.accentBg }}
+                                    >
+                                        {getPlanIcon(plan.id, plan.color)}
+                                    </div>
+                                    <h3 className="text-xl font-bold" style={{ color: plan.color }}>
+                                        {plan.name}
+                                    </h3>
+                                </div>
+
+                                <div className="mb-5">
+                                    {!!plan.listPrice && (
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <span className="text-xs font-semibold text-slate-400 line-through">
+                                                ₹{plan.listPrice.toLocaleString('en-IN')}
+                                            </span>
+                                            <Badge className="bg-amber-100 text-amber-800 text-[10px] px-2 py-0 border-0 font-bold">
+                                                Launch offer
+                                            </Badge>
+                                        </div>
+                                    )}
+                                    <div className="flex items-baseline gap-1">
+                                        <span className="text-3xl font-extrabold text-slate-900">
+                                            ₹{plan.annualPrice}
+                                        </span>
+                                        {plan.annualPrice > 0 && (
+                                            <span className="text-sm font-semibold text-slate-500">/yr</span>
+                                        )}
+                                    </div>
+                                    {plan.annualPrice > 0 && (
+                                        <div className="mt-1 space-y-0.5">
+                                            <p className="text-xs font-semibold text-emerald-600">Includes 1 Month Free</p>
+                                            <p className="text-[11px] text-slate-500">
+                                                {plan.gstExtra ? '+ 18% GST' : '(Includes GST)'}
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="h-px bg-slate-100 w-full mb-5" />
+
+                                <div className="space-y-2.5 mb-6">
+                                    {plan.features.map((feature, idx) => (
+                                        <div key={idx} className="flex items-start gap-2.5">
+                                            <div
+                                                className="w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5"
+                                                style={{ backgroundColor: plan.accentBg }}
+                                            >
+                                                <Check className="w-2.5 h-2.5 stroke-[3]" style={{ color: plan.color }} />
+                                            </div>
+                                            <span className="text-xs text-slate-700 leading-snug font-medium">
+                                                {feature}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div>
+                                {isCurrentPlan ? (
+                                    <div className="w-full h-10 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-center gap-1.5 text-emerald-700 font-bold text-xs">
+                                        <CheckCircle2 className="w-3.5 h-3.5" />
+                                        <span>Your Current Plan</span>
+                                    </div>
+                                ) : isCorporate ? (
+                                    <div className="w-full h-10 bg-slate-100 border border-slate-200 rounded-xl flex items-center justify-center gap-1.5 text-slate-500 font-semibold text-xs">
+                                        <Building2 className="w-3.5 h-3.5" />
+                                        <span>Managed by Organisation</span>
+                                    </div>
+                                ) : (
+                                    <Button
+                                        onClick={() => handleSelectPlan(plan)}
+                                        style={{ backgroundColor: plan.buttonColor || '#51A6CB' }}
+                                        className="w-full h-10 hover:opacity-90 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center justify-center gap-1.5"
+                                    >
+                                        <ArrowUpCircle className="w-3.5 h-3.5" />
+                                        <span>{plan.buttonText}</span>
+                                    </Button>
+                                )}
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
+
+            {selectedPlanId && (
+                <SubscriptionCheckoutModal
+                    isOpen={isCheckoutOpen}
+                    onClose={() => {
+                        setIsCheckoutOpen(false);
+                        setSelectedPlanId(null);
+                    }}
+                    planId={selectedPlanId}
+                />
+            )}
         </div>
     );
 };

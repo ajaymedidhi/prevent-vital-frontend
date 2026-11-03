@@ -36,6 +36,7 @@ const CustomerLayout = () => {
         { path: '/account/dashboard?tab=home', label: 'Overview', icon: Layout },
         { path: '/account/dashboard?tab=programs', label: 'Vital-P', icon: Video },
         { path: '/shop', label: 'Store', icon: ShoppingBag },
+        { path: '/account/billing', label: 'Subscription', icon: CreditCard },
         { path: '/account/dashboard?tab=orders', label: 'Order History', icon: Package },
         { path: '/account/dashboard?tab=settings', label: 'Console', icon: ShieldCheck },
     ];

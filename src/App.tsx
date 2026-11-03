@@ -63,6 +63,7 @@ import PartnershipPortalPage from "./app/partnership-portal/page";
 import TherapeuticProgramsPage from "./app/therapeutic-programs/page";
 import NotFound from "./app/not-found";
 import AboutUs from "./pages/AboutUs";
+import SubscriptionPage from './pages/SubscriptionPage';
 import HowItWorks from "./pages/HowItWorks";
 import ProgramDetail from "./pages/ProgramDetail";
 import Team from "./pages/Team";
@@ -163,6 +164,8 @@ const App = () => (
                             <Route path="/therapeutic-programs-center" element={<TherapeuticProgramsPage />} />
 
                             {/* Legacy Routes */}
+                            <Route path="/subscription" element={<SubscriptionPage />} />
+                            <Route path="/pricing" element={<SubscriptionPage />} />
                             <Route path="/how-it-works" element={<HowItWorks />} />
                             <Route path="/about-us" element={<AboutUs />} />
                             <Route path="/team" element={<Team />} />
@@ -302,6 +305,7 @@ const App = () => (
                             <Route path="programs/:id" element={<ProgramDetailPage />} />
                             <Route path="history" element={<CustomerOrders />} />
                             <Route path="billing" element={<CustomerBilling />} />
+                            <Route path="subscription" element={<SubscriptionPage />} />
                             <Route path="assessment" element={<Assessment />} />
                             {/* <Route path="corporate" element={<CustomerCorporate />} /> */}
                         </Route>
